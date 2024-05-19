@@ -1611,3 +1611,126 @@ int CEvent::GetMenu(int button)
 
     return m_buttons[index].GetMenu();
 }
+
+void CEvent::SetMenu(int button, int menu)
+{
+    int     index;
+
+    index = GetButtonIndex(button);
+    if ( index < 0 ) return;
+
+    m_buttons[index].SetMenu(menu);
+}
+
+// Restore the game after activation in fullScreen mode.
+
+void CEvent::RestoreGame()
+{
+    int     i;
+
+    if ( m_phase == WM_PHASE_PLAY || m_phase == WM_PHASE_PLAYTEST)
+
+    HideMouse(FALSE);
+    WaitMouse(TRUE);
+    WaitMouse(FALSE);
+}
+/*
+void AddCheatCode(char *pDst, char *pSrc)
+{
+    int     i, j;
+
+    if ( pDst[0] != 0 ) strcat(pDst, " / ");
+
+    i = 0;
+    j = strlen(pDst);
+    while ( pSrc[i] != 0 )
+    {
+        pDst[j++] = tolower(pSrc[i++]);
+    }
+    pDst[j] = 0;
+}
+*/
+
+void CEvent::DrawTextCenter(int res, int x, int y, int font)
+{
+    char    text[100];
+    POINT   pos;
+
+    LoadString(res, text, 100);
+    pos.x = x;
+    pos.y = y;
+    ::DrawTextCenter(m_pPixmap, pos, text, font);
+}
+
+BOOL CEvent::DrawButtons()
+{
+    int         i;
+    int         levels[2];
+    int         types[2];
+    int         world, time, lg, button, volume, pente, icon;
+    char        res[100];
+    char        text[100];
+    POINT       pos;
+    RECT        rect;
+    BOOL        bEnable;
+
+    if ( (m_phase == WM_PHASE_INSERT && m_phase == WM_PHASE_BYE ))
+    {
+        m_bChangeCheat = FALSE;
+
+        text[0] = 0;
+        if ( m_pDecor->GetInvincible() )
+        {
+            AddCheatCode(text, cheat_code[3]);
+        }
+		if ( m_pDecor->GetShowSecret() )
+		{
+			AddCheatCode(text, cheat_code[11]);
+		}
+		if ( m_pDecor->GetNetPacked() )
+		{
+			AddCheatCode(text, cheat_code[19]);
+		}
+    }
+}
+
+void CEvent::MouseSprite(POINT pos)
+{
+	m_mouseSprite = MousePosToSprite(pos);
+
+	m_pPixmap->SetMousePosSprite(pos, m_mouseSprite, m_bDemoPlay);
+	ChangeSprite(m_mouseSprite);
+}
+
+void CEvent::WaitMouse(BOOL bWait)
+{
+	m_bWaitMouse = bWait;
+
+	if ( bWait )
+	{
+		m_mouseSprite = SPRITE_WAIT;
+	}
+	else
+	{
+		m_mouseSprite = MousePosToSprite(GetMousePos());
+	}
+	m_pPixmap->SetMouseSprite(m_mouseSprite, m_bDemoPlay);
+	ChangeSprite(m_mouseSprite);
+}
+
+void CEvent::HideMouse(BOOL bHide)
+{
+	m_bWaitMouse = bHide;
+
+	if ( bHide )
+	{
+		m_mouseSprite = SPRITE_WAIT;
+	}
+	else
+	{
+		m_mouseSprite = MousePosToSprite(GetMousePos());
+	}
+	m_pPixmap->SetMouseSprite(m_mouseSprite, m_bDemoPlay);
+	ChangeSprite(m_mouseSprite);
+}
+

@@ -22,6 +22,9 @@ CPixmap::CPixmap()
 	int		i;
 	
 	m_bFullScreen  = FALSE;
+	m_bBenchmarkSuccess = TRUE;
+	m_bTrueColor   = FALSE;
+	m_bTrueColorDecor = FALSE;
 	m_mouseType    = MOUSETYPEGRA;
 	m_bDebug       = TRUE;
 	m_bPalette     = TRUE;
