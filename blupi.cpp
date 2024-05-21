@@ -169,6 +169,15 @@ BOOL ReadConfig (LPSTR lpCmdLine)
 		if (i == 16) g_bTrueColor = 1;
 	}
 
+	pText = strstr(buffer, "TrueColorDecor=");
+	if ( pText != NULL )
+	{
+		i = GetNum(pText + 15);
+		if (i == 8) g_bTrueColorDecor = 0;
+
+		if (i == 16) g_bTrueColorDecor = 1;
+	}
+
 	return TRUE;
 }
 
@@ -187,7 +196,7 @@ void UpdateFrame(void)
 	phase = g_pEvent->GetPhase();
 
 	if ( phase == g_lastPhase &&
-		 phase == WM_PHASE_PLAY )
+		 phase == WM_PHASE_PLAY || phase == WM_PHASE_PLAYTEST || phase == WM_PHASE_BUILD )
 	{
 //?		rcRect.left   = POSDRAWX;
 //?		rcRect.top    = POSDRAWY;
@@ -337,6 +346,160 @@ static void FinishObjects(void)
 	}
 }
 
+LRESULT CALLBACK WindowProc (HWND hWnd, UINT message,
+							 WPARAM wParam, LPARAM lParam)
+{
+	static HINSTANCE   hInstance;
+	POINT 			   mousePos, totalDim, iconDim;
+#if 0
+	if ( message != WM_TIMER )
+	{
+		char s[100];
+		sprintf(s, "message=%d,%d\n", message, wParam);
+		OutputDebug(s);
+	}
+#endif
+
+	if ( message == WM_SYSKEYDOWN && wParam == VK_F10 )
+	{
+		message = WM_KEYDOWN;
+	}
+	if ( message == WM_SYSKEYUP && wParam == VK_F10 )
+	{
+		message = WM_KEYUP;
+	}
+
+	if ( g_pEvent != NULL &&
+		 g_pEvent->TreatEvent(message, wParam, lParam) ) return 0;
+
+	switch( message )
+	{
+		case WM_SYSCOLORCHANGE:
+		    OutputDebug("Event WM_SYSCOLORCHANGE\n");
+			break;
+		case WM_CREATE:
+			hInstance = ((LPCREATESTRUCT)lParam)->hInstance;
+			return 0;
+			break;
+
+        case WM_ACTIVATEAPP:
+		    g_bActive = (wParam != 0);
+			if ( g_bActive )
+			{
+				if ( g_bFullScreen )
+				{
+					RestoreGame();
+					g_lastPhase = 999;
+				}
+				if ( !g_bFullScreen && g_bTermInit )
+				{
+					totalDim.x = 64;
+					totalDim.y = 66;
+					iconDim.x = 64;
+					iconDim.y = 66/2;
+					g_pPixmap->Cache(CHLITTLE, "image16\\little.blp", totalDim, iconDim, TRUE);
+					g_pPixmap->SetTransparent(CHLITTLE, RGB(0,0,255));
+
+					g_pPixmap->SavePalette();
+					g_pPixmap->InitSyspallete();
+				}
+				SetWindowText(hWnd, "Blupi");
+				if ( g_pSound != NULL ) g_pSound->RestartMusic();
+			}
+			else
+			{
+				if ( g_bFullScreen )
+				{
+					FlushGame();
+				}
+				SetWindowText(hWnd, "Blupi -- stop");
+				if ( g_pSound != NULL ) g_pSound->SuspendMusic();
+			}
+			return 0;
+
+			case WM_KEYDOWN:
+				switch( wParam )
+				{
+					case VK_F5:
+						g_pEvent->SetSpeed(1);
+						break;
+					case VK_F6:
+						g_pEvent->SetSpeed(2);
+						break;
+					case VK_F7:
+						g_pEvent->SetSpeed(4);
+						break;
+					case VK_F8:
+						g_pEvent->SetSpeed(8);
+						break;
+				}
+			break;
+
+			case WM_DISPLAYCHANGE:
+				OutputDebug("Event WM_DISPLAYCHANGE\n");
+				break;
+			case WM_QUERYNEWPALLETE:
+				OutputDebug("Event WM_QUERYNEWPALETTE\n");
+				break;
+			case WM_PALETTECHANGED:
+				OutputDebug("Event WM_PALLETECHANGED\n");
+				break;
+			case MM_MCINOTIFY:
+				OutputDebug("Event MM_MCINOTIFY\n");
+				if ( g_pEvent->IsMovie() )
+				{
+					if ( wParam == MCI_NOTIFY_SUCCESSFUL )
+					{
+						g_pEvent->StopMovie();
+					}
+				}
+				else
+				{
+					g_pSound->SuspendMusic();
+					if ( wParam == MCI_NOTIFY_SUCESSFUL )
+					{
+						OutputDebug("Event MCI_NOTIFY_SUCCESSFUL\n");
+						g_pSound->RestartMusic();
+					}
+					else
+					{
+						char s[50];
+						sprintf(s, "wParam=%d\n", wParam);
+						OutputDebug(s);
+					}
+				}
+				break;
+
+		case WM_LBUTTONDOWN:
+			GetCursorPos(&mousePos);
+			ScreenToClient(hWnd, &mousePos);
+			break;
+
+		case WM_DESTROY:
+			KillTimer(g_hWnd, 1);
+			FinishObjects();
+			PostQuitMessage(0);
+			break;
+		case WM_SETCUROR:
+//			ChangeSprite();
+//			SetCursor(NULL);
+			return TRUE;
+		case WM_UPDATE:
+			if ( !g_pEvent->IsMovie() )
+			{
+				if ( g_bActive )
+				{
+					UpdateFrame();
+				}
+				g_pPixmap->Display();
+			}
+			break;
+	}
+
+	return DefWindowProc(hWnd, message, wParam, lParam);
+
+}
+
 BOOL InitFail(char *msg, BOOL bDirectX)
 {
 	char	buffer[100];
@@ -350,6 +513,114 @@ BOOL InitFail(char *msg, BOOL bDirectX)
 	FinishObjects();
 	DestroyWindow(g_hWnd);
 	return FALSE;
+}
+
+static BOOL DoInit(HINSTANCE hInstance, LPSTR lpCmdLine, int nCmdShow)
+{
+	WNDCLASS 	   wc;
+	POINT		   totalDim, iconDim;
+	RECT		   rcRect;
+	BOOL 		   bOK;
+
+	bOK = ReadConfig(lpCmdLine);
+
+	InitHInstance(hInstance);
+
+	wc.style 		 = CS_HREDRAW|CS_VREDRAW;
+	wc.lpfnWndProc   = WindowProc;
+	wc.cbClsExtra    = 0;
+	wc.cbWndExtra    = 0;
+	wc.hInstance 	 = hInstance;
+	wc.hIcon 		 = LoadIcon(hInstance, "IDR_MAINFRAME");
+	wc.hCursor 		 = LoadCursor(hInstance, "IDC_POINTER");
+	wc.hbrBackground = GetStockBrush(BLACK_BRUSH);
+	wc.lpszMenuMane  = NAME;
+	wc.lpszClassName = NAME;
+	RegisterClass(&wc);
+
+	if ( g_bFullScreen )
+	{
+		g_hWnd = CreateWindowEx
+					(
+						WS_EX_TOPMOST,
+						NAME,
+						TITLE,
+						WS_POPUP,
+						0, 0,
+						GetSystemMetrics(SM_CXSCREEN),
+						GetSystemMetrics(SM_CYSCREEN),
+						NULL,
+						NULL,
+						hInstance,
+						NULL
+					);
+	}
+	else
+	{
+		int 		sx, sy;
+		RECT 		WindowRect;
+
+		sx = GetSystemMetrics(SM_CXSCREEN);
+		sy = GetSystemMetrics(SM_CYSCREEN);
+
+		SetRect(&WindowRect, (sx-LXIMAGE)/2, (sy-LYIMAGE)/2,
+							 (sx+LXIMAGE)/2, (sy+LYIMAGE)/2);
+		AdjustWindowRect(&WindowRect, WS_POPUPWINDOW|WS_CAPTION, TRUE);
+		WindowRect.top += GetSystemMetrics(SM_CYCAPTION);
+
+		g_hWnd = CreateWindow
+					(
+						NAME,
+						TITLE,
+						WS_POPUPWINDOW|WS_CAPTION|WS_VISIBLE,
+						(sx-LXIMAGE)/2, (sy-LYIMAGE)/2,
+						WindowRect.right - WindowRect.left,
+						WindowRect.bottom - WindowRect.top,
+						HWND_DESKTOP,
+						NULL,
+						hInstance,
+						NULL
+					);
+	}
+	if ( !g_hWnd ) return FALSE;
+
+	ShowWindow(g_hWnd, nCmdShow);
+	UpdateWindow(g_hWnd);
+	SetFocus(g_hWnd);
+
+	ChangeSprite(SPRITE_WAIT);
+
+	if ( !bOk )
+	{
+		return InitFail("Game not correctly installed", FALSE);
+	}
+
+	g_pPixmap = new CPixmap;
+	if ( g_pPixmap == NULL ) return InitFail("New pixmap", TRUE);
+
+	totalDim.x = LXIMAGE;
+	totalDim.y = LYIMAGE;
+	if ( !g_pPixmap->Create(g_hWnd, totalDim, g_bFullScreen, g_mouseType) )
+		return InitFail("Create pixmap", TRUE);
+
+	OutputDebug("Image: init\n");
+	totalDim.x = LXIMAGE;
+	totalDim.y = LYIMAGE;
+	iconDim.x  = 0;
+	iconDim.y  = 0;
+#if _INTRO
+	if ( !g_pPixmap->Cache(CHBACK, "image16\\init.blp", totalDim, iconDim, TRUE) )
+#else
+	if ( !g_pPixmap->Cache(CHBACK, "image16\\init.blp", totalDim, iconDim, TRUE) )
+#endif
+		return FALSE;
+	
+	OutputDebug("SavePalette\n");
+	g_pPixmap->SavePalette();
+	OutputDebug("InitSysPalette\n");
+	g_pPixmap->InitSysPalette();
+	
+
 }
 
 int WINAPI WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance,
