@@ -1535,7 +1535,7 @@ void CEvent::Create(HWND hWnd, CPixmap *pPixmap, CDecor *pDecor,
     POINT   pos;
 
     m_hWnd    = hWnd;
-    m_pPixmap = pPixmapl
+    m_pPixmap = pPixmap;
     m_pDecor  = pDecor;
     m_pSound  = pSound;
     m_pMovie  = pMovie;
@@ -1732,5 +1732,30 @@ void CEvent::HideMouse(BOOL bHide)
 	}
 	m_pPixmap->SetMouseSprite(m_mouseSprite, m_bDemoPlay);
 	ChangeSprite(m_mouseSprite);
+}
+
+/*
+void CEvent::SomethingDecor()
+{
+	m_input = 0;
+	m_pDecor->TreatEvent();
+}
+*/
+
+int CEvent::GetWorld()
+{
+	if ( m_bPrivate ) return m_bPrivate;
+	if ( m_bMulti   ) return m_multi+200;
+	else 			  return m_mission;
+}
+
+BOOL CEvent::IsPrivate()
+{
+	return m_bPrivate;
+}
+
+BOOL CEvent::IsMulti()
+{
+	return m_bMulti;
 }
 

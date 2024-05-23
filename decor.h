@@ -407,6 +407,8 @@ public:
 	void	SetInfoHeight(int height);
 	int		GetInfoHeight();
 
+	int 	GetTargetLevel();
+
 	char*	GetButtonExist();
 
 	void	BuildPutBlupi();
@@ -515,7 +517,7 @@ protected:
     SoundEvent  m_soundEvents[20];
     int         m_soundEventIndex1;
     char        m_messages[4][100];
-    int         m_air
+    int         m_air;
     int         m_energyUnused;
     BOOL        m_bHelicopterFlying;
     BOOL        m_bHelicopterStationary;

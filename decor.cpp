@@ -57,3 +57,18 @@ CDecor::~CDecor()
 {
     UndoClose();
 }
+
+void CDecor::SetTime(int time)
+{
+    m_time            = time;
+}
+
+int CDecor::GetTime()
+{
+    return m_time;
+}
+
+int CDecor::GetTargetLevel(int mission)
+{
+    m_targetMission    = mission;
+}
