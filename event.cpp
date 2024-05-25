@@ -50,17 +50,33 @@ DescInfo;
 // Toutes les premi�res lettres doivent
 // �tre diff�rentes !
 
-static char cheat_code[9][20] =
+static char cheat_code[9][35] =
 {
-	"VISION",		// 0
-	"POWER",		// 1
-	"LONESOME",		// 2
-	"ALLMISSIONS",	// 3
-	"QUICK",		// 4
-	"HELPME",		// 5
-	"INVINCIBLE",	// 6
-	"SUPERBLUPI",	// 7
-	"CONSTRUIRE",	// 8 (CPOTUSVJSF)
+	"XMISSION",		// 0
+	"OPENDOORS",	// 1
+	"CLEANALL",		// 2
+	"MEGABLUPI",	// 3
+	"LAYEGG",		// 4
+	"KILLEGG",		// 5
+	"FUNSKATE",		// 6
+	"GIVECOPTER",	// 7
+	"JEEPDRIVE",	// 8 (CPOTUSVJSF)
+	"ALLTREASURE",
+	"ENDGOAL",
+	"SHOWSECRET",
+	"ROUNDSHIELD",
+	"QUICKLOLLIPOP",
+	"TENBOMBS",
+	"BIRDLIME",
+	"DRIVETANK",
+	"POWERCHARGE",
+	"HIDEDRINK",
+	"NETPACKED",
+	"ZNETDEBUG",
+	"YNOSMOOTH",
+	"IOVERCRAFT",
+	"UDYNAMITE",
+	"WELLKEYS",
 };
 
 
@@ -1539,6 +1555,7 @@ void CEvent::Create(HWND hWnd, CPixmap *pPixmap, CDecor *pDecor,
     m_pDecor  = pDecor;
     m_pSound  = pSound;
     m_pMovie  = pMovie;
+	m_pNetwork = pNetwork;
 
     ReadInfo();
 }
@@ -1634,6 +1651,8 @@ void CEvent::RestoreGame()
     WaitMouse(TRUE);
     WaitMouse(FALSE);
 }
+
+
 /*
 void AddCheatCode(char *pDst, char *pSrc)
 {
@@ -1742,6 +1761,20 @@ void CEvent::SomethingDecor()
 }
 */
 
+BOOL CEvent::MouseOnButton(POINT pos)
+{
+	int 	i;
+
+	i = 0;
+	while ( table[m_index].buttons[i].message != 0 )
+	{
+		if ( m_buttons[i].MouseOnButton(pos) ) return TRUE;
+		i ++;
+	}
+
+	return FALSE;
+}
+
 int CEvent::GetWorld()
 {
 	if ( m_bPrivate ) return m_bPrivate;
@@ -1759,3 +1792,86 @@ BOOL CEvent::IsMulti()
 	return m_bMulti;
 }
 
+UINT CDecor::GetPhase()
+{
+	return m_phase;
+}
+
+void CEvent::TryInsert()
+{
+	if ( m_tryInsertCount == 0 )
+	{
+		ChangePhase(m_tryPhase);
+	}
+	else
+	{
+		m_tryInsertCount --;
+	}
+}
+
+void CEvent::SetSpeed(int speed)
+{
+	int 	max;
+
+	if ( m_bSpeed ) max = 2;
+
+	if ( speed > max ) speed  = max;
+	
+	m_speed = speed;
+}
+
+int CEvent::GetSpeed()
+{
+	return m_speed;
+}
+
+BOOL CEvent::GetPause()
+{
+	return m_bPause;
+}
+
+void CEvent::DemoRecStart()
+{
+	m_pDemoBuffer = (DemoEvent*)malloc(MAXDEMO*sizeof(DemoEvent));
+	if ( m_pDemoBuffer == NULL ) return;
+	memset(m_pDemoBuffer, 0, MAXDEMO*sizeof(DemoEvent));
+
+	m_demoTime  = 0;
+	m_demoIndex = 0;
+	m_bDemoRec  = TRUE;
+	m_bDemoPlay = FALSE;
+
+	InitRandom();
+	m_pDecor->SetTime(0);
+	m_speed = 1;
+}
+
+void CEvent::DemoRecStop()
+{
+	FILE* 		 file = NULL;
+	DemoHeader   header;
+
+	if ( m_bDemoPlay ) return;
+
+	if ( m_pDemoBuffer != NULL )
+	{
+		DeleteFile("data\\demo.3d.blp");
+		file = fopen("data\\demo.3d.blp", "wb");
+		if ( file != NULL )
+		{
+			memset(&header, 0, sizeof(DemoHeader));
+			header.majRev 	= 1;
+			header.minRev   = 0;
+			header.bSchool  = m_bSchool;
+			header.bPrivate = m_bPrivate;
+			fwrite(&header, sizeof(DemoHeader), 1, file);
+			fwrite(m_pDemoBufferm sizeof(DemoEvent), m_demoIndex, file);
+			fclose(file);
+		}
+		free(m_pDemoBuffer);
+		m_pDemoBuffer = NULL;
+	}
+
+	m_bDemoRec = FALSE;
+	m_demoTime = 0;
+}

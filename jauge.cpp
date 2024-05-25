@@ -104,12 +104,17 @@ void CJauge::SetLevel(int level)
     m_level = level;
 }
 
-/*
+int CJauge::GetLevel()
+{
+    return m_level;
+}
+
+
 int CJauge::GetType()
 {
     return m_type;
 }
-*/
+
 
 void CJauge::SetType(int type)
 {
