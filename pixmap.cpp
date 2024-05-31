@@ -22,6 +22,9 @@ CPixmap::CPixmap()
 	int		i;
 	
 	m_bFullScreen  = FALSE;
+	m_bBenchmarkSuccess = TRUE;
+	m_bTrueColor   = FALSE;
+	m_bTrueColorDecor = FALSE;
 	m_mouseType    = MOUSETYPEGRA;
 	m_bDebug       = TRUE;
 	m_bPalette     = TRUE;
@@ -292,6 +295,26 @@ BOOL CPixmap::InitSysPalette()
 	GetSystemPaletteEntries(hdc, 0, 256, m_sysPal);
     DeleteDC(hdc);
 	return TRUE;
+}
+
+BOOL CPixmap::GetTrueColor()
+{
+	return m_bTrueColor;
+}
+
+void CPixmap::SetBenchmarkSuccess(BOOL bSuccess)
+{
+	m_bBenchmarkSuccess = bSuccess;
+}
+
+void CPixmap::SetTrueColor(BOOL bTrueColor)
+{
+	m_bTrueColor = bTrueColor;
+}
+
+void CPixmap::SetTrueColorDecor(BOOL bTrueColorDecor)
+{
+	m_bTrueColorDecor = bTrueColorDecor;
 }
 
 // Indique si l'on utilise une palette.
@@ -693,7 +716,10 @@ void CPixmap::SetTransparent2(int channel, COLORREF color1, COLORREF color2)
 
 void CPixmap::SetClipping(RECT clip)
 {
-	m_clipRect = clip;
+	m_clipRect.left   = clip.left;
+	m_clipRect.top    = clip.top;
+	m_clipRect.right  = clip.right;
+	m_clipRect.bottom = clip.bottom;
 }
 
 // Retourne la r�gion de clipping.

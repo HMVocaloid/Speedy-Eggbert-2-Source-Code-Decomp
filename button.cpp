@@ -18,14 +18,15 @@
 
 // Constructor
 
-CButton:CButton()
+CButton::CButton()
 {
     m_type              = 0;
     m_bEnable           = TRUE;
     m_bHide             = FALSE;
+	m_bSomething 		= 0;
     m_state             = 0;
     m_mouseState        = 0;
-    m_mbMenu            = 0;
+    m_nbMenu            = 0;
     m_nbToolTips        = 0;
     m_selMenu           = 0;
     m_bMouseDown        = FALSE;
@@ -35,7 +36,7 @@ CButton:CButton()
 
 // Destructor
 
-CButton:~CButton()
+CButton::~CButton()
 {
 }
 
@@ -68,9 +69,12 @@ BOOL CButton::Create(HWND hWnd, CPixmap *pPixmap, CSound *pSound,
 	m_bMinimizeRedraw	= bMinimizeRedraw;
 	m_bEnable			= TRUE;
 	m_bHide				= FALSE;
+	m_bSomething 		= 0;
 	m_message			= message;
-	m_pos				= pos;
-	m_dim				= iconDim;
+	m_pos.x				= pos.x;
+	m_pos.y 			= pos.y;
+	m_dim.x				= iconDim.x;
+	m_dim.y 			= iconDim.y;
 	m_nbMenu			= nbMenu;
 	m_nbToolTips		= nbToolTips;
 	m_selMenu			= 0;
@@ -144,7 +148,7 @@ void CButton::Draw()
 
 	if( m_bEnable )
 	{
-		m_pPixmap->DrawIcon(-1, CHBUTTON+m_type, m_mousestatre, m_pos);
+		m_pPixmap->DrawIcon(-1, CHBUTTON+m_type, m_mousestate, m_pos);
 	}
 	else
 	{
@@ -257,7 +261,7 @@ BOOL CButton::TreatEvent(UINT message, WPARAM wParam, LPARAM lParam)
 	switch( message )
 	{
 		case WM_LBUTTONDOWN:
-		case WM_RBUTTONDOWN;
+		case WM_RBUTTONDOWN:
 			if ( MouseDown(pos) )  return TRUE;
 			break;
 

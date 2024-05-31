@@ -53,7 +53,7 @@ public:
 	~CEvent();
 
 	POINT	GetMousePos();
-	void	Create(HWND hWnd, CPixmap *pPixmap, CDecor *pDecor, CSound *pSound, CMovie *pMovie);
+	void	Create(HINSTANCE hInstance, HWND hWnd, CPixmap *pPixmap, CDecor *pDecor, CSound *pSound, CMovie *pMovie, CNetwork *pNetwork);
 	void	SetFullScreen(BOOL bFullScreen);
 	void	SetMouseType(int mouseType);
 	int		GetWorld();
@@ -142,11 +142,12 @@ protected:
     int         m_mission;
     int         m_private;
     int         m_maxMission;
-    int         m_phase;
+    WMessage    m_phase;
     int         m_index;
     BOOL        m_bSchool;
     BOOL        m_bPrivate;
-    BOOL        m_bAccesBuild;
+	BOOL 		m_bMulti;
+    BOOL        m_bAccessBuild;
     BOOL        m_bFullScreen;
     int         m_mouseType;
     HWND        m_hWnd;
@@ -154,6 +155,7 @@ protected:
     CDecor*     m_pDecor;
     CSound*     m_pSound;
     CMovie*		m_pMovie;
+	CNetwork* 	m_pNetwork;
 	char		m_movieToStart[MAX_PATH];
 	int			m_phaseAfterMovie;
 	CButton		m_buttons[MAXBUTTON];
@@ -217,4 +219,17 @@ protected:
 	BOOL		m_bCtrlDown;
 	POINT		m_debugPos;
 	int			m_introTime;
+	int 		m_joyID;
+	BOOL 		m_gamer;
+	int 		m_textHiliStart;
+	int 		m_textHiliEnd;
+	int 		m_textCursorIndex;
+	char 		m_textInput[100];
+	char 		m_pPlayerName[100];
+	int 		m_lives;
+	int 		m_mission;
+	int 		m_multi;
+	HINSTANCE	m_hInstance;
+	char 		m_chatZone[100][5];
+	char 		m_text[100];
 };

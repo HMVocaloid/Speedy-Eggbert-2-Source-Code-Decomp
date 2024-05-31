@@ -18,6 +18,7 @@
 #include "action.h"
 #include "text.h"
 #include "misc.h"
+#include "network.h"
 
 
 #define DEF_TIME_HELP  10000
@@ -50,17 +51,33 @@ DescInfo;
 // Toutes les premi�res lettres doivent
 // �tre diff�rentes !
 
-static char cheat_code[9][20] =
+static char cheat_code[25][60] =
 {
-	"VISION",		// 0
-	"POWER",		// 1
-	"LONESOME",		// 2
-	"ALLMISSIONS",	// 3
-	"QUICK",		// 4
-	"HELPME",		// 5
-	"INVINCIBLE",	// 6
-	"SUPERBLUPI",	// 7
-	"CONSTRUIRE",	// 8 (CPOTUSVJSF)
+	"XMISSION",		// 0 (xnjttjpo)
+	"OPENDOORS",	// 1
+	"CLEANALL",		// 2
+	"MEGABLUPI",	// 3
+	"LAYEGG",		// 4
+	"KILLEGG",		// 5
+	"FUNSKATE",		// 6
+	"GIVECOPTER",	// 7
+	"JEEPDRIVE",	// 8 
+	"ALLTREASURE",
+	"ENDGOAL",
+	"SHOWSECRET",
+	"ROUNDSHIELD",
+	"QUICKLOLLIPOP",
+	"TENBOMBS",
+	"BIRDLIME",
+	"DRIVETANK",
+	"POWERCHARGE",
+	"HIDEDRINK",
+	"NETPACKED",
+	"ZNETDEBUG",
+	"YNOSMOOTH",
+	"IOVERCRAFT",
+	"UDYNAMITE",
+	"WELLKEYS",
 };
 
 
@@ -72,7 +89,7 @@ static Phase table[] =
 {
 	{
 		WM_PHASE_TESTCD,
-		"image\\init.blp",
+		"image16\\init.blp",
 		FALSE,
 		{
 			{
@@ -94,7 +111,7 @@ static Phase table[] =
 
 	{
 		WM_PHASE_INTRO2,
-		"image\\intro2.blp",
+		"image16\\intro2.blp",
 		FALSE,
 		{
 			{
@@ -105,7 +122,7 @@ static Phase table[] =
 
 	{
 		WM_PHASE_INIT,
-		"image\\init.blp",
+		"image16\\init.blp",
 		FALSE,
 		{
 			{
@@ -195,7 +212,7 @@ static Phase table[] =
 
 	{
 		WM_PHASE_INFO,
-		"image\\info%.3d.blp",
+		"image16\\info%.3d.blp",
 		FALSE,
 		{
 			{
@@ -291,7 +308,7 @@ static Phase table[] =
 
 	{
 		WM_PHASE_STOP,
-		"image\\stop%.3d.blp",
+		"image16\\stop%.3d.blp",
 		FALSE,
 		{
 			{
@@ -340,7 +357,7 @@ static Phase table[] =
 
 	{
 		WM_PHASE_HELP,
-		"image\\help.blp",
+		"image16\\help.blp",
 		TRUE,
 		{
 			{
@@ -381,7 +398,7 @@ static Phase table[] =
 
 	{
 		WM_PHASE_SETUP,
-		"image\\setup.blp",
+		"image16\\setup.blp",
 		FALSE,
 		{
 			{
@@ -460,7 +477,7 @@ static Phase table[] =
 
 	{
 		WM_PHASE_SETUPp,
-		"image\\setup.blp",
+		"image16\\setup.blp",
 		FALSE,
 		{
 			{
@@ -539,7 +556,7 @@ static Phase table[] =
 
 	{
 		WM_PHASE_READ,
-		"image\\read.blp",
+		"image16\\read.blp",
 		FALSE,
 		{
 			{
@@ -616,7 +633,7 @@ static Phase table[] =
 
 	{
 		WM_PHASE_WRITE,
-		"image\\write.blp",
+		"image16\\write.blp",
 		FALSE,
 		{
 			{
@@ -693,7 +710,7 @@ static Phase table[] =
 
 	{
 		WM_PHASE_WRITEp,
-		"image\\write.blp",
+		"image16\\write.blp",
 		FALSE,
 		{
 			{
@@ -770,7 +787,7 @@ static Phase table[] =
 
 	{
 		WM_PHASE_LOST,
-		"image\\lost.blp",
+		"image16\\lost.blp",
 		TRUE,
 		{
 			{
@@ -787,7 +804,7 @@ static Phase table[] =
 
 	{
 		WM_PHASE_WIN,
-		"image\\win.blp",
+		"image16\\win.blp",
 		TRUE,
 		{
 			{
@@ -906,7 +923,7 @@ static Phase table[] =
 
 	{
 		WM_PHASE_BUTTON,
-		"image\\button.blp",
+		"image16\\button00.blp",
 		TRUE,
 		{
 			{
@@ -1222,7 +1239,7 @@ static Phase table[] =
 
 	{
 		WM_PHASE_MUSIC,
-		"image\\music.blp",
+		"image16\\music.blp",
 		TRUE,
 		{
 			{
@@ -1299,7 +1316,7 @@ static Phase table[] =
 
 	{
 		WM_PHASE_REGION,
-		"image\\region.blp",
+		"image16\\region.blp",
 		TRUE,
 		{
 			{
@@ -1395,7 +1412,7 @@ static Phase table[] =
 
 	{
 		WM_PHASE_BYE,
-		"image\\bye.blp",
+		"image16\\bye.blp",
 		FALSE,
 		{
 			{
@@ -1529,16 +1546,17 @@ void CEvent::SetMouseType(int mouseType)
 
 // Creates the event handler.
 
-void CEvent::Create(HWND hWnd, CPixmap *pPixmap, CDecor *pDecor,
+void CEvent::Create(HINSTANCE hInstance, HWND hWnd, CPixmap *pPixmap, CDecor *pDecor,
                     CSound *pSound, CMovie *pMovie, CNetwork *pNetwork)
 {
     POINT   pos;
 
     m_hWnd    = hWnd;
-    m_pPixmap = pPixmapl
+    m_pPixmap = pPixmap;
     m_pDecor  = pDecor;
     m_pSound  = pSound;
     m_pMovie  = pMovie;
+	m_pNetwork = pNetwork;
 
     ReadInfo();
 }
@@ -1574,7 +1592,7 @@ int CEvent::GetState(int button)
 
 void CEvent::SetState(int button, int state)
 {
-    ind     index;
+    int     index;
 
     index = GetButtonIndex(button);
     if ( index < 0 ) return;
@@ -1610,4 +1628,251 @@ int CEvent::GetMenu(int button)
     if ( index < 0 ) return 0;
 
     return m_buttons[index].GetMenu();
+}
+
+void CEvent::SetMenu(int button, int menu)
+{
+    int     index;
+
+    index = GetButtonIndex(button);
+    if ( index < 0 ) return;
+
+    m_buttons[index].SetMenu(menu);
+}
+
+// Restore the game after activation in fullScreen mode.
+
+void CEvent::RestoreGame()
+{
+    int     i;
+
+    if ( m_phase == WM_PHASE_PLAY || m_phase == WM_PHASE_PLAYTEST)
+
+    HideMouse(FALSE);
+    WaitMouse(TRUE);
+    WaitMouse(FALSE);
+}
+
+
+/*
+void AddCheatCode(char *pDst, char *pSrc)
+{
+    int     i, j;
+
+    if ( pDst[0] != 0 ) strcat(pDst, " / ");
+
+    i = 0;
+    j = strlen(pDst);
+    while ( pSrc[i] != 0 )
+    {
+        pDst[j++] = tolower(pSrc[i++]);
+    }
+    pDst[j] = 0;
+}
+*/
+
+void CEvent::DrawTextCenter(int res, int x, int y, int font)
+{
+    char    text[100];
+    POINT   pos;
+
+    LoadString(res, text, 100);
+    pos.x = x;
+    pos.y = y;
+    ::DrawTextCenter(m_pPixmap, pos, text, font);
+}
+
+BOOL CEvent::DrawButtons()
+{
+    int         i;
+    int         levels[2];
+    int         types[2];
+    int         world, time, lg, button, volume, pente, icon;
+    char        res[100];
+    char        text[100];
+    POINT       pos;
+    RECT        rect;
+    BOOL        bEnable;
+
+    if ( (m_phase == WM_PHASE_INSERT && m_phase == WM_PHASE_BYE ))
+    {
+        m_bChangeCheat = FALSE;
+
+        text[0] = 0;
+        if ( m_pDecor->GetInvincible() )
+        {
+            AddCheatCode(text, cheat_code[3]);
+        }
+		if ( m_pDecor->GetShowSecret() )
+		{
+			AddCheatCode(text, cheat_code[11]);
+		}
+		if ( m_pDecor->GetNetPacked() )
+		{
+			AddCheatCode(text, cheat_code[19]);
+		}
+    }
+}
+
+void CEvent::MouseSprite(POINT pos)
+{
+	m_mouseSprite = MousePosToSprite(pos);
+
+	m_pPixmap->SetMousePosSprite(pos, m_mouseSprite, m_bDemoPlay);
+	ChangeSprite(m_mouseSprite);
+}
+
+void CEvent::WaitMouse(BOOL bWait)
+{
+	m_bWaitMouse = bWait;
+
+	if ( bWait )
+	{
+		m_mouseSprite = SPRITE_WAIT;
+	}
+	else
+	{
+		m_mouseSprite = MousePosToSprite(GetMousePos());
+	}
+	m_pPixmap->SetMouseSprite(m_mouseSprite, m_bDemoPlay);
+	ChangeSprite(m_mouseSprite);
+}
+
+void CEvent::HideMouse(BOOL bHide)
+{
+	m_bWaitMouse = bHide;
+
+	if ( bHide )
+	{
+		m_mouseSprite = SPRITE_WAIT;
+	}
+	else
+	{
+		m_mouseSprite = MousePosToSprite(GetMousePos());
+	}
+	m_pPixmap->SetMouseSprite(m_mouseSprite, m_bDemoPlay);
+	ChangeSprite(m_mouseSprite);
+}
+
+/*
+void CEvent::SomethingDecor()
+{
+	m_input = 0;
+	m_pDecor->TreatEvent();
+}
+*/
+
+BOOL CEvent::MouseOnButton(POINT pos)
+{
+	int 	i;
+
+	i = 0;
+	while ( table[m_index].buttons[i].message != 0 )
+	{
+		if ( m_buttons[i].MouseOnButton(pos) ) return TRUE;
+		i ++;
+	}
+
+	return FALSE;
+}
+
+int CEvent::GetWorld()
+{
+	if ( m_bPrivate ) return m_bPrivate;
+	if ( m_bMulti   ) return m_multi+200;
+	else 			  return m_mission;
+}
+
+BOOL CEvent::IsPrivate()
+{
+	return m_bPrivate;
+}
+
+BOOL CEvent::IsMulti()
+{
+	return m_bMulti;
+}
+
+UINT CDecor::GetPhase()
+{
+	return m_phase;
+}
+
+void CEvent::TryInsert()
+{
+	if ( m_tryInsertCount == 0 )
+	{
+		ChangePhase(m_tryPhase);
+	}
+	else
+	{
+		m_tryInsertCount --;
+	}
+}
+
+void CEvent::SetSpeed(int speed)
+{
+	int 	max;
+
+	if ( m_bSpeed ) max = 2;
+
+	if ( speed > max ) speed  = max;
+	
+	m_speed = speed;
+}
+
+int CEvent::GetSpeed()
+{
+	return m_speed;
+}
+
+BOOL CEvent::GetPause()
+{
+	return m_bPause;
+}
+
+void CEvent::DemoRecStart()
+{
+	m_pDemoBuffer = (DemoEvent*)malloc(MAXDEMO*sizeof(DemoEvent));
+	if ( m_pDemoBuffer == NULL ) return;
+	memset(m_pDemoBuffer, 0, MAXDEMO*sizeof(DemoEvent));
+
+	m_demoTime  = 0;
+	m_demoIndex = 0;
+	m_bDemoRec  = TRUE;
+	m_bDemoPlay = FALSE;
+
+	InitRandom();
+	m_pDecor->SetTime(0);
+	m_speed = 1;
+}
+
+void CEvent::DemoRecStop()
+{
+	FILE* 		 file = NULL;
+	DemoHeader   header;
+
+	if ( m_bDemoPlay ) return;
+
+	if ( m_pDemoBuffer != NULL )
+	{
+		DeleteFile("data\\demo.3d.blp");
+		file = fopen("data\\demo.3d.blp", "wb");
+		if ( file != NULL )
+		{
+			memset(&header, 0, sizeof(DemoHeader));
+			header.majRev 	= 1;
+			header.minRev   = 0;
+			header.bSchool  = m_bSchool;
+			header.bPrivate = m_bPrivate;
+			fwrite(&header, sizeof(DemoHeader), 1, file);
+			fwrite(m_pDemoBufferm sizeof(DemoEvent), m_demoIndex, file);
+			fclose(file);
+		}
+		free(m_pDemoBuffer);
+		m_pDemoBuffer = NULL;
+	}
+
+	m_bDemoRec = FALSE;
+	m_demoTime = 0;
 }

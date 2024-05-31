@@ -70,6 +70,11 @@ protected:
 	void	MouseBackDebug();
 	RECT	MouseRectSprite();
 	void	MouseHotSpot();
+    BOOL    GetTrueColor();
+
+    void SetBenchmarkSuccess(BOOL bSuccess);
+    void SetTrueColor(BOOL bTrueColor);
+    void SetTrueColorDecor(BOOL bTrueColorDecor);
 
 protected:
     BOOL                   m_bFullScreen;
@@ -107,5 +112,5 @@ protected:
     char                   m_filename[MAXIMAGE][20];
     POINT                  m_totalDim[MAXIMAGE];
     POINT                  m_iconDim[MAXIMAGE];
-    DDBLTFX                m_DDbltfx
+    DDBLTFX m_DDbltfx
 }

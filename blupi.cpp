@@ -35,11 +35,17 @@ CPixmap*	g_pPixmap = NULL;		// pixmap principal
 CSound*		g_pSound  = NULL;		// sound principal
 CMovie*		g_pMovie  = NULL;		// movie principal
 CDecor*		g_pDecor  = NULL;
+CNetwork*   g_pNetwork;
 char		g_CDPath[MAX_PATH];		// chemin d'acc�s au CD-Rom
 BOOL		g_bFullScreen = FALSE;	// FALSE si mode de test
 int			g_speedRate = 1;
 int			g_timerInterval = 50;	// inverval = 50ms
 int			g_mouseType = MOUSETYPEGRA;
+int 		g_benchmark;
+BOOL 		g_bBenchmarkSuccess;
+BOOL 		g_bTrueColor;
+BOOL 		g_bTrueColorBack;
+BOOL 		g_bTrueColorDecor;
 MMRESULT    g_updateTimer;			// timer g�n�ral
 BOOL		g_bActive = TRUE;		// is application active ?
 BOOL		g_bTermInit = FALSE;	// initialisation en cours
@@ -65,6 +71,7 @@ BOOL ReadConfig (LPSTR lpCmdLine)
     char        buffer[200];
     char*       pText;
     int         nb;
+	int 		i;
 
     file = fopen("data\\config.def", "rb");
     if ( file == NULL )   return FALSE;
@@ -151,5 +158,522 @@ BOOL ReadConfig (LPSTR lpCmdLine)
 		if ( g_mouseType > 9 )  g_mouseType = 9;
 	}
 
+	pText = strstr(buffer, "Benchmark=");
+	if ( pText != NULL )
+	{
+		g_benchmark = GetNum(pText+10);
+		if ( g_benchmark < 0 ) g_benchmark = 0;
+		if ( g_benchmark > 100000 ) g_benchmark = 100000;
+		if ( g_benchmark > 3099 ) g_bBenchmarkSuccess = 1, g_bTrueColor = 1, g_bTrueColorDecor;
+	}
+
+	pText = strstr(buffer, "TrueColor=");
+	if ( pText != NULL )
+	{
+		i = GetNum(pText + 10);
+		if (i == 8) g_bTrueColor = 0;
+		if (i == 16) g_bTrueColor = 1;
+		g_bTrueColorDecor = g_bTrueColor;
+	}
+
+	pText = strstr(buffer, "TrueColorBack=");
+	if ( pText != NULL )
+	{
+		i = GetNum(pText+14);
+		if (i == 8) g_bTrueColor = 0;
+
+		if (i == 16) g_bTrueColor = 1;
+	}
+
+	pText = strstr(buffer, "TrueColorDecor=");
+	if ( pText != NULL )
+	{
+		i = GetNum(pText + 15);
+		if (i == 8) g_bTrueColorDecor = 0;
+
+		if (i == 16) g_bTrueColorDecor = 1;
+	}
+
 	return TRUE;
+}
+
+// Rewrite Variables
+
+void UpdateFrame(void)
+{
+    RECT            clip, rcRect;
+	UINT			phase;
+	POINT			posMouse;
+	int				i, term, speed;
+
+	g_pPixmap->MouseBackClear();  // enl�ve la souris dans "back"
+	posMouse = g_pEvent->GetLastMousePos();
+
+	phase = g_pEvent->GetPhase();
+
+	if ( phase == g_lastPhase &&
+		 phase == WM_PHASE_PLAY || phase == WM_PHASE_PLAYTEST || phase == WM_PHASE_BUILD )
+	{
+//?		rcRect.left   = POSDRAWX;
+//?		rcRect.top    = POSDRAWY;
+//?		rcRect.right  = POSDRAWX+DIMDRAWX;
+//?		rcRect.bottom = POSDRAWY+DIMDRAWY;
+//?		g_pPixmap->DrawImage(-1, CHBACK, rcRect, 1);  // dessine le fond
+	}
+	else
+	{
+		rcRect.left   = 0;
+		rcRect.top    = 0;
+		rcRect.right  = LXIMAGE;
+		rcRect.bottom = LYIMAGE;
+		g_pPixmap->DrawImage(-1, CHBACK, rcRect, 1);  // dessine le fond
+	}
+
+	if ( phase == WM_PHASE_INTRO1 ||
+		 phase == WM_PHASE_INTRO2 )
+	{
+		g_pEvent->IntroStep();
+	}
+
+	if ( phase == WM_PHASE_PLAY )
+	{
+		clip.left   = POSDRAWX;
+		clip.top    = POSDRAWY+g_pDecor->GetInfoHeight();
+		clip.right  = POSDRAWX+DIMDRAWX;
+		clip.bottom = POSDRAWY+DIMDRAWY;
+
+		if ( g_pEvent->IsShift() )  // shift en cours ?
+		{
+			g_pEvent->DecorAutoShift(posMouse);
+			g_pDecor->Build(clip, posMouse);  // construit juste le d�cor
+		}
+		else
+		{
+			if ( !g_pEvent->GetPause() )
+			{
+				speed = g_pEvent->GetSpeed() * g_speedRate;
+				for ( i=0 ; i<speed ; i++ )
+				{
+					g_pDecor->BlupiStep(i==0);  // avance tous les blupi
+					g_pDecor->MoveStep(i==0);   // avance tous les d�cors
+					g_pEvent->DemoStep();       // avance enregistrement/reproduction
+				}
+			}
+
+			g_pEvent->DecorAutoShift(posMouse);
+			g_pDecor->Build(clip, posMouse);  // construit le d�cor
+			g_pDecor->NextPhase(1);  // refait la carte de temps en temps
+		}
+	}
+
+	if ( phase == WM_PHASE_BUILD )
+	{
+		clip.left   = POSDRAWX;
+		clip.top    = POSDRAWY;
+		clip.right  = POSDRAWX+DIMDRAWX;
+		clip.bottom = POSDRAWY+DIMDRAWY;
+		g_pEvent->DecorAutoShift(posMouse);
+		g_pDecor->Build(clip, posMouse);  // construit le d�cor
+		g_pDecor->NextPhase(-1);  // refait la carte chaque fois
+	}
+
+	if ( phase == WM_PHASE_INIT )
+	{
+		g_pEvent->DemoStep();  // d�marre �v. d�mo automatique
+	}
+
+	g_pEvent->DrawButtons();
+
+	g_lastPhase = phase;
+
+	if ( phase == WM_PHASE_H0MOVIE   ||
+		 phase == WM_PHASE_H1MOVIE   ||
+		 phase == WM_PHASE_H2MOVIE   ||
+		 phase == WM_PHASE_PLAYMOVIE ||
+		 phase == WM_PHASE_WINMOVIE  )
+	{
+		g_pEvent->MovieToStart();  // fait d�marrer un film si n�cessaire
+	}
+
+	if ( phase == WM_PHASE_INSERT )
+	{
+		g_pEvent->TryInsert();
+	}
+
+	if ( phase == WM_PHASE_PLAY )
+	{
+		term = g_pDecor->IsTerminated();
+		if ( term == 1 )  g_pEvent->ChangePhase(WM_PHASE_LOST);  // perdu
+		if ( term == 2 )  g_pEvent->ChangePhase(WM_PHASE_WINMOVIE);   // gagn�
+	}
+
+	g_pPixmap->MouseBackDraw();  // remet la souris dans "back"
+}
+
+BOOL RestoreGame()
+{
+	if ( g_pPixmap == NULL ) return FALSE;
+
+	g_pEvent->RestoreGame();
+	return g_pPixmap->Restore();
+}
+
+BOOL FlushGame()
+{
+	if ( g_pPixmap == NULL ) return FALSE;
+
+	return g_pPixmap->Flush();
+}
+
+static void FinishObjects(void)
+{
+	if ( g_pMovie != NULL )
+	{
+		g_pEvent->StopMovie();
+
+		delete g_pMovie;
+		g_pMovie = NULL;
+	}
+
+	if ( g_pEvent != NULL )
+	{
+		delete g_pEvent;
+		g_pEvent = NULL;
+	}
+
+	if ( g_pDecor != NULL )
+	{
+		delete g_pDecor;
+		g_pDecor = NULL;
+	}
+
+	if (g_pSound != NULL )
+	{
+		g_pSound->StopMusic();
+
+		delete g_pSound;
+		g_pSound = NULL;
+	}
+
+	if (g_pNetwork != NULL )
+	{
+		delete g_pNetwork;
+		g_pNetwork = NULL;
+	}
+
+	if ( g_pPixmap != NULL )
+	{
+		delete g_pPixmap;
+		g_pPixmap = NULL;
+	}
+}
+
+LRESULT CALLBACK WindowProc (HWND hWnd, UINT message,
+							 WPARAM wParam, LPARAM lParam)
+{
+	static HINSTANCE   hInstance;
+	POINT 			   mousePos, totalDim, iconDim;
+#if 0
+	if ( message != WM_TIMER )
+	{
+		char s[100];
+		sprintf(s, "message=%d,%d\n", message, wParam);
+		OutputDebug(s);
+	}
+#endif
+
+	if ( message == WM_SYSKEYDOWN && wParam == VK_F10 )
+	{
+		message = WM_KEYDOWN;
+	}
+	if ( message == WM_SYSKEYUP && wParam == VK_F10 )
+	{
+		message = WM_KEYUP;
+	}
+
+	if ( g_pEvent != NULL &&
+		 g_pEvent->TreatEvent(message, wParam, lParam) ) return 0;
+
+	switch( message )
+	{
+		case WM_TIMER:
+		case WM_SYSCOLORCHANGE:
+		    OutputDebug("Event WM_SYSCOLORCHANGE\n");
+			break;
+		case WM_CREATE:
+			hInstance = ((LPCREATESTRUCT)lParam)->hInstance;
+			return 0;
+			break;
+
+        case WM_ACTIVATEAPP:
+		    g_bActive = (wParam != 0);
+			if ( g_bActive )
+			{
+				if ( g_bFullScreen )
+				{
+					RestoreGame();
+					g_lastPhase = 999;
+				}
+				if ( !g_bFullScreen && g_bTermInit )
+				{
+					totalDim.x = 64;
+					totalDim.y = 66;
+					iconDim.x = 64;
+					iconDim.y = 66/2;
+					g_pPixmap->Cache(CHLITTLE, "image16\\little.blp", totalDim, iconDim, TRUE);
+					g_pPixmap->SetTransparent(CHLITTLE, RGB(0,0,255));
+
+					g_pPixmap->SavePalette();
+					g_pPixmap->InitSysPalette();
+				}
+				SetWindowText(hWnd, "Blupi");
+				if ( g_pSound != NULL ) g_pSound->RestartMusic();
+			}
+			else
+			{
+				if ( g_bFullScreen )
+				{
+					FlushGame();
+				}
+				SetWindowText(hWnd, "Blupi -- stop");
+				if ( g_pSound != NULL ) g_pSound->SuspendMusic();
+			}
+			return 0;
+
+			case WM_KEYDOWN:
+				switch( wParam )
+				{
+					case VK_F5:
+						g_pEvent->SetSpeed(1);
+						break;
+					case VK_F6:
+						g_pEvent->SetSpeed(2);
+						break;
+					case VK_F7:
+						g_pEvent->SetSpeed(4);
+						break;
+					case VK_F8:
+						g_pEvent->SetSpeed(8);
+						break;
+				}
+			break;
+
+			case WM_DISPLAYCHANGE:
+				OutputDebug("Event WM_DISPLAYCHANGE\n");
+				break;
+			case WM_QUERYNEWPALETTE:
+				OutputDebug("Event WM_QUERYNEWPALETTE\n");
+				break;
+			case WM_PALETTECHANGED:
+				OutputDebug("Event WM_PALLETECHANGED\n");
+				break;
+			case MM_MCINOTIFY:
+				OutputDebug("Event MM_MCINOTIFY\n");
+				if ( g_pEvent->IsMovie() )
+				{
+					if ( wParam == MCI_NOTIFY_SUCCESSFUL )
+					{
+						g_pEvent->StopMovie();
+					}
+				}
+				else
+				{
+					g_pSound->SuspendMusic();
+					if ( wParam == MCI_NOTIFY_SUCCESSFUL )
+					{
+						OutputDebug("Event MCI_NOTIFY_SUCCESSFUL\n");
+						g_pSound->RestartMusic();
+					}
+					else
+					{
+						char s[50];
+						sprintf(s, "wParam=%d\n", wParam);
+						OutputDebug(s);
+					}
+				}
+				break;
+
+		case WM_LBUTTONDOWN:
+			GetCursorPos(&mousePos);
+			ScreenToClient(hWnd, &mousePos);
+			break;
+
+		case WM_DESTROY:
+			KillTimer(g_hWnd, 1);
+			FinishObjects();
+			PostQuitMessage(0);
+			break;
+		case WM_SETCURSOR:
+//			ChangeSprite();
+//			SetCursor(NULL);
+			return TRUE;
+		case WM_UPDATE:
+			if ( !g_pEvent->IsMovie() )
+			{
+				if ( g_bActive )
+				{
+					UpdateFrame();
+				}
+				g_pPixmap->Display();
+			}
+			break;
+	}
+
+	return DefWindowProc(hWnd, message, wParam, lParam);
+
+}
+
+BOOL InitFail(char *msg, BOOL bDirectX)
+{
+	char	buffer[100];
+
+	if ( bDirectX ) strcpy(buffer, "DirectX Init FAILED\n(while ");
+	else 			strcpy(buffer, "Error (");
+	strcat(buffer, msg);
+	strcat(buffer, ")");
+	MessageBox(g_hWnd, buffer, TITLE, MB_OK);
+
+	FinishObjects();
+	DestroyWindow(g_hWnd);
+	return FALSE;
+}
+
+static BOOL DoInit(HINSTANCE hInstance, LPSTR lpCmdLine, int nCmdShow)
+{
+	WNDCLASS 	   wc;
+	POINT		   totalDim, iconDim;
+	RECT		   rcRect;
+	BOOL 		   bOK;
+
+	bOK = ReadConfig(lpCmdLine);
+
+	InitHInstance(hInstance);
+
+	wc.style 		 = CS_HREDRAW|CS_VREDRAW;
+	wc.lpfnWndProc   = WindowProc;
+	wc.cbClsExtra    = 0;
+	wc.cbWndExtra    = 0;
+	wc.hInstance 	 = hInstance;
+	wc.hIcon 		 = LoadIcon(hInstance, "IDR_MAINFRAME");
+	wc.hCursor 		 = LoadCursor(hInstance, "IDC_POINTER");
+	wc.hbrBackground = GetStockBrush(BLACK_BRUSH);
+	wc.lpszMenuMane  = NAME;
+	wc.lpszClassName = NAME;
+	RegisterClass(&wc);
+
+	if ( g_bFullScreen )
+	{
+		g_hWnd = CreateWindowEx
+					(
+						WS_EX_TOPMOST,
+						NAME,
+						TITLE,
+						WS_POPUP,
+						0, 0,
+						GetSystemMetrics(SM_CXSCREEN),
+						GetSystemMetrics(SM_CYSCREEN),
+						NULL,
+						NULL,
+						hInstance,
+						NULL
+					);
+	}
+	else
+	{
+		int 		sx, sy;
+		RECT 		WindowRect;
+
+		sx = GetSystemMetrics(SM_CXSCREEN);
+		sy = GetSystemMetrics(SM_CYSCREEN);
+
+		SetRect(&WindowRect, (sx-LXIMAGE)/2, (sy-LYIMAGE)/2,
+							 (sx+LXIMAGE)/2, (sy+LYIMAGE)/2);
+		AdjustWindowRect(&WindowRect, WS_POPUPWINDOW|WS_CAPTION, TRUE);
+		WindowRect.top += GetSystemMetrics(SM_CYCAPTION);
+
+		g_hWnd = CreateWindow
+					(
+						NAME,
+						TITLE,
+						WS_POPUPWINDOW|WS_CAPTION|WS_VISIBLE,
+						(sx-LXIMAGE)/2, (sy-LYIMAGE)/2,
+						WindowRect.right - WindowRect.left,
+						WindowRect.bottom - WindowRect.top,
+						HWND_DESKTOP,
+						NULL,
+						hInstance,
+						NULL
+					);
+	}
+	if ( !g_hWnd ) return FALSE;
+
+	ShowWindow(g_hWnd, nCmdShow);
+	UpdateWindow(g_hWnd);
+	SetFocus(g_hWnd);
+
+	ChangeSprite(SPRITE_WAIT);
+
+	if ( !bOk )
+	{
+		return InitFail("Game not correctly installed", FALSE);
+	}
+
+	g_pPixmap = new CPixmap;
+	if ( g_pPixmap == NULL ) return InitFail("New pixmap", TRUE);
+
+	totalDim.x = LXIMAGE;
+	totalDim.y = LYIMAGE;
+	if ( !g_pPixmap->Create(g_hWnd, totalDim, g_bFullScreen, g_mouseType) )
+		return InitFail("Create pixmap", TRUE);
+
+	OutputDebug("Image: init\n");
+	totalDim.x = LXIMAGE;
+	totalDim.y = LYIMAGE;
+	iconDim.x  = 0;
+	iconDim.y  = 0;
+#if _INTRO
+	if ( !g_pPixmap->Cache(CHBACK, "image16\\init.blp", totalDim, iconDim, TRUE) )
+#else
+	if ( !g_pPixmap->Cache(CHBACK, "image16\\init.blp", totalDim, iconDim, TRUE) )
+#endif
+		return FALSE;
+	
+	OutputDebug("SavePalette\n");
+	g_pPixmap->SavePalette();
+	OutputDebug("InitSysPalette\n");
+	g_pPixmap->InitSysPalette();
+	
+
+}
+
+int WINAPI WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance,
+					LPSTR lpCmdLine, int nCmdShow)
+{
+	MSG		msg;
+
+	if ( !DoInit(hInstance, lpCmdLine, nCmdShow) )
+	{
+		return FALSE;
+	}
+
+	SetTimer(g_hWnd, 1, g_timerInterval, NULL);
+
+	while ( TRUE )
+	{
+		if ( PeekMessage(&msg, NULL, 0,0, PM_NOREMOVE) )
+		{
+			if ( !GetMessage(&msg, NULL, 0, 0) )
+			{
+				return msg.wParam;
+			}
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
+		}
+		else
+		{
+			if ( !g_bActive ) WaitMessage();
+		}
+	}
+
+	return msg.wParam;
 }
