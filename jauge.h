@@ -16,7 +16,9 @@ public:
     void    Redraw();
 
     void    SetLevel(int level);
+    int     GetLevel();
     void    SetType(int type);
+    int     GetType();
 
     BOOL    GetHide();
     void    SetHide(BOOL bHide);

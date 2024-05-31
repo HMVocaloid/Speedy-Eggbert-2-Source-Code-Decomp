@@ -129,12 +129,18 @@ protected:
 	BOOL	ReadLibelle(int world, BOOL bSchool, BOOL bHelp);
 	BOOL	WriteInfo();
 	BOOL	ReadInfo();
+	BOOL    IsMulti();
+	BOOL	IsPrivate();	
+	void	TryPhase();
+	void	UnTryPhase();
+	int		GetTryPhase();
+	void	SetLives(int lives);
 
 	void	DemoRecStart();
 	void	DemoRecStop();
 	BOOL	DemoPlayStart();
 	void	DemoPlayStop();
-	void	DemoRecEvent(UINT message, WPARAM wParam, LPARAM lParam);
+	void	DemoRecEvent(UINT message, UINT input, WPARAM wParam, LPARAM lParam);
 
 protected:
     int         m_speed;
@@ -216,6 +222,7 @@ protected:
 	int			m_demoIndex;
 	int			m_demoEnd;
 	int			m_demoNumber;
+	int			m_tryPhase;
 	BOOL		m_bCtrlDown;
 	POINT		m_debugPos;
 	int			m_introTime;

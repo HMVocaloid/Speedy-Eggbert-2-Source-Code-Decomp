@@ -15,7 +15,6 @@
 #include "menu.h"
 #include "jauge.h"
 #include "event.h"
-#include "action.h"
 #include "text.h"
 #include "misc.h"
 #include "network.h"
@@ -1654,7 +1653,7 @@ void CEvent::RestoreGame()
 }
 
 
-/*
+
 void AddCheatCode(char *pDst, char *pSrc)
 {
     int     i, j;
@@ -1669,7 +1668,7 @@ void AddCheatCode(char *pDst, char *pSrc)
     }
     pDst[j] = 0;
 }
-*/
+
 
 void CEvent::DrawTextCenter(int res, int x, int y, int font)
 {
@@ -1699,6 +1698,14 @@ BOOL CEvent::DrawButtons()
         m_bChangeCheat = FALSE;
 
         text[0] = 0;
+		if (m_bAccessBuild != 0)
+		{
+			AddCheatCode(text, cheat_code[0]);
+		}
+		if (m_posHelpButton.y != 0)
+		{
+			AddCheatCode(text, cheat_code[1]);
+		}
         if ( m_pDecor->GetInvincible() )
         {
             AddCheatCode(text, cheat_code[3]);
@@ -1711,7 +1718,41 @@ BOOL CEvent::DrawButtons()
 		{
 			AddCheatCode(text, cheat_code[19]);
 		}
+		if (m_pDecor->GetNetMovePredict())
+		{
+			AddCheatCode(text, cheat_code[21]);
+		}
     }
+}
+
+int CEvent::MousePosToSprite(POINT pos)
+{
+	int sprite;
+
+	sprite = SPRITE_POINTER;
+
+	if (m_phase == WM_PHASE_PLAY ||
+		m_phase == WM_PHASE_PLAYTEST ||
+		m_phase == WM_PHASE_BUILD ||
+		m_phase == WM_PHASE_BYE ||
+		MouseOnButton(pos.x, pos.y) = 0)
+	{
+		sprite = SPRITE_POINTER;
+	}
+	if (m_bWaitMouse)
+	{
+		sprite = SPRITE_WAIT;
+	}
+	if (m_bHideMouse)
+	{
+		sprite = SPRITE_EMPTY;
+	}
+	if (m_bFillMouse)
+	{
+		sprite = SPRITE_FILL;
+	}
+
+	return sprite;
 }
 
 void CEvent::MouseSprite(POINT pos)
@@ -1776,7 +1817,27 @@ BOOL CEvent::MouseOnButton(POINT pos)
 	return FALSE;
 }
 
+int CEvent::SearchPhase(UINT phase)
+{
+	int		i = 0;
+
+	while (table[i].phase != 0)
+	{
+		if (table[i].phase == phase) return i;
+		i++;
+	}
+
+	return -1;
+}
+
 int CEvent::GetWorld()
+{
+	if (m_bPrivate) return m_bPrivate;
+	if (m_bMulti)	return m_multi;
+	else			return m_mission;
+}
+
+int CEvent::GetPhysicalWorld()
 {
 	if ( m_bPrivate ) return m_bPrivate;
 	if ( m_bMulti   ) return m_multi+200;
@@ -1808,6 +1869,90 @@ void CEvent::TryInsert()
 	{
 		m_tryInsertCount --;
 	}
+}
+
+void CEvent::MovieToStart()
+{
+	if (m_movieToStart[0] != 0)
+	{
+		HideMouse(TRUE);
+
+		if (StartMovie(m_movieToStart))
+		{
+			m_phase = m_phaseAfterMovie;
+		}
+		else
+		{
+			ChangePhase(m_phaseAfterMovie);
+		}
+
+		m_movieToStart[0] = 0;
+	}
+}
+
+void CEvent::TryPhase()
+{
+	m_tryPhase = 1;
+	ShowCursor(1);
+}
+
+void CEvent::UnTryPhase()
+{
+	m_tryPhase = 0;
+	ShowCursor(1);
+}
+
+int CEvent::GetTryPhase()
+{
+	return m_tryPhase;
+}
+
+BOOL CEvent::StartMovie(char* pFilename)
+{
+	RECT	 rect;
+	char	 filename[MAX_PATH];
+
+	if (!m_pMovie->GetEnable()) return FALSE;
+	if (!m_bMovie) return FALSE;
+
+	if (!m_pMovie->IsExist(pFilename)) return FALSE;
+
+	rect.left = 1;
+	rect.top = 1;
+	rect.right = LXIMAGE - 2;
+	rect.bottom = LYIMAGE - 2;
+
+	m_pSound->StopMusic();
+	m_pPixmap->SavePalette();
+
+	strcpy(filename, pFilename);
+	strcpy(filename + strlen(filename) - 4, ".blp");
+	m_pSound->Cache(SOUND_MOVIE, filename);
+
+	if (m_pMovie->Play(m_hWnd, rect, pFilename)) return FALSE;
+	m_bRunMovie = TRUE;
+	m_pSound->Play(SOUND_MOVIE, 0, 0);
+	return TRUE;
+}
+
+void CEvent::StopMovie()
+{
+	m_pMovie->Stop(m_hWnd);
+	m_pPixmap->RestorePalette();
+	m_pPixmap->MouseInvalidate();
+	m_pSound->Flush(SOUND_MOVIE);
+	ChangePhase(m_phase);
+	m_bRunMovie = FALSE;
+}
+
+BOOL CEvent::IsMovie()
+{
+	return m_bRunMovie;
+}
+
+void CEvent::SetLives(int lives)
+{
+	m_lives = lives;
 }
 
 void CEvent::SetSpeed(int speed)
@@ -1875,4 +2020,168 @@ void CEvent::DemoRecStop()
 
 	m_bDemoRec = FALSE;
 	m_demoTime = 0;
+}
+
+BOOL CEvent::DemoPlayStart()
+{
+	char		filename[MAX_PATH];
+	FILE* file = NULL;
+	DemoHeader	header;
+	int			nb, world, time, total;
+
+	m_pDemoBuffer = (DemoEvent*)malloc(MAXDEMO * sizeof(DemoEvent));
+	if (m_pDemoBuffer == NULL)  return FALSE;
+	memset(m_pDemoBuffer, 0, MAXDEMO * sizeof(DemoEvent));
+
+	sprintf(filename, "data\\demo%.3d.blp", m_demoNumber);
+	AddCDPath(filename);  // ajoute l'acc�s au CD-Rom
+	file = fopen(filename, "rb");
+	if (file == NULL)
+	{
+		DemoPlayStop();
+		return FALSE;
+	}
+
+	nb = fread(&header, sizeof(DemoHeader), 1, file);
+	if (nb < 1)
+	{
+		DemoPlayStop();
+		return FALSE;
+	}
+	m_bSchool = header.bSchool;
+	m_bPrivate = header.bPrivate;
+	m_pDecor->SetSkill(header.skill);
+
+	m_demoEnd = fread(m_pDemoBuffer, sizeof(DemoEvent), MAXDEMO, file);
+	fclose(file);
+
+	m_demoTime = 0;
+	m_demoIndex = 0;
+	m_bDemoPlay = TRUE;
+	m_bDemoRec = FALSE;
+
+	if (!m_pDecor->Read(header.world, FALSE, world, time, total))
+	{
+		DemoPlayStop();
+		return FALSE;
+	}
+	ChangePhase(WM_PHASE_PLAY);
+	InitRandom();
+	m_pDecor->SetTime(0);
+	m_speed = 1;
+
+	return TRUE;
+}
+
+void CEvent::DemoPlayStop()
+{
+	if (m_pDemoBuffer != NULL)
+	{
+		free(m_pDemoBuffer);
+		m_pDemoBuffer = NULL;
+	}
+	m_bDemoPlay = FALSE;
+	m_bDemoRec = FALSE;
+	m_demoTime = 0;
+	m_input = 0;
+	m_pDecor->TreatEvent;
+	m_private = 1;
+	ChangePhase(WM_PHASE_INIT);
+}
+
+void CEvent::DemoStep()
+{
+	int			time;
+	UINT		message;
+	WPARAM		wParam;
+	LPARAM		lParam;
+	POINT		pos;
+
+	if (m_phase == WM_PHASE_INIT)
+	{
+		if (m_demoTime > DEF_TIME_DEMO)  // ~30 secondes �coul�es ?
+		{
+			m_demoNumber = 0;
+			DemoPlayStart();  // d�marre une d�mo automatique
+		}
+	}
+
+	if (m_bDemoPlay &&  // d�mo en lecture ?
+		m_pDemoBuffer != NULL)
+	{
+		while (TRUE)
+		{
+			time = m_pDemoBuffer[m_demoIndex].time;
+			if (time > m_demoTime)  break;
+
+			message = m_pDemoBuffer[m_demoIndex].message;
+			wParam = m_pDemoBuffer[m_demoIndex].wParam;
+			lParam = m_pDemoBuffer[m_demoIndex].lParam;
+			m_demoIndex++;
+
+			if (message == WM_MOUSEMOVE &&
+				m_mouseType == MOUSETYPEWIN)
+			{
+				pos = ConvLongToPos(lParam);
+				ClientToScreen(m_hWnd, &pos);
+				SetCursorPos(pos.x, pos.y);
+			}
+
+			TreatEventBase(message, wParam, lParam);
+
+			if (m_demoIndex >= m_demoEnd)
+			{
+				m_demoNumber++;  // d�mo suivante
+				if (!DemoPlayStart())  // d�marre la d�mo suivante
+				{
+					m_demoNumber = 0;  // premi�re d�mo
+					DemoPlayStart();   // d�marre la d�mo
+				}
+				return;
+			}
+		}
+	}
+
+	m_demoTime++;
+}
+
+void CEvent::DemoRecEvent(UINT message, UINT input, WPARAM wParam, LPARAM lParam)
+{
+	if (m_demoIndex > 0 &&
+		m_pDemoBuffer[m_demoIndex - 1].time == m_demoTime &&
+		m_pDemoBuffer[m_demoIndex - 1].input == m_input)
+
+		m_demoIndex++;
+	if (m_demoIndex >= MAXDEMO)
+	{
+		DemoRecStop();
+	}
+}
+
+POINT CEvent::GetLastMousePos()
+{
+	return m_oldMousePos;
+}
+
+BOOL CEvent::TreatEvent(UINT message, WPARAM wParam, LPARAM lParam)
+{
+	if (m_bDemoPlay)  // d�mo en lecture ?
+	{
+		if (message == WM_KEYDOWN ||  // l'utilisateur clique ?
+			message == WM_KEYUP ||
+			//			 message == WM_LBUTTONDOWN ||
+			//			 message == WM_RBUTTONDOWN ||
+			message == WM_LBUTTONUP ||
+			message == WM_RBUTTONUP)
+		{
+			DemoPlayStop();
+			return TRUE;
+		}
+		if (message == WM_MOUSEMOVE)  // l'utilisateur bouge ?
+		{
+			return TRUE;
+		}
+	}
+
+	return TreatEventBase(message, wParam, lParam);
 }

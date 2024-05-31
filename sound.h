@@ -53,6 +53,7 @@ protected:
     HWND                    m_hWnd;
     BOOL                    m_bEnable;
     BOOL                    m_bState;
+    BOOL                    m_bCDAudio;
     LPDIRECTSOUND           m_lpDS;
     LPDIRECTSOUNDBUFFER     m_lpDSB[MAXSOUND];
     short                   m_channelBlupi[MAXBLUPI];

@@ -436,6 +436,10 @@ public:
 	void	UndoCopy();
 	void	UndoBack();
 	BOOL	IsUndo();
+	BOOL	GetShowSecret();
+	BOOL	GetNetPacked();
+	BOOL	GetNetMovePredict();
+	UINT	GetPhase();
 
 	
 protected:
