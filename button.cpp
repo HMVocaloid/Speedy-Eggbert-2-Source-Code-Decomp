@@ -228,6 +228,16 @@ void CButton::SetEnable(BOOL bEnable)
 	m_bEnable = bEnable;
 }
 
+void CButton::SetSomething(BOOL bSomething)
+{
+	if (m_bSomething != bSomething)
+	{
+		m_bRedraw = TRUE;
+	}
+
+	m_bSomething = bSomething;
+}
+
 
 /*
 // Needed Yet?

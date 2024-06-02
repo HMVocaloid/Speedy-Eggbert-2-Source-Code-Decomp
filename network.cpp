@@ -23,6 +23,20 @@ CNetwork::CNetwork()
              m_field6_0x18;
 }
 
+CNetwork::~CNetwork()
+{
+}
+
+void CNetwork::FreeSessionList()
+{
+    if (m_pSessions != NULL)
+    {
+        free(m_pSessions);
+    }
+    m_pUnkC = NULL;
+    m_pSessions = NULL;
+}
+
 void TraceErrorDP(HRESULT hErr, char *sFile, int nLine)
 {       
     char dperr[256];

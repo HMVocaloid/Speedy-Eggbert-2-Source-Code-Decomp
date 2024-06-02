@@ -23,6 +23,8 @@ public:
 	BOOL	GetEnable();
 	void	SetEnable(BOOL bEnable);
 
+	void	SetSomething(BOOL bSomething);
+
 	BOOL	GetHide();
 	void	SetHide(BOOL bHide);
 

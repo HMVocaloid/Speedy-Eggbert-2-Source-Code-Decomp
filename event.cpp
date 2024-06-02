@@ -1619,6 +1619,16 @@ void CEvent::SetEnable(int button, BOOL bEnable)
     m_buttons[index].SetEnable(bEnable);
 }
 
+void CEvent::SetSomething(int button, int bSomething)
+{
+	int index;
+
+	index = GetButtonIndex(button);
+	if (index < 0) return;
+
+	m_buttons[index].SetSomething(bSomething);
+}
+
 int CEvent::GetMenu(int button)
 {
     int     index;
@@ -1652,7 +1662,33 @@ void CEvent::RestoreGame()
     WaitMouse(FALSE);
 }
 
+void CEvent::SomethingDecor()
+{
+	m_input = 0;
+	m_pDecor->TreatEvent();
+}
 
+// CNetwork function needs to be implemented 
+
+void CEvent::PauseStatus(UINT pause, int multiplayer)
+{
+	UINT m_bPause;
+	m_bPause = pause;
+
+	m_pDecor->SetFieldCCA4(pause);
+
+	if (m_phase == WM_PHASE_PLAY ||
+		m_phase == WM_PHASE_PLAYTEST)
+	{
+		if (m_bPause = 0) {
+			m_pSound->RestartMusic();
+		}
+		else {
+			m_pSound->SuspendMusic();
+		}
+
+	}
+}
 
 void AddCheatCode(char *pDst, char *pSrc)
 {
@@ -1723,6 +1759,11 @@ BOOL CEvent::DrawButtons()
 			AddCheatCode(text, cheat_code[21]);
 		}
     }
+	if (m_phase == WM_PHASE_INIT)
+	{
+		DrawTextNew(m_pPixmap, pos, "Version 2.0", FONTLITTLE);
+	}
+
 }
 
 int CEvent::MousePosToSprite(POINT pos)
@@ -1974,6 +2015,23 @@ int CEvent::GetSpeed()
 BOOL CEvent::GetPause()
 {
 	return m_bPause;
+}
+
+int CEvent::SomethingMissions()
+{
+	int tmp = m_mission;
+
+	if (tmp % 10 == 0 ||
+		tmp == 99)
+	{
+		m_mission = 1;
+		return tmp / 10;
+	}
+	else
+	{
+		m_mission = tmp / 10 * 10;
+		return (tmp < 0);
+	}
 }
 
 void CEvent::DemoRecStart()

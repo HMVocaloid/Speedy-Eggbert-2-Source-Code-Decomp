@@ -103,6 +103,29 @@ void DrawText(CPixmap *pPixmap, POINT pos, char *pText, int font)
 	}
 }
 
+void DrawTextNew(CPixmap* pPixmap, POINT pos, char* pText, int font)
+{
+	char text;
+
+	text = *pText;
+	
+	while (text != '\0')
+	{
+		pText = pText + 1;
+		DrawChar(pPixmap, &pos, text, font);
+		text = *pText;
+	}
+}
+
+void DrawChar(CPixmap* pPixmap, POINT* pos, char c, int font)
+{
+	int width;
+	UINT index;
+
+	index = (UINT)(BYTE)c;
+	pos->y = (int)table_offsets[index].charOffsetY + pos->y;
+}
+
 // Affiche un texte pench�.
 
 void DrawTextPente(CPixmap *pPixmap, POINT pos, char *pText,

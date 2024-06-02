@@ -5,6 +5,8 @@ public:
     ~CNetwork();
 
     BOOL    Create();
+    void    FreeSessionList();
+
 protected:
     int         m_field0_0x0;
     int         m_field8_0x20;

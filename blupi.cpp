@@ -20,6 +20,7 @@
 #include "jauge.h"
 #include "event.h"
 #include "misc.h"
+#include "network.h"
 
 // Define Globals
 

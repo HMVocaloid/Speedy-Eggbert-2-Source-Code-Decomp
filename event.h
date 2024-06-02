@@ -65,16 +65,20 @@ public:
 	UINT	GetPhase();
 	void	TryInsert();
 	void	RestoreGame();
+	int		SomethingMissions();
 
 	int		GetButtonIndex(int button);
 	int		GetState(int button);
 	void	SetState(int button, int state);
 	BOOL	GetEnable(int button);
 	void	SetEnable(int button, BOOL bEnable);
+	void	SetSomething(int button, int bSomething);
 	BOOL	GetHide(int button);
 	void	SetHide(int button, BOOL bHide);
 	int		GetMenu(int button);
 	void	SetMenu(int button, int menu);
+	void	SomethingDecor();
+	void	PauseStatus(UINT pause, int multiplayer);
 
 	BOOL	DrawButtons();
 	int		MousePosToSprite(POINT pos);
