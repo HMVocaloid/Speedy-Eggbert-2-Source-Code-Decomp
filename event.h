@@ -81,6 +81,7 @@ public:
 	void	PauseStatus(UINT pause, int multiplayer);
 
 	BOOL	DrawButtons();
+	BOOL	TextSomething();
 	int		MousePosToSprite(POINT pos);
 	void	MouseSprite(POINT pos);
 	void	WaitMouse(BOOL bWait);

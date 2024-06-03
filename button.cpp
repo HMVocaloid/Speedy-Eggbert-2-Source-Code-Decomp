@@ -148,7 +148,7 @@ void CButton::Draw()
 
 	if( m_bEnable )
 	{
-		m_pPixmap->DrawIcon(-1, CHBUTTON+m_type, m_mousestate, m_pos);
+		m_pPixmap->DrawIcon(-1, CHBUTTON+m_type, m_mouseState, m_pos);
 	}
 	else
 	{
@@ -323,7 +323,7 @@ int CButton::GetToolTips(POINT pos)
 
 	if ( m_nbMenu > 1 )
 	{
-		if ( m_MouseDown && rank > 0 )
+		if ( m_bMouseDown && rank > 0 )
 		{
 			rank --;
 		}

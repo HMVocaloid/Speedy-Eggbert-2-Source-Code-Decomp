@@ -7,6 +7,7 @@
 #include "DEF.H"
 #include "SOUND.H"
 #include "PIXMAP.H"
+#include "network.h"
 
 /////////////////////////////////////////////////////////////////////////////
 
@@ -21,6 +22,7 @@
 #define ICON_HILI_GO	117
 #define ICON_HILI_BUILD	118
 #define ICON_HILI_ERR	119
+#define ICON_BUTTON_PERSONALBOMBICON
 
 // Descripteur d'une cellule du d�cor.
 typedef struct
@@ -365,7 +367,7 @@ public:
 	POINT	ConvPosToCel(POINT pos, BOOL bMap=FALSE);
 	POINT	ConvPosToCel2(POINT pos);
 
-	void	Create(HWND hWnd, CSound *pSound, CPixmap *pPixmap);
+	void	Create(HWND hWnd, CSound *pSound, CPixmap *pPixmap, CNetwork *pNetwork);
 	void	Init(int channel, int icon);
 	void	InitAfterBuild();
 	void	ResetHili();
@@ -408,6 +410,7 @@ public:
 	int		GetInfoHeight();
 
 	int 	GetTargetLevel();
+	void	SetBlupiState(BOOL helicopter, UINT drive, BOOL skateboard, UINT water);
 
 	char*	GetButtonExist();
 
@@ -440,7 +443,20 @@ public:
 	BOOL	GetNetPacked();
 	BOOL	GetNetMovePredict();
 	UINT	GetPhase();
-
+	int		GetMissionTitle();
+	void	SetRegion(int region);
+	int		GetMusic();
+	void	SetMusic(int music);
+	void	GetDims(POINT* ptr);
+	void	SetDims(POINT dims);
+	int		GetLives();
+	void	SetLives(int lives);
+	void	SetAccessBuild(BOOL build);
+	void	SetNetPacked(BOOL net);
+	void	SetNetMovePredict(BOOL netmove);
+	BOOL	GetNetDebug();
+	void	SetMulti(int multi);
+	void	SetTeam(int team);
 	
 protected:
 	BOOL	GetSeeBits(POINT cel, char *pBits, int index);
@@ -529,7 +545,7 @@ protected:
     BOOL        m_bCarStationary;
     BOOL        m_bWorldComplete;
     BOOL        m_bPrivate;
-    BOOL        m_AllMissions;		// opendoors
+    BOOL        m_bAllMissions;		// opendoors
     BOOL        m_bInvincible;		// megablupi
     BOOL        m_bShowSecret;  	// showsecret
     BOOL        m_bAccessBuild; 	// xmission/xnjttjpo
@@ -640,6 +656,7 @@ protected:
 	char*		m_pFillMap;
     int SetBlupiChannel();
     int GetBlupiChannel();
+	int GetPersonalBombIcon();
     int GetTargetLevel(int mission);
 	BOOL GetShowSecret();
     void SetShowSecret(BOOL secret);

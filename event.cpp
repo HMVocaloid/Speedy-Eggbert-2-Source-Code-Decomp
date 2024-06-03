@@ -1766,6 +1766,54 @@ BOOL CEvent::DrawButtons()
 
 }
 
+BOOL CEvent::TextSomething()
+{
+	int textHiliStart;
+	char* pText;
+
+	m_textHiliStart = textHiliStart;
+
+	if (m_textHiliEnd < textHiliStart)
+	{
+		return 0;
+	}
+
+	do {
+		m_textInput[textHiliStart] =
+			m_textHiliEnd + textHiliStart;
+		*pText = m_textInput + textHiliStart;
+		textHiliStart = textHiliStart + 1;
+	} while (*pText != '\0');
+	m_textHiliEnd = m_textHiliStart;
+	return 1;
+}
+
+POINT CEvent::GetLastMousePos()
+{
+	return m_oldMousePos;
+}
+
+BOOL CEvent::TreatEvent(UINT message, WPARAM wParam, LPARAM lParam)
+{
+	if (m_bDemoPlay)
+	{
+		if (message == WM_KEYDOWN ||
+			message == WM_KEYUP ||
+			message == WM_LBUTTONUP ||
+			message == WM_RBUTTONUP)
+		{
+			DemoPlayStop();
+			return TRUE;
+		}
+		if (message == WM_MOUSEMOVE)
+		{
+			return TRUE;
+		}
+	}
+
+	return TreatEventBase(message, wParam, lParam);
+}
+
 int CEvent::MousePosToSprite(POINT pos)
 {
 	int sprite;
@@ -2221,25 +2269,3 @@ POINT CEvent::GetLastMousePos()
 	return m_oldMousePos;
 }
 
-BOOL CEvent::TreatEvent(UINT message, WPARAM wParam, LPARAM lParam)
-{
-	if (m_bDemoPlay)  // d�mo en lecture ?
-	{
-		if (message == WM_KEYDOWN ||  // l'utilisateur clique ?
-			message == WM_KEYUP ||
-			//			 message == WM_LBUTTONDOWN ||
-			//			 message == WM_RBUTTONDOWN ||
-			message == WM_LBUTTONUP ||
-			message == WM_RBUTTONUP)
-		{
-			DemoPlayStop();
-			return TRUE;
-		}
-		if (message == WM_MOUSEMOVE)  // l'utilisateur bouge ?
-		{
-			return TRUE;
-		}
-	}
-
-	return TreatEventBase(message, wParam, lParam);
-}

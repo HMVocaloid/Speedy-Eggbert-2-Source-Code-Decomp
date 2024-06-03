@@ -55,6 +55,7 @@
 #define DIMLITTLEY		12
 
 #define CHBACK			0
+#define CHBLUPI000		
 #define CHFLOOR			1
 #define CHOBJECT		2
 #define CHOBJECTo		3

@@ -59,7 +59,17 @@ CDecor::~CDecor()
     UndoClose();
 }
 
-/*
+void CDecor::Create(HWND hWnd, CSound* pSound, CPixmap* pPixmap, CNetwork* pNetwork)
+{
+    m_hWnd = hWnd;
+    m_pSound = pSound;
+    m_pPixmap = pPixmap;
+    m_pNetwork = pNetwork;
+    m_input = 0;
+    m_previousInput = 0;
+}
+
+
 int CDecor::SetBlupiChannel()
 {
     if ( m_bMulti = 0 ||
@@ -71,27 +81,27 @@ int CDecor::SetBlupiChannel()
 }
 
 int CDecor::GetBlupiChannel()
-
-int m_blupiChannel -> CHBLUPI000;
-
 {
+    int m_blupiChannel = CHBLUPI000;
+
+
     if ( m_bMulti != 0 ||
          m_team > 0);{
         return m_team + 10;
          }
     return CHBLUPI000;
 }
-*/
 
-/*
+
+
 int CDecor::GetPersonalBombIcon()
 {
     if ( m_bMulti != 0){
-       return m_team + icon_button_personalbombyellow;
+       return m_team + ICON_BUTTON_PERSONALBOMBICON;
     }
-    return icon_button_personalbombyellow;
+    return ICON_BUTTON_PERSONALBOMBICON;
 }
-*/
+
 
 void CDecor::SetTime(int time)
 {
@@ -113,7 +123,7 @@ int CDecor::GetRegion()
     return m_region;
 }
 
-int CDecor::SetRegion(int region)
+void CDecor::SetRegion(int region)
 {
     m_region = region;
 }
@@ -123,15 +133,15 @@ int CDecor::GetMusic()
     return m_music;
 }
 
-int CDecor::SetMusic(int music)
+void CDecor::SetMusic(int music)
 {
-    m_music = music
+    m_music = music;
 }
 
-void CDecor::GetDims(POINT *ptr)
+void CDecor::GetDims(POINT* ptr)
 {
-    ptr.x = m_worldDims.x;
-    ptr.y = m_worldDims.y;
+    ptr->x = m_worldDims.x;
+    ptr->y = m_worldDims.y; 
     return;
 }
 
@@ -211,5 +221,15 @@ void CDecor::SetTeam(int team)
     m_team = team;
 }
 
+void CDecor::SetBlupiState(BOOL helicopter, UINT drive, BOOL skateboard, UINT water)
+{
+    m_bHelicopter = helicopter;
+    m_bJeep || m_bTank = drive;
+    m_bSkateboard = skateboard;
+    m_bInDeepWater || m_bInSurfaceWater = water;
+}
 
-
+int CDecor::GetMissionTitle()
+{
+    return m_missionTitle;
+}

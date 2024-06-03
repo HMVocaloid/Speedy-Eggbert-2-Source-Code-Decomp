@@ -6,7 +6,6 @@
 #include "ACTION.H"
 #include "MISC.H"
 #include "RESOURCE.H"
-#include "decgoal.h"
 
 void CDecor::BlupiCheat(int cheat)
 {

@@ -10,7 +10,7 @@ public:
     CJauge();
     ~CJauge();
 
-    BOOL    Create(HWND hWnd, CPixmap *pPixmap, CSound *pSound,
+    BOOL    Create(HWND hWnd, CPixmap *pPixmap, CDecor *pDecor,
                    POINT pos, int type, BOOL bMinimizeRedraw);
     void    Draw();
     void    Redraw();

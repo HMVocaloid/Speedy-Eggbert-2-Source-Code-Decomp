@@ -140,7 +140,7 @@ void AddCDPath(char *pFilename)
 		 (strstr(pFilename, "image08\\") == pFilename ||
           strstr(pFilename, "data\\") == pFilename    ||
 		  strstr(pFilename, "image16\\") == pFilename ||
-          strstr(pFileName, "sound\\")) )
+          strstr(pFilename, "sound\\")) )
 	{
 		strcpy(temp, g_CDPath);
 		strcat(temp, "..\\");
