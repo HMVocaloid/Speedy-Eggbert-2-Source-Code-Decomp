@@ -50,6 +50,10 @@ BOOL 		g_bTrueColorDecor;
 MMRESULT    g_updateTimer;			// timer g�n�ral
 BOOL		g_bActive = TRUE;		// is application active ?
 BOOL		g_bTermInit = FALSE;	// initialisation en cours
+int			g_objectMax;
+int			g_elementMax;
+int			g_blupiMax;
+int			g_exploMax;
 
 UINT		g_lastPhase = 999;
 

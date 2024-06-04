@@ -17,7 +17,7 @@ public:
 
     void    SetDebug(BOOL bDebug);
 
-    BOOL    Create(HWND hwnd, POINT dim, BOOL bFullScreen, int mouseType);
+    BOOL    Create(HWND hwnd, POINT dim, BOOL bFullScreen, int mouseType, BOOL bTrueColor, BOOL bTrueColorDecor);
     BOOL    Flush();
     BOOL    Restore();
     BOOL    InitSysPalette();

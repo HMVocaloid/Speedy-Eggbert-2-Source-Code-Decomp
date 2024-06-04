@@ -119,7 +119,7 @@ void CPixmap::SetDebug(BOOL bDebug)
 // Retourne FALSE en cas d'erreur.
 
 BOOL CPixmap::Create(HWND hwnd, POINT dim,
-					 BOOL bFullScreen, int mouseType)
+					 BOOL bFullScreen, int mouseType, BOOL bTrueColorDecor, BOOL bTrueColor)
 {
 	DDSURFACEDESC		ddsd;
 	HRESULT				ddrval;
@@ -129,6 +129,8 @@ BOOL CPixmap::Create(HWND hwnd, POINT dim,
 	m_bFullScreen = bFullScreen;
 	m_mouseType   = mouseType;
 	m_dim         = dim;
+	m_bTrueColorDecor = bTrueColorDecor;
+	m_bTrueColor = bTrueColor;
 
 	if ( m_mouseType == MOUSETYPEGRA )
 	{
@@ -649,6 +651,9 @@ BOOL CPixmap::Cache(int channel, char *pFilename, POINT totalDim, BOOL bUsePalet
 
 // Cache une image provenant d'un bitmap.
 
+// Probably not needed?
+
+/*
 BOOL CPixmap::Cache(int channel, HBITMAP hbm, POINT totalDim)
 {
 	if ( channel < 0 || channel >= MAXIMAGE )  return FALSE;
@@ -675,6 +680,7 @@ BOOL CPixmap::Cache(int channel, HBITMAP hbm, POINT totalDim)
 
 	return TRUE;
 }
+*/
 
 // Purge une image.
 
@@ -731,12 +737,51 @@ RECT CPixmap::GetClipping()
 
 
 // Teste si un point fait partie d'une ic�ne.
+//Rough rewritten code, might need improvement
 
 BOOL CPixmap::IsIconPixel(int channel, int rank, POINT pos)
 {
 	int			nbx, nby;
-    COLORREF	rgb;
-    HDC			hDC;
+	COLORREF	rgb;
+	HDC			hDC;
+
+	if (channel == 1)
+	{
+		if g_objectMax <= rank)
+		{
+			return;
+		}
+	}
+	else if (channel = 10)
+	{
+		if (g_elementMax <= rank)
+		{
+			return;
+		}
+	}
+	else if (channel == CHBLUPI000 || channel == CHBLUPI001 || channel == CHBLUPI002 || channel == CHBLUPI003)
+	{
+		if (g_blupiMax <= rank)
+		{
+			return;
+		}
+	}
+	else
+	{
+		if (channel != CHEXPLO)
+		{
+			if (rank < 0)
+				return;
+		}
+		if m_totalDim[channel.y] / m_iconDim[channel].y * m_totalDim[channel].x / m_iconDim[channel].x <= rank
+		{
+			return;
+		}
+			if (g_exploMax <= rank)
+			{
+				return;
+		}
+	}
 
 	if ( channel < 0 || channel >= MAXIMAGE )  return FALSE;
 	if (  m_lpDDSurface[channel] == NULL )     return FALSE;
