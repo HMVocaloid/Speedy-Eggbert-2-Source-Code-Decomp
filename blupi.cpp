@@ -230,10 +230,19 @@ void UpdateFrame(void)
 		g_pPixmap->DrawImage(-1, CHBACK, rcRect, 1);  // dessine le fond
 	}
 
-	if ( phase == WM_PHASE_INTRO1 ||
-		 phase == WM_PHASE_INTRO2 )
+	if (phase == WM_PHASE_INIT)
 	{
-		g_pEvent->IntroStep();
+		g_pEvent->DemoStep();  // d�marre �v. d�mo automatique
+	}
+
+	if (phase == WM_PHASE_PLAYMOVIE || phase == WM_PHASE_WINMOVIE || WM_PHASE_WINMOVIEDESIGN || WM_PHASE_WINMOVIEMULTI)
+	{
+		g_pEvent->MovieToStart;
+	}
+
+	if (phase == WM_PHASE_INSERT)
+	{
+		g_pEvent->TryInsert();
 	}
 
 	if ( phase == WM_PHASE_PLAY )
@@ -267,40 +276,6 @@ void UpdateFrame(void)
 		}
 	}
 
-	if ( phase == WM_PHASE_BUILD )
-	{
-		clip.left   = POSDRAWX;
-		clip.top    = POSDRAWY;
-		clip.right  = POSDRAWX+DIMDRAWX;
-		clip.bottom = POSDRAWY+DIMDRAWY;
-		g_pEvent->DecorAutoShift(posMouse);
-		g_pDecor->Build(clip, posMouse);  // construit le d�cor
-		g_pDecor->NextPhase(-1);  // refait la carte chaque fois
-	}
-
-	if ( phase == WM_PHASE_INIT )
-	{
-		g_pEvent->DemoStep();  // d�marre �v. d�mo automatique
-	}
-
-	g_pEvent->DrawButtons();
-
-	g_lastPhase = phase;
-
-	if ( phase == WM_PHASE_H0MOVIE   ||
-		 phase == WM_PHASE_H1MOVIE   ||
-		 phase == WM_PHASE_H2MOVIE   ||
-		 phase == WM_PHASE_PLAYMOVIE ||
-		 phase == WM_PHASE_WINMOVIE  )
-	{
-		g_pEvent->MovieToStart();  // fait d�marrer un film si n�cessaire
-	}
-
-	if ( phase == WM_PHASE_INSERT )
-	{
-		g_pEvent->TryInsert();
-	}
-
 	if ( phase == WM_PHASE_PLAY )
 	{
 		term = g_pDecor->IsTerminated();
@@ -311,6 +286,41 @@ void UpdateFrame(void)
 	g_pPixmap->MouseBackDraw();  // remet la souris dans "back"
 }
 
+void Benchmark()
+{
+	int	i;
+	POINT	pos = { 0, 0 };
+
+	g_pPixmap->DrawIcon(-1, 2, 10, pos, 0);
+
+	pos.x = 300;
+	pos.y = 350;
+	for (i = 0; i < 10000; i++)
+	{
+		g_pPixmap->DrawIcon(-1, 2, i % 4, pos, 0);
+	}
+
+	g_pPixmap->DrawIcon(-1, 2, 10, pos, 0);
+	g_pSound->Play(0);
+}
+
+// Incomplete
+
+void SetDecor()
+{
+	RECT rect;
+	UINT phase;
+	POINT posMouse;
+
+	g_pPixmap->MouseBackClear();
+	g_pEvent->GetLastMousePos(&posMouse);
+	phase = g_pEvent->GetPhase;
+
+	if (phase == WM_PHASE_PLAY || phase == WM_PHASE_PLAYTEST || phase == WM_PHASE_BUILD)
+	{
+
+	}
+}
 BOOL RestoreGame()
 {
 	if ( g_pPixmap == NULL ) return FALSE;
@@ -408,6 +418,10 @@ LRESULT CALLBACK WindowProc (HWND hWnd, UINT message,
 
         case WM_ACTIVATEAPP:
 		    g_bActive = (wParam != 0);
+			if (g_pEvent != NULL)
+			{
+				g_pEvent->SomethingDecor;
+			}
 			if ( g_bActive )
 			{
 				if ( g_bFullScreen )
@@ -539,6 +553,9 @@ BOOL InitFail(char *msg, BOOL bDirectX)
 	return FALSE;
 }
 
+//Space for SetTimer
+
+
 static BOOL DoInit(HINSTANCE hInstance, LPSTR lpCmdLine, int nCmdShow)
 {
 	WNDCLASS 	   wc;
@@ -550,34 +567,34 @@ static BOOL DoInit(HINSTANCE hInstance, LPSTR lpCmdLine, int nCmdShow)
 
 	InitHInstance(hInstance);
 
-	wc.style 		 = CS_HREDRAW|CS_VREDRAW;
-	wc.lpfnWndProc   = WindowProc;
-	wc.cbClsExtra    = 0;
-	wc.cbWndExtra    = 0;
-	wc.hInstance 	 = hInstance;
-	wc.hIcon 		 = LoadIcon(hInstance, "IDR_MAINFRAME");
-	wc.hCursor 		 = LoadCursor(hInstance, "IDC_POINTER");
+	wc.style = CS_HREDRAW | CS_VREDRAW;
+	wc.lpfnWndProc = WindowProc;
+	wc.cbClsExtra = 0;
+	wc.cbWndExtra = 0;
+	wc.hInstance = hInstance;
+	wc.hIcon = LoadIcon(hInstance, "IDR_MAINFRAME");
+	wc.hCursor = LoadCursor(hInstance, "IDC_POINTER");
 	wc.hbrBackground = GetStockBrush(BLACK_BRUSH);
-	wc.lpszMenuMane  = NAME;
+	wc.lpszMenuMane = NAME;
 	wc.lpszClassName = NAME;
 	RegisterClass(&wc);
 
-	if ( g_bFullScreen )
+	if (g_bFullScreen)
 	{
 		g_hWnd = CreateWindowEx
-					(
-						WS_EX_TOPMOST,
-						NAME,
-						TITLE,
-						WS_POPUP,
-						0, 0,
-						GetSystemMetrics(SM_CXSCREEN),
-						GetSystemMetrics(SM_CYSCREEN),
-						NULL,
-						NULL,
-						hInstance,
-						NULL
-					);
+		(
+			WS_EX_TOPMOST,
+			NAME,
+			TITLE,
+			WS_POPUP,
+			0, 0,
+			GetSystemMetrics(SM_CXSCREEN),
+			GetSystemMetrics(SM_CYSCREEN),
+			NULL,
+			NULL,
+			hInstance,
+			NULL
+		);
 	}
 	else
 	{
@@ -587,26 +604,26 @@ static BOOL DoInit(HINSTANCE hInstance, LPSTR lpCmdLine, int nCmdShow)
 		sx = GetSystemMetrics(SM_CXSCREEN);
 		sy = GetSystemMetrics(SM_CYSCREEN);
 
-		SetRect(&WindowRect, (sx-LXIMAGE)/2, (sy-LYIMAGE)/2,
-							 (sx+LXIMAGE)/2, (sy+LYIMAGE)/2);
-		AdjustWindowRect(&WindowRect, WS_POPUPWINDOW|WS_CAPTION, TRUE);
+		SetRect(&WindowRect, (sx - LXIMAGE) / 2, (sy - LYIMAGE) / 2,
+			(sx + LXIMAGE) / 2, (sy + LYIMAGE) / 2);
+		AdjustWindowRect(&WindowRect, WS_POPUPWINDOW | WS_CAPTION, TRUE);
 		WindowRect.top += GetSystemMetrics(SM_CYCAPTION);
 
 		g_hWnd = CreateWindow
-					(
-						NAME,
-						TITLE,
-						WS_POPUPWINDOW|WS_CAPTION|WS_VISIBLE,
-						(sx-LXIMAGE)/2, (sy-LYIMAGE)/2,
-						WindowRect.right - WindowRect.left,
-						WindowRect.bottom - WindowRect.top,
-						HWND_DESKTOP,
-						NULL,
-						hInstance,
-						NULL
-					);
+		(
+			NAME,
+			TITLE,
+			WS_POPUPWINDOW | WS_CAPTION | WS_VISIBLE,
+			(sx - LXIMAGE) / 2, (sy - LYIMAGE) / 2,
+			WindowRect.right - WindowRect.left,
+			WindowRect.bottom - WindowRect.top,
+			HWND_DESKTOP,
+			NULL,
+			hInstance,
+			NULL
+		);
 	}
-	if ( !g_hWnd ) return FALSE;
+	if (!g_hWnd) return FALSE;
 
 	ShowWindow(g_hWnd, nCmdShow);
 	UpdateWindow(g_hWnd);
@@ -614,37 +631,72 @@ static BOOL DoInit(HINSTANCE hInstance, LPSTR lpCmdLine, int nCmdShow)
 
 	ChangeSprite(SPRITE_WAIT);
 
-	if ( !bOk )
+	if (!bOk)
 	{
 		return InitFail("Game not correctly installed", FALSE);
 	}
 
 	g_pPixmap = new CPixmap;
-	if ( g_pPixmap == NULL ) return InitFail("New pixmap", TRUE);
+	if (g_pPixmap == NULL) return InitFail("New pixmap", TRUE);
 
 	totalDim.x = LXIMAGE;
 	totalDim.y = LYIMAGE;
-	if ( !g_pPixmap->Create(g_hWnd, totalDim, g_bFullScreen, g_mouseType) )
+	if (!g_pPixmap->Create(g_hWnd, totalDim, g_bFullScreen, g_mouseType))
 		return InitFail("Create pixmap", TRUE);
 
 	OutputDebug("Image: init\n");
 	totalDim.x = LXIMAGE;
 	totalDim.y = LYIMAGE;
-	iconDim.x  = 0;
-	iconDim.y  = 0;
+	iconDim.x = 0;
+	iconDim.y = 0;
+
+	if (!g_pPixmap->CacheAll(g_hWnd, g_bFullScreen, g_bTrueColor, g_bTrueColorDecor, g_mouseType, "image16\\init.blp", FALSE))
+		return InitFail("CacheAll", TRUE)
+
 #if _INTRO
-	if ( !g_pPixmap->Cache(CHBACK, "image16\\init.blp", totalDim, iconDim, TRUE) )
+		if (!g_pPixmap->Cache(CHBACK, "image16\\init.blp", totalDim, iconDim, TRUE))
 #else
-	if ( !g_pPixmap->Cache(CHBACK, "image16\\init.blp", totalDim, iconDim, TRUE) )
+		if (!g_pPixmap->Cache(CHBACK, "image16\\init.blp", totalDim, iconDim, TRUE))
 #endif
-		return FALSE;
-	
+			return FALSE;
+
 	OutputDebug("SavePalette\n");
 	g_pPixmap->SavePalette();
 	OutputDebug("InitSysPalette\n");
 	g_pPixmap->InitSysPalette();
-	
 
+	g_pSound = new CSound;
+	if (g_pSound == NULL) return InitFail("New sound", TRUE);
+
+	g_pSound->Create(g_hWnd);
+	g_pSound->CacheAll();
+	g_pSoundSetState(TRUE);
+
+	g_pMovie = new CMovie;
+	if (g_pMovie == NULL) return InitFail("New movie", FALSE);
+
+	g_pMovie->Create();
+
+	g_pDecor = new CDecor;
+	if (g_pDecor == NULL) return InitFail("New decor", FALSE);
+
+	g_pDecor->Create(g_hWnd, g_pSound, g_pPixmap);
+	g_pDecor->MapInitColors();
+
+	g_pEvent = new CEvent;
+	if (g_pEvent == NULL) return InitFail("New event", FALSE);
+
+	g_pEvent->Create(g_hWnd, g_pPixmap, g_pDecor, g_pSound, g_pMovie);
+	g_pEvent->SetFullScreen(g_bFullScreen);
+	g_pEvent->SetMouseType(g_mouseType);
+#if _INTRO
+	g_pEvent->ChangePhase(WM_PHASE_INTRO1);
+#else
+	g_pEvent->ChangePhase(WM_PHASE_TESTCD);
+#endif
+
+	g_bTermInit = TRUE;
+	return TRUE;
 }
 
 int WINAPI WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance,
