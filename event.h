@@ -52,6 +52,8 @@ public:
 	CEvent();
 	~CEvent();
 
+
+	void	OutputNetDebug(char* str);
 	POINT	GetMousePos();
 	void	Create(HINSTANCE hInstance, HWND hWnd, CPixmap *pPixmap, CDecor *pDecor, CSound *pSound, CMovie *pMovie, CNetwork *pNetwork);
 	void	SetFullScreen(BOOL bFullScreen);

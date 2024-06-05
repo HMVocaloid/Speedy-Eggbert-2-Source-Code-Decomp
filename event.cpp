@@ -32,6 +32,10 @@ typedef struct
 	short			reserve1[9];
 	short			exercice;		// exercice en cours (0..n)
 	short			mission;		// mission en cours (0..n)
+	short			multi;
+	short			lives;
+	short			bHiliInfoButton;
+	short			pPlayerName;
 	short			speed;
 	short			bMovie;
 	short			maxMission;		// derni�re mission effectu�e (0..n)
@@ -1476,6 +1480,7 @@ CEvent::CEvent()
 	m_bWaitMouse    = FALSE;
 	m_bHideMouse    = FALSE;
 	m_bShowMouse    = FALSE;
+	m_tryPhase		= 0;
 	m_rankCheat     = -1;
 	m_posCheat      = 0;
 	m_speed         = 1;
@@ -1495,6 +1500,7 @@ CEvent::CEvent()
 	m_pDemoBuffer   = NULL;
 	m_demoTime      = 0;
 	m_bCtrlDown     = FALSE;
+	m_input			= 0;
 
     for ( i=0 ; i<MAXBUTTON ; i++ )
     {
@@ -1517,6 +1523,11 @@ CEvent::CEvent()
 CEvent::~CEvent()
 {
     WriteInfo(); // Read the file "info.blp"
+}
+
+void CEvent::OutputNetDebug(char* str)
+{
+
 }
 
 // Returns the mouse position
@@ -2271,3 +2282,41 @@ POINT CEvent::GetLastMousePos()
 	return m_oldMousePos;
 }
 
+BOOL CEvent::WriteInfo()
+{
+	char		filename[MAX_PATH];
+	FILE*		file = NULL;
+	DescInfo	info;
+	int			nb;
+
+	strcpy(filename, "data\\info.blp");
+	AddUserPath(filename);
+
+	file = fopen(filename, "wb");
+	if (file == NULL) goto error;
+
+	info.majRev = 1;
+	info.prive = m_private;
+	info.mission = m_mission;
+	info.multi = m_multi;
+	info.lives = m_lives;
+	info.speed = m_speed;
+	info.bMovie = m_bMovie;
+	info.bHiliInfoButton = m_bHiliInfoButton;
+	info.bAccessBuild = m_bAccessBuild;
+
+	info.skill = m_pDecor->GetSkill();
+
+	info.audioVolume = m_pSound->GetAudioVolume();
+	info.midiVolume = m_pSound->GetMidiVolume();
+
+	nb = fwrite(&info, sizeof(DescInfo), 1, file);
+	if (nb < 1) goto error;
+
+	fclose(file);
+	return TRUE;
+
+error:
+	if (file != NULL) fclose(file);
+	return FALSE;
+}
