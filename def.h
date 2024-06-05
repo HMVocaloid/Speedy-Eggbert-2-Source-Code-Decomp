@@ -595,6 +595,13 @@
 #define WM_PREV					(WM_USER+600)
 #define WM_NEXT					(WM_USER+601)
 #define WM_MOVIE				(WM_USER+602)
+#define WM_PHASE_CREATE
+#define WM_PHASE_608
+#define WM_PHASE_634
+#define WM_PHASE_GREAD
+#define WM_PHASE_GREADp
+#define WM_PHASE_GWRITE
+
 
 
 

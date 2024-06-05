@@ -233,3 +233,13 @@ int CDecor::GetMissionTitle()
 {
     return m_missionTitle;
 }
+
+void CDecor::GetMissionsCleared()
+{
+
+}
+
+void CDecor::SetDemoState(BOOL demoState)
+{
+    m_demoState = demoState;
+}

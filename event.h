@@ -88,6 +88,7 @@ public:
 	void	MouseSprite(POINT pos);
 	void	WaitMouse(BOOL bWait);
 	void	HideMouse(BOOL bHide);
+	void	FillMouse(int bFill);
 	POINT	GetLastMousePos();
 	BOOL	TreatEvent(UINT message, WPARAM wParam, LPARAM lParam);
 	BOOL	TreatEventBase(UINT message, WPARAM wParam, LPARAM lParam);

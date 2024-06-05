@@ -457,6 +457,8 @@ public:
 	BOOL	GetNetDebug();
 	void	SetMulti(int multi);
 	void	SetTeam(int team);
+	void	GetMissionsCleared();
+	void	SetDemoState(BOOL demoState);
 	
 protected:
 	BOOL	GetSeeBits(POINT cel, char *pBits, int index);
@@ -552,6 +554,7 @@ protected:
     BOOL        m_bNetPacked;		// netpacked
     BOOL        m_bNetMovePredict;  // ynosmooth
     BOOL        m_bNetDebug;		// znetdebug
+	BOOL		m_demoState;
     int         m_mission;
     BYTE        m_missionsCleared[180];
     BYTE        m_worldsCleared[20];

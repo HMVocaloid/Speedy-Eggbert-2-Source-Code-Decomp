@@ -1561,12 +1561,14 @@ void CEvent::Create(HINSTANCE hInstance, HWND hWnd, CPixmap *pPixmap, CDecor *pD
 {
     POINT   pos;
 
+	m_hInstance = hInstance;
     m_hWnd    = hWnd;
     m_pPixmap = pPixmap;
     m_pDecor  = pDecor;
     m_pSound  = pSound;
     m_pMovie  = pMovie;
 	m_pNetwork = pNetwork;
+	m_gamer = TRUE;
 
     ReadInfo();
 }
@@ -1775,6 +1777,13 @@ BOOL CEvent::DrawButtons()
 		DrawTextNew(m_pPixmap, pos, "Version 2.0", FONTLITTLE);
 	}
 
+	if (m_phase == WM_PHASE_PLAY && m_phase == WM_PHASE_PLAYTEST && m_phase == WM_PHASE_BUILD)
+		m_pPixmap->DrawPart(-1, 0, 2, 2, 2, 2, 0x12e, 1, 0);
+	if (m_phase == WM_PHASE_CREATE)
+	{
+		LoadString(TX_BUTTON_CREATE, res, 50);
+	}
+
 }
 
 BOOL CEvent::TextSomething()
@@ -1897,6 +1906,92 @@ void CEvent::HideMouse(BOOL bHide)
 	ChangeSprite(m_mouseSprite);
 }
 
+void CEvent::FillMouse(int bFill)
+{
+	m_bFillMouse = bFill;
+
+	if (bFill)
+	{
+		m_mouseSprite = SPRITE_FILL;
+	}
+	else
+	{
+		m_mouseSprite = MousePosToSprite(GetMousePos());
+	}
+	m_pPixmap->SetMouseSprite(m_mouseSprite, m_bDemoPlay);
+	ChangeSprite(m_mouseSprite);
+}
+
+BOOL CEvent::EventButtons(UINT message, WPARAM wParam, LPARAM lParam)
+{
+	POINT		pos, test;
+	int			i, lg, oldx, sound, res;
+
+	m_textToolTips[0] = 0;
+	oldx = m_posToolTips.x;
+	m_posToolTips.x = -1;
+	if (m_phase != WM_PHASE_PLAY && m_phase != WM_PHASE_PLAYTEST)
+	{
+		for (i = 0; i < 2; i++)
+		{
+			if (!m_jauges[i].GetHide())
+			{
+				test = m_jauges[i].GetPos();
+				if (pos.x >= test.x &&
+					pos.x <= test.x + DIMJAUGEX &&
+					pos.y >= test.y &&
+					pos.y <= test.y + DIMJAUGEY)
+				{
+					LoadString(TX_JAUGE1 + i, m_textToolTips, 50);
+					lg = GetTextWidth(m_textToolTips);
+					test.x += (DIMJAUGEX - lg) / 2;
+					test.y += 4;
+					m_posToolTips = test;
+					break;
+				}
+			}
+		}
+		if (oldx != m_posToolTips.x)
+		{
+			for (i = 0; i < 2; i++)
+			{
+				m_jauges[i].SetRedraw();
+			}
+		}
+	}
+	else
+	{
+		i = 0;
+		while (table[m_index].buttons[i].message != 0)
+		{
+			res = m_buttons[i].GetToolTips(pos);
+			if (res != -1)
+			{
+				LoadString(res, m_textToolTips, 50);
+				lg = GetTextWidth(m_textToolTips);
+				pos.x += 10;
+				pos.y += 20;
+				if (pos.x > LXIMAGE - lg) pos.x = LXIMAGE - lg;
+				if (pos.y > LYIMAGE - 14) pos.y = LYIMAGE - 14;
+				m_posToolTips = pos;
+				break;
+			}
+			i++;
+		}
+	}
+	i = 0;
+	while (table[m_index].buttons[i].message != 0)
+	{
+		if (m_buttons[i].TreatEvent(message, wParam, lParam)) return TRUE;
+		i++;
+	}
+	if (m_phase == WM_PHASE_PLAY || m_phase == WM_PHASE_PLAYTEST)
+	{
+		if (m_menu.TreatEvent(message, wParam, lParam)) return TRUE;
+	}
+	return FALSE;
+}
+
 /*
 void CEvent::SomethingDecor()
 {
@@ -1970,6 +2065,74 @@ void CEvent::TryInsert()
 	else
 	{
 		m_tryInsertCount --;
+	}
+}
+
+// Add SomethingHubWorld once figured out.
+
+BOOL CEvent::ChangePhase(UINT phase)
+{
+	int	  index, world, time, total, music, i, max;
+	POINT totalDim, iconDim;
+	char  filename[MAX_PATH];
+	char* pButtonExist;
+	BOOL  bEnable, bHide;
+	Term* pTerm;
+
+	if (phase == WM_PHASE_634)
+	{
+		m_hWnd->PostMessage(16, 0, 0);
+		return TRUE;
+	}
+	if (m_mouseType == MOUSETYPEGRA && m_bFullScreen)
+	{
+		ShowCursor(FALSE);
+		m_bShowMouse = FALSE;
+	}
+
+	m_pDecor->SetDemoState();
+	m_bDemoPlay->SetDemoState();
+
+	if (phase == WM_PHASE_608)
+	{
+		m_pDecor, m_gamer->Read(999, 1);
+		phase = WM_PHASE_BUILD;
+	}
+	if (m_bDemoPlay == 0 &&
+		phase == WM_PHASE_PLAY ||
+		m_phase == WM_PHASE_PLAY ||
+		phase == WM_PHASE_STOP ||
+		phase == WM_PHASE_SETUP ||
+		phase == WM_PHASE_HELP ||
+		phase == WM_PHASE_GREAD ||
+		phase == WM_PHASE_GREADp ||
+		phase == WM_PHASE_GWRITE)
+	{
+		m_pSound->StopMusic();
+	}
+
+	m_textToolTips[0] = 0;
+	m_posToolTips.x = -1;
+	m_bPause = FALSE;
+	m_bCtrlDown = FALSE;
+	m_bMouseDown = FALSE;
+	m_debugPos.x = 0;
+	m_debugPos.y = 0;
+
+	if (phase == WM_PHASE_INIT)
+	{
+		m_demoTime = 0;
+	}
+	if (phase == WM_PHASE_PLAY &&
+		!m_bDemoPlay &&
+		GetPhysicalWorld() >= 299 &&
+		GetPhysicalWorld() < 320)
+	{
+		DemoRecStart();
+	}
+	if (phase != WM_PHASE_PLAY)
+	{
+		DemoRecStop();
 	}
 }
 
@@ -2289,7 +2452,7 @@ BOOL CEvent::WriteInfo()
 	DescInfo	info;
 	int			nb;
 
-	strcpy(filename, "data\\info.blp");
+	strcpy(filename, "data\\info%.blp");
 	AddUserPath(filename);
 
 	file = fopen(filename, "wb");
@@ -2305,13 +2468,53 @@ BOOL CEvent::WriteInfo()
 	info.bHiliInfoButton = m_bHiliInfoButton;
 	info.bAccessBuild = m_bAccessBuild;
 
-	info.skill = m_pDecor->GetSkill();
+	info.skill = m_pDecor->GetMissionsCleared();
 
 	info.audioVolume = m_pSound->GetAudioVolume();
 	info.midiVolume = m_pSound->GetMidiVolume();
 
 	nb = fwrite(&info, sizeof(DescInfo), 1, file);
 	if (nb < 1) goto error;
+
+	fclose(file);
+	return TRUE;
+
+error:
+	if (file != NULL) fclose(file);
+	return FALSE;
+}
+
+BOOL CEvent::ReadInfo()
+{
+	char	filename[MAX_PATH];
+	FILE* file = NULL;
+	DescInfo info;
+	int		 nb;
+
+	strcpy(filename, "data\\info%.3d.blp");
+	AddUserPath(filename);
+
+	file = fopen(filename, "rb");
+	if (file == NULL) goto error;
+	
+	nb = fread(&info, sizeof(DescInfo), 1, file);
+	if (nb < 1) goto error;
+
+
+	info.majRev = 1;
+	info.prive = m_private;
+	info.mission = m_mission;
+	info.multi = m_multi;
+	info.lives = m_lives;
+	info.speed = m_speed;
+	info.bMovie = m_bMovie;
+	info.bHiliInfoButton = m_bHiliInfoButton;
+	info.bAccessBuild = m_bAccessBuild;
+
+	m_pDecor->SetSkill(info.skill);
+
+	m_pSound->SetAudioVolume(info.audioVolume);
+	m_pSound->SetMidiVolume(info.midiVolume);
 
 	fclose(file);
 	return TRUE;
