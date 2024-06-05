@@ -2070,9 +2070,11 @@ void CEvent::TryInsert()
 
 // Add SomethingHubWorld once figured out.
 
+// Very rough code, needs improvement
+
 BOOL CEvent::ChangePhase(UINT phase)
 {
-	int	  index, world, time, total, music, i, max;
+	int	  index, world, time, total, music, i, max, mission;
 	POINT totalDim, iconDim;
 	char  filename[MAX_PATH];
 	char* pButtonExist;
@@ -2134,7 +2136,53 @@ BOOL CEvent::ChangePhase(UINT phase)
 	{
 		DemoRecStop();
 	}
+
+	m_mission = mission;
+
+	if (phase == WM_PHASE_DOQUIT)
+	{
+		if (m_bPrivate == 0)
+		{
+			if (mission != 1)
+			{
+				if (mission == 99 || mission % 10 == 0)
+				{
+					mission = 1;
+				}
+				else
+				{
+					mission = (mission / 10) * 10;
+				}
+				m_mission->GetWorld();
+				m_phase = WM_PHASE_PLAY;
+				
+				return ChangePhase(WM_PHASE_PLAY);
+			}
+			return ChangePhase(WM_PHASE_GAMER);
+		}
+	}
+	else if (m_bMulti == 0)
+	{
+		return ChangePhase(WM_PHASE_INFO);
+	}
+
+	if (SearchPhase(phase) < 0)
+	{
+		return 0;
+	}
+	m_pPixmap->MouseInvalidate();
+	HideMouse(FALSE);
+	WaitMouse(TRUE);
+
+	if (phase == WM_PHASE_GAMER || phase == WM_PHASE_PLAY)
+	{
+		OutputNetDebug();
+		m_gamer->WriteInfo();
+	}
+
 }
+
+// Implement LoadLevel
 
 void CEvent::MovieToStart()
 {
@@ -2171,6 +2219,27 @@ int CEvent::GetTryPhase()
 {
 	return m_tryPhase;
 }
+
+void CEvent::SomethingUserMissions(LPCSTR lpFileName, LPCSTR thing)
+{
+
+}
+
+void CEvent::TableSomething()
+{
+	char filename[MAX_PATH];
+
+	if (strstr(filename, table[m_index].backName))
+	{
+		AddCDPath(filename);
+	}
+	if (!m_pPixmap->CacheAll(CHBACK, filename, totalDim, iconDim, FALSE, GetRegion()))
+	{
+		return;
+	}
+}
+
+
 
 BOOL CEvent::StartMovie(char* pFilename)
 {

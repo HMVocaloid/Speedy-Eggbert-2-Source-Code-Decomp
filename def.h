@@ -601,7 +601,8 @@
 #define WM_PHASE_GREAD
 #define WM_PHASE_GREADp
 #define WM_PHASE_GWRITE
-
+#define WM_PHASE_DOQUIT
+#define WM_PHASE_GAMER
 
 
 

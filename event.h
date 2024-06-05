@@ -66,8 +66,10 @@ public:
 	void	MovieToStart();
 	UINT	GetPhase();
 	void	TryInsert();
+	void	SomethingUserMissions(LPCSTR lpFileName, LPCSTR thing);
 	void	RestoreGame();
 	int		SomethingMissions();
+	void	TableSomething();
 
 	int		GetButtonIndex(int button);
 	int		GetState(int button);
