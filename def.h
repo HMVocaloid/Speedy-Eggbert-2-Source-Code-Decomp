@@ -56,6 +56,9 @@
 
 #define CHBACK			0
 #define CHBLUPI000		
+#define CHBLUPI001
+#define CHBLUPI002	
+#define CHBLUPI003
 #define CHFLOOR			1
 #define CHOBJECT		2
 #define CHOBJECTo		3
@@ -70,6 +73,8 @@
 #define CHJAUGE			12
 #define CHTEXT			13
 #define CHBIGNUM		14
+#define CHEXPLO
+#define CHELEMENT
 
 #define FOGHIDE			4
 

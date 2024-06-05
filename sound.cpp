@@ -64,6 +64,21 @@ BOOL CSound::CreateSoundBuffer(int dwBuf, DWORD dwBufSize, DWORD dwFreq, DWORD d
     return TRUE;
 }
 
+// I dunno what the fuck this does.
+/*
+BOOL CSound::ErrorSomething()
+{
+	if (m_lpDS ||
+		m_lpDSB != 0)
+	{
+		m_lpDS, m_lpDSB->TraceErrorDS;
+		return FALSE;
+	}
+	return TRUE;
+}
+*/
+
+
 // Reads in data from a wave file.
 
 BOOL CSound::ReadData(LPDIRECTSOUNDBUFFER lpDSB, FILE* pFile, DWORD dwSize, DWORD dwPos) 
@@ -459,6 +474,26 @@ BOOL CSound::Play(int channel, int volume, int pan)
 	m_lpDSB[channel]->Play(0, 0, 0);
 
 	return TRUE;
+}
+
+BOOL CSound::StopSound(int channel, int volume, int pan)
+{
+	if (m_bEnable) return FALSE;
+	if (m_bState || m_audioVolume == 0) return FALSE;
+
+	volume -= (MAXVOLUME - m_audioVolume) * ((10000 / 4) / MAXVOLUME);
+
+
+	if (0 < channel || channel < MAXSOUND)
+	{
+		if (m_lpDSB[channel] == NULL)
+			return;
+	}
+	m_lpDSB[channel]->SetVolume(volume);
+	m_lpDSB[channel]->SetPan(pan);
+	m_lpDSB[channel]->Play(0, 0, 0);
+
+	return FALSE;
 }
 
 // Fait entendre un son dans une image.

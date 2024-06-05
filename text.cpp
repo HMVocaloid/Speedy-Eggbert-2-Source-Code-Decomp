@@ -117,13 +117,21 @@ void DrawTextNew(CPixmap* pPixmap, POINT pos, char* pText, int font)
 	}
 }
 
+//Implement later
+
 void DrawChar(CPixmap* pPixmap, POINT* pos, char c, int font)
 {
 	int width;
 	UINT index;
 
 	index = (UINT)(BYTE)c;
-	pos->y = (int)table_offsets[index].charOffsetY + pos->y;
+	pos->y = (int)table_width[index].charOffsetY + pos->y;
+}
+
+void GetSomethingDrawText(CPixmap* pPixmap, POINT pos, char* pText, int font)
+{
+	DrawTextNew(pPixmap, pos, pText, font);
+	return;
 }
 
 // Affiche un texte pench�.

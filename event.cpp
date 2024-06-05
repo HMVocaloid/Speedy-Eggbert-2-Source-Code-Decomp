@@ -1814,6 +1814,8 @@ BOOL CEvent::TreatEvent(UINT message, WPARAM wParam, LPARAM lParam)
 	return TreatEventBase(message, wParam, lParam);
 }
 
+
+
 int CEvent::MousePosToSprite(POINT pos)
 {
 	int sprite;

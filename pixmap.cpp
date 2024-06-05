@@ -9,6 +9,7 @@
 #include "pixmap.h"
 #include "misc.h"
 #include "ddutil.h"
+#include "blupi.cpp"
 
 
 
@@ -747,12 +748,12 @@ BOOL CPixmap::IsIconPixel(int channel, int rank, POINT pos)
 
 	if (channel == 1)
 	{
-		if g_objectMax <= rank)
+		if (g_objectMax <= rank)
 		{
 			return;
 		}
 	}
-	else if (channel = 10)
+	else if (channel == 10)
 	{
 		if (g_elementMax <= rank)
 		{
@@ -773,7 +774,7 @@ BOOL CPixmap::IsIconPixel(int channel, int rank, POINT pos)
 			if (rank < 0)
 				return;
 		}
-		if m_totalDim[channel.y] / m_iconDim[channel].y * m_totalDim[channel].x / m_iconDim[channel].x <= rank
+		if (rank < 0 || rank >= nbx * nby)
 		{
 			return;
 		}
@@ -818,6 +819,42 @@ BOOL CPixmap::DrawIcon(int chDst, int channel, int rank, POINT pos,
 	RECT		rect;
 	HRESULT		ddrval;
 	COLORREF	oldColor1, oldColor2;
+
+	if (channel == CHOBJECT)
+	{
+		if (g_objectMax <= rank)
+		{
+			return FALSE;
+		}
+	}
+	else if (channel == CHELEMENT)
+	{
+		if (g_elementMax <= rank) {
+			return FALSE;
+		}
+	}
+	else if (channel == CHBLUPI000 ||
+		channel == CHBLUPI001 ||
+		channel == CHBLUPI002 ||
+		channel == CHBLUPI003)
+	{
+		if (g_blupiMax <= rank)
+		{
+			return FALSE;
+		}
+	}
+	else
+	{
+		if (channel != CHEXPLO)
+		{
+			if (channel < 0 || channel >= MAXIMAGE) return FALSE;
+			if (m_lpDDSurface[channel] == NULL) return FALSE;
+			if (m_iconDim[channel].x == 0 ||
+				m_iconDim[channel].y == 0) return FALSE;
+			if (rank < 0 || rank >= nbx * nby) return FALSE;
+		}
+	}
+	if (g_exploMax <= rank) return FALSE;
 
 	if ( channel < 0 || channel >= MAXIMAGE )  return FALSE;
 	if (  m_lpDDSurface[channel] == NULL )     return FALSE;
