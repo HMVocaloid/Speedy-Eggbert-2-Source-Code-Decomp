@@ -2592,3 +2592,13 @@ error:
 	if (file != NULL) fclose(file);
 	return FALSE;
 }
+
+BOOL CEvent::ReadPlayer()
+{
+	char filename[MAX_PATH];
+
+	m_playerIndex = 0;
+
+	strcpy(filename, "data\\info%.3d.blp");
+	AddUserPath(filename);
+}

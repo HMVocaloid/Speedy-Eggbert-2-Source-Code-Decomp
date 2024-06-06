@@ -67,7 +67,45 @@ void CDecor::Create(HWND hWnd, CSound* pSound, CPixmap* pPixmap, CNetwork* pNetw
     m_pNetwork = pNetwork;
     m_input = 0;
     m_previousInput = 0;
+    m_bHelicopterFlying = FALSE;
+    m_bHelicopterStationary = FALSE;
+    m_bCarMoving = FALSE;
+    m_bCarStationary = FALSE;
 }
+
+void CDecor::Init(int channel, int icon)
+{
+    m_cameraPos.x = 0;
+    m_cameraPos.y = 0;
+    m_worldDims.x = 100;
+    m_worldDims.y = 100;
+    m_music = 1;
+    m_region = 2;
+    m_missionTitle[0] = '\0';
+    m_bScreenShake = 0;
+
+}
+
+BOOL CDecor::LoadBackgroundImages()
+{
+    char filename[52];
+    POINT totalDim, iconDim;
+    
+    if (m_region == m_lastRegion) return TRUE;
+    m_lastRegion == m_region;
+
+    totalDim.x = DIMCELX * 2 * 16;
+    totalDim.y = DIMCELY * 2 * 6;
+    iconDim.x = DIMCELX * 2;
+    iconDim.y = DIMCELY * 2;
+    sprintf(filename, "image\\decor%.3d.blp", m_region);
+    if (!m_pPixmap->Cache(CHFLOOR, filename, totalDim, iconDim, FALSE))
+        return FALSE;
+
+    return TRUE;
+}
+
+
 
 
 int CDecor::SetBlupiChannel()

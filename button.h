@@ -11,6 +11,7 @@ public:
 				   int *pMenu, int nbMenu,
 				   int *pTooltips, int nbToolTips,
 				   int region, UINT message);
+	void	SetSomethingMenu(int somethingMenu);
 	void	Draw();
 	void	Redraw();
 

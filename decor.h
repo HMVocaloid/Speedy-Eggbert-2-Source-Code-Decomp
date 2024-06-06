@@ -50,8 +50,7 @@ typedef struct
 	BOOL	bExist;			// TRUE -> utilis�
 	BOOL	bHili;			// TRUE -> s�lectionn�
 
-	short	perso;			// personnage, voir (*)
-
+	short	perso;
 	short	goalAction;		// action (long terme)
 	short	goalPhase;		// phase (long terme)
 	POINT	goalCel;		// cellule vis�e (long terme)
@@ -127,6 +126,40 @@ Blupi;
 //		1 -> en bateau
 //		2 -> en jeep
 //		3 -> armure
+
+typedef struct
+{		
+	short 	move_frames_forward;
+	short 	move_frames_backward;
+	short 	delay_frames_start;
+	short 	delay_frames_end;
+	POINT 	pos_start;
+	POINT 	pos_end;
+	POINT	pos;
+	short 	move_phase;
+	short 	move_timer;
+	short	life_time;
+	short 	channel;
+	short 	icon;
+}
+PersoType;
+
+typedef struct
+{
+	short 	move_frames_forward;
+	short 	move_frames_backward;
+	short 	delay_frames_start;
+	short 	delay_frames_end;
+	POINT 	pos_start;
+	POINT 	pos_end;
+	POINT	pos;
+	short 	move_phase;
+	short 	move_timer;
+	short	life_time;
+	short 	channel;
+	short 	icon;
+}
+Perso;
 
 
 // Descripteur d'un d�cor anim�.
@@ -372,6 +405,7 @@ public:
 	void	InitAfterBuild();
 	void	ResetHili();
 	BOOL	LoadImages();
+	BOOL	LoadBackgroundImages();
 	void	ClearFog();
 	void	ClearFire();
 	void	SetBuild(BOOL bBuild);
@@ -477,9 +511,9 @@ protected:
     POINT       m_cameraPos;
     POINT       m_worldDims;
     POINT       m_selectedCelPos;
-    WMessage    m_phrase;
+    WMessage    m_phase;
     int         m_targetMission;
-    int         m_missionTitle;
+    char        m_missionTitle[100];
     int         m_nbCases;
     int         m_caseIndexes[200];
     int         m_nbSomethings;
@@ -657,6 +691,7 @@ protected:
 	int			m_fillPutChannel;
 	int			m_fillPutIcon;
 	char*		m_pFillMap;
+
     int SetBlupiChannel();
     int GetBlupiChannel();
 	int GetPersonalBombIcon();

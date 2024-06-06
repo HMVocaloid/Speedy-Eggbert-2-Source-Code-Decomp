@@ -144,6 +144,7 @@ protected:
 	void	TryPhase();
 	void	UnTryPhase();
 	int		GetTryPhase();
+	BOOL	ReadPlayer();
 	void	SetLives(int lives);
 
 	void	DemoRecStart();
@@ -160,6 +161,7 @@ protected:
     int         m_maxMission;
     WMessage    m_phase;
     int         m_index;
+	int			m_playerIndex;
     BOOL        m_bSchool;
     BOOL        m_bPrivate;
 	BOOL 		m_bMulti;

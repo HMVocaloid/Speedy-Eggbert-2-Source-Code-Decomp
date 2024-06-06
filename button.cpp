@@ -129,6 +129,16 @@ BOOL CButton::Create(HWND hWnd, CPixmap *pPixmap, CSound *pSound,
 
 // Space for unknown menu function.
 
+void CButton::SetSomethingMenu(int somethingMenu)
+{
+	int i = somethingMenu;
+
+	while (0 < i)
+	{
+
+	}
+}
+
 // Draw a button in its state
 
 void CButton::Draw()
