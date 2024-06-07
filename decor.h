@@ -35,6 +35,7 @@ typedef struct
 	short	rankMove;		// rang dans m_move
 	short	workBlupi;		// rang du blupi travaillant ici
 	short	fire;
+	int		icon;
 }
 Cellule;
 // Cette structure doit �tre la plus petite possible, car
@@ -126,6 +127,25 @@ Blupi;
 //		1 -> en bateau
 //		2 -> en jeep
 //		3 -> armure
+
+typedef struct
+{
+	int   type;
+	int   stepAdvance;
+	int   stepRecede;
+	int   timeStopStart;
+	int	  timeStopEnd;
+	POINT posStart;
+	POINT posEnd;
+	POINT posCurrent;
+	int   step;
+	int	  time;
+	int	  phrase;
+	int	  channel;
+	int   icon;
+}
+MoveObject;
+
 
 typedef struct
 {		
@@ -444,7 +464,7 @@ public:
 	int		GetInfoHeight();
 
 	int 	GetTargetLevel();
-	void	SetBlupiState(BOOL helicopter, UINT drive, BOOL skateboard, UINT water);
+	void	GetBlupiInfo(BOOL bHelico, BOOL bJeep, BOOL bSkate, BOOL bNage);
 
 	char*	GetButtonExist();
 
@@ -503,7 +523,7 @@ protected:
 	CSound*		m_pSound;
 	CPixmap*	m_pPixmap;
     CNetwork*   m_pNetwork;
-    Object      m_objects[100][100];
+    MoveObject  m_moveObject[100][100];
     Explo       m_explos[100][100];
     Perso       m_persos[200];
     int         m_input;
@@ -525,24 +545,32 @@ protected:
     int         m_actionFrameCount;
     POINT       m_velocity;
     Icon4       m_blupiIcon;
+	POINT		m_blupiStartPos;
+	int			m_blupiStartDir;
+	int			m_blupiAction;
+	int			m_blupiPhase;
     /*
     undefined
     undefined
     undefined
     undefined
     */
+	int			m_decor;
+	int			m_bigDecor;
+	int			m_decorAction;
     IconChannel m_blupiChannel;
     POINT       m_activeConveyorVelocity;
     int         m_activeLiftIndex;
-    BOOL        m_bPlayerHasControl;
-    BOOL        m_bIsFalling;
-    BOOL        m_bHelicopter;
-    BOOL        m_bHovercraft;
-    BOOL        m_bJeep;
-    BOOL        m_bTank;
-    BOOL        m_bSkateboard;
-    BOOL        m_bInDeepWater;
-    BOOL        m_bInSurfaceWater;
+    int         m_blupiChannel;
+	BOOL		m_blupiFocus;
+    BOOL        m_blupiAir;
+    BOOL        m_blupiHelico;
+    BOOL        m_blupiOver;
+    BOOL        m_blupiJeep;
+    BOOL        m_blupiTank;
+    BOOL        m_blupiSkate;
+    BOOL        m_blupiNage;
+    BOOL        m_blupiSurf;
     BOOL        m_bInWind;
     BOOL        m_bIsHangingFromBar;
     BOOL        m_bHeadache;
@@ -555,6 +583,7 @@ protected:
     BOOL        m_bCrushed;
     BOOL        m_bUseSafePosition;
     BOOL        m_bIsTerminating;
+	int			m_lastDecorIcon;
     int         m_glue;
     int         m_keys;
     int         m_personalBombs;

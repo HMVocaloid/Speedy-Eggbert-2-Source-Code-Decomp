@@ -68,7 +68,7 @@ public:
 	void	TryInsert();
 	void	SomethingUserMissions(LPCSTR lpFileName, LPCSTR thing);
 	void	RestoreGame();
-	int		SomethingMissions();
+	int		MissionBack();
 	void	TableSomething();
 
 	int		GetButtonIndex(int button);

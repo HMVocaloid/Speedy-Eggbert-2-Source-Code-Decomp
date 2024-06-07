@@ -2310,20 +2310,20 @@ BOOL CEvent::GetPause()
 	return m_bPause;
 }
 
-int CEvent::SomethingMissions()
+int CEvent::MissionBack()
 {
-	int tmp = m_mission;
+	int num = m_mission;
 
-	if (tmp % 10 == 0 ||
-		tmp == 99)
+	if (num % 10 == 0 ||
+		num == 99)
 	{
 		m_mission = 1;
-		return tmp / 10;
+		return num / 10;
 	}
 	else
 	{
-		m_mission = tmp / 10 * 10;
-		return (tmp < 0);
+		m_mission = num / 10 * 10;
+		return (num < 0);
 	}
 }
 

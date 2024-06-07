@@ -52,38 +52,25 @@ BOOL CJauge::Create(HWND hWnd, CPixmap *pPixmap, CDecor *pDecor,
 
 void CJauge::Draw()
 {
-	int			part;
-	RECT		rect;
+    int			part;
+    RECT		rect;
 
-	if ( m_bMinimizeRedraw && !m_bRedraw )  return;
-	m_bRedraw = FALSE;
+    if (m_bMinimizeRedraw && !m_bRedraw)  return;
+    m_bRedraw = FALSE;
 
-	if ( m_bHide )  // bouton cach� ?
-	{
-		rect.left   = m_pos.x;
-		rect.right  = m_pos.x+m_dim.x;
-		rect.top    = m_pos.y;
-		rect.bottom = m_pos.y+m_dim.y;
-		m_pPixmap->DrawPart(-1, CHBACK, m_pos, rect, 1);  // dessine le fond
-		return;
-	}
+    if (m_bHide)  // bouton cach� ?
+    {
+        m_pPixmap->DrawPart(-1, 0, m_pos, rect);
+        return;
+    }
+    int num = m_level * 114 / 100;
 
-	part = (m_level*(DIMJAUGEX-6-4))/100;
+    m_pPixmap->DrawPart(-1, 5, m_pos, rect);
+    if (num > 0)
+    {
+        m_pPixmap->DrawPart(-1, 5, m_pos, rect);
+    }
 
-	rect.left   = 0;
-	rect.right  = DIMJAUGEX;
-	rect.top    = DIMJAUGEY*0;
-	rect.bottom = DIMJAUGEY*1;
-	m_pPixmap->DrawPart(-1, CHJAUGE, m_pos, rect);  // partie noire
-
-	if ( part > 0 )
-	{
-		rect.left   = 0;
-		rect.right  = 6+part;
-		rect.top    = DIMJAUGEY*m_type;
-		rect.bottom = DIMJAUGEY*(m_type+1);
-		m_pPixmap->DrawPart(-1, CHJAUGE, m_pos, rect);  // partie color�e
-	}
 }
 
 void CJauge::Redraw()

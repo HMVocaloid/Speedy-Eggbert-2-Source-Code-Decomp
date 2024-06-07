@@ -19,4 +19,4 @@
  | text.cpp		 | 85% complete |
 
  
- 
+ Credit to jummy over at the Blupi Games Fan Server for doing the decompilation work on the game.

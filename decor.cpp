@@ -29,10 +29,16 @@
 
 CDecor::CDecor()
 {
+    int i;
+
     m_hWnd   = NULL;
     m_pSound = NULL;
     m_pPixmap = NULL;
 
+    for (i = 0; i < 200; i++)
+    {
+        m_lastDecorIcon[i] = 0;
+    }
     m_time = 0;
     m_bAllMissions = FALSE;
     m_bInvincible  = FALSE;
@@ -75,6 +81,8 @@ void CDecor::Create(HWND hWnd, CSound* pSound, CPixmap* pPixmap, CNetwork* pNetw
 
 void CDecor::Init(int channel, int icon)
 {
+    int i;
+
     m_cameraPos.x = 0;
     m_cameraPos.y = 0;
     m_worldDims.x = 100;
@@ -82,7 +90,62 @@ void CDecor::Init(int channel, int icon)
     m_music = 1;
     m_region = 2;
     m_missionTitle[0] = '\0';
-    m_bScreenShake = 0;
+    for (int i = 0; i < 100; i++)
+    {
+        for (int j = 0; j < 100; j++)
+        {
+            m_decor[i, j]->icon = -1;
+            m_bigDecor[i, j]->icon = 1;
+        }
+    }
+    m_decor[3, 4]->icon = 40;
+    m_decor[4, 4]->icon = 38;
+    m_decor[5, 4]->icon = 39;
+    for (int k = 0; k < Decor.MAXMOVEOBJECT; k++)
+    {
+        m_moveObject[k]->type = 0;
+    }
+    m_moveObject[0]->type = 5;
+    m_moveObject[0]->stepAdvance = 1;
+    m_moveObject[0]->stepRecede = 1;
+    m_moveObject[0]->timeStopStart = 0;
+    m_moveObject[0]->timeStopEnd = 0;
+    m_moveObject[0]->posStart.x = 258;
+    m_moveObject[0]->posStart.y = 196;
+    m_moveObject[0]->posEnd = m_moveObject[0]->posStart;
+    m_moveObject[0]->posCurrent = m_moveObject[0]->posStart;
+    m_moveObject[0]->phrase = 0;
+    m_moveObject[0]->step = 1;
+    m_moveObject[0]->time = 0;
+    m_moveObject[0]->channel = 10;
+    m_moveObject[0]->icon = 0;
+    m_moveObject[1]->type = 7;
+    m_moveObject[1]->stepAdvance = 1;
+    m_moveObject[1]->timeStopStart = 0;
+    m_moveObject[1]->timeStopEnd = 0;
+    m_moveObject[1]->posStart.x = 450;
+    m_moveObject[1]->posStart.y = 196;
+    m_moveObject[1]->posEnd = m_moveObject[1]->posStart;
+    m_moveObject[1]->posCurrent = m_moveObject[1]->posStart;
+    m_moveObject[1]->phrase = 0;
+    m_moveObject[1]->step = 1;
+    m_moveObject[1]->time = 0;
+    m_moveObject[1]->channel = 10;
+    m_moveObject[1]->icon = 29;
+    m_blupiStartPos.x = 66;
+    m_blupiStartPos.y = 192 + Decor.BLUPIOFFY;
+    m_blupiStartDir = 2;
+    m_blupiAction = 1;
+    m_blupiPhase = 0;
+    m_blupiIcon = 0;
+    m_blupiChannel = 2;
+    m_blupiFocus = TRUE;
+    m_blupiAir = FALSE;
+    m_blupiHelico = FALSE;
+    m_blupiOver = FALSE;
+    m_blupiJeep = FALSE;
+    m_blupiTank = FALSE;
+
 
 }
 
@@ -259,12 +322,12 @@ void CDecor::SetTeam(int team)
     m_team = team;
 }
 
-void CDecor::SetBlupiState(BOOL helicopter, UINT drive, BOOL skateboard, UINT water)
+void CDecor::GetBlupiInfo(BOOL bHelico, BOOL bJeep, BOOL bSkate, BOOL bNage)
 {
-    m_bHelicopter = helicopter;
-    m_bJeep || m_bTank = drive;
-    m_bSkateboard = skateboard;
-    m_bInDeepWater || m_bInSurfaceWater = water;
+    bHelico = m_blupiHelico;
+    bJeep = (m_blupiJeep | m_blupiTank);
+    bSkate = m_blupiSkate;
+    bNage = (m_blupiNage | m_blupiSurf);
 }
 
 int CDecor::GetMissionTitle()
