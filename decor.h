@@ -212,6 +212,23 @@ typedef struct
 Move;
 
 
+class ByeByeObject
+{
+public:
+	int channel;
+	int icon;
+	double posX;
+	double posY;
+	double rotation;
+	double phase;
+	double animationSpeed;
+	double rotationSpeed;
+	double speedX;
+
+protected:
+	ByeByeObject m_byeByeObjects;
+};
+
 #define MAXLASTDRAPEAU	50
 
 class CDecor
@@ -572,15 +589,34 @@ protected:
     BOOL        m_blupiNage;
     BOOL        m_blupiSurf;
     BOOL        m_bInWind;
-    BOOL        m_bIsHangingFromBar;
-    BOOL        m_bHeadache;
-    BOOL        m_bShield;
-    BOOL        m_bLollipop;
-    BOOL        m_bPowercharge;
-    BOOL        m_bInvisible;
-    BOOL        m_bInverter;
-    BOOL        m_bWaspSting;
-    BOOL        m_bCrushed;
+    BOOL        m_blupiSuspend;
+    BOOL        m_blupiJumpAie;
+    BOOL        m_blupiShield;
+    BOOL        m_blupiPower;
+    BOOL        m_blupiCloud;
+    BOOL        m_blupiHide;
+	BOOL        m_blupiInvert;
+    BOOL        m_blupiBalloon;
+    BOOL        m_blupiEcrase;
+	BOOL		m_blupiMotorHigh;
+	POINT		m_blupiPosHelico;
+	int			m_blupiActionOuf;
+	int			m_blupiTimeNoAsc;
+	int			m_blupiTimeMockery;
+	double		m_blupiVitesseX;
+	double		m_blupiVitesseY;
+	POINT		m_blupiValidPos;
+	BOOL		m_blupiFront;
+	int			m_blupiBullet;
+	int			m_blupiCle;
+	int			m_blupiPerso;
+	int			m_blupiDynamite;
+	int			m_nbTresor;
+	int			m_totalTresor;
+	int			m_goalPhase;
+	POINT		m_scrollPoint;
+	POINT		m_scrollAdd;
+	
     BOOL        m_bUseSafePosition;
     BOOL        m_bIsTerminating;
 	int			m_lastDecorIcon;
@@ -685,7 +721,7 @@ protected:
 	int			m_nbStatHome;		// nb de maisons
 	int			m_nbStatHomeBlupi;	// maisons occup�es par blupi
 	int			m_nbStatRobots;		// nb d'ennemis
-	Term		m_term;				// conditions pour gagner
+	int 		m_term;				// conditions pour gagner
 	int			m_winCount;			// compteur avant gagn�
 	int			m_winLastHachBlupi;	// dernier nombre atteint
 	int			m_winLastHachPlanche;// dernier nombre atteint

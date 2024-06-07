@@ -145,8 +145,39 @@ void CDecor::Init(int channel, int icon)
     m_blupiOver = FALSE;
     m_blupiJeep = FALSE;
     m_blupiTank = FALSE;
-
-
+    m_blupiSkate = FALSE;
+    m_blupiNage = FALSE;
+    m_blupiSurf = FALSE;
+    m_blupiSuspend = FALSE;
+    m_blupiJumpAie = FALSE;
+    m_blupiShield = FALSE;
+    m_blupiPower = FALSE;
+    m_blupiCloud = FALSE;
+    m_blupiHide = FALSE;
+    m_blupiInvert = FALSE;
+    m_blupiBalloon = FALSE;
+    m_blupiEcrase = FALSE;
+    m_blupiMotorHigh = FALSE;
+    m_blupiPosHelico.x = -1;
+    m_blupiActionOuf = 0;
+    m_blupiTimeNoAsc = 0;
+    m_blupiTimeMockery = 0;
+    m_blupiVitesseX = 0.0;
+    m_blupiVitesseY = 0.0;
+    m_blupiValidPos = m_blupiStartPos;
+    m_blupiFront = FALSE;
+    m_blupiBullet = 0;
+    m_blupiCle = 0;
+    m_blupiPerso = 0;
+    m_blupiDynamite = 0;
+    m_nbTresor = 0;
+    m_totalTresor = 1;
+    m_goalPhase = 0;
+    m_scrollPoint = m_blupiStartPos;
+    m_scrollAdd.x = 0;
+    m_scrollAdd.y = 0;
+    m_term = 0;
+    byeByeObjects.Clear();
 }
 
 BOOL CDecor::LoadBackgroundImages()
