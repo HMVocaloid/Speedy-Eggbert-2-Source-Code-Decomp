@@ -278,6 +278,11 @@ BOOL CPixmap::Restore()
 	return TRUE;
 }
 
+void HudIcon(int channel, int rank, POINT pos)
+{
+	pos.x = (int)((double)pos.x + CPixmap::originX)
+}
+
 // Initialise la palette syst�me.
 
 BOOL CPixmap::InitSysPalette()

@@ -140,7 +140,7 @@ typedef struct
 	POINT posCurrent;
 	int   step;
 	int	  time;
-	int	  phrase;
+	int	  phase;
 	int	  channel;
 	int   icon;
 }
@@ -228,6 +228,7 @@ public:
 protected:
 	ByeByeObject m_byeByeObjects;
 };
+
 
 #define MAXLASTDRAPEAU	50
 
@@ -440,6 +441,11 @@ public:
 	void	Create(HWND hWnd, CSound *pSound, CPixmap *pPixmap, CNetwork *pNetwork);
 	void	Init(int channel, int icon);
 	void	InitAfterBuild();
+	void	PlayPrepare(BOOL bTest);
+	void	BuildPrepare();
+	void	Build();
+	void	DrawInfo();
+	POINT	DecorNextAction();
 	void	ResetHili();
 	BOOL	LoadImages();
 	BOOL	LoadBackgroundImages();
@@ -528,6 +534,7 @@ public:
 	BOOL	GetNetDebug();
 	void	SetMulti(int multi);
 	void	SetTeam(int team);
+	void	MoveObjectSort();
 	void	GetMissionsCleared();
 	void	SetDemoState(BOOL demoState);
 	
@@ -536,6 +543,8 @@ protected:
 	int		GetSeeIcon(char *pBits, int index);
 
 protected:
+	static int  MAXMOVEOBJECT[200];
+	static int	MAXQUART[441];
 	HWND		m_hWnd;
 	CSound*		m_pSound;
 	CPixmap*	m_pPixmap;
@@ -548,6 +557,7 @@ protected:
     POINT       m_cameraPos;
     POINT       m_worldDims;
     POINT       m_selectedCelPos;
+	Random		m_random;
     WMessage    m_phase;
     int         m_targetMission;
     char        m_missionTitle[100];
@@ -557,6 +567,8 @@ protected:
     int         m_somethingIndexes;
     POINT       m_pos;
     POINT       m_safePos;
+	POINT		m_posDecor;
+	RECT		m_drawBounds;
     Action      m_action;
     int         m_direction;
     int         m_actionFrameCount;
@@ -599,6 +611,7 @@ protected:
     BOOL        m_blupiBalloon;
     BOOL        m_blupiEcrase;
 	BOOL		m_blupiMotorHigh;
+	int			m_blupiMotorSound;
 	POINT		m_blupiPosHelico;
 	int			m_blupiActionOuf;
 	int			m_blupiTimeNoAsc;
@@ -607,6 +620,13 @@ protected:
 	double		m_blupiVitesseY;
 	POINT		m_blupiValidPos;
 	BOOL		m_blupiFront;
+	int			m_blupiNoBarre;
+	int			m_blupiFifoNb;
+	CJauge		m_jauges;
+	BOOL		m_bFoundCle;
+	BOOL		m_bPause;
+	int			m_blupiTimeFire;
+	int			m_voyageIcon;
 	int			m_blupiBullet;
 	int			m_blupiCle;
 	int			m_blupiPerso;
@@ -616,9 +636,11 @@ protected:
 	int			m_goalPhase;
 	POINT		m_scrollPoint;
 	POINT		m_scrollAdd;
-	
+	int			m_nbVies;
     BOOL        m_bUseSafePosition;
     BOOL        m_bIsTerminating;
+	POINT		m_blupiPos;
+	int			m_blupiDir;
 	int			m_lastDecorIcon;
     int         m_glue;
     int         m_keys;

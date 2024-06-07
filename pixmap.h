@@ -35,6 +35,7 @@ public:
     void    SetTransparent2(int channel, COLORREF color1, COLORREF color2);
     void    SetClipping(RECT clip);
     RECT    GetClipping();
+    void    HudIcon(int channel, int rank, POINT pos);
 
     BOOL    IsIconPixel(int channel, int rank, POINT pos);
 
@@ -89,6 +90,8 @@ protected:
     HWND                   m_hWnd;
     POINT                  m_dim;
     RECT                   m_clipRect;
+    double                 originX;
+    double                 originY;
 
     POINT                  m_mousePos;
     int                    m_mouseSprite;

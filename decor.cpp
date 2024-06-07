@@ -114,7 +114,7 @@ void CDecor::Init(int channel, int icon)
     m_moveObject[0]->posStart.y = 196;
     m_moveObject[0]->posEnd = m_moveObject[0]->posStart;
     m_moveObject[0]->posCurrent = m_moveObject[0]->posStart;
-    m_moveObject[0]->phrase = 0;
+    m_moveObject[0]->phase = 0;
     m_moveObject[0]->step = 1;
     m_moveObject[0]->time = 0;
     m_moveObject[0]->channel = 10;
@@ -127,7 +127,7 @@ void CDecor::Init(int channel, int icon)
     m_moveObject[1]->posStart.y = 196;
     m_moveObject[1]->posEnd = m_moveObject[1]->posStart;
     m_moveObject[1]->posCurrent = m_moveObject[1]->posStart;
-    m_moveObject[1]->phrase = 0;
+    m_moveObject[1]->phase = 0;
     m_moveObject[1]->step = 1;
     m_moveObject[1]->time = 0;
     m_moveObject[1]->channel = 10;
@@ -178,6 +178,248 @@ void CDecor::Init(int channel, int icon)
     m_scrollAdd.y = 0;
     m_term = 0;
     byeByeObjects.Clear();
+}
+
+void CDecor::PlayPrepare(BOOL bTest)
+{
+    if (bTest)
+    {
+        m_nbVies = 3;
+    }
+    m_blupiPos = m_blupiStartPos;
+    m_blupiDir = m_blupiStartDir;
+    if (m_blupiDir == 1)
+    {
+        m_blupiIcon = 4;
+    }
+    else
+    {
+        m_blupiIcon = 0;
+    }
+    m_blupiAction = 1;
+    m_blupiPhase = 0;
+    m_blupiFocus = TRUE;
+    m_blupiAir = FALSE;
+    m_blupiHelico = FALSE;
+    m_blupiOver = FALSE;
+    m_blupiJeep = FALSE;
+    m_blupiTank = FALSE;
+    m_blupiSkate = FALSE;
+    m_blupiNage = FALSE;
+    m_blupiSurf = FALSE;
+    m_blupiSuspend = FALSE;
+    m_blupiJumpAie = FALSE;
+    m_blupiShield = FALSE;
+    m_blupiPower = FALSE;
+    m_blupiCloud = FALSE;
+    m_blupiHide = FALSE;
+    m_blupiInvert = FALSE;
+    m_blupiBalloon = FALSE;
+    m_blupiEcrase = FALSE;
+    m_blupiMotorHigh = FALSE;
+    m_blupiActionOuf = 0;
+    m_blupiTimeNoAsc = 0;
+    m_blupiTimeMockery = 0;
+    m_blupiValidPos = m_blupiPos;
+    m_blupiBullet = 0;
+    m_blupiCle = 0;
+    m_blupiPerso = 0;
+    m_blupiDynamite = 0;
+    m_nbTresor = 0;
+    m_totalTresor = 0;
+    for (int i = 0; i < Decor.MAXMOVEOBJECT; i++)
+    {
+        if (m_moveObject[i]->type == 5)
+        {
+            m_totalTresor++;
+        }
+        m_moveObject[i]->posCurrent = m_moveObject[i]->posStart;
+        m_moveObject[i]->step = 1;
+        m_moveObject[i]->phase = 0;
+        m_moveObject[i]->time = 0;
+        if (m_moveObject[i]->type == 5 ||
+            m_moveObject[i]->type == 6 ||
+            m_moveObject[i]->type == 25 ||
+            m_moveObject[i]->type == 26 ||
+            m_moveObject[i]->type == 40 ||
+            m_moveObject[i]->type == 2 ||
+            m_moveObject[i]->type == 3 ||
+            m_moveObject[i]->type == 96 ||
+            m_moveObject[i]->type == 97)
+        {
+            m_moveObject[i]->phase = m_random.Next(23);
+        }
+        if (m_moveObject[i]->type == 23)
+        {
+            m_moveObject[i]->type = 0;
+        }
+    }
+    m_goalPhase = 0;
+    MoveObjectSort();
+    m_scrollPoint = m_blupiPos;
+    m_scrollAdd.x = 0;
+    m_scrollAdd.y = 0;
+    m_blupiPosHelico.x = -1;
+    m_blupiMotorSound = 0;
+    m_blupiFront = FALSE;
+    m_blupiNoBarre = 0;
+    m_blupiValidPos = m_blupiPos;
+    m_blupiFifoNb = 0;
+    m_blupiTimeFire = 0;
+    m_voyageIcon = -1;
+    m_jauges[0].SetHide(TRUE);
+    m_jauges[1].SetHide(TRUE);
+    m_bFoundCle = FALSE;
+    m_term = 0;
+    m_time = 0;
+    m_bPause = FALSE;
+    MoveStep();
+    m_scrollPoint.x = m_blupiPos.x + 30 + m_scrollAdd.x;
+    m_scrollPoint.y = m_blupiPos.y + 30 + m_scrollAdd.y;
+}
+
+void CDecor::BuildPrepare()
+{
+    for (int i = 0; i < MAXMOVEOBJECT; i++)
+    {
+        m_moveObject[i]->posCurrent = m_moveObject[i]->posStart;
+        m_moveObject[i]->step = 1;
+        m_moveObject[i]->time = 0;
+        m_moveObject[i]->phase = 0;
+        if (m_moveObject[i]->type == 23)
+        {
+            m_moveObject[i]->type = 0;
+        }
+    }
+    m_voyageIcon = -1;
+    m_time = 0;
+    m_bPause = FALSE;
+}
+
+void CDecor::Build()
+{
+    POINT posDecor = DecorNextAction();
+    POINT pos;
+    pos.x = posDecor.x * 2 / 3;
+    pos.y = posDecor.y * 2 / 3;
+    int num = 1;
+    POINT tinyPoint;
+    tinyPoint.x = m_drawBounds.left;
+    RECT rect;
+    rect.left = pos.x % 640;
+    rect.right = 640;
+
+    for (int i = 0; i < 3; i++)
+    {
+        tinyPoint.y = m_drawBounds.top;
+        rect.top = pos.y % 480;
+        rect.bottom = 480;
+        for (int j = 0; j < 2; j++)
+        {
+            m_pPixmap->DrawPart(3, tinyPoint, rect);
+            tinyPoint.y += (rect.bottom - rect.top) - num;
+            rect.top = 0;
+            rect.bottom = 480;
+        }
+        tinyPoint.x += (rect.right - rect.left) - num;
+        rect.left = 0;
+        rect.right = 640;
+        if (tinyPoint.x > m_drawBounds.right)
+        {
+            break;
+        }
+        tinyPoint.x = m_drawBounds.left - posDecor.x % 64 - 64;
+        for (int i = posDecor.x / 64 - 1; i < posDecor.x / 64 + (m_drawBounds.right - m_drawBounds.left) / 64 + 3; i++) {
+            tinyPoint.y = m_drawBounds.top - posDecor.y % 64 + 2 - 64;
+            for (int j = posDecor.y / 64 - 1; j < posDecor.y / 64 + (m_drawBounds.bottom - m_drawBounds.top) / 64 + 2; j++)
+            {
+                if (i >= 0 && i < 100 && j >= 0 && j < 100)
+                {
+                    int num2 = m_bigDecor[i, j].icon;
+                }
+            }
+        }
+    }
+}
+
+void CDecor::DrawInfo()
+{
+    POINT pos;
+    char text[100];
+
+    pos.x = 210;
+    pos.y = 417;
+
+    for (int i = 0; i < m_nbVies; i++)
+    {
+        m_pPixmap->HudIcon(2, 48, pos);
+        pos.x += 16;
+    }
+    pos.x = 570;
+    pos.y = 442;
+    for (int i = 0; i < m_blupiBullet; i++)
+    {
+        m_pPixmap->HudIcon(10, 176, pos);
+        pos.x += 4;
+    }
+    if (m_blupiPerso > 0)
+    {
+        pos.x = 0;
+        pos.y = 438;
+        m_pPixmap->HudIcon(4, 108, pos);
+        m_blupiPerso->sprintf(text, "=_%d");
+        pos.x = 32;
+        pos.y = 452;
+        m_pPixmap->DrawText(pos, text, 0.7);
+    }
+    if (m_blupiDynamite > 0)
+    {
+        pos.x = 505;
+        pos.y = 414;
+        m_pPixmap->HudIcon(10, 252, pos);
+    }
+    if (m_blupiDynamite > 0)
+    {
+        pos.x = 505;
+        pos.y = 414;
+        m_pPixmap->HudIcon(10, 252, pos);
+    }
+    if ((m_blupiCle & 1) != 0)
+    {
+        pos.x = 520;
+        pos.y = 418;
+        m_pPixmap->HudIcon(10, 215, pos);
+    }
+    if ((m_blupiCle & 2) != 0)
+    {
+        pos.x = 530;
+        pos.y = 418;
+        m_pPixmap->HudIcon(10, 222, pos);
+    }
+    if ((m_blupiCle & 4) != 0)
+    {
+        pos.x = 540;
+        pos.y = 418;
+        m_pPixmap->HudIcon(10, 229, pos);
+    }
+    if (m_mission != 1 && m_mission % 10 != 0 || m_bPrivate)
+    {
+        RECT rect;
+    }
+}
+
+POINT CDecor::DecorNextAction()
+{
+    int num = 0;
+    if (m_decorAction == 0 || m_bPause)
+    {
+        m_posDecor;
+    }
+    POINT posDecor = m_posDecor;
+    while (tables->table_decor_action[num] != 0)
+    {
+        if (m_decorAction == tables->table_decor_action[num])
+    }
 }
 
 BOOL CDecor::LoadBackgroundImages()
@@ -359,6 +601,13 @@ void CDecor::GetBlupiInfo(BOOL bHelico, BOOL bJeep, BOOL bSkate, BOOL bNage)
     bJeep = (m_blupiJeep | m_blupiTank);
     bSkate = m_blupiSkate;
     bNage = (m_blupiNage | m_blupiSurf);
+}
+
+void CDecor::MoveObjectSort()
+{
+    CDecor.MoveObject src = default(CDecor->MoveObject);
+    int num = 0;
+    for (int i = 0; i < Decor.MAXMOVEOBJECT; i++)
 }
 
 int CDecor::GetMissionTitle()
