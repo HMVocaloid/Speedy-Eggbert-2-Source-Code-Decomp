@@ -659,7 +659,7 @@ BOOL CPixmap::Cache(int channel, char *pFilename, POINT totalDim, BOOL bUsePalet
 
 // Probably not needed?
 
-/*
+
 BOOL CPixmap::Cache(int channel, HBITMAP hbm, POINT totalDim)
 {
 	if ( channel < 0 || channel >= MAXIMAGE )  return FALSE;
@@ -686,7 +686,7 @@ BOOL CPixmap::Cache(int channel, HBITMAP hbm, POINT totalDim)
 
 	return TRUE;
 }
-*/
+
 
 // Purge une image.
 

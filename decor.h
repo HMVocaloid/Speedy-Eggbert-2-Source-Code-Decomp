@@ -439,8 +439,11 @@ public:
 	POINT	ConvPosToCel2(POINT pos);
 
 	void	Create(HWND hWnd, CSound *pSound, CPixmap *pPixmap, CNetwork *pNetwork);
+	BOOL	LoadImages();
 	void	Init(int channel, int icon);
 	void	InitAfterBuild();
+	void	SetTime(int time);
+	int	    GetTime();
 	void	PlayPrepare(BOOL bTest);
 	void	BuildPrepare();
 	void	Build();

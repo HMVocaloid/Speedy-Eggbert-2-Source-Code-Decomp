@@ -79,6 +79,18 @@ void CDecor::Create(HWND hWnd, CSound* pSound, CPixmap* pPixmap, CNetwork* pNetw
     m_bCarStationary = FALSE;
 }
 
+BOOL CDecor::LoadImages()
+{
+    char filename[52];
+
+    if (m_targetMission != m_region)
+    {
+        sprintf(filename, "decor%.3d.blp", m_region);
+        m_pPixmap->Cache(filename);
+        return TRUE;
+    }
+}
+
 void CDecor::Init(int channel, int icon)
 {
     int i;
@@ -105,6 +117,8 @@ void CDecor::Init(int channel, int icon)
     {
         m_moveObject[k]->type = 0;
     }
+    FlushBalleTraj();
+    FlushMoveTraj();
     m_moveObject[0]->type = 5;
     m_moveObject[0]->stepAdvance = 1;
     m_moveObject[0]->stepRecede = 1;
@@ -178,6 +192,16 @@ void CDecor::Init(int channel, int icon)
     m_scrollAdd.y = 0;
     m_term = 0;
     byeByeObjects.Clear();
+}
+
+void CDecor::SetTime(int time)
+{
+    m_time = time;
+}
+
+int CDecor::GetTime()
+{
+    return m_time;
 }
 
 void CDecor::PlayPrepare(BOOL bTest)
@@ -405,6 +429,13 @@ void CDecor::DrawInfo()
     if (m_mission != 1 && m_mission % 10 != 0 || m_bPrivate)
     {
         RECT rect;
+
+        rect.left = 410 + m_pPixmap->Origin.x;
+        rect.right = 510 + m_pPixmap->Origin.x;
+        rect.top = 445;
+        rect.bottom = 480;
+        m_pPixmap->DrawIcon(14, 15, rect, 0.6, FALSE);
+        
     }
 }
 
