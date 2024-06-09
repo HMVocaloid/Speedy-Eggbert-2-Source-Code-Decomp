@@ -643,16 +643,35 @@ BOOL CPixmap::Cache(int channel, char *pFilename, POINT totalDim, POINT iconDim,
 
 // Cache une image globale.
 
-BOOL CPixmap::Cache(int channel, char *pFilename, POINT totalDim, BOOL bUsePalette)
+BOOL CPixmap::Cache2(int channel, char *pFilename, POINT totalDim, BOOL bUsePalette)
 {
 	POINT		iconDim;
 
-	if ( channel < 0 || channel >= MAXIMAGE )  return FALSE;
+	if (strstr(pFilename, "blupi") == pFilename)
+	{
+		return FALSE;
+	}
+	else
+	{
+		if (strstr(pFilename, "element") == pFilename)
+		{
+			return FALSE;
+		}
+		if (strstr(pFilename, "explo") == pFilename)
+		{
+			return FALSE;
+		}
+		if (strstr(pFilename, "object") == pFilename)
+		{
+			return FALSE;
+		}
+		return TRUE;
+	}
 
-	iconDim.x = 0;
-	iconDim.y = 0;
+	if (bUsePalette != 0)
+	{
 
-	return Cache(channel, pFilename, totalDim, iconDim, bUsePalette);
+	}
 }
 
 // Cache une image provenant d'un bitmap.

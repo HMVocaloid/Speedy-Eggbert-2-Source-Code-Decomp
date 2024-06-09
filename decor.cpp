@@ -81,14 +81,24 @@ void CDecor::Create(HWND hWnd, CSound* pSound, CPixmap* pPixmap, CNetwork* pNetw
 
 BOOL CDecor::LoadImages()
 {
+    POINT totalDim, iconDim;
     char filename[52];
 
-    if (m_targetMission != m_region)
-    {
+    if (m_lastRegion != m_region) return TRUE;
+    m_lastRegion = m_region;
+
+    totalDim.x = DIMCELX * 2 * 16;
+    totalDim.y = DIMCELY * 2 * 6;
+    iconDim.x = DIMCELX * 2;
+    iconDim.y = DIMCELY * 2;
         sprintf(filename, "decor%.3d.blp", m_region);
-        m_pPixmap->Cache(filename);
-        return TRUE;
+        if (!m_pPixmap->Cache2(CHFLOOR, filename, totalDim, iconDim, FALSE))
+        return FALSE;
+        if (m_region == 0)
+        {
+            return FALSE;
     }
+        return TRUE;
 }
 
 void CDecor::Init(int channel, int icon)
@@ -210,8 +220,18 @@ void CDecor::PlayPrepare(BOOL bTest)
     {
         m_nbVies = 3;
     }
-    m_blupiPos = m_blupiStartPos;
-    m_blupiDir = m_blupiStartDir;
+
+    if (m_bMulti == 0) {
+        m_blupiPos = m_blupiStartPos;
+        m_blupiDir = m_blupiStartDir;
+    }
+    else
+    {
+        m_nbVies = 10;
+        m_blupiPos = m_blupiStartPos;
+        m_blupiDir = m_blupiStartDir;
+
+    }
     if (m_blupiDir == 1)
     {
         m_blupiIcon = 4;
@@ -371,71 +391,9 @@ void CDecor::DrawInfo()
     POINT pos;
     char text[100];
 
-    pos.x = 210;
-    pos.y = 417;
+    if (m_phase == WM_PHASE_PLAY || WM_PHASE_PLAYTEST)
+    {
 
-    for (int i = 0; i < m_nbVies; i++)
-    {
-        m_pPixmap->HudIcon(2, 48, pos);
-        pos.x += 16;
-    }
-    pos.x = 570;
-    pos.y = 442;
-    for (int i = 0; i < m_blupiBullet; i++)
-    {
-        m_pPixmap->HudIcon(10, 176, pos);
-        pos.x += 4;
-    }
-    if (m_blupiPerso > 0)
-    {
-        pos.x = 0;
-        pos.y = 438;
-        m_pPixmap->HudIcon(4, 108, pos);
-        m_blupiPerso->sprintf(text, "=_%d");
-        pos.x = 32;
-        pos.y = 452;
-        m_pPixmap->DrawText(pos, text, 0.7);
-    }
-    if (m_blupiDynamite > 0)
-    {
-        pos.x = 505;
-        pos.y = 414;
-        m_pPixmap->HudIcon(10, 252, pos);
-    }
-    if (m_blupiDynamite > 0)
-    {
-        pos.x = 505;
-        pos.y = 414;
-        m_pPixmap->HudIcon(10, 252, pos);
-    }
-    if ((m_blupiCle & 1) != 0)
-    {
-        pos.x = 520;
-        pos.y = 418;
-        m_pPixmap->HudIcon(10, 215, pos);
-    }
-    if ((m_blupiCle & 2) != 0)
-    {
-        pos.x = 530;
-        pos.y = 418;
-        m_pPixmap->HudIcon(10, 222, pos);
-    }
-    if ((m_blupiCle & 4) != 0)
-    {
-        pos.x = 540;
-        pos.y = 418;
-        m_pPixmap->HudIcon(10, 229, pos);
-    }
-    if (m_mission != 1 && m_mission % 10 != 0 || m_bPrivate)
-    {
-        RECT rect;
-
-        rect.left = 410 + m_pPixmap->Origin.x;
-        rect.right = 510 + m_pPixmap->Origin.x;
-        rect.top = 445;
-        rect.bottom = 480;
-        m_pPixmap->DrawIcon(14, 15, rect, 0.6, FALSE);
-        
     }
 }
 
