@@ -375,6 +375,15 @@
 #define SPRITE_FILL			14
 
 
+#define TYPE_BALLE
+#define	TYPE_CAISSE
+#define TYPE_GOAL
+#define TYPE_CLE
+#define TYPE_BLUPIHELICO
+#define TYPE_BLUPITANK
+#define TYPE_empty
+#define MAXMOVEOBJECT = 200;
+
 // User define message
 
 #define WM_UPDATE				(WM_USER+1)

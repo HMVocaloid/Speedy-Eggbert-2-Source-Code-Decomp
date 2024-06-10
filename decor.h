@@ -440,18 +440,25 @@ public:
 
 	void	Create(HWND hWnd, CSound *pSound, CPixmap *pPixmap, CNetwork *pNetwork);
 	BOOL	LoadImages();
-	void	Init(int channel, int icon);
+	void	InitGamer();
+	BOOL	AddLinkCaisse(int rank);
+	void	InitDecor(int channel, int icon);
 	void	InitAfterBuild();
 	void	SetTime(int time);
 	int	    GetTime();
 	void	PlayPrepare(BOOL bTest);
 	void	BuildPrepare();
 	void	Build();
+	BOOL	BlitzActif(int celx, int cely);
 	void	DrawInfo();
+	void	UpdateCaisse();
 	POINT	DecorNextAction();
+	BOOL	TestPushCaisse(int i, POINT pos, BOOL bPop);
+	void	SearchLinkCaisse(int rank, BOOL bPop);
 	void	ResetHili();
 	BOOL	LoadImages();
 	BOOL	LoadBackgroundImages();
+	BOOL	TestPushOneCaisse(int i, POINT move, int b);
 	void	ClearFog();
 	void	ClearFire();
 	void	SetBuild(BOOL bBuild);
@@ -565,6 +572,7 @@ protected:
     int         m_targetMission;
     char        m_missionTitle[100];
     int         m_nbCases;
+	int			m_linkCaisse;
     int         m_caseIndexes[200];
     int         m_nbSomethings;
     int         m_somethingIndexes;
@@ -592,6 +600,9 @@ protected:
 	int			m_decorAction;
     IconChannel m_blupiChannel;
     POINT       m_activeConveyorVelocity;
+	int			m_nbRankCaisse;
+	int			m_rankCaisse;
+	int			m_nbLinkCaisse;
     int         m_activeLiftIndex;
     int         m_blupiChannel;
 	BOOL		m_blupiFocus;

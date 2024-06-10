@@ -77,6 +77,11 @@ void CDecor::Create(HWND hWnd, CSound* pSound, CPixmap* pPixmap, CNetwork* pNetw
     m_bHelicopterStationary = FALSE;
     m_bCarMoving = FALSE;
     m_bCarStationary = FALSE;
+    InitDecor();
+    m_jauges->Create(m_hWnd, m_pPixmap, m_pSound, 169, 450, 1, FALSE);
+    m_jauges->SetHide(TRUE);
+    m_jauges->Create(m_hWnd, m_pPixmap, m_pSound, 295, 450, 3, FALSE);
+    m_jauges->SetHide(TRUE);
 }
 
 BOOL CDecor::LoadImages()
@@ -101,7 +106,13 @@ BOOL CDecor::LoadImages()
         return TRUE;
 }
 
-void CDecor::Init(int channel, int icon)
+void CDecor::InitGamer()
+{
+    m_nbVies = 3;
+
+}
+
+void CDecor::InitDecor(int channel, int icon)
 {
     int i;
 
@@ -297,6 +308,14 @@ void CDecor::PlayPrepare(BOOL bTest)
         {
             m_moveObject[i]->type = 0;
         }
+        if (m_moveObject[i]->type == TYPE_BALLE)
+        {
+            m_moveObject[i]->type = TYPE_empty;
+        }
+        if ((m_bMulti != FALSE) && (m_moveObject[i] == TYPE_CAISSE) || (m_moveObject[i] == TYPE_GOAL) || (m_moveObject[i] == TYPE_CLE) || (m_moveObject[i] == TYPE_BLUPIHELICO) || (m_moveObject[i] == TYPE_BLUPITANK))
+        {
+            m_moveObject[i]->type = TYPE_empty;
+        }
     }
     m_goalPhase = 0;
     MoveObjectSort();
@@ -386,6 +405,22 @@ void CDecor::Build()
     }
 }
 
+BOOL CDecor::BlitzActif(int celx, int cely)
+{
+    POINT pos;
+    pos.x = celx * 64;
+    pos.y = cely * 64;
+
+    int num = m_time % 100;
+
+    if (m_decor[celx, cely - 1]->icon == 304 && (num == 0 || num == 7 || num == 18 || num == 25 || num == 33 || num == 44) && cely > 0)
+    {
+        PlaySound(69, pos);
+    }
+    return num % 2 == 0 && num < 50;
+}
+
+
 void CDecor::DrawInfo()
 {
     POINT pos;
@@ -410,6 +445,82 @@ POINT CDecor::DecorNextAction()
         if (m_decorAction == tables->table_decor_action[num])
     }
 }
+
+void CDecor::UpdateCaisse()
+{
+    m_nbRankCaisse = 0;
+    for (int i = 0; i < MAXMOVEOBJECT; i++)
+    {
+        if (m_moveObject[i]->type == 12)
+        {
+            m_rankCaisse[m_nbRankCaisse++] = i;
+        }
+    }
+}
+
+BOOL CDecor::TestPushCaisse(int i, POINT pos, BOOL bPop)
+{
+    POINT move;
+
+    move.x = pos.x - m_moveObject[i]->posCurrent.x;
+    move.y = 0;
+    SearchLinkCaisse(i, bPop);
+    int y = m_moveObject[i]->posCurrent.y;
+    for (int j = 0; j < m_nbLinkCaisse; j++)
+    {
+        i = m_linkCaisse[j];
+        if (!TestPushOneCaisse(i, move, y))
+        {
+            return FALSE;
+        }
+    }
+    for (int j = 0; j < m_nbLinkCaisse; j++)
+    {
+        i = m_linkCaisse;
+        int num = i;
+        m_moveObject[num]->posCurrent.x = m_moveObject[num]->posCurrent.x + move.x;
+        m_moveObject[num]->posStart.x = m_moveObject[num]->posStart.x + move.x;
+        int num2 = i;
+        m_moveObject[num]->posEnd.x = m_moveObject[num]->posEnd.x + move.x;
+    }
+    return TRUE;
+}
+
+BOOL CDecor::TestPushOneCaisse(int i, POINT move, int b)
+{
+
+}
+
+void CDecor::SearchLinkCaisse(int rank, BOOL bPop)
+{
+    m_nbLinkCaisse = 0;
+    AddLinkCaisse(rank);
+    POINT posCurrent = m_moveObject;
+
+    BOOL flag;
+    do
+    {
+        flag = FALSE;
+        for (int i = 0; i < m_nbLinkCaisse; i++)
+        {
+            int num = m_linkCaisse[i];
+            if (m_moveObject[num]->posCurrent.y <=
+                posCurrent.y && (!bPop || (m_moveObject
+                    [num]->posCurrent.x >= posCurrent.x - 32 &&
+                    m_moveObject[num]->posCurrent.x <=
+                    posCurrent.x + 32)))
+            {
+
+            }
+        }
+    }
+}
+
+BOOL CDecor::AddLinkCaisse(int rank)
+{
+
+}
+
 
 BOOL CDecor::LoadBackgroundImages()
 {
