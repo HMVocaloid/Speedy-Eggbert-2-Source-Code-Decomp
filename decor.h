@@ -566,6 +566,13 @@ public:
 	void	BlupiAddFifo(POINT pos);
 	BOOL	DecorDetect(RECT rect);
 	BOOL	DecorDetect(RECT rect, BOOL bCaisse);
+	int		IsWorld(POINT pos);
+	BOOL	SearchDoor(int n, POINT cel, POINT blupi);
+	void	OpenDoorsTresor();
+	void	OpenDoors(POINT cel);
+	void	OpenDoorsWin();
+	void	OpenGoldsWin();
+	void	DoorsLost();
 	void	GetMissionsCleared();
 	void	SetDemoState(BOOL demoState);
 	
@@ -574,7 +581,6 @@ protected:
 	int		GetSeeIcon(char *pBits, int index);
 
 protected:
-	static int  MAXMOVEOBJECT[200];
 	static int	MAXQUART[441];
 	HWND		m_hWnd;
 	CSound*		m_pSound;

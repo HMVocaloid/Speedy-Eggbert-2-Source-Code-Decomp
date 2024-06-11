@@ -49,13 +49,11 @@ CDecor::CDecor()
     m_bNetMovePredict = TRUE;
     m_bNetDebug = FALSE;
     m_bMulti       = FALSE;
-    m_team = FALSE;
+    m_team = 0;
     m_netPacketsSent = 0;
     m_netPacketsSent2 = 0;
     m_netPacketsRecieved = 0;
     m_netPacketsRecieved2 = 0;
-
-    Init(CHFLOOR, 0);
     BlupiFlush();
     MoveFlush();
     InitDrapeau();
@@ -85,12 +83,14 @@ void CDecor::Create(HWND hWnd, CSound* pSound, CPixmap* pPixmap, CNetwork* pNetw
     m_jauges->SetHide(TRUE);
 }
 
+// The only seemingly sane function.
+
 BOOL CDecor::LoadImages()
 {
     POINT totalDim, iconDim;
     char filename[52];
 
-    if (m_lastRegion != m_region) return TRUE;
+    if (m_lastRegion == m_region) return TRUE;
     m_lastRegion = m_region;
 
     totalDim.x = DIMCELX * 2 * 16;
@@ -98,8 +98,7 @@ BOOL CDecor::LoadImages()
     iconDim.x = DIMCELX * 2;
     iconDim.y = DIMCELY * 2;
         sprintf(filename, "decor%.3d.blp", m_region);
-        if (!m_pPixmap->Cache2(CHFLOOR, filename, totalDim, iconDim, FALSE))
-        return FALSE;
+        if (!m_pPixmap->Cache2(CHBACK, filename, totalDim, iconDim, FALSE)) return FALSE;
         if (m_region == 0)
         {
             return FALSE;
@@ -113,6 +112,8 @@ void CDecor::InitGamer()
 
 }
 
+// The fuck does this even do?
+
 void CDecor::InitDecor(int channel, int icon)
 {
     int i;
@@ -124,6 +125,7 @@ void CDecor::InitDecor(int channel, int icon)
     m_music = 1;
     m_region = 2;
     m_missionTitle[0] = '\0';
+    m_decorAction = 0;
     for (int i = 0; i < 100; i++)
     {
         for (int j = 0; j < 100; j++)
@@ -135,7 +137,7 @@ void CDecor::InitDecor(int channel, int icon)
     m_decor[3, 4]->icon = 40;
     m_decor[4, 4]->icon = 38;
     m_decor[5, 4]->icon = 39;
-    for (int k = 0; k < Decor.MAXMOVEOBJECT; k++)
+    for (int k = 0; k < MAXMOVEOBJECT; k++)
     {
         m_moveObject[k]->type = 0;
     }
@@ -225,6 +227,8 @@ int CDecor::GetTime()
 {
     return m_time;
 }
+
+// Basically the same as the other fucking function
 
 void CDecor::PlayPrepare(BOOL bTest)
 {
@@ -342,6 +346,8 @@ void CDecor::PlayPrepare(BOOL bTest)
     m_scrollPoint.y = m_blupiPos.y + 30 + m_scrollAdd.y;
 }
 
+// Sort of makes sense.
+
 void CDecor::BuildPrepare()
 {
     for (int i = 0; i < MAXMOVEOBJECT; i++)
@@ -359,6 +365,8 @@ void CDecor::BuildPrepare()
     m_time = 0;
     m_bPause = FALSE;
 }
+
+// Fuck this function. That's all I can say.
 
 void CDecor::Build()
 {
@@ -743,7 +751,7 @@ BOOL CDecor::LoadBackgroundImages()
 int CDecor::SetBlupiChannel()
 {
     if ( m_bMulti = 0 ||
-         m_blupiChannel == ch_blupi00 ||
+         m_blupiChannel == CHBLUPI ||
          m_team > 0);{
     return m_team + 10;
          }
@@ -752,14 +760,14 @@ int CDecor::SetBlupiChannel()
 
 int CDecor::GetBlupiChannel()
 {
-    int m_blupiChannel = CHBLUPI000;
+    int m_blupiChannel = CHBLUPI;
 
 
     if ( m_bMulti != 0 ||
          m_team > 0);{
         return m_team + 10;
          }
-    return CHBLUPI000;
+    return CHBLUPI;
 }
 
 
@@ -841,7 +849,7 @@ void CDecor::SetPause(BOOL bPause)
     m_bPause = bPause;
 }
 
-/*
+
 void CDecor::GetDoors(int doors)
 {
     for (int i = 0; i < m_doors; i++)
@@ -849,7 +857,7 @@ void CDecor::GetDoors(int doors)
         doors[i] = (int)
     }
 }
-*/
+
 
 void CDecor::SetAllMissions(BOOL CheatDoors)
 {
@@ -1386,6 +1394,189 @@ BOOL CDecor::DecorDetect(RECT rect, BOOL bCaisse)
             return TRUE;
         }
     }
+    int num2 = rect.left / 16;
+    int num3 = (rect.right + 16 - 1) / 16;
+    int num4 = rect.top / 16;
+    int num5 = (rect.bottom + 16 - 1) / 16;
+    RECT src;
+    for (int i = num4; i <= num5; i++)
+    {
+        for (int j = num2; j <= num3; j++)
+        {
+            int num6 = j / 4;
+            int num7 = i / 4;
+            if (num6 >= 0 && num6 < 100 && num7 >= 0 && num7 < 100)
+            {
+                int icon = m_decor[num6, num7]->icon;
+                if (icon >= 0 && icon < MAXQUART && (!m_blupiHelico || icon != 214) && (m_blupiOver || icon != 214) && (icon != 324 || m_time / 4 % 20 < 18))
+                {
+                    num6 = j % 4;
+                    num7 = i % 4;
+                    if (table_decor_quart[icon * 16 + num7 * 4 + num6] != 0)
+                    {
+                        src.left = j * 16;
+                        src.right = src.left + 16;
+                        src.top = i * 16;
+                        src.bottom = src.top + 16;
+                        RECT tinyRect;
+                        if (IntersectRect(out tinyRect, src, rect))
+                        {
+                            m_detectIcon = icon;
+                            return TRUE;
+                        }
+                    }
+
+                }
+            }
+        }
+    }
+    if (!bCaisse)
+    {
+        return FALSE;
+    }
+    for (int k = 0; k < m_nbRankCaisse; k++)
+    {
+        int num8 = m_rankCaisse[k];
+        src.left = m_moveObject[num8]->posCurrent.x;
+        src.right = m_moveObject[num8]->posCurrent.x + 64;
+        src.top = m_moveObject[num8]->posCurrent.y;
+        src.bottom = m_moveObject[num8]->posCurrent.y + 64;
+        RECT tinyRect;
+        if (IntersectRect(out tinyRect, src, rect))
+        {
+            m_detectIcon = m_moveObject[num8]->icon;
+            return TRUE;
+        }
+    }
+    return FALSE;
+}
+
+int CDecor::IsWorld(POINT pos)
+{
+    pos.x += 30;
+    pos.y += 30;
+    if (pos.x < 0 || pos.x >= 6400 || pos.y < 0 || pos.y >= 6400)
+    {
+        return -1;
+    }
+    int icon = m_decor[pos.x / 64, pos.y / 64]->icon;
+    if (icon >= 158 && icon <= 165)
+    {
+        return icon - 158 + 1;
+    }
+    if (icon >= 166 && icon <= 173)
+    {
+        return icon - 166 + 1;
+    }
+    if (icon == 309 || icon == 310)
+    {
+        return 9;
+    }
+    if (icon >= 411 && icon <= 415)
+    {
+        return icon - 411 + 10;
+    }
+    if (icon >= 416 && icon <= 420)
+    {
+        return icon - 416 + 10;
+    }
+    if (icon >= 174 && icon <= 181)
+    {
+        return icon - 174 + 1;
+    }
+    if (icon == 184)
+    {
+        return 199;
+    }
+    return -1;
+}
+
+BOOL CDecor::SearchDoor(int n, POINT cel, POINT blupi)
+{
+    for (int i = 0; i < 100; i++)
+    {
+        for (int j = 0; j < 100; j++)
+        {
+            int icon = m_decor[i, j]->icon;
+            if (icon >= 174 && icon <= 181 && icon - 174 + 1 == n)
+            {
+                if (i > 0 && m_decor[i - 1, j]->icon == 182)
+                {
+                    cel.x = i - 1;
+                    cel.y = j;
+                    blupi.x = (i - 2) * 64 + 2;
+                    blupi.y = j * 64 + BLUPIOFFY;
+                    return TRUE;
+                }
+                if (i > 1 && m_decor[i - 2, j]->icon == 182)
+                {
+                    cel.x = i - 2;
+                    cel.y = j;
+                    blupi.x = (i - 3) * 64 + 2;
+                    blupi.y = j * 64 + BLUPIOFFY;
+                    return TRUE;
+                }
+                if (i < 99 && m_decor[i + 1, j]->icon == 182)
+                {
+                    cel.x = i + 1;
+                    cel.y = j;
+                    blupi.x = (i + 2) * 64 + 2;
+                    blupi.y = j * 64 + BLUPIOFFY;
+                    return TRUE;
+                }
+                if (i < 98 && m_decor[i + 2, j]->icon == 182)
+                {
+                    cel.x = i + 2;
+                    cel.y = j;
+                    blupi.x = (i + 3) * 64 + 2;
+                    blupi.y = j * 64 + BLUPIOFF;
+                    return TRUE;
+                }
+            }
+        }
+    }
+    return FALSE;
+}
+
+void CDecor::OpenDoorsTresor()
+{
+    for (int i = 0; i < 100; i++)
+    {
+        for (int j = 0; j < 100; j++)
+        {
+            int icon = m_decor[i, j]->icon;
+            if (icon >= 421 && icon <= 421 + m_nbTresor - 1)
+            {
+                POINT cel;
+                cel.x = i;
+                cel.y = j;
+                OpenDoor(cel);
+            }
+        }
+    }
+}
+
+void CDecor::OpenDoors(POINT cel)
+{
+    int icon = m_decor[cel.x, cel.y]->icon;
+    m_decor[cel.x, cel.y]->icon = -1;
+    int num = MoveObjectFree();
+
+}
+
+void CDecor::OpenDoorsWin()
+{
+    m_doors[m_mission + 1] = 1;
+}
+
+void CDecor::OpenGoldsWin()
+{
+    m_doors[180 + m_mission / 10] = 1;
+}
+
+void CDecor::DoorsLost()
+{
+    m_nbVies = 3;
 }
 
 void CDecor::GetBlupiInfo(BOOL bHelico, BOOL bJeep, BOOL bSkate, BOOL bNage)

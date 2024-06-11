@@ -37,6 +37,9 @@
 #define DIMBLUPIY		60
 #define SHIFTBLUPIY		5		// petit d�calage vers le haut
 
+#define DIMEXPLOX		128
+#define DIMEXPLOY		128
+
 #define DIMBUTTONX		40		// dimensions d'un button
 #define DIMBUTTONY		40
 
@@ -55,28 +58,23 @@
 #define DIMLITTLEY		12
 
 #define CHBACK			0
-#define CHBLUPI000		
-#define CHBLUPI001
-#define CHBLUPI002	
-#define CHBLUPI003
-#define CHFLOOR			1
-#define CHOBJECT		2
-#define CHOBJECTo		3
-#define CHBLUPI			4
-#define CHHILI			5
-#define CHFOG			6
-#define CHMASK1			7
-#define CHLITTLE		8
-#define CHMAP			9
-#define CHBUTTON		10
-#define CHGROUND		11
-#define CHJAUGE			12
-#define CHTEXT			13
-#define CHBIGNUM		14
-#define CHEXPLO
-#define CHELEMENT
+#define CHOBJECT		1
+#define CHBLUPI			2
+#define CHDECOR			3
+#define CHBUTTON		4
+#define CHJAUGE			5
+#define CHTEXT			6
+#define CHEXPLO			9
+#define CHELEMENT		10
+#define CHBLUPI1		11
+#define CHBLUPI2		12
+#define CHBLUPI3		13
+#define CHPAD			14
+#define CHSPEEDYBLUPI   15
+#define CHBLUPIYOUPIE   16
+#define CHGEAR			17
 
-#define FOGHIDE			4
+#define MAXMOVEOBJECT	200
 
 
 // Directions :
@@ -217,91 +215,44 @@
 // Sons :
 
 #define SOUND_CLICK			0
-#define SOUND_BOING			1
-#define SOUND_OK1			2
-#define SOUND_OK2			3
-#define SOUND_OK3			4
-#define SOUND_GO1			5
-#define SOUND_GO2			6
-#define SOUND_GO3			7
-#define SOUND_TERM1			8
-#define SOUND_TERM2			9
-#define SOUND_TERM3			10
-#define SOUND_COUPTERRE		11
-#define SOUND_COUPTOC		12
-#define SOUND_SAUT			13
-#define SOUND_HOP			14
-#define SOUND_SCIE			15
-#define SOUND_FEU			16
-#define SOUND_BRULE			17
-#define SOUND_TCHAO			18
-#define SOUND_MANGE			19
-#define SOUND_NAISSANCE		20
-#define SOUND_A_SAUT		21
-#define SOUND_A_HIHI		22
+#define SOUND_JUMP1			1
+#define SOUND_JUMP2			2
+#define	SOUND_JUMPEND		3
+#define SOUND_JUMPTOC		4
+#define SOUND_TURN			5
+#define SOUND_VERTIGO		6
+#define SOUND_DOWN			7
+#define SOUND_FALL			8
+#define SOUND_NEW			9
+#define SOUND_BOUM			10
+#define SOUND_TRESOR		11
+#define SOUND_EGG			12
+#define SOUND_ENDKO			13
+#define SOUND_ENDOK			14
+#define SOUND_HELICOSTART   15
+#define SOUND_HELICOHIGH	16
+#define SOUND_HELICOSTOP	17
+#define SOUND_HELICOLOW		18
+#define SOUND_LASTTRESOR    19
+#define SOUND_UP			20
+#define SOUND_LOOKUP		21
+#define SOUND_JUMP0			22
 #define SOUND_PLOUF			23
-#define SOUND_BUT			24
-#define SOUND_RAYON1		25
-#define SOUND_RAYON2		26
-#define SOUND_VIRUS			27
-#define SOUND_GLISSE		28
-#define SOUND_BOIT			29
-#define SOUND_LABO			30
-#define SOUND_DYNAMITE		31
-#define SOUND_PORTE			32
-#define SOUND_FLEUR			33
-#define SOUND_T_MOTEUR		34
-#define SOUND_T_ECRASE		35
-#define SOUND_PIEGE			36
-#define SOUND_AIE			37
-#define SOUND_A_POISON		38
-#define SOUND_R_MOTEUR		39
-#define SOUND_R_APLAT		40
-#define SOUND_R_ROTATE		41
-#define SOUND_R_CHARGE		42
-#define SOUND_B_SAUT		43
-#define SOUND_BATEAU		44
-#define SOUND_JEEP			45
-#define SOUND_MINE			46
-#define SOUND_USINE			47
-#define SOUND_E_RAYON		48
-#define SOUND_E_TOURNE		49
-#define SOUND_ARROSE		50
-#define SOUND_BECHE			51
-#define SOUND_D_BOING		52
-#define SOUND_D_OK			53
-#define SOUND_D_GO			54
-#define SOUND_D_TERM		55
-#define SOUND_BOING1		56
-#define SOUND_BOING2		57
-#define SOUND_BOING3		58
-#define SOUND_OK4			59
-#define SOUND_OK5			60
-#define SOUND_OK6			61
-#define SOUND_OK1f			62
-#define SOUND_OK2f			63
-#define SOUND_OK3f			64
-#define SOUND_OK1e			65
-#define SOUND_OK2e			66
-#define SOUND_OK3e			67
-#define SOUND_GO4			68
-#define SOUND_GO5			69
-#define SOUND_GO6			70
-#define SOUND_TERM4			71
-#define SOUND_TERM5			72
-#define SOUND_TERM6			73
-#define SOUND_COUPSEC		74
-#define SOUND_COUPPIERRE	75
-#define SOUND_COUPSOURD		76
-#define SOUND_COUPBREF		77
-#define SOUND_OPEN			78
-#define SOUND_CLOSE			79
-#define SOUND_TELEPORTE		80
-#define SOUND_ARMUREOPEN	81
-#define SOUND_ARMURECLOSE	82
-#define SOUND_WIN			83
-#define SOUND_LOST			84
-#define SOUND_MOVIE			99
+#define SOUND_BLUP			24
+#define SOUND_SURF			25
+#define SOUND_DROWN			26
+#define SOUND_ERROR			27
+#define SOUND_JEEPSTART		28
+#define SOUND_JEEPHIGH		29
+#define SOUND_JEEPSTOP		30
+#define SOUND_JEEPLOW		31
+#define SOUND_BYE			32
+#define SOUND_DOOR			33
+#define SOUND_SUSPENDTOC    34
+#define SOUND_SUSPENDJUMP	35
+#define SOUND_SINGE			36
+#define SOUND_PATIENT		37
+
 
 
 // Boutons (play) :
