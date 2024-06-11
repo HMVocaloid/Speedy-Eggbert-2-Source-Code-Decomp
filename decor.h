@@ -453,6 +453,12 @@ public:
 	void	DrawInfo();
 	void	UpdateCaisse();
 	POINT	DecorNextAction();
+	void	TreatInput(UINT input);
+	void	SetSpeedX(double speed);
+	void	SetSpeedY(double speed);
+	int		SoundEnviron(int sound, int obstacle);
+	void	StopSound(CSound sound);
+	void	AdaptMotorVehicleSound();
 	BOOL	TestPushCaisse(int i, POINT pos, BOOL bPop);
 	void	SearchLinkCaisse(int rank, BOOL bPop);
 	void	ResetHili();
@@ -530,14 +536,20 @@ public:
 	BOOL	GetNetPacked();
 	BOOL	GetNetMovePredict();
 	UINT	GetPhase();
-	int		GetMissionTitle();
+	char	GetMissionTitle();
 	void	SetRegion(int region);
 	int		GetMusic();
 	void	SetMusic(int music);
 	void	GetDims(POINT* ptr);
 	void	SetDims(POINT dims);
-	int		GetLives();
-	void	SetLives(int lives);
+	int		GetNbVies();
+	void	SetNbVies(int lives);
+	BOOL	GetPause();
+	void	SetPause(BOOL bPause);
+	void	GetDoors(int doors);
+	void	InitalizeDoors();
+	void	SetAllMissions(BOOL CheatDoors);
+	void	CheatAction(int cheat, MoveObject moveObject);
 	void	SetAccessBuild(BOOL build);
 	void	SetNetPacked(BOOL net);
 	void	SetNetMovePredict(BOOL netmove);
@@ -545,6 +557,15 @@ public:
 	void	SetMulti(int multi);
 	void	SetTeam(int team);
 	void	MoveObjectSort();
+	BOOL	BlupiIsGround();
+	RECT	BlupiRect(POINT pos);
+	void	BlupiAdjust();
+	BOOL	BlupiBloque(POINT pos, int dir);
+	void	BlupiDead(int action1, int action2);
+	POINT	GetPosDecor(POINT pos);
+	void	BlupiAddFifo(POINT pos);
+	BOOL	DecorDetect(RECT rect);
+	BOOL	DecorDetect(RECT rect, BOOL bCaisse);
 	void	GetMissionsCleared();
 	void	SetDemoState(BOOL demoState);
 	
@@ -564,7 +585,10 @@ protected:
     Perso       m_persos[200];
     int         m_input;
     int         m_previousInput;
+	int			m_detectIcon = -1;
     POINT       m_cameraPos;
+	POINT		m_dimDecor;
+	BOOL		m_blupiRestart;
     POINT       m_worldDims;
     POINT       m_selectedCelPos;
 	Random		m_random;
@@ -573,6 +597,8 @@ protected:
     char        m_missionTitle[100];
     int         m_nbCases;
 	int			m_linkCaisse;
+	int			m_blupiFifoPos;
+	int			m_blupiFifoNb;
     int         m_caseIndexes[200];
     int         m_nbSomethings;
     int         m_somethingIndexes;
@@ -580,6 +606,7 @@ protected:
     POINT       m_safePos;
 	POINT		m_posDecor;
 	RECT		m_drawBounds;
+	byte		m_doors[200];
     Action      m_action;
     int         m_direction;
     int         m_actionFrameCount;
@@ -588,6 +615,7 @@ protected:
 	POINT		m_blupiStartPos;
 	int			m_blupiStartDir;
 	int			m_blupiAction;
+	BOOL		m_bCheatDoors;
 	int			m_blupiPhase;
     /*
     undefined
@@ -599,12 +627,16 @@ protected:
 	int			m_bigDecor;
 	int			m_decorAction;
     IconChannel m_blupiChannel;
+	int			m_keyPress;
     POINT       m_activeConveyorVelocity;
+	int			m_decorPhase;
 	int			m_nbRankCaisse;
 	int			m_rankCaisse;
 	int			m_nbLinkCaisse;
     int         m_activeLiftIndex;
     int         m_blupiChannel;
+	double		m_blupiSpeedX;
+	double		m_blupiSpeedY;
 	BOOL		m_blupiFocus;
     BOOL        m_blupiAir;
     BOOL        m_blupiHelico;
@@ -615,6 +647,7 @@ protected:
     BOOL        m_blupiNage;
     BOOL        m_blupiSurf;
     BOOL        m_bInWind;
+	BOOL		m_blupiVent;
     BOOL        m_blupiSuspend;
     BOOL        m_blupiJumpAie;
     BOOL        m_blupiShield;

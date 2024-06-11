@@ -383,6 +383,9 @@
 #define TYPE_BLUPITANK
 #define TYPE_empty
 #define MAXMOVEOBJECT = 200;
+#define INPUT_LEFT
+#define INPUT_RIGHT
+
 
 // User define message
 
