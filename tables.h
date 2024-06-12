@@ -1,10 +1,7 @@
 #pragma once
 
-class Tables
-	{
-	     Tables()
-		{
-			 int[] array = new int[];
+static Phase table[]
+{
 				{
 					1,
 						3,

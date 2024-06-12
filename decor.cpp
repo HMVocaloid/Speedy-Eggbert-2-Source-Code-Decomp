@@ -603,6 +603,19 @@ int CDecor::SoundEnviron(int sound, int obstacle)
     return sound;
 }
 
+void CDecor::PlaySound(int sound, POINT pos)
+{
+    {
+        if (m_blupiHide && (sound == 1 || sound == 2 || sound == 3 || sound == 4 || sound == 5 || sound == 6 || sound == 7 || sound == 20 || sound == 21 || sound == 22 || sound == 23 || sound == 24 || sound == 25 || sound == 27 || sound == 32 || sound == 34 || sound == 35 || sound == 36 || sound == 37 || sound == 38 || sound == 39 || sound == 40 || sound == 46 || sound == 47 || sound == 48 || sound == 49 || sound == 64 || sound == 65 || sound == 78 || sound == 79 || sound == 80 || sound == 81 || sound == 82 || sound == 83 || sound == 84 || sound == 85 || sound == 86 || sound == 87 || sound == 88 || sound == 89 || sound == 90 || sound == 91))
+        {
+            return;
+        }
+        pos.x -= m_posDecor.y;
+        pos.y -= m_posDecor.y;
+        m_pSound->PlayImage(sound, pos);
+    }
+}
+
 void CDecor::StopSound(CSound sound)
 {
     m_pSound->StopSound(sound);
@@ -649,6 +662,8 @@ void CDecor::AdaptMotorVehicleSound()
     }
     return;
 }
+
+// TODO: Add VehicleSoundsPhase
 
 void CDecor::UpdateCaisse()
 {
@@ -999,6 +1014,33 @@ void CDecor::CheatAction(int cheat, MoveObject moveObject)
                 m_goalPhase = 50;
             }
         }
+    }
+    if (cheat == cheat_roundshield)
+    {
+        m_blupiPos->PlaySound(42);
+        m_blupiShield = TRUE;
+        m_blupiPower = FALSE;
+        m_blupiCloud = FALSE;
+        m_blupiHide = FALSE;
+        m_blupiTimeShield = 100;
+        m_blupiPosMagic = m_blupiPos;
+        m_jauges[1]->SetHide(FALSE);
+    }
+    if (cheat == cheat_quicklollipop)
+    {
+        m_blupiAction = 49;
+        m_blupiPhase = 0;
+        m_blupiHelico = FALSE;
+        m_blupiOver = FALSE;
+        m_blupiJeep = FALSE;
+        m_blupiTank = FALSE;
+        m_blupiSkate = FALSE;
+        m_blupiShield = FALSE;
+        m_blupiPower = FALSE;
+        m_blupiCloud = FALSE;
+        m_blupiHide = FALSE;
+        m_blupiFocus = FALSE;
+        m_blupiPos->PlaySound(50);
     }
 }
 
@@ -1451,6 +1493,95 @@ BOOL CDecor::DecorDetect(RECT rect, BOOL bCaisse)
     return FALSE;
 }
 
+BOOL CDecor::TestPath(RECT rect, POINT start, POINT end)
+{
+    int num = abs(end.x - start.x);
+    int num2 = abs(end.y - start.y);
+
+    POINT tinyPoint = start;
+    if (num > num2)
+    {
+        RECT rect2;
+        if (end.x > start.x)
+        {
+            for (int i = 0; i <= num; i++)
+            {
+                int j = i * (end.y - start.y) / num;
+                rect2.left = rect.left + i;
+                rect2.right = rect.right + i;
+                rect2.top = rect.top + j;
+                rect2.bottom = rect.bottom + j;
+                if (DecorDetect(rect2))
+                {
+                    end = tinyPoint;
+                    return FALSE;
+                }
+                tinyPoint.x = start.x + i;
+                tinyPoint.y = start.y + j;
+            }
+        }
+        if (end.x < start.x)
+        {
+            for (int i = 0; i >= -num; i--)
+            {
+                int j = i * (start.y - end.y) / num;
+                rect2.left = rect.left + i;
+                rect2.right = rect.right + i;
+                rect2.top = rect.top + j;
+                rect2.bottom = rect.bottom + j;
+                if (DecorDetect(rect2))
+                {
+                    end = tinyPoint;
+                    return FALSE;
+                }
+                tinyPoint.x = start.x + i;
+                tinyPoint.y = start.y + j;
+            }
+        }
+    }
+    else
+    {
+        RECT rect2;
+        if (end.y > start.y)
+        {
+            for (int j = 0; j <= num2; j++)
+            {
+                int i = j * (end.x - start.x) / num2;
+                rect2.left = rect.left + i;
+                rect2.right = rect.right + i;
+                rect2.top = rect.top + j;
+                rect2.bottom = rect.bottom + j;
+                if (DecorDetect(rect2))
+                {
+                    end = tinyPoint;
+                    return FALSE;
+                }
+                tinyPoint.x = start.x + i;
+                tinyPoint.y = start.y + j;
+            }
+        }
+        if (end.y < start.y)
+        {
+            for (int j = 0; j >= -num2; j--)
+            {
+                int i = j * (start.x - end.x) / num2;
+                rect2.left = rect.left + i;
+                rect2.right = rect.right + i;
+                rect2.top = rect.top + j;
+                rect2.bottom = rect.bottom + j;
+                if (DecorDetect(rect2))
+                {
+                    end = tinyPoint;
+                    return FALSE;
+                }
+                tinyPoint.x = start.x + i;
+                tinyPoint.y = start.y + j;
+            }
+        }
+    }
+    return TRUE;
+}
+
 int CDecor::IsWorld(POINT pos)
 {
     pos.x += 30;
@@ -1538,6 +1669,23 @@ BOOL CDecor::SearchDoor(int n, POINT cel, POINT blupi)
     return FALSE;
 }
 
+BOOL SearchGold(int n, POINT cel)
+{
+    for (int i = 99; i >= 0; i--)
+    {
+        for (int j = 99; j >= 0; j--)
+        {
+            if (m_decor[j, i]->icon == 183)
+            {
+                cel.x = j;
+                cel.y = i;
+                return TRUE;
+            }
+        }
+    }
+    return FALSE;
+}
+
 void CDecor::OpenDoorsTresor()
 {
     for (int i = 0; i < 100; i++)
@@ -1556,12 +1704,27 @@ void CDecor::OpenDoorsTresor()
     }
 }
 
-void CDecor::OpenDoors(POINT cel)
+void CDecor::OpenDoor(POINT cel)
 {
     int icon = m_decor[cel.x, cel.y]->icon;
     m_decor[cel.x, cel.y]->icon = -1;
     int num = MoveObjectFree();
-
+    m_moveObject[num]->type = 22;
+    m_moveObject[num]->stepAdvance = 50;
+    m_moveObject[num]->stepRecede = 1;
+    m_moveObject[num]->timeStopStart = 0;
+    m_moveObject[num]->timeStopEnd = 0;
+    m_moveObject[num]->posStart.x = 64 * cel.x;
+    m_moveObject[num]->posStart.y = 64 * cel.y;
+    m_moveObject[num]->posEnd.x = 64 * cel.x;
+    m_moveObject[num]->posEnd.y = 64 * (cel.y - 1);
+    m_moveObject[num]->posCurrent = m_moveObject[num]->posStart;
+    m_moveObject[num]->step = 1;
+    m_moveObject[num]->time = 0;
+    m_moveObject[num]->phase = 0;
+    m_moveObject[num]->channel = 1;
+    m_moveObject[num]->icon = icon;
+    PlaySound(33, m_moveObject[num]->posStart);
 }
 
 void CDecor::OpenDoorsWin()

@@ -568,8 +568,11 @@ public:
 	BOOL	DecorDetect(RECT rect, BOOL bCaisse);
 	int		IsWorld(POINT pos);
 	BOOL	SearchDoor(int n, POINT cel, POINT blupi);
+	BOOL	SearchGold(int n, POINT cel);
+	BOOL	TestPath(RECT rect, POINT start, POINT end);
+	void	PlaySound(int sound, POINT pos);
 	void	OpenDoorsTresor();
-	void	OpenDoors(POINT cel);
+	void	OpenDoor(POINT cel);
 	void	OpenDoorsWin();
 	void	OpenGoldsWin();
 	void	DoorsLost();
@@ -591,6 +594,8 @@ protected:
     Perso       m_persos[200];
     int         m_input;
     int         m_previousInput;
+	int			m_blupiTimeShield;
+	POINT		m_blupiPosMagic;
 	int			m_detectIcon = -1;
     POINT       m_cameraPos;
 	POINT		m_dimDecor;
