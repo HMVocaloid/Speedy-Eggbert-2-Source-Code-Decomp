@@ -564,6 +564,11 @@ public:
 	void	BlupiDead(int action1, int action2);
 	POINT	GetPosDecor(POINT pos);
 	void	BlupiAddFifo(POINT pos);
+	void	MoveObjectPlouf(POINT pos);
+	void	MoveObjectTiplouf(POINT pos);
+	void	MoveObjectBlup(POINT pos);
+	void	ActiveSwitch(BOOL bState, POINT cel);
+	void	BlupiStep();
 	BOOL	DecorDetect(RECT rect);
 	BOOL	DecorDetect(RECT rect, BOOL bCaisse);
 	int		IsWorld(POINT pos);
@@ -596,6 +601,11 @@ protected:
     int         m_previousInput;
 	int			m_blupiTimeShield;
 	POINT		m_blupiPosMagic;
+	POINT		m_blupiLastPos;
+	POINT		m_blupiVector;
+	int			m_blupiSec;
+	int			m_blupiRealRotation;
+	int			m_blupiTransport;
 	int			m_detectIcon = -1;
     POINT       m_cameraPos;
 	POINT		m_dimDecor;

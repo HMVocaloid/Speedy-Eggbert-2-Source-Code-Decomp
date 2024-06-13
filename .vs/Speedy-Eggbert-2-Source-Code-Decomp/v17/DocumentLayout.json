@@ -7,10 +7,6 @@
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:decor.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\JonAd\\source\\repos\\HMVocaloid\\Speedy-Eggbert-2-Source-Code-Decomp\\event.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:event.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\JonAd\\source\\repos\\HMVocaloid\\Speedy-Eggbert-2-Source-Code-Decomp\\decor.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:decor.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
@@ -19,24 +15,16 @@
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:def.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\JonAd\\source\\repos\\HMVocaloid\\Speedy-Eggbert-2-Source-Code-Decomp\\misc.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:misc.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\JonAd\\source\\repos\\HMVocaloid\\Speedy-Eggbert-2-Source-Code-Decomp\\sound.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:sound.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\JonAd\\source\\repos\\HMVocaloid\\Speedy-Eggbert-2-Source-Code-Decomp\\event.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:event.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\JonAd\\source\\repos\\HMVocaloid\\Speedy-Eggbert-2-Source-Code-Decomp\\dectables.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:dectables.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\JonAd\\source\\repos\\HMVocaloid\\Speedy-Eggbert-2-Source-Code-Decomp\\action.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:action.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\JonAd\\source\\repos\\HMVocaloid\\Speedy-Eggbert-2-Source-Code-Decomp\\tables.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:tables.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\JonAd\\source\\repos\\HMVocaloid\\Speedy-Eggbert-2-Source-Code-Decomp\\event.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:event.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\JonAd\\source\\repos\\HMVocaloid\\Speedy-Eggbert-2-Source-Code-Decomp\\pixmap.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
@@ -45,6 +33,18 @@
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\JonAd\\source\\repos\\HMVocaloid\\Speedy-Eggbert-2-Source-Code-Decomp\\pixmap.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:pixmap.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\JonAd\\source\\repos\\HMVocaloid\\Speedy-Eggbert-2-Source-Code-Decomp\\action.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:action.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\JonAd\\source\\repos\\HMVocaloid\\Speedy-Eggbert-2-Source-Code-Decomp\\event.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:event.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\JonAd\\source\\repos\\HMVocaloid\\Speedy-Eggbert-2-Source-Code-Decomp\\misc.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:misc.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\JonAd\\source\\repos\\HMVocaloid\\Speedy-Eggbert-2-Source-Code-Decomp\\jauge.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
@@ -94,17 +94,17 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 2,
               "Title": "def.h",
               "DocumentMoniker": "C:\\Users\\JonAd\\source\\repos\\HMVocaloid\\Speedy-Eggbert-2-Source-Code-Decomp\\def.h",
               "RelativeDocumentMoniker": "def.h",
               "ToolTip": "C:\\Users\\JonAd\\source\\repos\\HMVocaloid\\Speedy-Eggbert-2-Source-Code-Decomp\\def.h",
               "RelativeToolTip": "def.h",
-              "ViewState": "AQIAADAAAAAAAAAAAAAAAEwAAAAZAAAA",
+              "ViewState": "AQIAAEgAAAAAAAAAAAAAAEwAAAAZAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2024-06-03T13:35:08.061Z",
               "IsPinned": true,
@@ -112,55 +112,16 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 5,
               "Title": "event.cpp",
               "DocumentMoniker": "C:\\Users\\JonAd\\source\\repos\\HMVocaloid\\Speedy-Eggbert-2-Source-Code-Decomp\\event.cpp",
               "RelativeDocumentMoniker": "event.cpp",
               "ToolTip": "C:\\Users\\JonAd\\source\\repos\\HMVocaloid\\Speedy-Eggbert-2-Source-Code-Decomp\\event.cpp",
               "RelativeToolTip": "event.cpp",
-              "ViewState": "AQIAAJMAAAAAAAAAAAAAAF8AAAAIAAAA",
+              "ViewState": "AQIAADMAAAAAAAAAAAAAAFMAAAACAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2024-06-05T15:46:32.188Z",
               "IsPinned": true,
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "misc.cpp",
-              "DocumentMoniker": "C:\\Users\\JonAd\\source\\repos\\HMVocaloid\\Speedy-Eggbert-2-Source-Code-Decomp\\misc.cpp",
-              "RelativeDocumentMoniker": "misc.cpp",
-              "ToolTip": "C:\\Users\\JonAd\\source\\repos\\HMVocaloid\\Speedy-Eggbert-2-Source-Code-Decomp\\misc.cpp",
-              "RelativeToolTip": "misc.cpp",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-06-11T13:52:38.85Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "action.h",
-              "DocumentMoniker": "C:\\Users\\JonAd\\source\\repos\\HMVocaloid\\Speedy-Eggbert-2-Source-Code-Decomp\\action.h",
-              "RelativeDocumentMoniker": "action.h",
-              "ToolTip": "C:\\Users\\JonAd\\source\\repos\\HMVocaloid\\Speedy-Eggbert-2-Source-Code-Decomp\\action.h",
-              "RelativeToolTip": "action.h",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2024-06-06T14:48:26.328Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "event.h",
-              "DocumentMoniker": "C:\\Users\\JonAd\\source\\repos\\HMVocaloid\\Speedy-Eggbert-2-Source-Code-Decomp\\event.h",
-              "RelativeDocumentMoniker": "event.h",
-              "ToolTip": "C:\\Users\\JonAd\\source\\repos\\HMVocaloid\\Speedy-Eggbert-2-Source-Code-Decomp\\event.h",
-              "RelativeToolTip": "event.h",
-              "ViewState": "AQIAAAMAAAAAAAAAAAAWwBUAAAASAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2024-06-05T16:14:42.084Z",
               "EditorCaption": ""
             },
             {
@@ -171,31 +132,42 @@
               "RelativeDocumentMoniker": "decor.cpp",
               "ToolTip": "C:\\Users\\JonAd\\source\\repos\\HMVocaloid\\Speedy-Eggbert-2-Source-Code-Decomp\\decor.cpp",
               "RelativeToolTip": "decor.cpp",
-              "ViewState": "AQIAAP0DAAAAAAAAAAAIwBIEAAAiAAAA",
+              "ViewState": "AQIAAJ8TAAAAAAAAAAAAAB0VAAAnAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
               "WhenOpened": "2024-06-03T13:22:46.652Z",
+              "IsPinned": true,
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
               "Title": "decor.h",
               "DocumentMoniker": "C:\\Users\\JonAd\\source\\repos\\HMVocaloid\\Speedy-Eggbert-2-Source-Code-Decomp\\decor.h",
               "RelativeDocumentMoniker": "decor.h",
               "ToolTip": "C:\\Users\\JonAd\\source\\repos\\HMVocaloid\\Speedy-Eggbert-2-Source-Code-Decomp\\decor.h",
               "RelativeToolTip": "decor.h",
-              "ViewState": "AQIAAD8CAAAAAAAAAAAIwFUCAAAYAAAA",
+              "ViewState": "AQIAACQCAAAAAAAAAAAIwDcCAAAjAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2024-06-06T13:28:47.781Z",
+              "IsPinned": true,
               "EditorCaption": ""
             },
             {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "dectables.h",
+              "DocumentMoniker": "C:\\Users\\JonAd\\source\\repos\\HMVocaloid\\Speedy-Eggbert-2-Source-Code-Decomp\\dectables.h",
+              "RelativeDocumentMoniker": "dectables.h",
+              "ToolTip": "C:\\Users\\JonAd\\source\\repos\\HMVocaloid\\Speedy-Eggbert-2-Source-Code-Decomp\\dectables.h",
+              "RelativeToolTip": "dectables.h",
+              "ViewState": "AQIAADQAAAAAAAAAAAAAwFkAAAACAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-06-13T12:47:23.345Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 3,
               "Title": "sound.cpp",
               "DocumentMoniker": "C:\\Users\\JonAd\\source\\repos\\HMVocaloid\\Speedy-Eggbert-2-Source-Code-Decomp\\sound.cpp",
               "RelativeDocumentMoniker": "sound.cpp",
@@ -208,16 +180,67 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "tables.h",
-              "DocumentMoniker": "C:\\Users\\JonAd\\source\\repos\\HMVocaloid\\Speedy-Eggbert-2-Source-Code-Decomp\\tables.h",
-              "RelativeDocumentMoniker": "tables.h",
-              "ToolTip": "C:\\Users\\JonAd\\source\\repos\\HMVocaloid\\Speedy-Eggbert-2-Source-Code-Decomp\\tables.h",
-              "RelativeToolTip": "tables.h",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAIAAAAMAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2024-06-10T13:08:09.936Z",
+              "DocumentIndex": 6,
+              "Title": "pixmap.cpp",
+              "DocumentMoniker": "C:\\Users\\JonAd\\source\\repos\\HMVocaloid\\Speedy-Eggbert-2-Source-Code-Decomp\\pixmap.cpp",
+              "RelativeDocumentMoniker": "pixmap.cpp",
+              "ToolTip": "C:\\Users\\JonAd\\source\\repos\\HMVocaloid\\Speedy-Eggbert-2-Source-Code-Decomp\\pixmap.cpp",
+              "RelativeToolTip": "pixmap.cpp",
+              "ViewState": "AQIAAAsBAAAAAAAAAAAAACYBAAAqAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-06-06T17:02:47.412Z",
               "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "pixmap.h",
+              "DocumentMoniker": "C:\\Users\\JonAd\\source\\repos\\HMVocaloid\\Speedy-Eggbert-2-Source-Code-Decomp\\pixmap.h",
+              "RelativeDocumentMoniker": "pixmap.h",
+              "ToolTip": "C:\\Users\\JonAd\\source\\repos\\HMVocaloid\\Speedy-Eggbert-2-Source-Code-Decomp\\pixmap.h",
+              "RelativeToolTip": "pixmap.h",
+              "ViewState": "AQIAAAwAAAAAAAAAAAAAACYAAAA4AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-06-08T21:38:04.103Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "action.h",
+              "DocumentMoniker": "C:\\Users\\JonAd\\source\\repos\\HMVocaloid\\Speedy-Eggbert-2-Source-Code-Decomp\\action.h",
+              "RelativeDocumentMoniker": "action.h",
+              "ToolTip": "C:\\Users\\JonAd\\source\\repos\\HMVocaloid\\Speedy-Eggbert-2-Source-Code-Decomp\\action.h",
+              "RelativeToolTip": "action.h",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-06-06T14:48:26.328Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "event.h",
+              "DocumentMoniker": "C:\\Users\\JonAd\\source\\repos\\HMVocaloid\\Speedy-Eggbert-2-Source-Code-Decomp\\event.h",
+              "RelativeDocumentMoniker": "event.h",
+              "ToolTip": "C:\\Users\\JonAd\\source\\repos\\HMVocaloid\\Speedy-Eggbert-2-Source-Code-Decomp\\event.h",
+              "RelativeToolTip": "event.h",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABUAAAASAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-06-05T16:14:42.084Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "misc.cpp",
+              "DocumentMoniker": "C:\\Users\\JonAd\\source\\repos\\HMVocaloid\\Speedy-Eggbert-2-Source-Code-Decomp\\misc.cpp",
+              "RelativeDocumentMoniker": "misc.cpp",
+              "ToolTip": "C:\\Users\\JonAd\\source\\repos\\HMVocaloid\\Speedy-Eggbert-2-Source-Code-Decomp\\misc.cpp",
+              "RelativeToolTip": "misc.cpp",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-06-11T13:52:38.85Z"
             },
             {
               "$type": "Document",
@@ -269,6 +292,18 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "button.h",
+              "DocumentMoniker": "C:\\Users\\JonAd\\source\\repos\\HMVocaloid\\Speedy-Eggbert-2-Source-Code-Decomp\\button.h",
+              "RelativeDocumentMoniker": "button.h",
+              "ToolTip": "C:\\Users\\JonAd\\source\\repos\\HMVocaloid\\Speedy-Eggbert-2-Source-Code-Decomp\\button.h",
+              "RelativeToolTip": "button.h",
+              "ViewState": "AQIAAAMAAAAAAAAAAAAAAA0AAAAqAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
+              "WhenOpened": "2024-06-06T13:15:55.289Z"
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 13,
               "Title": "README.md",
               "DocumentMoniker": "C:\\Users\\JonAd\\source\\repos\\HMVocaloid\\Speedy-Eggbert-2-Source-Code-Decomp\\README.md",
@@ -290,42 +325,6 @@
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
               "WhenOpened": "2024-06-06T14:52:07.261Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "pixmap.cpp",
-              "DocumentMoniker": "C:\\Users\\JonAd\\source\\repos\\HMVocaloid\\Speedy-Eggbert-2-Source-Code-Decomp\\pixmap.cpp",
-              "RelativeDocumentMoniker": "pixmap.cpp",
-              "ToolTip": "C:\\Users\\JonAd\\source\\repos\\HMVocaloid\\Speedy-Eggbert-2-Source-Code-Decomp\\pixmap.cpp",
-              "RelativeToolTip": "pixmap.cpp",
-              "ViewState": "AQIAAH8CAAAAAAAAAAAAAIUCAAAUAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2024-06-06T17:02:47.412Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "pixmap.h",
-              "DocumentMoniker": "C:\\Users\\JonAd\\source\\repos\\HMVocaloid\\Speedy-Eggbert-2-Source-Code-Decomp\\pixmap.h",
-              "RelativeDocumentMoniker": "pixmap.h",
-              "ToolTip": "C:\\Users\\JonAd\\source\\repos\\HMVocaloid\\Speedy-Eggbert-2-Source-Code-Decomp\\pixmap.h",
-              "RelativeToolTip": "pixmap.h",
-              "ViewState": "AQIAAAwAAAAAAAAAAAAAAB4AAAASAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2024-06-08T21:38:04.103Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 17,
-              "Title": "button.h",
-              "DocumentMoniker": "C:\\Users\\JonAd\\source\\repos\\HMVocaloid\\Speedy-Eggbert-2-Source-Code-Decomp\\button.h",
-              "RelativeDocumentMoniker": "button.h",
-              "ToolTip": "C:\\Users\\JonAd\\source\\repos\\HMVocaloid\\Speedy-Eggbert-2-Source-Code-Decomp\\button.h",
-              "RelativeToolTip": "button.h",
-              "ViewState": "AQIAAAMAAAAAAAAAAAAAAA0AAAAqAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2024-06-06T13:15:55.289Z"
             },
             {
               "$type": "Document",

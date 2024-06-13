@@ -283,6 +283,18 @@ void HudIcon(int channel, int rank, POINT pos)
 	pos.x = (int)((double)pos.x + CPixmap::originX)
 }
 
+void CPixmap::QuickIcon(int channel, int rank, POINT pos)
+{
+	RECT rect;
+	{
+		rect.left = pos.x;
+		rect.top = pos.y;
+		rect.right = pos.x;
+		rect.bottom = pos.y;
+	};
+	DrawIcon(channel, rank, rect, 1.0, TRUE);
+}
+
 // Initialise la palette syst�me.
 
 BOOL CPixmap::InitSysPalette()
@@ -784,7 +796,7 @@ BOOL CPixmap::IsIconPixel(int channel, int rank, POINT pos)
 			return;
 		}
 	}
-	else if (channel == CHBLUPI000 || channel == CHBLUPI001 || channel == CHBLUPI002 || channel == CHBLUPI003)
+	else if (channel == CHBLUPI || channel == CHBLUPI1 || channel == CHBLUPI2 || channel == CHBLUPI3)
 	{
 		if (g_blupiMax <= rank)
 		{
@@ -857,10 +869,10 @@ BOOL CPixmap::DrawIcon(int chDst, int channel, int rank, POINT pos,
 			return FALSE;
 		}
 	}
-	else if (channel == CHBLUPI000 ||
-		channel == CHBLUPI001 ||
-		channel == CHBLUPI002 ||
-		channel == CHBLUPI003)
+	else if (channel == CHBLUPI ||
+		channel == CHBLUPI1 ||
+		channel == CHBLUPI2 ||
+		channel == CHBLUPI3)
 	{
 		if (g_blupiMax <= rank)
 		{

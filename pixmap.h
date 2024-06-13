@@ -36,6 +36,7 @@ public:
     void    SetClipping(RECT clip);
     RECT    GetClipping();
     void    HudIcon(int channel, int rank, POINT pos);
+    void    QuickIcon(int channel, int rank, POINT pos);
 
     BOOL    IsIconPixel(int channel, int rank, POINT pos);
 
