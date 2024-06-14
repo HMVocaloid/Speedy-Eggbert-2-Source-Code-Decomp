@@ -573,6 +573,16 @@ public:
 	BOOL	IsGoutte(POINT pos, BOOL bAlways);
 	BOOL	IsScie(POINT pos);
 	BOOL	IsSwitch(POINT pos, POINT celSwitch);
+	BOOL	IsEcraseur(POINT pos);
+	BOOL	IsBlitz(POINT pos, BOOL bAlways);
+	BOOL	IsRessort(POINT pos);
+	BOOL	IsTemp(POINT pos);
+	BOOL	IsBridge(POINT pos, POINT celBridge);
+	int		IsDoor(POINT pos, POINT celPorte);
+	int		IsTeleporte(POINT pos);
+	BOOL	SearchTeleporte(POINT pos, POINT newpos);
+	BOOL	IsNormalJump(POINT pos);
+	BOOL	IsSurfWater(POINT pos);
 	void	BlupiStep();
 	BOOL	DecorDetect(RECT rect);
 	BOOL	DecorDetect(RECT rect, BOOL bCaisse);

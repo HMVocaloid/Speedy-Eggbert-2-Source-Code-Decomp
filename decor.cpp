@@ -5557,8 +5557,183 @@ BOOL CDecor::IsGoutte(POINT pos, BOOL bAlways)
 
 BOOL CDecor::IsScie(POINT pos)
 {
+	pos.x += 30;
+	return pos.x % 64 >= 4 && pos.x % 64 <= 60 && pos.x >= 0 && pos.x < 6400 && pos.y >= 0 && pos.y < 6400 && m_decor[pos.x / 64, pos.y / 64]->icon == 378;
+}
+
+BOOL CDecor::IsSwitch(POINT pos, POINT celSwitch)
+{
+	pos.x += 30;
+	if (pos.x % 64 < 4 || pos.x % 64 > 60)
+	{
+		return FALSE;
+	}
+	if (pos.x < 0 || pos.x >= 6400 || pos.y < 0 || pos.y >= 6400)
+	{
+		return FALSE;
+	}
+	celSwitch.x = pos.x / 64;
+	celSwitch.y = pos.y / 64;
+	return m_decor[pos.x / 64, pos.y / 64]->icon == 384 || m_decor[pos.x / 64, pos.y / 64]->icon == 385;
+}
+
+BOOL CDecor::IsEcraseur(POINT pos)
+{
+	if (m_time / 3 % 10 > 2)
+	{
+		return FALSE;
+	}
+	pos.x += 30;
+	return pos.x >= 0 && pos.x < 6400 && pos.y >= 0 && pos.y < 6400 && m_decor[pos.x / 64, pos.y / 64]->icon == 317;
+}
+
+BOOL CDecor::IsBlitz(POINT pos, BOOL bAlways)
+{
+	pos.x += 30;
+	if (pos.x < 0 || pos.x >= 6400 || pos.y < 0 || pos.y >= 6400)
+	{
+		return FALSE;
+	}
+	POINT tinyPoint;
+	tinyPoint.x = pos.x / 64;
+	tinyPoint.y = pos.y / 64;
+	return m_decor[tinyPoint.x, tinyPoint.y]->icon == 305 && (bAlways || BlitzActif(tinyPoint.x, tinyPoint.y));
+}
+
+BOOL CDecor::IsRessort(POINT pos)
+{
+	pos.x += 30;
+	pos.y += 60;
+	return pos.x >= 0 && pos.x < 6400 && pos.y >= 0 && pos.y < 6400 && m_decor[pos.x / 64, pos.y / 64]->icon == 211;
+}
+
+BOOL CDecor::IsTemp(POINT pos)
+{
+	pos.x += 30;
+	pos.y += 60;
+	return pos.x >= 0 && pos.x < 6400 && pos.y >= 0 && pos.y < 6400 && m_decor[pos.x / 64, pos.y / 64]->icon == 324;
+}
+
+BOOL CDecor::IsBridge(POINT pos, POINT celBridge)
+{
+	pos.x += 30;
+	pos.y += 60;
+	if (pos.x >= 0 && pos.x < 6400 && pos.y >= 0 && pos.y < 6400 && m_decor[pos.x / 64, pos.y / 64]->icon == 364)
+	{
+		celBridge.x = pos.x / 64;
+		celBridge.y = pos.y / 64;
+		return TRUE;
+	}
+	pos.y -= 60;
+	if (pos.x >= 0 && pos.x < 6400 && pos.y >= 0 && pos.y < 6400 && m_decor[pos.x / 64, pos.y / 64]->icon == 364)
+	{
+		celBridge.x = pos.x / 64;
+		celBridge.y = pos.y / 64;
+		return TRUE;
+	}
+	return FALSE;
 
 }
+
+int CDecor::IsDoor(POINT pos, POINT celPorte)
+{
+	int num;
+	if (m_blupiDir == 1)
+	{
+		num = -60;
+	}
+	else
+	{
+		num = 60;
+	}
+	pos.x += 30;
+	for (int i = 0; i < 2; i++)
+	{
+		if (pos.x >= 0 && pos.x < 6400 && pos.y >= 0 && pos.y < 6400 && m_decor[pos.x / 64, pos.y / 64]->icon >= 334 && m_decor[pos.x / 64, pos.y / 64]->icon <= 336)
+		{
+			celPorte.x = pos.x / 64;
+			celPorte.y = pos.y / 64;
+			return m_decor[pos.x / 64, pos.y / 64]->icon;
+		}
+		pos.x += num;
+	}
+	return -1;
+}
+
+int CDecor::IsTeleporte(POINT pos)
+{
+	if (pos.x % 64 > 6)
+	{
+		return -1;
+	}
+	pos.x += 30;
+	pos.y -= 60;
+	if (pos.x < 0 || pos.x >= 6400 || pos.y < 0 || pos.y >= 6400)
+	{
+		return -1;
+	}
+	if (m_decor[pos.x / 64, pos.y / 64]->icon >= 330 && m_decor[pos.x / 64, pos.y / 64]->icon <= 333)
+	{
+		return m_decor[pos.x / 64, pos.y / 64]->icon;
+	}
+	return -1;
+}
+
+BOOL CDecor::SearchTeleporte(POINT pos, POINT newpos)
+{
+	int num = IsTeleporte(pos);
+	if (num == -1)
+	{
+		return FALSE;
+	}
+	for (int i = 0; i < 100; i++)
+	{
+		for (int j = 0; j < 100; j++)
+		{
+			if (num == m_decor[i, j]->icon)
+			{
+				newpos.x = i * 64;
+				newpos.y = j * 64 + 60;
+				if (newpos.x < pos.x - 40 || newpos.x > pos.x + 40 || newpos.y < pos.y - 40 || newpos.y > pos.y + 40)
+				{
+					return TRUE;
+				}
+			}
+		}
+	}
+	return FALSE;
+}
+
+BOOL CDecor::IsNormalJump(POINT pos)
+{
+	pos.x += 32;
+	pos.y -= 32;
+	if (m_blupiDir == 1)
+	{
+		pos.x -= 15;
+	}
+	else
+	{
+		pos.x += 15;
+	}
+	for (int i = 0; i < 2; i++)
+	{
+		int num = pos.x / 64;
+		int num2 = pos.y / 64;
+		if (num2 < 0)
+		{
+			return FALSE;
+		}
+		int icon = m_decor[num, num2]->icon;
+		if (!IsPassIcon(icon))
+		{
+			return FALSE;
+		}
+		pos.y -= 64;
+	}
+	return TRUE;
+}
+
 
 BOOL CDecor::SearchDoor(int n, POINT cel, POINT blupi)
 {
