@@ -568,6 +568,11 @@ public:
 	void	MoveObjectTiplouf(POINT pos);
 	void	MoveObjectBlup(POINT pos);
 	void	ActiveSwitch(BOOL bState, POINT cel);
+	BOOL	IsLave(POINT pos);
+	BOOL	IsPiege(POINT pos);
+	BOOL	IsGoutte(POINT pos, BOOL bAlways);
+	BOOL	IsScie(POINT pos);
+	BOOL	IsSwitch(POINT pos, POINT celSwitch);
 	void	BlupiStep();
 	BOOL	DecorDetect(RECT rect);
 	BOOL	DecorDetect(RECT rect, BOOL bCaisse);

@@ -5523,6 +5523,43 @@ int CDecor::IsWorld(POINT pos)
     return -1;
 }
 
+BOOL CDecor::IsLave(POINT pos)
+{
+	pos.x += 30;
+	return pos.x >= 0 && pos.x < 6400 && pos.y >= 0 && pos.y < 6400 && m_decor[pos.x / 64, pos.y / 64]->icon == 68;
+}
+
+BOOL CDecor::IsPiege(POINT pos)
+{
+	pos.x += 30;
+	pos.y += 60;
+	return pos.x % 64 >= 15 && pos.x % 64 <= 49 && pos.x >= 0 && pos.x < 6400 && pos.y >= 0 && pos.y < 6400 && m_decor[pos.x / 64, pos.y / 64]->icon == 373;
+}
+
+BOOL CDecor::IsGoutte(POINT pos, BOOL bAlways)
+{
+	pos.x += 30;
+	if (pos.x % 64 < 15 || pos.x % 64 > 49)
+	{
+		return FALSE;
+	}
+	if (pos.x < 0 || pos.x >= 6400 || pos.y < 0 || pos.y >= 6400)
+	{
+		return FALSE;
+	}
+	int icon = m_decor[pos.x / 64, pos.y / 64]->icon;
+	if (bAlways)
+	{
+		return icon == 404 || icon == 410;
+	}
+	return icon == 404;
+}
+
+BOOL CDecor::IsScie(POINT pos)
+{
+
+}
+
 BOOL CDecor::SearchDoor(int n, POINT cel, POINT blupi)
 {
     for (int i = 0; i < 100; i++)
