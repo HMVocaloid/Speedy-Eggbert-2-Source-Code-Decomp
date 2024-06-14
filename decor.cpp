@@ -5734,6 +5734,142 @@ BOOL CDecor::IsNormalJump(POINT pos)
 	return TRUE;
 }
 
+BOOL CDecor::IsSurfWater(POINT pos)
+{
+	if (pos.y % 64 < 64 - BLUPISURF)
+	{
+		return FALSE;
+	}
+	int icon = m_decor[(pos.x + 30) / 64, pos.y / 64]->icon;
+	int icon2 = m_decor[(pos.x + 30) / 64, (pos.y + BLUPISURF) / 64]->icon;
+	return icon != 92 && icon2 == 92;
+}
+
+BOOL CDecor::IsDeepWater(POINT pos)
+{
+	int num = (pos.x + 30) / 64;
+	int num2 = pos.y / 64;
+	if (num < 0 || num >= 100 || num2 < 0 || num2 >= 100)
+	{
+		return FALSE;
+	}
+	int icon = m_decor[num, num2]->icon;
+	return icon == 91 || icon == 92;
+}
+
+BOOL CDecor::IsOutWater(POINT pos)
+{
+	int icon = m_decor[(pos.x + 30) / 64, (pos.y + 30) / 64]->icon;
+	return icon != 91 && icon != 92 && IsPassIcon(icon);
+}
+
+BOOL CDecor::IsPassIcon(int icon)
+{
+	if (icon == 324 && m_time / 4 % 20 >= 18)
+	{
+		return TRUE;
+	}
+	if (icon >= 0 && icon < MAXQUART)
+	{
+		for (int i = 0; i < 16; i++)
+		{
+			if (table_decor_quart[icon * 16 + i] != 0)
+			{
+				return FALSE;
+			}
+		}
+	}
+	return TRUE;
+}
+
+BOOL CDecor::IsBlocIcon(int icon)
+{
+	if (icon < 0 || icon >= MAXQUART)
+	{
+		return FALSE;
+	}
+	if (icon == 324 && m_decor / 4 % 20 < 18)
+	{
+		return FALSE;
+	}
+	for (int i = 0; i < 16; i++)
+	{
+		if (table_decor_quart[icon * 16 + i] == 0)
+		{
+			return FALSE;
+		}
+	}
+	return FALSE;
+}
+
+void CDecor::FlushBalleTraj()
+{
+	for (int i = 0; i < 1300; i++)
+	{
+		m_balleTraj[i] = 0;
+	}
+}
+
+void CDecor::SetBalleTraj(POINT pos)
+{
+	if (pos.x < 0 || pos.x >= 100 || pos.y < 0 || pos.y >= 100)
+	{
+		return;
+	}
+	int num = pos.y * 13;
+	num += pos.x / 8;
+	int num2 = pos.x & 7;
+	m_balleTraj[num] |= 1 << num2;
+}
+
+BOOL CDecor::IsBalleTraj(POINT pos)
+{
+	pos.x = (pos.x + 32) / 64;
+	pos.y = (pos.y + 32) / 64;
+	if (pos.x < 0 || pos.x >= 100 || pos.y < 0 || pos.y >= 100)
+	{
+		return FALSE;
+	}
+	int num = pos.y * 13;
+	num += pos.x / 8;
+	int num2 = pos.x & 7;
+	return (m_balleTraj[num] & 1 << num2) != 0;
+}
+
+void CDecor::FlushMoveTraj()
+{
+	for (int i = 0; i < 1300; i++)
+	{
+		m_moveTraj[i] = 0;
+	}
+}
+
+void CDecor::SetMoveTraj(POINT pos)
+{
+
+	if (pos.x < 0 || pos.x >= 100 || pos.y < 0 || pos.y >= 100)
+	{
+		return;
+	}
+	int num = pos.y * 13;
+	num += pos.x / 8;
+	int num2 = pos.x & 7;
+	m_moveTraj[num] |= 1 << num2;
+}
+
+BOOL CDecor::IsMoveTraj(POINT pos)
+{
+	pos.x = (pos.x + 32) / 64;
+	pos.y = (pos.y + 32) / 64;
+	if (pos.x < 0 || pos.x >= 100 || pos.y < 0 || pos.y >= 100)
+	{
+		return FALSE;
+	}
+	int num = pos.y * 13;
+	num += pos.x / 8;
+	int num2 = pos.x & 7;
+	return (m_moveTraj[num] & 1 << num2) != 0;
+}
 
 BOOL CDecor::SearchDoor(int n, POINT cel, POINT blupi)
 {
