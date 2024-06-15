@@ -593,6 +593,8 @@ public:
 	void	FlushMoveTraj();
 	void	SetMoveTraj(POINT pos);
 	BOOL	IsMoveTraj(POINT pos);
+	int		SearchDistRight(POINT pos, POINT dir, int type);
+	BOOL	IsVentillo(POINT pos);
 	void	BlupiStep();
 	BOOL	DecorDetect(RECT rect);
 	BOOL	DecorDetect(RECT rect, BOOL bCaisse);

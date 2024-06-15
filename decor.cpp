@@ -5871,6 +5871,21 @@ BOOL CDecor::IsMoveTraj(POINT pos)
 	return (m_moveTraj[num] & 1 << num2) != 0;
 }
 
+int CDecor::SearchDistRight(POINT pos, POINT dir, int type)
+{
+	int num = 0;
+	if (type == 36 || type == 39 || type == 41 || type == 42 || type == 93)
+	{
+		return 500;
+	}
+	pos.x = (pos.x + 32) / 64;
+	pos.y = (pos.y + 32) / 64;
+	while (pos.x >= 0 && pos.x < 100 && pos.y >= 0 && pos.y < 100 && !IsBlocIcon(m_decor[pos.x, pos.y]->icon))
+	{
+
+	}
+}
+
 BOOL CDecor::SearchDoor(int n, POINT cel, POINT blupi)
 {
     for (int i = 0; i < 100; i++)
