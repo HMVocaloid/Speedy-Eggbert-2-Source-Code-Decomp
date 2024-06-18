@@ -6361,6 +6361,61 @@ void CDecor::DynamiteStart(int i, int dx, int dy)
 		m_decorAction = 1;
 		m_decorPhase = 0;
 	}
+	RECT src;
+	src.left = posStart.x;
+	src.right = posStart.x + 128;
+	src.top = posStart.y;
+	src.bottom = posStart.y + 128;
+	POINT tinyPoint;
+	for (int j = 0; j < 2; j++)
+	{
+		tinyPoint.x = posStart.x / 64;
+		for (int k = 0; k < 2; j++)
+		{
+			if (tinyPoint.x >= 0 && tinyPoint.x < 100 && tinyPoint)
+			{
+				int icon = m_decor[tinyPoint.x, tinyPoint.y]->icon;
+				if (icon == 378 || icon == 379 || icon == 404 || icon == 410)
+				{
+					POINT pos;
+					pos.x = tinyPoint.x * 64;
+					pos.y = tinyPoint.y * 64;
+					ModifDecor(pos, -1);
+				}
+			}
+			tinyPoint.x++;
+		}
+		tinyPoint.y++;
+	}
+	for (i = 0; i < MAXMOVEOBJECT; i++)
+	{
+		if (m_moveObject[i]->type == 2 || m_moveObject[i]->type == 3 || m_moveObject[i]->type == 96 || m_moveObject[i]->type == 97 || m_moveObject[i]->type == 4 ||
+			m_moveObject[i]->type == 6 || m_moveObject[i]->type == 12 || m_moveObject[i]->type == 13 || m_moveObject[i]->type == 16 || m_moveObject[i]->type == 17 ||
+			m_moveObject[i]->type == 19 || m_moveObject[i]->type == 20 || m_moveObject[i]->type == 24 || m_moveObject[i]->type == 25 || m_moveObject[i]->type == 26 || m_moveObject[i]->type == 28 ||
+			m_moveObject[i]->type == 30 || m_moveObject[i]->type == 32 || m_moveObject[i]->type == 33 || m_moveObject[i]->type == 34 || m_moveObject[i]->type == 40 || m_moveObject[i]->type == 44 ||
+			m_moveObject[i]->type == 46 || m_moveObject[i]->type == 52 || m_moveObject[i]->type == 54 || m_moveObject[i]->type == 200 || m_moveObject[i]->type == 201 || m_moveObject[i]->type == 202 ||
+			m_moveObject[i]->type == 203)
+		{
+			RECT src2;
+			src2.left = m_moveObject[i]->posCurrent.x;
+			src2.right = m_moveObject[i]->posCurrent.x + 60;
+			src2.top = m_moveObject[i]->posCurrent.y;
+			src2.bottom = m_moveObject[i]->posCurrent.y + 20;
+			RECT tinyRect;
+			if (IntersectRect(tinyRect, src2, src))
+			{
+				if (m_moveObject[i]->type == 12)
+				{
+					SearchLinkCaisse(i, TRUE);
+					for (int l = 0; l < m_nbLinkCaisse; l++)
+					{
+						int channel = m_moveObject[m_linkCaisse[l]]->channel;
+					}
+				}
+			}
+		}
+	}
+	
 }
 
 BOOL CDecor::SearchDoor(int n, POINT cel, POINT blupi)
@@ -6493,7 +6548,7 @@ void CDecor::GetBlupiInfo(BOOL bHelico, BOOL bJeep, BOOL bSkate, BOOL bNage)
 
 void CDecor::MoveObjectSort()
 {
-    CDecor.MoveObject src = default(CDecor->MoveObject);
+    CDecor.MoveObject src = (CDecor->MoveObject);
     int num = 0;
     for (int i = 0; i < Decor.MAXMOVEOBJECT; i++)
 }

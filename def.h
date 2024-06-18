@@ -73,6 +73,8 @@
 #define CHSPEEDYBLUPI   15
 #define CHBLUPIYOUPIE   16
 #define CHGEAR			17
+#define CHLITTLE		18
+#define CHBIGNUM		19
 
 #define MAXMOVEOBJECT	200
 

@@ -1,0 +1,51 @@
+﻿  text.cpp
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\def.h(236,1): warning C4005: 'MAXMOVEOBJECT': macro redefinition
+  (compiling source file 'text.cpp')
+  C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\def.h(79,1):
+  see previous definition of 'MAXMOVEOBJECT'
+  
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\pixmap.h(121,1): error C2143: syntax error: missing ';' before '}'
+  (compiling source file 'text.cpp')
+  
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\text.h(11,1): error C2628: 'CPixmap' followed by 'void' is illegal (did you forget a ';'?)
+  (compiling source file 'text.cpp')
+  
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\text.cpp(81,1): error C2556: 'void DrawTextW(CPixmap *,POINT,char *,int)': overloaded function differs only by return type from 'CPixmap DrawTextW(CPixmap *,POINT,char *,int)'
+  C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\text.h(11,6):
+  see declaration of 'DrawTextW'
+  
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\text.cpp(80,6): error C2371: 'DrawTextW': redefinition; different basic types
+  C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\text.h(11,6):
+  see declaration of 'DrawTextW'
+  
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\text.cpp(116,3): error C2664: 'void DrawChar(CPixmap *,POINT,char *,double)': cannot convert argument 2 from 'POINT *' to 'POINT'
+  C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\text.cpp(116,21):
+  'tagPOINT::tagPOINT': no overloaded function could convert all the argument types
+  	C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\shared\windef.h(178,1):
+  	could be 'tagPOINT::tagPOINT(tagPOINT &&)'
+  		C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\text.cpp(116,21):
+  		'tagPOINT::tagPOINT(tagPOINT &&)': cannot convert argument 1 from 'POINT *' to 'tagPOINT &&'
+  			C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\text.cpp(116,21):
+  			Reason: cannot convert from 'POINT *' to 'tagPOINT'
+  			C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\text.cpp(116,21):
+  			Conversion requires a second user-defined-conversion operator or constructor
+  	C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\shared\windef.h(178,1):
+  	or       'tagPOINT::tagPOINT(const tagPOINT &)'
+  		C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\text.cpp(116,21):
+  		'tagPOINT::tagPOINT(const tagPOINT &)': cannot convert argument 1 from 'POINT *' to 'const tagPOINT &'
+  			C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\text.cpp(116,21):
+  			Reason: cannot convert from 'POINT *' to 'const tagPOINT'
+  			C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\text.cpp(116,21):
+  			Conversion requires a second user-defined-conversion operator or constructor
+  	C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\text.cpp(116,21):
+  	while trying to match the argument list '(POINT *)'
+  C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\text.h(17,6):
+  see declaration of 'DrawChar'
+  C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\text.cpp(116,3):
+  while trying to match the argument list '(CPixmap *, POINT *, char, int)'
+  
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\text.cpp(138,28): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\text.cpp(213,4): error C2264: 'DrawTextW': error in function definition or declaration; function not called
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\text.cpp(258,3): error C2264: 'DrawTextW': error in function definition or declaration; function not called
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\text.cpp(355,2): error C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\text.cpp(381,2): error C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.

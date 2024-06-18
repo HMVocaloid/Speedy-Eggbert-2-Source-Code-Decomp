@@ -40,6 +40,7 @@ public:
 
     BOOL    IsIconPixel(int channel, int rank, POINT pos);
 
+    void    DrawChar(int rank, POINT pos, double size);
     BOOL    DrawIcon(int chDst, int channel, int rank, POINT pos, int mode=0, BOOL bMask=FALSE);
     BOOL	DrawIconDemi(int chDst, int channel, int rank, POINT pos, int mode=0, BOOL bMask=FALSE);
 	BOOL	DrawIconPart(int chDst, int channel, int rank, POINT pos, int startY, int endY, int mode=0, BOOL bMask=FALSE);
@@ -116,5 +117,5 @@ protected:
     char                   m_filename[MAXIMAGE][20];
     POINT                  m_totalDim[MAXIMAGE];
     POINT                  m_iconDim[MAXIMAGE];
-    DDBLTFX m_DDbltfx
-}
+    DDBLTFX                m_DDbltfx;
+};

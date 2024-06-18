@@ -7,6 +7,7 @@
 #include "def.h"
 #include "pixmap.h"
 #include "text.h"
+#include "texttables.h"
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -119,13 +120,27 @@ void DrawTextNew(CPixmap* pPixmap, POINT pos, char* pText, int font)
 
 //Implement later
 
-void DrawChar(CPixmap* pPixmap, POINT* pos, char c, int font)
+void DrawChar(CPixmap* pPixmap, POINT* pos, char c, double size)
 {
-	int width;
-	UINT index;
+	POINT pos2;
+	int num = (int)((short)c * 6);
+	int num2 = (int)table_char[num];
+	pos2.x = pos->x + (int)table_char[num + 1];
+	pos2.y = pos->y + (int)table_char[num + 2];
+	DrawCharSingle(pPixmap, pos2, num2, size);
+	num2 = (int)table_char[num + 3];
+	if (num2 != -1)
+	{
+		pos2.x = pos->x + (int)table_char[num + 4];
+		pos2.y = pos->y + (int)table_char[num + 5];
+		DrawCharSingle(pPixmap, pos2, num2, size);
+	}
+	pos->x += GetCharWidth(c, size);
+}
 
-	index = (UINT)(BYTE)c;
-	pos->y = (int)table_width[index].charOffsetY + pos->y;
+void DrawCharSingle(CPixmap pPixmap, POINT pos, int rank, double size)
+{
+	pPixmap.DrawChar(rank, pos, size);
 }
 
 void GetSomethingDrawText(CPixmap* pPixmap, POINT pos, char* pText, int font)

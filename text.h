@@ -8,13 +8,16 @@
 #define FONTLITTLE 10
 
 extern
-void DrawText(CPixmap *pPixmap, POINT pos, char *pText, int font=0);
+void DrawText(CPixmap *pPixmap, POINT pos, char *pText, int font);
 
 extern
-void DrawTextNew(CPixmap *pPixmap, POINT pos, char* pText, int font = 0);
+void DrawTextNew(CPixmap *pPixmap, POINT pos, char* pText, int font);
 
 extern
-void DrawChar(CPixmap* pPixmap, POINT pos, char* pText, int font = 0);
+void DrawChar(CPixmap* pPixmap, POINT pos, char* pText, double size);
+
+extern
+void DrawCharSingle(CPixmap* pPixmap, POINT pos, int rank, double size);
 
 extern
 void DrawTextNew(CPixmap* pPixmap, POINT pos, char* pText, int font);

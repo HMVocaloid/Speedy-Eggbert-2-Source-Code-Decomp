@@ -337,6 +337,20 @@ void CPixmap::SetTrueColorDecor(BOOL bTrueColorDecor)
 	m_bTrueColorDecor = bTrueColorDecor;
 }
 
+void CPixmap::DrawChar(int rank, POINT pos, double size)
+{
+	pos.x = (int)((double)pos.x + originX);
+	pos.y = (int)((double)pos.y + originY);
+	RECT rect = new RECT;
+	{
+		left = pos.x,
+			top = pos.y,
+			right = pos.x + (int)(32.0 * size),
+			bottom = pos.y + (int)(32.0 * size)
+	};
+	DrawIcon(6, rank, rect, 1.0, FALSE);
+}
+
 // Indique si l'on utilise une palette.
 
 BOOL CPixmap::IsPalette()
