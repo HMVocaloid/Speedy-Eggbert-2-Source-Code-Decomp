@@ -12,19 +12,19 @@
 
 CNetwork::CNetwork()
 {
-             m_field0_0x0;
-             m_field8_0x20;
-             m_field7_0x1c;
+             m_pDP;
+             m_pDPID;
+             m_bUnk1C;
+             m_pContext;
+             m_pSessions2;
              m_pUnkC;
              m_pSessions;
-             m_field3_0xc;
-             m_field4_0x10;
-             m_field5_0x14;
-             m_field6_0x18;
+             m_pUnk18;
 }
 
 CNetwork::~CNetwork()
 {
+    LPDIRECTPLAY2 lpDP;
 }
 
 void CNetwork::FreeSessionList()

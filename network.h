@@ -6,6 +6,7 @@ public:
 
     BOOL    Create();
     void    FreeSessionList();
+    void    FreeSessionList2();
 
 protected:
     IDirectPlay2 m_pDP;

@@ -6347,6 +6347,22 @@ void CDecor::MoveObjectStepLine(int i)
 	}
 }
 
+void CDecor::DynamiteStart(int i, int dx, int dy)
+{
+	POINT posStart = m_moveObject[i]->posStart;
+	posStart.x -= 34;
+	posStart.y -= 34;
+	posStart.x += dx;
+	posStart.y -= dy;
+	ObjectStart(posStart, 8, 0);
+	if (dx == 0 && dy == 0)
+	{
+		PlaySound(10, posStart);
+		m_decorAction = 1;
+		m_decorPhase = 0;
+	}
+}
+
 BOOL CDecor::SearchDoor(int n, POINT cel, POINT blupi)
 {
     for (int i = 0; i < 100; i++)

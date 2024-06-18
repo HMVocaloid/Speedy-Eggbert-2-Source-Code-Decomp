@@ -602,6 +602,7 @@ public:
 	void	ModifDecor(POINT pos, int icon);
 	void	MoveObjectStep();
 	void	MoveObjectStepLine(int i);
+	void	DynamiteStart(int i, int dx, int dy);
 	void	BlupiStep();
 	BOOL	DecorDetect(RECT rect);
 	BOOL	DecorDetect(RECT rect, BOOL bCaisse);
