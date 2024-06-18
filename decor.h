@@ -595,6 +595,13 @@ public:
 	BOOL	IsMoveTraj(POINT pos);
 	int		SearchDistRight(POINT pos, POINT dir, int type);
 	BOOL	IsVentillo(POINT pos);
+	void	NetStopCloud(int rank);
+	void	StartSploutchGlu(POINT pos);
+	int		ObjectStart(POINT pos, int type, int speed);
+	BOOL	ObjectDelete(POINT pos, int type);
+	void	ModifDecor(POINT pos, int icon);
+	void	MoveObjectStep();
+	void	MoveObjectStepLine(int i);
 	void	BlupiStep();
 	BOOL	DecorDetect(RECT rect);
 	BOOL	DecorDetect(RECT rect, BOOL bCaisse);

@@ -8,14 +8,13 @@ public:
     void    FreeSessionList();
 
 protected:
-    int         m_field0_0x0;
-    int         m_field8_0x20;
-    int         m_field7_0x1c;
-    int         m_pUnkC;
-    void        m_pSessions;
-    int         m_field3_0xc;
-    void        m_field4_0x10;
-    int         m_field5_0x14;
-    int         m_field6_0x18;
+    IDirectPlay2 m_pDP;
+    LPVOID      m_pContext;
+    NetSessionList m_pSessions2;
+    LPVOID         m_pUnkC;
+    addr           m_pUnk18;
+    NetSessionList m_pSessions;
+    BOOL           m_pUnk1C;
+    DPID           m_pDPID;
     NetPlayer   m_players[4];
 };

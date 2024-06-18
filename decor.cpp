@@ -5882,7 +5882,468 @@ int CDecor::SearchDistRight(POINT pos, POINT dir, int type)
 	pos.y = (pos.y + 32) / 64;
 	while (pos.x >= 0 && pos.x < 100 && pos.y >= 0 && pos.y < 100 && !IsBlocIcon(m_decor[pos.x, pos.y]->icon))
 	{
+		if (type == 23)
+		{
+			SetBalleTraj(pos);
+		}
+		num += 64;
+		pos.x += dir.x;
+		pos.y += dir.y;
+	}
+	if ((type == 34 || type == 38) && num >= 64)
+	{
+		num -= 64;
+	}
+	if (type == 23 && num >= 10)
+	{
+		num -= 10;
+	}
+	return num;
+}
 
+BOOL CDecor::IsVentillo(POINT pos)
+{
+	int num = 0;
+	BOOL flag = FALSE;
+	POINT tinyPoint;
+	pos.x += 30;
+	pos.y += 30;
+	if (pos.x < 0 || pos.x >= 6400 || pos.y < 0 || pos.y >= 6400)
+	{
+		return FALSE;
+	}
+	int icon = m_decor[pos.x / 64, pos.y / 64]->icon;
+	if (icon < 126 || icon > 137)
+	{
+		return FALSE;
+	}
+	if (icon == 126)
+	{
+		if (pos.x % 64 <= 16)
+		{
+			flag = TRUE;
+		}
+		tinyPoint.x = -64;
+		tinyPoint.y = 0;
+		num = 110;
+	}
+	if (icon == 129)
+	{
+		if (pos.x % 64 >= 48)
+		{
+			flag = TRUE;
+		}
+		tinyPoint.x = 64;
+		tinyPoint.y = 0;
+		num = 114;
+	}
+	if (icon == 132)
+	{
+		if (pos.y % 64 <= 32)
+		{
+			flag = TRUE;;
+		}
+		tinyPoint.x = 0;
+		tinyPoint.y = -64;
+		num = 118;
+	}
+	if (icon == 135)
+	{
+		if (pos.y % 64 >= 48)
+		{
+			flag = TRUE;
+		}
+		tinyPoint.x = 0;
+		tinyPoint.y = 64;
+		num = 122;
+	}
+	if (!flag)
+	{
+		return FALSE;
+	}
+	ModifDecor(pos, -1);
+	do
+	{
+		pos.x += tinyPoint.x;
+		pos.y += tinyPoint.y;
+		if (num != m_decor[pos.x / 64, pos.y / 64]->icon)
+		{
+			break;
+		}
+		ModifDecor(pos, -1);
+	} 
+	while (pos.x >= 0 && pos.x < 6400 && pos.y >= 0 && pos.y < 6400);
+	return TRUE;
+}
+
+void CDecor::NetStopCloud(int rank)
+{
+}
+
+// Birdlime
+
+void CDecor::StartSploutchGlu(POINT pos)
+{
+	POINT pos2;
+	pos2.x = pos.x;
+	pos2.y = pos.y;
+	ObjectStart(pos2, 98, 0);
+	pos2.x = pos.x + 15;
+	pos2.y = pos.y + 20;
+	ObjectStart(pos2, 99, 0);
+	pos2.x = pos.x - 20;
+	pos2.y = pos.y + 18;
+	ObjectStart(pos2, 99, 0);
+	pos2.x = pos.x + 23;
+	pos2.y = pos.y - 18;
+	ObjectStart(pos2, 99, 0);
+	pos2.x = pos.x - 15;
+	pos2.y = pos.y - 18;
+	ObjectStart(pos2, 99, 0);
+	pos2.x = pos.x + 32;
+	pos2.y = pos.y + 10;
+	ObjectStart(pos2, 100, 0);
+	pos2.x = pos.x - 28;
+	pos2.y = pos.y + 15;
+	ObjectStart(pos2, 100, 0);
+	StopSound(16);
+	StopSound(18);
+	StopSound(29);
+	StopSound(31);
+	PlaySound(51, pos);
+}
+
+int CDecor::ObjectStart(POINT pos, int type, int speed)
+{
+	int num = MoveObjectFree();
+	if (num == -1)
+	{
+		return -1;
+	}
+	m_moveObject[num]->type = type;
+	m_moveObject[num]->phase = 0;
+	m_moveObject[num]->posCurrent = pos;
+	m_moveObject[num]->posStart = pos;
+	m_moveObject[num]->posEnd = pos;
+	MoveObjectStopIcon(num);
+	if (speed != 0)
+	{
+		POINT tinyPoint = pos;
+		int num2 = speed;
+		int num3 = 0;
+		if (num2 > 50)
+		{
+			num2 -= 50;
+			POINT dir;
+			dir.x = 0;
+			dir.y = 1;
+			num3 = SearchDistRight(tinyPoint, dir, type);
+			tinyPoint.y += num3;
+		}
+		else if (num < -50)
+		{
+			num2 += 50;
+			POINT dir;
+			dir.x = 0;
+			dir.y = -1;
+			num3 = SearchDistRight(tinyPoint, dir, type);
+			tinyPoint.y -= num3;
+		}
+		else if (num2 > 0)
+		{
+			POINT dir;
+			dir.x = 1;
+			dir.y = 0;
+			num3 = SearchDistRight(tinyPoint, dir, type);
+			tinyPoint.x += num3;
+		}
+		else if (num2 < 0)
+		{
+			POINT dir;
+			dir.x = -1;
+			dir.y = 0;
+			num3 = SearchDistRight(tinyPoint, dir, type);
+			tinyPoint.x -= num3;
+		}
+		if (num3 == 0)
+		{
+			if (type == 23)
+			{
+				m_moveObject[num]->type = 0;
+				return num;
+			}
+		}
+		else
+		{
+			m_moveObject[num]->posEnd = tinyPoint;
+			m_moveObject[num]->timeStopStart = 0;
+			m_moveObject[num]->stepAdvance = abs(num2 * num3 / 64);
+			m_moveObject[num]->step = 2;
+			m_moveObject[num]->time = 0;
+		}
+	}
+	MoveObjectPriority(num);
+	return num;
+}
+
+BOOL CDecor::ObjectDelete(POINT pos, int type)
+{
+	int num = MoveObjectSearch(pos, type);
+	if (num == -1)
+	{
+		return FALSE;
+	}
+	if (m_moveObject[num]->type == 4 ||
+		m_moveObject[num]->type == 12 ||
+		m_moveObject[num]->type == 16 ||
+		m_moveObject[num]->type == 17 ||
+		m_moveObject[num]->type == 20 ||
+		m_moveObject[num]->type == 40 ||
+		m_moveObject[num]->type == 96 ||
+		m_moveObject[num]->type == 97)
+	{
+		int num2 = 17;
+		double animationSpeed = 1.0;
+		if (m_moveObject[num]->type == 4)
+		{
+			num2 = 7;
+		}
+		if (m_moveObject[num]->type == 17 || m_moveObject[num]->type == 20)
+		{
+			num2 = 33;
+		}
+		if (m_moveObject[num]->type == 40)
+		{
+			animationSpeed = 0.5;
+		}
+		ByeByeAdd(m_moveObject[num]->channel, m_moveObject[num]->icon, m_moveObject[num]->posCurrent, (double)num2, animationSpeed);
+	}
+	m_moveObject[num]->type = 0;
+	return TRUE;
+}
+
+void CDecor::ModifDecor(POINT pos, int icon)
+{
+	int icon2 = m_decor[pos.x / 64, pos.y / 64]->icon;
+	if (icon == -1 && icon >= 126 && icon2 <= 137)
+	{
+		ByeByeAdd(1, icon2, pos, 17.0, 1.0);
+	}
+	m_decor[pos.x / 64, pos.y / 64]->icon = icon;
+}
+
+void CDecor::MoveObjectStep()
+{
+	m_blupiVector.x = 0;
+	m_blupiVector.y = 0;
+	m_blupiTransport = -1;
+	for (int i = 0; i < MAXMOVEOBJECT; i++)
+	{
+		if (m_moveObject[i]->type != 0)
+		{
+			MoveObjectStepLine(i);
+			MoveObjectStepIcon(i);
+			if (m_moveObject[i]->type == 4 ||
+				m_moveObject[i]->type == 33 ||
+				m_moveObject[i]->type == 32)
+				int num = MovePersoDetect(m_moveObject[i]->posCurrent);
+			if (num != -1)
+			{
+				POINT posCurrent = m_moveObject[i]->posCurrent;
+				posCurrent.x -= 34;
+				posCurrent.y -= 34;
+				ObjectStart(posCurrent, 8, 0);
+				PlaySound(10, m_moveObject[i]->posCurrent);
+				m_decorAction = 1;
+				m_decorPhase = 0;
+				posCurrent = m_moveObject[i]->posCurrent;
+				posCurrent.x += 2;
+				posCurrent.y += BLUPIOFFY;
+				ObjectDelete(m_moveObject[i]->posCurrent, m_moveObject[i]->type);
+				ObjectStart(posCurrent, 37, 0);
+				ObjectDelete(m_moveObject[num]->posCurrent, m_moveObject[num]->type);
+			}
+			if (BlupiElectro(m_moveObject[i]->posCurrent))
+			{
+				POINT posCurrent = m_moveObject[i]->posCurrent;
+				posCurrent.x += 2;
+				posCurrent.y += BLUPIOFFY;
+				ObjectDelete(m_moveObject[i]->posCurrent, m_moveObject[i]->type);
+				ObjectStart(posCurrent, 38, 55);
+				PlaySound(59, posCurrent);
+			}
+		}
+	}
+}
+
+void CDecor::MoveObjectStepLine(int i)
+{
+	POINT tinyPoint;
+	BOOL flag = FALSE;
+	RECT tinyRect;
+	if (m_moveObject[i]->type == 1 || m_moveObject[i]->type == 47 || m_moveObject[i]->type == 48 && !m_blupiSuspend)
+	{
+		RECT src;
+		src.left = m_blupiPos.x + 20;
+		src.right = m_blupiPos.x + 60 - 20;
+		src.top = m_blupiPos.y + 60 - 2;
+		src.bottom = m_blupiPos.y + 60 - 1;
+		tinyRect.left = m_moveObject[i]->posCurrent.x;
+		tinyRect.right = m_moveObject[i]->posCurrent.x + 64;
+		tinyRect.top = m_moveObject[i]->posCurrent.y;
+		tinyRect.bottom = m_moveObject[i]->posCurrent.y + 16;
+		RECT tinyRect2;
+		flag = IntersectRect(tinyRect2, tinyRect, src);
+		tinyPoint = m_moveObject[i]->posCurrent;
+	}
+	POINT posCurrent;
+	if (m_blupiFocus && !m_blupiHide && m_moveObject[i]->type == 97)
+	{
+		posCurrent = m_moveObject[i]->posCurrent;
+		if (posCurrent.x < m_blupiPos.x)
+		{
+			posCurrent.x++;
+		}
+		if (posCurrent.x > m_blupiPos.x)
+		{
+			posCurrent.x--;
+		}
+		if (posCurrent.y < m_blupiPos.y)
+		{
+			posCurrent.y++;
+		}
+		if (posCurrent.y > m_blupiPos.y)
+		{
+			posCurrent.y--;
+		}
+		tinyRect.left = posCurrent.x + 10;
+		tinyRect.right = posCurrent.x + 60 - 10;
+		tinyRect.top = posCurrent.y + 10;
+		tinyRect.bottom = posCurrent.y + 60 - 10;
+		if (TestPath(tinyRect, m_moveObject[i]->posCurrent, posCurrent))
+		{
+			m_moveObject[i]->posCurrent = posCurrent;
+			m_moveObject[i]->posStart = posCurrent;
+			m_moveObject[i]->posEnd = posCurrent;
+		}
+		else
+		{
+			ObjectDelete(m_moveObject[i]->posCurrent, m_moveObject[i]->type);
+			posCurrent.x -= 34;
+			posCurrent.y -= 34;
+			ObjectStart(posCurrent, 9, 0);
+			PlaySound(10, posCurrent);
+			m_decorAction = 1;
+			m_decorPhase = 0;
+		}
+	}
+	if (m_moveObject[i]->posStart.x != m_moveObject[i]->posEnd.x || m_moveObject[i]->posStart.y != m_moveObject[i]->posEnd.y)
+	{
+		if (m_moveObject[i]->step == 1)
+		{
+			if (m_moveObject[i]->time < m_moveObject[i]->timeStopStart)
+			{
+				MoveObject[] moveObject = m_moveObject;
+				moveObject[i]->time = moveObject[i]->time + 1;
+			}
+			else
+			{
+				m_moveObject[i]->step = 2;
+				m_moveObject[i]->time = 0;
+			}
+		}
+		else if (m_moveObject[i]->step == 2)
+		{
+			if (m_moveObject[i]->posCurrent.x != m_moveObject[i]->posEnd.x || m_moveObject[i]->posCurrent.x != m_moveObject[i]->posEnd.y)
+			{
+				MoveObject[] moveObject2 = m_moveObject;
+				moveObject2[i]->time = moveObject2[i]->time + 1;
+				if (m_moveObject[i]->stepAdvance != 0)
+				{
+					m_moveObject[i]->posCurrent.x = (m_moveObject[i]->posEnd.x - m_moveObject[i]->posStart.x) * m_moveObject[i]->time / m_moveObject[i]->stepAdvance + m_moveObject[i]->posStart.x;
+					m_moveObject[i]->posCurrent.y = (m_moveObject[i]->posEnd.y - m_moveObject[i]->posStart.y) * m_moveObject[i]->time / m_moveObject[i]->stepAdvance + m_moveObject[i]->posStart.y;
+				}
+
+			}
+			else if (m_moveObject[i]->type == 15 || m_moveObject[i]->type == 23)
+			{
+				m_moveObject[i]->type = 0;
+			}
+			else if (m_moveObject[i]->type == 34)
+			{
+				m_moveObject[i]->posStart = m_moveObject[i]->posCurrent;
+				m_moveObject[i]->posEnd = m_moveObject[i]->posCurrent;
+				m_moveObject[i]->step = 3;
+				m_moveObject[i]->time = 0;
+			}
+			else
+			{
+				m_moveObject[i]->step = 3;
+				m_moveObject[i]->time = 0;
+			}
+		}
+		else if (m_moveObject[i]->step == 3)
+		{
+			if (m_moveObject[i]->time < m_moveObject[i]->timeStopEnd)
+			{
+				MoveObject[] moveObject3 = m_moveObject;
+				moveObject3[i]->time = moveObject3[i]->time + 1;
+			}
+			else
+			{
+				m_moveObject[i]->step = 4;
+				m_moveObject[i]->time = 0;
+			}
+		}
+		else if (m_moveObject[i]->step == 4)
+		{
+			if (m_moveObject[i]->posCurrent.x != m_moveObject[i]->posStart.x || m_moveObject[i]->posCurrent.y != m_moveObject[i]->posStart.y)
+			{
+				MoveObject[] moveObject4 = m_moveObject;
+				moveObject4[i]->time = moveObject4[i]->time + 1;
+				if (m_moveObject[i]->stepRecede != 0)
+				{
+					m_moveObject[i]->posCurrent.x = (m_moveObject[i]->posStart.x - m_moveObject[i]->posEnd.x) *
+						m_moveObject[i]->time / m_moveObject[i]->stepRecede + m_moveObject[i]->posEnd.x;
+					m_moveObject[i]->posCurrent.y = (m_moveObject[i]->posStart.y - m_moveObject[i]->posEnd.y) *
+						m_moveObject[i]->time / m_moveObject[i]->stepRecede + m_moveObject[i]->posEnd.y;
+				}
+			}
+			else
+			{
+				m_moveObject[i]->step = 1;
+				m_moveObject[i]->time = 0;
+			}
+		}
+	}
+	if (m_moveObject[i]->type == 22 && m_moveObject[i]->step == 3)
+	{
+		m_moveObject[i]->type = 0;
+	}
+	posCurrent = m_moveObject[i]->posCurrent;
+	if (m_moveObject[i]->type == 1 || m_moveObject[i]->type == 47 || m_moveObject[i]->type == 48)
+	{
+		posCurrent.y -= 64;
+	}
+	posCurrent.x = (posCurrent.x + 32) / 64;
+	posCurrent.y = (posCurrent.y + 32) / 64;
+	SetMoveTraj(posCurrent);
+	if (flag)
+	{
+		m_blupiVector.x = m_moveObject[i]->posCurrent.x - tinyPoint.x;
+		m_blupiVector.y = m_moveObject[i]->posCurrent.y - (m_blupiPos.y + 60 - BLUPIFLOOR);
+		if (m_moveObject[i]->type == 47)
+		{
+			m_blupiVector.x = m_blupiVector.x + 2;
+		}
+		if (m_moveObject[i]->type == 48)
+		{
+			m_blupiVector.x = m_blupiVector.x - 2;
+		}
+		if (m_blupiTimeNoAsc == 0)
+		{
+			m_blupiTransport = i;
+		}
 	}
 }
 

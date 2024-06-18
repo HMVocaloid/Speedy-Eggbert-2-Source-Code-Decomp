@@ -103,114 +103,12 @@
 
 // Actions :
 
-#define ACTION_STOP			0		// arr�t
-#define ACTION_STOPf		1		// arr�t fatigu�
-#define ACTION_MARCHE		2		// marche
-#define ACTION_MARCHEf		3		// marche fatigu�
-#define ACTION_BUILD		4		// construit
-#define ACTION_PIOCHE		5		// pioche
-#define ACTION_ENERGY		6		// prend de l'�nergie
-#define ACTION_TAKE			8		// fait sauter un objet sur la t�te (est)
-#define ACTION_DEPOSE		9		// repose l'objet sur la t�te (est)
-#define ACTION_SCIE			10		// scie du bois
-#define ACTION_BRULE		11		// blupi crame !
-#define ACTION_TCHAO		12		// blupi disparait !
-#define ACTION_MANGE		13		// blupi mange
-#define ACTION_NAISSANCE	14		// naissance
-#define ACTION_SAUTE2		15		// saute par-dessus un obstacle
-#define ACTION_SAUTE3		16		// saute par-dessus un obstacle
-#define ACTION_SAUTE4		17		// saute par-dessus un obstacle
-#define ACTION_SAUTE5		18		// saute par-dessus un obstacle
-#define ACTION_PONT			19		// pousse un pont
-#define ACTION_MISC1		20		// divers 1 (hausse les �paules)
-#define ACTION_MISC2		21		// divers 2 (grat-grat)
-#define ACTION_MISC3		22		// divers 3 (yoyo)
-#define ACTION_MISC1f		23		// divers 1 fatigu� (bof-bof)
-#define ACTION_GLISSE		24		// glisse en marchant
-#define ACTION_BOIT			25		// blupi boit
-#define ACTION_LABO			26		// blupi travaille dans son laboratoire
-#define ACTION_DYNAMITE		27		// blupi fait p�ter la dynamite
-#define ACTION_DELAY		28		// blupi attend un frame
-#define ACTION_CUEILLE1		29		// blupi cueille des fleurs
-#define ACTION_CUEILLE2		30		// blupi cueille des fleurs
-#define ACTION_MECHE		31		// blupi se bouche les oreilles
-#define ACTION_STOPb		32		// arr�t en bateau
-#define ACTION_MARCHEb		33		// avance en bateau
-#define ACTION_STOPj		34		// arr�t en jeep
-#define ACTION_MARCHEj		35		// avance en jeep
-#define ACTION_ELECTRO		36		// blupi �lectrocut�
-#define ACTION_GRILLE1		37		// blupi grille (phase 1)
-#define ACTION_GRILLE2		38		// blupi grille (phase 2)
-#define ACTION_GRILLE3		39		// blupi grille (phase 3)
-#define ACTION_MISC4		40		// divers 4 (ferme les yeux)
-#define ACTION_CONTENT		41		// blupi est content
-#define ACTION_ARROSE		42		// blupi arrose
-#define ACTION_BECHE		43		// blupi b�che
-#define ACTION_CUEILLE3		44		// blupi cueille des fleurs
-#define ACTION_BUILDBREF	45		// construit
-#define ACTION_BUILDSEC		46		// construit
-#define ACTION_BUILDSOURD	47		// construit
-#define ACTION_BUILDPIERRE	48		// construit
-#define ACTION_PIOCHEPIERRE	49		// pioche
-#define ACTION_PIOCHESOURD	50		// pioche
-#define ACTION_MISC5		51		// divers 5 (oh�)
-#define ACTION_TELEPORTE1	52		// t�l�porte
-#define ACTION_TELEPORTE2	53		// t�l�porte
-#define ACTION_TELEPORTE3	54		// t�l�porte
-#define ACTION_STOPa		55		// arr�t armure
-#define ACTION_MARCHEa		56		// marche armure
-#define ACTION_ARMUREOPEN	57		// ouvre armure
-#define ACTION_ARMURECLOSE	58		// ferme armure
-#define ACTION_SAUTE1		59		// saute dans la jeep
-#define ACTION_MISC6		60		// divers 6 (diabolo)
-
-#define ACTION_A_STOP		100		// araign�e: arr�t
-#define ACTION_A_MARCHE		101		// araign�e: marche
-#define ACTION_A_SAUT		102		// araign�e: saute
-#define ACTION_A_GRILLE		103		// araign�e: grille dans rayon
-#define ACTION_A_POISON		105		// araign�e: empoison�e
-#define ACTION_A_MORT1		106		// araign�e: meurt
-#define ACTION_A_MORT2		107		// araign�e: meurt
-#define ACTION_A_MORT3		108		// araign�e: meurt
-
-#define ACTION_V_STOP		200		// virus: arr�t
-#define ACTION_V_MARCHE		201		// virus: marche
-#define ACTION_V_GRILLE		202		// virus: grille dans rayon
-
-#define ACTION_T_STOP		300		// tracks: arr�t
-#define ACTION_T_MARCHE		301		// tracks: marche
-#define ACTION_T_ECRASE		302		// tracks: �crase un objet
-
-#define ACTION_R_STOP		400		// robot: arr�t
-#define ACTION_R_MARCHE		401		// robot: marche
-#define ACTION_R_APLAT		402		// robot: applatit
-#define ACTION_R_BUILD		403		// robot: construit
-#define ACTION_R_DELAY		404		// robot: construit
-#define ACTION_R_CHARGE		405		// robot: recharge
-#define ACTION_R_ECRASE		406		// robot: �crase un objet
-
-#define ACTION_B_STOP		500		// bombe: arr�t
-#define ACTION_B_MARCHE		501		// bombe: marche
-
-#define ACTION_D_DELAY		600		// d�tonnateur: attend
-
-#define ACTION_E_STOP		700		// �lectro: arr�t
-#define ACTION_E_MARCHE		701		// �lectro: marche
-#define ACTION_E_DEBUT		702		// �lectro: d�bute
-#define ACTION_E_RAYON		703		// �lectro: rayonne
-
-#define ACTION_D_STOP		800		// disciple: arr�t
-#define ACTION_D_MARCHE		801		// disciple: marche
-#define ACTION_D_BUILD		802		// disciple: construit
-#define ACTION_D_PIOCHE		803		// disciple: pioche
-#define ACTION_D_SCIE		804		// disciple: scie du bois
-#define ACTION_D_TCHAO		805		// disciple: disparait !
-#define ACTION_D_CUEILLE1	806		// disciple: cueille des fleurs
-#define ACTION_D_CUEILLE2	807		// disciple: cueille des fleurs
-#define ACTION_D_MECHE		808		// disciple: se bouche les oreilles
-#define ACTION_D_ARROSE		809		// disciple: arrose
-#define ACTION_D_BECHE		810		// disciple: b�che
-
+#define ACTION_STOP			1		// arr�t
+#define ACTION_MARCH		2
+#define ACTION_TURN			3
+#define ACTION_JUMP			4
+#define	ACTION_AIR			5
+#define	ACTION_DOWN			6
 
 // Sons :
 
