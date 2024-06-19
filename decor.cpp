@@ -39,7 +39,7 @@ CDecor::CDecor()
 
     for (i = 0; i < 200; i++)
     {
-        m_lastDecorIcon[i] = 0;
+		m_lastDecorIcon[i] = 0;
     }
     m_time = 0;
     m_bAllMissions = FALSE;
@@ -6410,12 +6410,60 @@ void CDecor::DynamiteStart(int i, int dx, int dy)
 					for (int l = 0; l < m_nbLinkCaisse; l++)
 					{
 						int channel = m_moveObject[m_linkCaisse[l]]->channel;
+						int icon2 = m_moveObject[m_linkCaisse[l]]->icon;
+						POINT posCurrent = m_moveObject[m_linkCaisse[l]]->posCurrent;
+						double num = (double)m_random->next(7, 23);
+						if (m_random->next(0, 100) % 2 == 0)
+						{
+							num = -num;
+						}
+						ByeByeAdd(channel, icon2, posCurrent, num, 1.0);
+						m_moveObject[m_linkCaisse[l]]->type = 0;
 					}
+					ObjectDelete(m_moveObject[i]->posCurrent, m_moveObject[i]->type);
+					UpdateCaisse();
+				}
+				else
+				{
+					ObjectDelete(m_moveObject[i]->posCurrent, m_moveObject[i]->type);
 				}
 			}
 		}
 	}
+	if (m_blupiFocus && !m_blupiShield && !m_blupiHide && !m_bSuperBlupi && m_blupiPos.x > posStart.x - 30 && m_blupiPos.x < posStart.x + 30 + 64 && m_blupiPos.y > posStart.y - 30 && m_blupiPos.y < posStart.y + 30 + 64)
+	{
+		BlupiDead(11, -1);
+		m_blupiAir = TRUE;
+	}
 	
+}
+
+int CDecor::AscenseurDetect(RECT rect, POINT oldpos, POINT newpos)
+{
+	if (m_blupiTimeNoAsc != 0)
+	{
+		return -1;
+	}
+	int num = newpos.y - oldpos.y;
+	int num2;
+	if (num < 0)
+	{
+		num2 = -30;
+	}
+	else
+	{
+		num2 = 30;
+	}
+	num = abs(num);
+	for (int i = 0; i < MAXMOVEOBJECT; i++)
+	{
+		if (m_moveObject[i]->type == 1 || m_moveObject[i]->type == 47 || m_moveObject[i]->type == 48)
+		{
+			RECT src;
+			src.left = m_moveObject[i]->posCurrent.x;
+
+		}
+	}
 }
 
 BOOL CDecor::SearchDoor(int n, POINT cel, POINT blupi)

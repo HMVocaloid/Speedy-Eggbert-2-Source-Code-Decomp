@@ -603,6 +603,7 @@ public:
 	void	MoveObjectStep();
 	void	MoveObjectStepLine(int i);
 	void	DynamiteStart(int i, int dx, int dy);
+	int		AscenseurDetect(RECT rect, POINT oldpos, POINT newpos);
 	void	BlupiStep();
 	BOOL	DecorDetect(RECT rect);
 	BOOL	DecorDetect(RECT rect, BOOL bCaisse);
@@ -649,6 +650,7 @@ protected:
 	BOOL		m_blupiRestart;
     POINT       m_worldDims;
     POINT       m_selectedCelPos;
+	BOOL		m_bSuperBlupi;
 	Random		m_random;
     WMessage    m_phase;
     int         m_targetMission;
