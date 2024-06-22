@@ -172,7 +172,7 @@ void CDecor::InitDecor(int channel, int icon)
     m_moveObject[1]->channel = 10;
     m_moveObject[1]->icon = 29;
     m_blupiStartPos.x = 66;
-    m_blupiStartPos.y = 192 + Decor.BLUPIOFFY;
+    m_blupiStartPos.y = 192 + BLUPIOFFY;
     m_blupiStartDir = 2;
     m_blupiAction = 1;
     m_blupiPhase = 0;
@@ -216,7 +216,7 @@ void CDecor::InitDecor(int channel, int icon)
     m_scrollAdd.x = 0;
     m_scrollAdd.y = 0;
     m_term = 0;
-    byeByeObjects.Clear();
+    byeByeObject.Clear();
 }
 
 void CDecor::SetTime(int time)
@@ -288,7 +288,7 @@ void CDecor::PlayPrepare(BOOL bTest)
     m_blupiDynamite = 0;
     m_nbTresor = 0;
     m_totalTresor = 0;
-    for (int i = 0; i < Decor.MAXMOVEOBJECT; i++)
+    for (int i = 0; i < MAXMOVEOBJECT; i++)
     {
         if (m_moveObject[i]->type == 5)
         {
@@ -367,6 +367,11 @@ void CDecor::BuildPrepare()
     m_bPause = FALSE;
 }
 
+int CDecor::IsTerminated()
+{
+	return m_term;
+}
+
 // Fuck this function. That's all I can say.
 
 void CDecor::Build()
@@ -416,7 +421,7 @@ void CDecor::Build()
                         pos.y = tinyPoint.y;
                         if (num2 == 203)
                         {
-                            num2 = table[m_index].table_marine[m_time / 3 % 11];
+                            num2 = table_marine[m_time / 3 % 11];
                             channel = 1;
                         }
                         if (num2 >= 66 && num2 <= 68)
@@ -540,10 +545,59 @@ POINT CDecor::DecorNextAction()
         m_posDecor;
     }
     POINT posDecor = m_posDecor;
-    while (tables->table_decor_action[num] != 0)
+    while (table_decor_action[num] != 0)
     {
-        if (m_decorAction == tables->table_decor_action[num])
+		if (m_decorAction == table_decor_action[num])
+		{
+			if (m_decorPhase < table_decor_action[num + 1])
+			{
+				posDecor.x += 3 * table_decor_action[num + 2 + m_decorPhase * 2];
+				posDecor.y += 3 * table_decor_action[num + 2 + m_decorPhase * 2 + 1];
+				int num2;
+				if (m_dimDecor.x == 0)
+				{
+					num2 = 0;
+				}
+				else
+				{
+					num2 = 6400 - (m_drawBounds.right - m_drawBounds.left);
+				}
+				if (posDecor.x < 0)
+				{
+					posDecor.x = 0;
+				}
+				if (posDecor.x > num2)
+				{
+					posDecor.x = num2;
+				}
+				if (m_dimDecor.y == 0)
+				{
+					num2 = 0;
+				}
+				else
+				{
+					num2 = 6400 - (m_drawBounds.bottom - m_drawBounds.top);
+				}
+				if (posDecor.y < 0)
+				{
+					posDecor.y = 0;
+				}
+				if (posDecor.y > num2)
+				{
+					posDecor.y = num2;
+				}
+				m_decorPhase++;
+				break;
+			}
+			m_decorAction = 0;
+			break;
+		}
+		else
+		{
+			num += 2 + table_decor_action[num + 1] * 2;
+		}
     }
+	return posDecor;
 }
 
 void CDecor::TreatInput(UINT input)
@@ -932,7 +986,7 @@ void CDecor::GetDoors(int doors)
 void CDecor::SetAllMissions(BOOL CheatDoors)
 {
     m_bCheatDoors = CheatDoors;
-    m_bPrivate, m_mission->AdaptDoors;
+    m_bPrivate, AdaptDoors(m_mission);
     return;
 }
 
@@ -1290,8 +1344,8 @@ void CDecor::BlupiStep()
 		{
 			m_blupiHelico = false;
 			m_blupiOver = false;
-			tinyPoint.X = tinyPoint3.X - 34;
-			tinyPoint.Y = tinyPoint3.Y - 34;
+			tinyPoint.x = tinyPoint3.x - 34;
+			tinyPoint.y = tinyPoint3.y - 34;
 			ObjectStart(tinyPoint, 9, 0);
 			m_decorAction = 1;
 			m_decorPhase = 0;
@@ -4913,7 +4967,7 @@ BOOL CDecor::BlupiIsGround()
 {
     if (m_blupiTransport == -1)
     {
-        RECT rect = m_blupiPos->BlupiRect;
+        RECT rect = BlupiRect(m_blupiPos);
         rect.top = m_blupiPos.y + 60 - 2;
         rect.bottom = m_blupiPos.y + 60 - 1;
         return DecorDetect(rect);
@@ -4985,7 +5039,7 @@ RECT CDecor::BlupiRect(POINT pos)
 
 void CDecor::BlupiAdjust()
 {
-    RECT tinyRect = m_blupiPos->BlupiRect;
+    RECT tinyRect = BlupiRect(m_blupiPos);
 
     if (DecorDetect(tinyRect))
     {
@@ -5077,7 +5131,7 @@ BOOL CDecor::BlupiBloque(POINT pos, int dir)
 
 void CDecor::BlupiDead(int action1, int action2)
 {
-    ByeByeHelco();
+    ByeByeHelico();
     if (action2 == -1)
     {
         m_blupiAction = action1;
@@ -5123,7 +5177,7 @@ void CDecor::BlupiDead(int action1, int action2)
         pos2.x = m_blupiPos.x - m_posDecor.x;
         pos2.y = m_blupiPos.y - m_posDecor.y - 300;
         VoyageInit(m_pPixmap->HotSpotToHud(pos), m_pPixmap->HotSpotToHud(pos2), 230, 10);
-        m_blupiPos->PlaySound(74);
+        PlaySound(74, m_blupiPos);
     }
     if (m_blupiAction == 76)
     {
@@ -5132,14 +5186,14 @@ void CDecor::BlupiDead(int action1, int action2)
         pos2.x = m_blupiPos.x - m_posDecor.x;
         pos2.y = m_blupiPos.y - m_posDecor.y - 2000;
         VoyageInit(m_pPixmap->HotSpotToHud(pos), m_pPixmap->HotSpotToHud(pos2), 40, 10);
-        m_blupiPos->PlaySound(74);
+        PlaySound(74, m_blupiPos);
     }
     if (m_blupiAction == 77)
     {
-        m_blupiPos->ObjectStart(41, -70);
+        ObjectStart(41, -70, m_blupiPos);
         m_blupiPos->ObjectStart(41, 20);
         m_blupiPos->ObjectStart(41, -20);
-        m_blupiPos->PlaySound(75);
+        PlaySound(75, m_blupiPos);
     }
 }
 
@@ -5266,7 +5320,7 @@ BOOL CDecor::DecorDetect(RECT rect, BOOL bCaisse)
                         src.top = i * 16;
                         src.bottom = src.top + 16;
                         RECT tinyRect;
-                        if (IntersectRect(out tinyRect, src, rect))
+                        if (IntersectRect(tinyRect, src, rect))
                         {
                             m_detectIcon = icon;
                             return TRUE;
@@ -5289,7 +5343,7 @@ BOOL CDecor::DecorDetect(RECT rect, BOOL bCaisse)
         src.top = m_moveObject[num8]->posCurrent.y;
         src.bottom = m_moveObject[num8]->posCurrent.y + 64;
         RECT tinyRect;
-        if (IntersectRect(out tinyRect, src, rect))
+        if (IntersectRect(tinyRect, src, rect))
         {
             m_detectIcon = m_moveObject[num8]->icon;
             return TRUE;
@@ -5391,7 +5445,7 @@ void CDecor::MoveObjectPlouf(POINT pos)
 {
 	for (int i = 0; i < MAXMOVEOBJECT; i++)
 	{
-		if (m_moveObject[i]-> == 14)
+		if (m_moveObject[i]->type == 14)
 		{
 			return;
 		}
@@ -5463,6 +5517,7 @@ void CDecor::MoveObjectBlup(POINT pos)
 	MoveObjectStepIcon(num2);
 }
 
+
 void CDecor::ActiveSwitch(BOOL bState, POINT cel)
 {
 	POINT pos;
@@ -5521,6 +5576,43 @@ int CDecor::IsWorld(POINT pos)
         return 199;
     }
     return -1;
+}
+
+int CDecor::GetTypeBarre(POINT pos)
+{
+	POINT pos2 = pos;
+	pos.x += 30;
+	pos.y += 22;
+	if (pos.y % 64 > 44)
+	{
+		return 0;
+	}
+	if (pos.x < 0 || pos.x >= 6400 || pos.y < 0 || pos.y >= 6400)
+	{
+		return 0;
+	}
+	int icon = m_decor[pos.x / 64, pos.y / 64]->icon;
+	if (icon != 138 && icon != 202)
+	{
+		return 0;
+	}
+	if (pos.y >= 6336)
+	{
+		return 1;
+	}
+	icon = m_decor[pos.x / 64, pos.y / 64 + 1]->icon;
+	if (IsPassIcon(icon))
+	{
+		return 2;
+	}
+	RECT rect = BlupiRect(pos2);
+	rect.top = pos2.y + 60 - 2;
+	rect.bottom = pos2.y + 60 - 1;
+	if (DecorDetect(rect, TRUE))
+	{
+		return 2;
+	}
+	return 1;
 }
 
 BOOL CDecor::IsLave(POINT pos)
@@ -6025,7 +6117,7 @@ int CDecor::ObjectStart(POINT pos, int type, int speed)
 	m_moveObject[num]->posCurrent = pos;
 	m_moveObject[num]->posStart = pos;
 	m_moveObject[num]->posEnd = pos;
-	MoveObjectStopIcon(num);
+	MoveObjectStepIcon(num);
 	if (speed != 0)
 	{
 		POINT tinyPoint = pos;
@@ -6347,6 +6439,865 @@ void CDecor::MoveObjectStepLine(int i)
 	}
 }
 
+
+/*
+void CDecor::MoveObjectStepIcon(int i)
+{
+	if (m_moveObject[i]->type == 47)
+	{
+		m_moveObject[i]->icon = table_chenille[m_moveObject[i]->phase / 1 % 6];
+	}
+	if (m_moveObject[i]->type == 48)
+	{
+		m_moveObject[i]->icon = table_chenillei[m_moveObject[i]->phase / 1 % 6];
+	}
+	if (m_moveObject[i]->type == 2)
+	{
+		m_moveObject[i]->icon = 12 + m_moveObject[i]->phase / 2 % 9;
+		m_moveObject[i]->channel = 10;
+	}
+	if (m_moveObject[i]->type == 3)
+	{
+		m_moveObject[i]->icon = 48 + m_moveObject[i]->phase / 2 % 9;
+		m_moveObject[i]->channel = 10;
+	}
+	if (m_moveObject[i]->type == 16)
+	{
+		m_moveObject[i]->icon = 69 + m_moveObject[i]->phase / 1 % 9;
+		m_moveObject[i]->channel = 10;
+	}
+	if (m_moveObject[i]->type == 96)
+	{
+		m_moveObject[i]->icon = table_follow1[m_moveObject[i]->phase / 1 % 26];
+		m_moveObject[i]->channel = 10;
+	}
+	if (m_moveObject[i]->type == 97)
+	{
+		m_moveObject[i]->icon = table_follow2[m_moveObject[i]->phase / 1 % 5];
+		m_moveObject[i]->channel = 10;
+	}
+	if (m_moveObject[i]->type == 200)
+	{
+		m_moveObject[i]->icon = 257 + m_moveObject[i]->phase / 1 % 6;
+		m_moveObject[i]->channel = 2;
+	}
+	if (m_moveObject[i]->type == 201)
+	{
+		m_moveObject[i]->icon = 257 + m_moveObject[i]->phase / 1 % 6;
+		m_moveObject[i]->channel = 11;
+	}
+	if (m_moveObject[i]->type == 202)
+	{
+		m_moveObject[i]->icon = 257 + m_moveObject[i]->phase / 1 % 6;
+		m_moveObject[i]->channel = 12;
+	}
+	if (m_moveObject[i]->type == 203)
+	{
+		m_moveObject[i]->icon = 257 + m_moveObject[i]->phase / 1 % 6;
+		m_moveObject[i]->channel = 13;
+	}
+	if (m_moveObject[i]->type == 55)
+	{
+		m_moveObject[i]->icon = 252;
+		m_moveObject[i]->channel = 10;
+	}
+	if (m_moveObject[i]->type == 56)
+	{
+		m_moveObject[i]->icon = table_dynamitef[m_moveObject[i]->phase / 1 % 100];
+		m_moveObject[i]->channel = 10;
+		if (m_moveObject[i]->phase == 50)
+		{
+			DynamiteStart(i, 0, 0);
+		}
+		if (m_moveObject[i]->phase == 53)
+		{
+			DynamiteStart(i, -100, 8);
+		}
+		if (m_moveObject[i]->phase == 55)
+		{
+			DynamiteStart(i, 80, 10);
+		}
+		if (m_moveObject[i]->phase == 56)
+		{
+			DynamiteStart(i, -15, -100);
+		}
+		if (m_moveObject[i]->phase == 59)
+		{
+			DynamiteStart(i, 20, 70);
+		}
+		if (m_moveObject[i]->phase == 62)
+		{
+			DynamiteStart(i, 30, -50);
+		}
+		if (m_moveObject[i]->phase == 64)
+		{
+			DynamiteStart(i, -40, 30);
+		}
+		if (m_moveObject[i]->phase == 67)
+		{
+			DynamiteStart(i, -180, 10);
+		}
+		if (m_moveObject[i]->phase == 69)
+		{
+			DynamiteStart(i, 200, -10);
+		}
+		if (m_moveObject[i]->phase >= 70)
+		{
+			m_moveObject[i]->type = 0;
+		}
+	}
+	if (m_moveObject[i]->type == 5)
+	{
+		if (m_moveObject[i]->phase / 3 % 22 < 11)
+		{
+			m_moveObject[i]->icon = m_moveObject[i]->phase / 3 % 11;
+		}
+		else
+		{
+			m_moveObject[i]->icon = 11 - m_moveObject[i]->phase / 3 % 11;
+		}
+		m_moveObject[i]->channel = 10;
+	}
+	if (m_moveObject[i]->type == 6)
+	{
+		m_moveObject[i]->icon = 21 + m_moveObject[i]->phase / 4 % 8;
+		m_moveObject[i]->channel = 10;
+	}
+	if (m_moveObject[i]->type == 7)
+	{
+		m_moveObject[i]->icon = 29 + m_moveObject[i]->phase / 3 % 8;
+		m_moveObject[i]->channel = 10;
+	}
+	if (m_moveObject[i]->type == 21)
+	{
+		m_moveObject[i]->icon = table_cle[m_moveObject[i]->phase / 3 % 12];
+		m_moveObject[i]->channel = 10;
+	}
+	if (m_moveObject[i]->type == 49)
+	{
+		m_moveObject[i]->icon = table_cle1[m_moveObject[i]->phase / 3 % 12];
+		m_moveObject[i]->channel = 10;
+	}
+	if (m_moveObject[i]->type == 50)
+	{
+		m_moveObject[i]->icon = table_cle2[m_moveObject[i]->phase / 3 % 12];
+		m_moveObject[i]->channel = 10;
+	}
+	if (m_moveObject[i]->type == 51)
+	{
+		m_moveObject[i]->icon = table_cle3[m_moveObject[i]->phase / 3 % 12];
+		m_moveObject[i]->channel = 10;
+	}
+	if (m_moveObject[i]->type == 24)
+	{
+		m_moveObject[i]->icon = table_skate[m_moveObject[i]->phase / 1 % 34];
+		m_moveObject[i]->channel = 10;
+	}
+	if (m_moveObject[i]->type == 25)
+	{
+		m_moveObject[i]->icon = table_shield[m_moveObject[i]->phase / 2 % 16];
+		m_moveObject[i]->channel = 10;
+	}
+	if (m_moveObject[i]->type == 26)
+	{
+		m_moveObject[i]->icon = table_power[m_moveObject[i]->phase / 2 % 8];
+		m_moveObject[i]->channel = 10;
+	}
+	if (m_moveObject[i]->type == 40)
+	{
+		m_moveObject[i]->icon = table_invert[m_moveObject[i]->phase / 2 % 20];
+		m_moveObject[i]->channel = 10;
+	}
+	if (m_moveObject[i]->type == 31)
+	{
+		m_moveObject[i]->icon = table_charge[m_moveObject[i]->phase / 2 % 6];
+		m_moveObject[i]->channel = 1;
+	}
+	if (m_moveObject[i]->type == 27)
+	{
+		m_moveObject[i]->icon = table_magictrack[m_moveObject[i]->phase / 1 % 24];
+		m_moveObject[i]->channel = 10;
+		if (m_moveObject[i]->phase >= 24)
+		{
+			m_moveObject[i]->type = 0;
+		}
+	}
+	if (m_moveObject[i]->type == 57)
+	{
+		m_moveObject[i]->icon = table_shieldtrack[m_moveObject[i]->phase / 1 % 20];
+		m_moveObject[i]->channel = 10;
+		if (m_moveObject[i]->phase >= 20)
+		{
+			m_moveObject[i]->type = 0;
+		}
+	}
+	if (m_moveObject[i]->type == 39)
+	{
+		m_moveObject[i]->icon = table_tresortrack[m_moveObject[i]->phase / 1 % 11];
+		m_moveObject[i]->channel = 10;
+		if (m_moveObject[i]->phase >= 11)
+		{
+			m_moveObject[i]->type = 0;
+		}
+	}
+	if (m_moveObject[i]->type == 58 && m_moveObject[i]->phase >= 20)
+	{
+		m_moveObject[i]->type = 0;
+	}
+	if (m_moveObject[i]->type == 8)
+	{
+		if (m_moveObject[i]->phase >= table_explo1->length)
+		{
+			m_moveObject[i]->type = 0;
+		}
+		else
+		{
+			m_moveObject[i]->icon = table_explo1[m_moveObject[i]->phase];
+			m_moveObject[i]->channel = 9;
+		}
+	}
+	if (m_moveObject[i]->type == 9)
+	{
+		if (m_moveObject[i]->phase >= 20)
+		{
+			m_moveObject[i]->type = 0;
+		}
+		else
+		{
+			m_moveObject[i]->icon = table_explo2[m_moveObject[i]->phase % 20];
+			m_moveObject[i]->channel = 9;
+		}
+	}
+	if (m_moveObject[i]->type == 10)
+	{
+		if (m_moveObject[i]->phase >= 20)
+		{
+			m_moveObject[i]->type = 0;
+		}
+		else
+		{
+			m_moveObject[i]->icon = table_explo3[m_moveObject[i]->phase / 1 % 20];
+			m_moveObject[i]->channel = 9;
+		}
+	}
+	if (m_moveObject[i]->type == 11)
+	{
+		if (m_moveObject[i]->phase >= 9)
+		{
+			m_moveObject[i]->type = 0;
+		}
+		else
+		{
+			m_moveObject[i]->icon = table_explo4[m_moveObject[i]->phase / 1 % 9];
+			m_moveObject[i]->channel = 9;
+		}
+	}
+	if (m_moveObject[i]->type == 90)
+	{
+		if (m_moveObject[i]->phase >= 12)
+		{
+			m_moveObject[i]->type = 0;
+		}
+		else
+		{
+			m_moveObject[i]->icon = table_explo5[m_moveObject[i]->phase / 1 % 12];
+			m_moveObject[i]->channel = 9;
+		}
+	}
+	if (m_moveObject[i]->type == 91)
+	{
+		if (m_moveObject[i]->phase >= 6)
+		{
+			m_moveObject[i]->type = 0;
+		}
+		else
+		{
+			m_moveObject[i]->icon = table_explo6[m_moveObject[i]->phase / 1 % 6];
+			m_moveObject[i]->channel = 9;
+		}
+	}
+	if (m_moveObject[i]->type == 92)
+	{
+		if (m_moveObject[i]->phase >= 128)
+		{
+			m_moveObject[i]->type = 0;
+		}
+		else
+		{
+			m_moveObject[i]->icon = table_explo7[m_moveObject[i]->phase / 1 % 128];
+			m_moveObject[i]->channel = 9;
+		}
+	}
+	if (m_moveObject[i]->type == 93)
+	{
+		if (m_moveObject[i]->phase >= 5)
+		{
+			m_moveObject[i]->type = 0;
+		}
+		else
+		{
+			m_moveObject[i]->icon = table_explo8[m_moveObject[i]->phase / 1 % 5];
+			m_moveObject[i]->channel = 9;
+		}
+	}
+	if (m_moveObject[i]->type == 98)
+	{
+		if (m_moveObject[i]->phase >= 10)
+		{
+			m_moveObject[i]->type = 0;
+		}
+		else
+		{
+			m_moveObject[i]->icon = table_sploutch1[m_moveObject[i]->phase / 1 % 10];
+			m_moveObject[i]->channel = 9;
+		}
+	}
+	if (m_moveObject[i]->type == 99)
+	{
+		if (m_moveObject[i]->phase >= 13)
+		{
+			m_moveObject[i]->type = 0;
+		}
+		else
+		{
+			m_moveObject[i]->icon = table_sploutch2[m_moveObject[i]->phase / 1 % 13];
+			m_moveObject[i]->channel = 9;
+		}
+	}
+	if (m_moveObject[i]->type == 100)
+	{
+		if (m_moveObject[i]->phase >= 18)
+		{
+			m_moveObject[i]->type = 0;
+		}
+		else
+		{
+			m_moveObject[i]->icon = table_sploutch3[m_moveObject[i]->phase / 1 % 18];
+			m_moveObject[i]->channel = 9;
+		}
+	}
+	if (m_moveObject[i]->type == 53)
+	{
+		if (m_moveObject[i]->phase >= 90)
+		{
+			m_moveObject[i]->type = 0;
+		}
+		else
+		{
+			m_moveObject[i]->icon = table_tentacule[m_moveObject[i]->phase / 2 % 45];
+			m_moveObject[i]->channel = 9;
+		}
+	}
+	TinyPoint pos;
+	if (m_moveObject[i]->type == 52)
+	{
+		if (m_moveObject[i]->phase == 0)
+		{
+			PlaySound(72, m_moveObject[i]->posStart);
+		}
+		if (m_moveObject[i]->phase == 137)
+		{
+			PlaySound(73, m_moveObject[i]->posStart);
+		}
+		if (m_moveObject[i]->phase >= 157)
+		{
+			m_moveObject[i]->type = 0;
+		}
+		else
+		{
+			m_moveObject[i]->icon = table_bridge[m_moveObject[i]->phase / 1 % 157];
+			m_moveObject[i]->channel = 1;
+			pos->X = m_moveObject[i]->posStart->X / 64;
+			pos->Y = m_moveObject[i]->posStart->Y / 64;
+			m_decor[pos->X, pos->Y]->icon = m_moveObject[i]->icon;
+		}
+	}
+	if (m_moveObject[i]->type == 36)
+	{
+		if (m_moveObject[i]->phase >= 16)
+		{
+			m_moveObject[i]->type = 0;
+		}
+		else
+		{
+			m_moveObject[i]->icon = table_pollution[m_moveObject[i]->phase / 2 % 8];
+			m_moveObject[i]->channel = 10;
+		}
+	}
+	if (m_moveObject[i]->type == 41)
+	{
+		if (m_moveObject[i]->phase >= 16)
+		{
+			m_moveObject[i]->type = 0;
+		}
+		else
+		{
+			m_moveObject[i]->icon = table_invertstart[m_moveObject[i]->phase / 2 % 8];
+			m_moveObject[i]->channel = 10;
+		}
+	}
+	if (m_moveObject[i]->type == 42)
+	{
+		if (m_moveObject[i]->phase >= 16)
+		{
+			m_moveObject[i]->type = 0;
+		}
+		else
+		{
+			m_moveObject[i]->icon = table_invertstop[m_moveObject[i]->phase / 2 % 8];
+			m_moveObject[i]->channel = 10;
+		}
+	}
+	if (m_moveObject[i]->type == 14)
+	{
+		if (m_moveObject[i]->phase >= 14)
+		{
+			m_moveObject[i]->type = 0;
+		}
+		else
+		{
+			m_moveObject[i]->icon = table_plouf[m_moveObject[i]->phase / 2 % 7];
+			m_moveObject[i]->channel = 1;
+		}
+	}
+	if (m_moveObject[i]->type == 35)
+	{
+		if (m_moveObject[i]->phase >= 6)
+		{
+			m_moveObject[i]->type = 0;
+		}
+		else
+		{
+			m_moveObject[i]->icon = table_tiplouf[m_moveObject[i]->phase / 2 % 7];
+			m_moveObject[i]->channel = 1;
+		}
+	}
+	if (m_moveObject[i]->type == 15)
+	{
+		m_moveObject[i]->icon = table_blup[m_moveObject[i]->phase / 2 % 20];
+		m_moveObject[i]->channel = 1;
+	}
+	if (m_moveObject[i]->type == 4)
+	{
+		if (m_moveObject[i]->posStart->X > m_moveObject[i]->posEnd->X)
+		{
+			if (m_moveObject[i]->step == 1)
+			{
+				m_moveObject[i]->icon = table_bulldozer_turn2l[m_moveObject[i]->time % 22];
+			}
+			if (m_moveObject[i]->step == 3)
+			{
+				m_moveObject[i]->icon = table_bulldozer_turn2r[m_moveObject[i]->time % 22];
+			}
+			if (m_moveObject[i]->step == 2)
+			{
+				m_moveObject[i]->icon = table_bulldozer_left[m_moveObject[i]->time % 8];
+			}
+			if (m_moveObject[i]->step == 4)
+			{
+				m_moveObject[i]->icon = table_bulldozer_right[m_moveObject[i]->time % 8];
+			}
+		}
+		else
+		{
+			if (m_moveObject[i]->step == 1)
+			{
+				m_moveObject[i]->icon = table_bulldozer_turn2r[m_moveObject[i]->time % 22];
+			}
+			if (m_moveObject[i]->step == 3)
+			{
+				m_moveObject[i]->icon = table_bulldozer_turn2l[m_moveObject[i]->time % 22];
+			}
+			if (m_moveObject[i]->step == 2)
+			{
+				m_moveObject[i]->icon = table_bulldozer_right[m_moveObject[i]->time % 8];
+			}
+			if (m_moveObject[i]->step == 4)
+			{
+				m_moveObject[i]->icon = table_bulldozer_left[m_moveObject[i]->time % 8];
+			}
+		}
+		m_moveObject[i]->channel = 10;
+	}
+	if (m_moveObject[i]->type == 17)
+	{
+		if (m_moveObject[i]->posStart.x > m_moveObject[i]->posEnd.x)
+		{
+			if (m_moveObject[i]->step == 1)
+			{
+				m_moveObject[i]->icon = table_poisson_turn2l[m_moveObject[i]->time % 48];
+			}
+			if (m_moveObject[i]->step == 3)
+			{
+				m_moveObject[i]->icon = table_poisson_turn2r[m_moveObject[i]->time % 48];
+			}
+			if (m_moveObject[i]->step == 2)
+			{
+				m_moveObject[i]->icon = table_poisson_left[m_moveObject[i]->time % 8];
+			}
+			if (m_moveObject[i]->step == 4)
+			{
+				m_moveObject[i]->icon = table_poisson_right[m_moveObject[i]->time % 8];
+			}
+		}
+		else
+		{
+			if (m_moveObject[i]->step == 1)
+			{
+				m_moveObject[i]->icon = table_poisson_turn2r[m_moveObject[i]->time % 48];
+			}
+			if (m_moveObject[i]->step == 3)
+			{
+				m_moveObject[i]->icon = table_poisson_turn2l[m_moveObject[i]->time % 48];
+			}
+			if (m_moveObject[i]->step == 2)
+			{
+				m_moveObject[i]->icon = table_poisson_right[m_moveObject[i]->time % 8];
+			}
+			if (m_moveObject[i]->step == 4)
+			{
+				m_moveObject[i]->icon = table_poisson_left[m_moveObject[i]->time % 8];
+			}
+		}
+		m_moveObject[i]->channel = 10;
+	}
+	if (m_moveObject[i]->type == 20)
+	{
+		if (m_moveObject[i]->posStart.x > m_moveObject[i]->posEnd.x)
+		{
+			if (m_moveObject[i]->step == 1)
+			{
+				m_moveObject[i]->icon = table_oiseau_turn2l[m_moveObject[i]->time % 10];
+			}
+			if (m_moveObject[i]->step == 3)
+			{
+				m_moveObject[i]->icon = table_oiseau_turn2r[m_moveObject[i]->time % 10];
+			}
+			if (m_moveObject[i]->step == 2)
+			{
+				m_moveObject[i]->icon = table_oiseau_left[m_moveObject[i]->time % 8];
+			}
+			if (m_moveObject[i]->step == 4)
+			{
+				m_moveObject[i]->icon = table_oiseau_right[m_moveObject[i]->time % 8];
+			}
+		}
+		else
+		{
+			if (m_moveObject[i]->step == 1)
+			{
+				m_moveObject[i]->icon = table_oiseau_turn2r[m_moveObject[i]->time % 10];
+			}
+			if (m_moveObject[i]->step == 3)
+			{
+				m_moveObject[i]->icon = table_oiseau_turn2l[m_moveObject[i]->time % 10];
+			}
+			if (m_moveObject[i]->step == 2)
+			{
+				m_moveObject[i]->icon = table_oiseau_right[m_moveObject[i]->time % 8];
+			}
+			if (m_moveObject[i]->step == 4)
+			{
+				m_moveObject[i]->icon = table_oiseau_left[m_moveObject[i]->time % 8];
+			}
+		}
+		m_moveObject[i]->channel = 10;
+	}
+	if (m_moveObject[i]->type == 44)
+	{
+		if (m_moveObject[i]->posStart.x > m_moveObject[i]->posEnd.x)
+		{
+			if (m_moveObject[i]->step == 1)
+			{
+				m_moveObject[i]->icon = table_guepe_turn2l[m_moveObject[i]->time % 5];
+			}
+			if (m_moveObject[i]->step == 3)
+			{
+				m_moveObject[i]->icon = table_guepe_turn2r[m_moveObject[i]->time % 5];
+			}
+			if (m_moveObject[i]->step == 2)
+			{
+				m_moveObject[i]->icon = table_guepe_left[m_moveObject[i]->time % 6];
+			}
+			if (m_moveObject[i]->step == 4)
+			{
+				m_moveObject[i]->icon = table_guepe_right[m_moveObject[i]->time % 6];
+			}
+		}
+		else
+		{
+			if (m_moveObject[i]->step == 1)
+			{
+				m_moveObject[i]->icon = table_guepe_turn2r[m_moveObject[i]->time % 5];
+			}
+			if (m_moveObject[i]->step == 3)
+			{
+				m_moveObject[i]->icon = table_guepe_turn2l[m_moveObject[i]->time % 5];
+			}
+			if (m_moveObject[i]->step == 2)
+			{
+				m_moveObject[i]->icon = table_guepe_right[m_moveObject[i]->time % 6];
+			}
+			if (m_moveObject[i]->step == 4)
+			{
+				m_moveObject[i]->icon = table_guepe_left[m_moveObject[i]->time % 6];
+			}
+		}
+		m_moveObject[i]->channel = 10;
+	}
+	if (m_moveObject[i]->type == 54)
+	{
+		if (m_moveObject[i]->posStart.x > m_moveObject[i]->posEnd.x)
+		{
+			if (m_moveObject[i]->step == 1)
+			{
+				m_moveObject[i]->icon = table_creature_turn2[m_moveObject[i]->time % 152];
+			}
+			if (m_moveObject[i]->step == 3)
+			{
+				m_moveObject[i]->icon = table_creature_turn2[m_moveObject[i]->time % 152];
+			}
+			if (m_moveObject[i]->step == 2)
+			{
+				m_moveObject[i]->icon = table_creature_left[m_moveObject[i]->time % 8];
+			}
+			if (m_moveObject[i]->step == 4)
+			{
+				m_moveObject[i]->icon = table_creature_right[m_moveObject[i]->time % 8];
+			}
+		}
+		else
+		{
+			if (m_moveObject[i]->step == 1)
+			{
+				m_moveObject[i]->icon = table_creature_turn2[m_moveObject[i]->time % 152];
+			}
+			if (m_moveObject[i]->step == 3)
+			{
+				m_moveObject[i]->icon = table_creature_turn2[m_moveObject[i]->time % 152];
+			}
+			if (m_moveObject[i]->step == 2)
+			{
+				m_moveObject[i]->icon = table_creature_right[m_moveObject[i]->time % 8];
+			}
+			if (m_moveObject[i]->step == 4)
+			{
+				m_moveObject[i]->icon = table_creature_left[m_moveObject[i]->time % 8];
+			}
+		}
+		m_moveObject[i]->channel = 10;
+	}
+	if (m_moveObject[i]->type == 32)
+	{
+		if (m_moveObject[i]->posStart.x > m_moveObject[i]->posEnd.x)
+		{
+			if (m_moveObject[i]->step == 1)
+			{
+				m_moveObject[i]->icon = table_blupih_turn2l[m_moveObject[i]->time % 26];
+			}
+			if (m_moveObject[i]->step == 3)
+			{
+				m_moveObject[i]->icon = table_blupih_turn2r[m_moveObject[i]->time % 26];
+			}
+			if (m_moveObject[i]->step == 2)
+			{
+				m_moveObject[i]->icon = table_blupih_left[m_moveObject[i]->time % 8];
+			}
+			if (m_moveObject[i]->step == 4)
+			{
+				m_moveObject[i]->icon = table_blupih_right[m_moveObject[i]->time % 8];
+			}
+		}
+		else
+		{
+			if (m_moveObject[i]->step == 1)
+			{
+				m_moveObject[i]->icon = table_blupih_turn2r[m_moveObject[i]->time % 26];
+			}
+			if (m_moveObject[i]->step == 3)
+			{
+				m_moveObject[i]->icon = table_blupih_turn2l[m_moveObject[i]->time % 26];
+			}
+			if (m_moveObject[i]->step == 2)
+			{
+				m_moveObject[i]->icon = table_blupih_right[m_moveObject[i]->time % 8];
+			}
+			if (m_moveObject[i]->step == 4)
+			{
+				m_moveObject[i]->icon = table_blupih_left[m_moveObject[i]->time % 8];
+			}
+		}
+		if ((m_moveObject[i]->step == 1 || m_moveObject[i]->step == 3) && m_moveObject[i]->time == 21)
+		{
+			pos.x = m_moveObject[i]->posCurrent.x;
+			pos.y = m_moveObject[i]->posCurrent.y + 40;
+			if (ObjectStart(pos, 23, 55) != -1)
+			{
+				PlaySound(52, pos);
+			}
+		}
+	}
+	if (m_moveObject[i]->type == 33)
+	{
+		if (m_moveObject[i]->posStart.x > m_moveObject[i]->posEnd.x)
+		{
+			if (m_moveObject[i]->step == 1)
+			{
+				m_moveObject[i]->icon = table_blupit_turn2l[m_moveObject[i]->time % 24];
+			}
+			if (m_moveObject[i]->step == 3)
+			{
+				m_moveObject[i]->icon = table_blupit_turn2r[m_moveObject[i]->time % 24];
+			}
+			if (m_moveObject[i]->step == 2)
+			{
+				m_moveObject[i]->icon = table_blupit_left[m_moveObject[i]->time % 8];
+			}
+			if (m_moveObject[i]->step == 4)
+			{
+				m_moveObject[i]->icon = table_blupit_right[m_moveObject[i]->time % 8];
+			}
+		}
+		else
+		{
+			if (m_moveObject[i]->step == 1)
+			{
+				m_moveObject[i]->icon = table_blupit_turn2r[m_moveObject[i]->time % 24];
+			}
+			if (m_moveObject[i]->step == 3)
+			{
+				m_moveObject[i]->icon = table_blupit_turn2l[m_moveObject[i]->time % 24];
+			}
+			if (m_moveObject[i]->step == 2)
+			{
+				m_moveObject[i]->icon = table_blupit_right[m_moveObject[i]->time % 8];
+			}
+			if (m_moveObject[i]->step == 4)
+			{
+				m_moveObject[i]->icon = table_blupit_left[m_moveObject[i]->time % 8];
+			}
+		}
+		if ((m_moveObject[i]->step == 1 || m_moveObject[i]->step == 3) && m_moveObject[i]->time == 3)
+		{
+			int speed;
+			if ((m_moveObject[i]->posStart.x < m_moveObject[i]->posEnd.x && m_moveObject[i]->step == 1) || (m_moveObject[i]->posStart.x > m_moveObject[i]->posEnd.x && m_moveObject[i]->step == 3))
+			{
+				pos.x = m_moveObject[i]->posCurrent.x - 30;
+				pos.y = m_moveObject[i]->posCurrent.x + BLUPIOFFY;
+				speed = -5;
+			}
+			else
+			{
+				pos.x = m_moveObject[i]->posCurrent.x + 30;
+				pos.y = m_moveObject[i]->posCurrent.y + BLUPIOFFY;
+				speed = 5;
+			}
+			if (ObjectStart(pos, 23, speed) != -1)
+			{
+				PlaySound(52, pos);
+			}
+		}
+		if ((m_moveObject[i]->step == 1 || m_moveObject[i]->step == 3) && m_moveObject[i]->time == 21)
+		{
+			int speed;
+			if ((m_moveObject[i]->posStart.x < m_moveObject[i]->posEnd.x && m_moveObject[i]->step == 1) || (m_moveObject[i]->posStart.x > m_moveObject[i]->posEnd.x && m_moveObject[i]->step == 3))
+			{
+				pos.x = m_moveObject[i]->posCurrent.x + 30;
+				pos.y = m_moveObject[i]->posCurrent.y + BLUPIOFFY;
+				speed = 5;
+			}
+			else
+			{
+				pos.x = m_moveObject[i]->posCurrent.x - 30;
+				pos.y = m_moveObject[i]->posCurrent.y + BLUPIOFFY;
+				speed = -5;
+			}
+			if (ObjectStart(pos, 23, speed) != -1)
+			{
+				PlaySound(52, pos);
+			}
+		}
+	}
+	if (m_moveObject[i]->type == 34)
+	{
+		m_moveObject[i]->icon = table_glu[m_moveObject[i]->phase / 1 % 25];
+		m_moveObject[i]->channel = 10;
+	}
+	if (m_moveObject[i]->type == 37)
+	{
+		if (m_moveObject[i]->phase >= 70)
+		{
+			m_moveObject[i]->type = 0;
+		}
+		else
+		{
+			m_moveObject[i]->icon = table_clear[m_moveObject[i]->phase / 1 % 70];
+			m_moveObject[i]->channel = 10;
+		}
+	}
+	if (m_moveObject[i]->type == 38)
+	{
+		if (m_moveObject[i]->phase >= 90)
+		{
+			m_moveObject[i]->type = 0;
+		}
+		else
+		{
+			m_moveObject[i]->icon = table_electro[m_moveObject[i]->phase / 1 % 90];
+			if (m_moveObject[i]->phase < 30)
+			{
+				m_moveObject[i]->channel = 12;
+			}
+			else
+			{
+				m_moveObject[i]->channel = 10;
+			}
+		}
+	}
+	if (m_moveObject[i]->type == 13)
+	{
+		m_moveObject[i]->icon = 68;
+		m_moveObject[i]->channel = 10;
+	}
+	if (m_moveObject[i]->type == 46)
+	{
+		m_moveObject[i]->icon = 208;
+		m_moveObject[i]->channel = 10;
+	}
+	if (m_moveObject[i]->type == 19)
+	{
+		m_moveObject[i]->icon = 89;
+		m_moveObject[i]->channel = 10;
+	}
+	if (m_moveObject[i]->type == 28)
+	{
+		m_moveObject[i]->icon = 167;
+		m_moveObject[i]->channel = 10;
+	}
+	if (m_moveObject[i]->type == 23)
+	{
+		m_moveObject[i]->icon = 176;
+		m_moveObject[i]->channel = 10;
+	}
+	if (m_moveObject[i]->type == 29)
+	{
+		m_moveObject[i]->icon = 177;
+		m_moveObject[i]->channel = 10;
+	}
+	if (m_moveObject[i]->type == 30)
+	{
+		m_moveObject[i]->icon = 178;
+		m_moveObject[i]->channel = 10;
+	}
+	MoveObject[] moveObject = m_moveObject;
+	moveObject[i]->phase = moveObject[i]->phase + 1;
+	if (m_moveObject[i]->phase > 32700)
+	{
+		m_moveObject[i]->phase = 0;
+	}
+}
+*/
+
 void CDecor::DynamiteStart(int i, int dx, int dy)
 {
 	POINT posStart = m_moveObject[i]->posStart;
@@ -6372,7 +7323,7 @@ void CDecor::DynamiteStart(int i, int dx, int dy)
 		tinyPoint.x = posStart.x / 64;
 		for (int k = 0; k < 2; j++)
 		{
-			if (tinyPoint.x >= 0 && tinyPoint.x < 100 && tinyPoint)
+			if (tinyPoint.x >= 0 && tinyPoint.x < 100 && tinyPoint.y >= 0 && tinyPoint.y < 100)
 			{
 				int icon = m_decor[tinyPoint.x, tinyPoint.y]->icon;
 				if (icon == 378 || icon == 379 || icon == 404 || icon == 410)
@@ -6461,7 +7412,343 @@ int CDecor::AscenseurDetect(RECT rect, POINT oldpos, POINT newpos)
 		{
 			RECT src;
 			src.left = m_moveObject[i]->posCurrent.x;
+			src.right = m_moveObject[i]->posCurrent.x + 64;
+			src.top = m_moveObject[i]->posCurrent.y;
+			src.bottom = m_moveObject[i]->posCurrent.y + 16;
+			if (num < 30)
+			{
+				RECT tinyRect;
+				if (IntersectRect(tinyRect, src, rect))
+				{
+					return i;
+				}
+			}
+			else
+			{
+				RECT src2 = rect;
+				src2.top -= num / 30 * num2;
+				src2.bottom -= num / 30 * num2;
+				for (int j = 0; j <= num / 30; j++)
+				{
+					RECT tinyRect;
+					if (IntersectRect(tinyRect, src, src2))
+					{
+						return i;
+					}
+					src2.top += num2;
+					src2.bottom += num;
+				}
+			}
 
+		}
+	}
+	return -1;
+}
+
+void CDecor::AscenseurVertigo(int i, BOOL bVertigoLeft, BOOL bVertigoRight)
+{
+	bVertigoLeft = FALSE;
+	bVertigoRight = FALSE;
+	if (m_blupiPos.x + 20 + 4 < m_moveObject[i]->posCurrent.x)
+	{
+		bVertigoLeft = TRUE;
+	}
+	if (m_blupiPos.x + 60 - 20 - 4 > m_moveObject[i]->posCurrent.x + 64)
+	{
+		bVertigoRight = TRUE;
+	}
+	if (AscenseurDetect(i))
+	{
+		if (bVertigoLeft)
+		{
+			bVertigoLeft = FALSE;
+			bVertigoRight = TRUE;
+			m_blupiTimeNoAsc = 10;
+			return;
+		}
+		if (bVertigoRight)
+		{
+			bVertigoRight = FALSE;
+			bVertigoLeft = TRUE;
+			m_blupiTimeNoAsc = 10;
+		}
+	}
+}
+
+
+
+void CDecor::ByeByeHelico()
+{
+	if (m_blupiHelico)
+	{
+		ByeByeAdd(10, 68, m_blupiPos, 7.0, 0.5);
+	}
+}
+
+void CDecor::ByeByeAdd(ByeByeObject byeByeObject, int channel, int icon, POINT pos, double rotationSpeed, double animationSpeed)
+{
+	int num = m_random->next(0, 10);
+	if (m_random->next(0, 1000) % 2 == 0)
+	{
+		byeByeObject.speedX = (double)(num + 10);
+	}
+	else
+	{
+		byeByeObject.speedX = (double)(-(double)(num + 10));
+	}
+	byeByeObjects->add(byeByeObject);
+}
+
+void CDecor::ByeByeStep()
+{
+	int i = 0;
+	while (i < byeByeObjects.Count)
+	{
+		ByeByeObject byeByeObject = byeByeObjects[i];
+		double num = 10.0 - byeByeObject->phase;
+		if (num > 0.0)
+		{
+			byeByeObject.posY -= pow(num, 1.5) *
+				byeByeObject.animationSpeed;
+		}
+		if (num < 0.0)
+		{
+			byeByeObject.posY += pow(-num, 1.5) *
+				byeByeObject.animationSpeed;
+		}
+		byeByeObject.posX += byeByeObject.speedX *
+			byeByeObject.animationSpeed;
+		if (byeByeObject.speedX > 0.0)
+		{
+			byeByeObject.speedX -= byeByeObject.animationSpeed;
+		}
+		if (byeByeObject.speedX < 0.0)
+		{
+			byeByeObject.speedX += byeByeObject.animationSpeed;
+		}
+		byeByeObject.rotation += byeByeObject.rotationSpeed;
+		byeByeObject.phase += byeByeObject.animationSpeed;
+		if (byeByeObject.channel == 10 && byeByeObject.icon >= 187 && byeByeObject.icon <= 194)
+		{
+			byeByeObject.icon = table_invert[(int)byeByeObject.phase / 2 % 20];
+		}
+		if (byeByeObject.phase > 30.0)
+		{
+			byeByeObjects.RemoveAt(i);
+		}
+		else
+		{
+			i++;
+		}
+	}
+}
+
+void CDecor::ByeByeDraw(POINT posDecor)
+{
+	for (ByeByeObject byeByeObject in byeByeObjects)
+	{
+		POINT pos = new POINT;
+		{
+
+		}
+
+	}
+}
+
+BOOL CDecor::AscenseurShift(int i)
+{
+	return i != -1 && m_moveObject[i]->icon >= 311 && m_moveObject[i]->icon <= 316;
+}
+
+void CDecor::AscenseurSynchro(int i)
+{
+	for (i = 0; i < MAXMOVEOBJECT; i++)
+	{
+		m_moveObject[i]->posCurrent = m_moveObject[i]->posStart;
+		m_moveObject[i]->step = 1;
+		m_moveObject[i]->time = 0;
+		m_moveObject[i]->phase = 0;
+	}
+}
+
+int CDecor::CaisseInFront()
+{
+	POINT tinyPoint;
+	if (m_blupiDir == 1)
+	{
+		tinyPoint.x = m_blupiPos.x + 16 - 32;
+		tinyPoint.y = m_blupiPos.y;
+	}
+	else
+	{
+		tinyPoint.x = m_blupiPos.x + 60 - 16 + 32;
+		tinyPoint.y = m_blupiPos.y;
+	}
+	for (int i = 0; i < m_nbRankCaisse; i++)
+	{
+		int num = m_nbRankCaisse[i];
+		if (tinyPoint.x > m_moveObject[num]->posCurrent.x &&
+			tinyPoint.x < m_moveObject[num]->posCurrent.x + 64 &&
+			tinyPoint.y > m_moveObject[num]->posCurrent.y &&
+			tinyPoint.y < m_moveObject[num]->posCurrent.y + 64)
+		{
+			return num;
+		}
+	}
+	return -1;
+}
+
+int CDecor::CaisseGetMove(int max)
+{
+	max -= (m_nbLinkCaisse - 1) / 2;
+	if (max < 1)
+	{
+		max = 1;
+	}
+	if (m_blupiPower)
+	{
+		max *= 2;
+	}
+	if (m_blupiPhase < 20)
+	{
+		max = max * m_blupiPhase / 20;
+		if (max == 0)
+		{
+			max++;
+		}
+	}
+	return max;
+}
+
+int CDecor::MockeryDetect(POINT pos)
+{
+	if (m_blupiTimeMockery > 0)
+	{
+		return 0;
+	}
+	if (m_blupiAir)
+	{
+		POINT tinyPoint;
+		tinyPoint.x = pos.x + 30;
+		tinyPoint.y = pos.y + 30 + 64;
+		if (tinyPoint.x >= 0 && tinyPoint.x < 6400 && tinyPoint.y >= 0 && tinyPoint.y < 6400)
+		{
+			int icon = m_decor[tinyPoint.x / 64, tinyPoint.y / 64]->icon;
+			if (icon == 68 || icon == 317)
+			{
+				return 64;
+			}
+		}
+	}
+	RECT src;
+	src.left = pos.x;
+	src.right = pos.x + 60;
+	src.top = pos.y + 11;
+	src.bottom = pos.y + 60;
+	if (m_blupiAir)
+	{
+		src.bottom += 90;
+	}
+	for (int i = 0; i < MAXMOVEOBJECT; i++)
+	{
+		if (m_moveObject[i]->type == 2 ||
+			m_moveObject[i]->type == 16 ||
+			m_moveObject[i]->type == 96 ||
+			m_moveObject[i]->type == 97 ||
+			m_moveObject[i]->type == 4 ||
+			m_moveObject[i]->type == 20 ||
+			m_moveObject[i]->type == 44 ||
+			m_moveObject[i]->type == 54 ||
+			m_moveObject[i]->type == 23 ||
+			m_moveObject[i]->type == 32 ||
+			m_moveObject[i]->type == 33)
+		{
+			RECT src2;
+			src2.left = m_moveObject[i]->posCurrent.x;
+			src2.right = m_moveObject[i]->posCurrent.x + 60;
+			src2.top = m_moveObject[i]->posCurrent.y + 36;
+			src2.bottom = m_moveObject[i]->posCurrent.y + 60;
+			RECT tinyRect;
+			if (IntersectRect(tinyRect, src2, src))
+			{
+				if (m_moveObject[i]->type == 54)
+				{
+					return 83;
+				}
+				if (m_blupiDir == 2)
+				{
+					if (pos.x >= src2.left)
+					{
+						return 64;
+					}
+					if (m_moveObject[i]->type == 2)
+					{
+						return 0;
+					}
+					return 63;
+				}
+				else
+				{
+					if (pos.x < src2.left)
+					{
+						return 64;
+					}
+					if (m_moveObject[i]->type == 2)
+					{
+						return 0;
+					}
+					return 63;
+				}
+			}
+		}
+	}
+	return 0;
+}
+
+BOOL CDecor::BlupiElectro(POINT pos)
+{
+	if (m_blupiCloud)
+	{
+		return FALSE;
+	}
+	RECT src;
+	src.left = pos.x + 16;
+	src.right = pos.x + 60 - 16;
+	src.top = pos.y + 11;
+	src.bottom = pos.y + 60 - 2;
+	RECT src2;
+	src2.left = m_blupiPos.x - 16 - 40;
+	src2.right = m_blupiPos.x + 60 + 16 + 40;
+	src2.top = m_blupiPos.y + 11 - 40;
+	src2.bottom = m_blupiPos.y + 60 - 2 + 40;
+	RECT tinyRect;
+	return IntersectRect(tinyRect, src, src2);
+}
+
+void CDecor::MoveObjectFollow(POINT pos)
+{
+	if (m_blupiHide)
+	{
+		return;
+	}
+	RECT src = BlupiRect(pos);
+	src.left = pos.x + 16;
+	src.right = pos.x + 60 - 16;
+	for (int i = 0; i < MAXMOVEOBJECT; i++)
+	{
+		if (m_moveObject[i]->type == 96)
+		{
+			RECT src2;
+			src2.left = m_moveObject[i]->posCurrent.x - 100;
+			src2.right = m_moveObject[i]->posCurrent.x + 60 + 100;
+			src2.top = m_moveObject[i]->posCurrent.y - 100;
+			src2.bottom = m_moveObject[i]->posCurrent.y + 60 + 100;
+			RECT tinyRect;
+			if (IntersectRect(tinyRect, src2, src))
+			{
+				m_moveObject[i]->type = 97;
+				PlaySound(92, m_moveObject[i]->posCurrent);
+			}
 		}
 	}
 }
@@ -6615,3 +7902,4 @@ void CDecor::SetDemoState(BOOL demoState)
 {
     m_demoState = demoState;
 }
+

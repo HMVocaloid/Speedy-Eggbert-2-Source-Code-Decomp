@@ -58,6 +58,7 @@
 #define DIMLITTLEY		12
 
 #define CHBACK			0
+#define CHFLOOR			1
 #define CHOBJECT		1
 #define CHBLUPI			2
 #define CHDECOR			3

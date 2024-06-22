@@ -23,6 +23,13 @@
 #define ICON_HILI_BUILD	118
 #define ICON_HILI_ERR	119
 #define ICON_BUTTON_PERSONALBOMBICON
+#define MAXMOVEOBJECT  200
+#define MAXQUART  441
+#define BLUPIFLOOR 2
+#define BLUPIOFFY 4 + BLUPIFLOOR
+#define BLUPISURF 12
+#define BLUPISUSPEND 12
+#define OVERHEIGHT 80
 
 // Descripteur d'une cellule du d�cor.
 typedef struct
@@ -463,6 +470,7 @@ public:
 	void	SearchLinkCaisse(int rank, BOOL bPop);
 	void	ResetHili();
 	BOOL	LoadImages();
+	int		IsTerminated();
 	BOOL	LoadBackgroundImages();
 	BOOL	TestPushOneCaisse(int i, POINT move, int b);
 	void	ClearFog();
@@ -567,7 +575,9 @@ public:
 	void	MoveObjectPlouf(POINT pos);
 	void	MoveObjectTiplouf(POINT pos);
 	void	MoveObjectBlup(POINT pos);
+	int		IsWorld(POINT pos);
 	void	ActiveSwitch(BOOL bState, POINT cel);
+	int		GetTypeBarre(POINT pos);
 	BOOL	IsLave(POINT pos);
 	BOOL	IsPiege(POINT pos);
 	BOOL	IsGoutte(POINT pos, BOOL bAlways);
@@ -602,8 +612,23 @@ public:
 	void	ModifDecor(POINT pos, int icon);
 	void	MoveObjectStep();
 	void	MoveObjectStepLine(int i);
+	void	MoveObjectStepIcon(int i);
+	void	MoveObjectFollow(POINT pos);
+	void	MoveObjectDetect(POINT pos, BOOL bNear);
 	void	DynamiteStart(int i, int dx, int dy);
 	int		AscenseurDetect(RECT rect, POINT oldpos, POINT newpos);
+	void	ByeByeHelico();
+	void	ByeByeAdd(ByeByeObject byeByeObject, int channel, int icon, POINT pos, double rotationSpeed, double animationSpeed);
+	void	ByeByeStep();
+	void	ByeByeDraw(POINT posDecor);
+	void	AscenseurVertigo(int i, BOOL bVertigoLeft, BOOL bVertigoRight);
+	BOOL	AscenseurShift(int i);
+	void	AscenseurSynchro(int i);
+	int		CaisseInFront();
+	int		CaisseGetMove(int max);
+	int		MockeryDetect(POINT pos);
+	BOOL	BlupiElectro(POINT pos);
+	void	ByeByeStep();
 	void	BlupiStep();
 	BOOL	DecorDetect(RECT rect);
 	BOOL	DecorDetect(RECT rect, BOOL bCaisse);
@@ -661,6 +686,7 @@ protected:
 	int			m_blupiFifoNb;
     int         m_caseIndexes[200];
     int         m_nbSomethings;
+	int			m_blupiOffsetY;
     int         m_somethingIndexes;
     POINT       m_pos;
     POINT       m_safePos;
