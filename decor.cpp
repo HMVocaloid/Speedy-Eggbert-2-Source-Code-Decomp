@@ -7753,6 +7753,66 @@ void CDecor::MoveObjectFollow(POINT pos)
 	}
 }
 
+int CDecor::MoveObjectDetect(POINT pos, BOOL bNear)
+{
+	RECT src = BlupiRect(pos);
+	src.left = pos.x + 16;
+	src.right = pos.x + 60 - 16;
+	RECT src2;
+	src2.left = src.left - 20;
+	src2.right = src.right + 20;
+	src2.top = src.top - 40;
+	src2.bottom = src.bottom + 30;
+	
+	for (int i = 0; i < MAXMOVEOBJECT; i++)
+	{
+		if (m_moveObject[i]->type != 0 &&
+			m_moveObject[i]->type != 27 &&
+			m_moveObject[i]->type != 57 &&
+			m_moveObject[i]->type != 39 &&
+			m_moveObject[i]->type != 58 &&
+			m_moveObject[i]->type != 34 &&
+			m_moveObject[i]->type != 37 &&
+			m_moveObject[i]->type != 38 &&
+			(m_blupiAction != 14 && m_blupiAction != 29) ||
+			m_moveObject[i]->type != 12)
+		{
+			RECT src3;
+
+		}
+	}
+}
+
+int CDecor::MoveAscenseurDetect(POINT pos, int height)
+{
+	if (m_blupiTimeNoAsc != 0)
+	{
+		return -1;
+	}
+	RECT src;
+	src.left = pos.x + 12;
+	src.right = pos.x + 60 - 12;
+	src.top = pos.y + 60 - 2;
+	src.bottom = pos.y + 60 + height - 1;
+	for (int i = 0; i < MAXMOVEOBJECT; i++)
+	{
+		if (m_moveObject[i]->type == 1 || m_moveObject[i]->type == 47 || m_moveObject[i]->type == 48)
+		{
+			RECT src2;
+			src2.left = m_moveObject[i]->posCurrent.x;
+			src2.right = m_moveObject[i]->posCurrent.x + 64;
+			src2.top = m_moveObject[i]->posCurrent.y;
+			src2.bottom = m_moveObject[i]->posCurrent.y + 16;
+			RECT tinyRect;
+			if (IntersectRect(tinyRect, src2, src))
+			{
+				return i;
+			}
+		}
+	}
+	return -1;
+}
+
 BOOL CDecor::SearchDoor(int n, POINT cel, POINT blupi)
 {
     for (int i = 0; i < 100; i++)
@@ -7885,7 +7945,10 @@ void CDecor::MoveObjectSort()
 {
     CDecor.MoveObject src = (CDecor->MoveObject);
     int num = 0;
-    for (int i = 0; i < Decor.MAXMOVEOBJECT; i++)
+	for (int i = 0; i < MAXMOVEOBJECT; i++)
+	{
+
+	}
 }
 
 char CDecor::GetMissionTitle()

@@ -614,7 +614,10 @@ public:
 	void	MoveObjectStepLine(int i);
 	void	MoveObjectStepIcon(int i);
 	void	MoveObjectFollow(POINT pos);
-	void	MoveObjectDetect(POINT pos, BOOL bNear);
+	int		MoveObjectDetect(POINT pos, BOOL bNear);
+	int		MoveAscenseurDetect(POINT pos, int height);
+	int		MoveChargeDetect(POINT pos);
+	int		MovePersoDetect(POINT pos);
 	void	DynamiteStart(int i, int dx, int dy);
 	int		AscenseurDetect(RECT rect, POINT oldpos, POINT newpos);
 	void	ByeByeHelico();
