@@ -7813,6 +7813,196 @@ int CDecor::MoveAscenseurDetect(POINT pos, int height)
 	return -1;
 }
 
+int CDecor::MoveChargeDetect(POINT pos)
+{
+	RECT src;
+	src.left = pos.x + 16;
+	src.right = pos.x + 60 - 16;
+	src.top = pos.y + 11;
+	src.bottom = pos.y + 60 - 2;
+	for (int i = 0; i < MAXMOVEOBJECT; i++)
+	{
+		if (m_moveObject[i]->type == 31)
+		{
+			RECT src2;
+			src2.left = m_moveObject[i]->posCurrent.x - 10;
+			src2.right = m_moveObject[i]->posCurrent.x + 60 + 10;
+			src2.top = m_moveObject[i]->posCurrent.y + 36;
+			src2.bottom = m_moveObject[i]->posCurrent.y + 60;
+			RECT tinyRect;
+			if (IntersectRect(tinyRect, src2, src))
+			{
+				return i;
+			}
+		}
+	}
+	return -1;
+}
+
+int CDecor::MovePersoDetect(POINT pos)
+{
+	RECT src;
+	src.left = pos.x + 16;
+	src.right = pos.x + 60 - 16;
+	src.top = pos.y + 11;
+	src.bottom = pos.y + 60 - 2;
+	for (int i = 0; i < MAXMOVEOBJECT; i++)
+	{
+		if (m_moveObject[i]->type >= 200 && m_moveObject[i]->type <= 203)
+		{
+			RECT src2;
+			src2.left = m_moveObject[i]->posCurrent.x - 16;
+			src2.right = m_moveObject[i]->posCurrent.x + 60 + 16;
+			src2.top = m_moveObject[i]->posCurrent.y + 36;
+			src2.bottom = m_moveObject[i]->posCurrent.y + 60;
+			RECT tinyRect;
+			if (IntersectRect(tinyRect, src2, src))
+			{
+				return i;
+			}
+		}
+	}
+	return -1;
+}
+
+int CDecor::MoveObjectDelete(POINT cel)
+{
+	int result = -1;
+	for (int i = 0; i < MAXMOVEOBJECT; i++)
+	{
+		if (m_moveObject[i]->type != 0)
+		{
+			if (cel.x == m_moveObject[i]->posStart.x / 64 && cel.y == m_moveObject[i]->posStart.y / 64)
+			{
+				result = m_moveObject[i]->type;
+				m_moveObject[i]->type = 0;
+			}
+			else if (cel.x == m_moveObject[i]->posEnd.x / 64 && cel.y == m_moveObject[i]->posEnd.y / 64)
+			{
+				result = m_moveObject[i]->type;
+				m_moveObject[i]->type = 0;
+			}
+		}
+	}
+	return result;
+}
+
+int CDecor::MoveObjectFree()
+{
+	for (int i = 0; i < MAXMOVEOBJECT; i++)
+	{
+		if (m_moveObject[i]->type == 0)
+		{
+			m_moveObject[i]->type = 0;
+			return i;
+		}
+	}
+	return -1;
+}
+
+int CDecor::SortGetType(int type)
+{
+	if (type == 2 || type == 3 || type == 96 || type == 97)
+	{
+		return 1;
+	}
+	if (type == 12)
+	{
+		return 2;
+	}
+	return 3;
+}
+
+void CDecor::MoveObjectSort()
+{
+	MoveObject src = default(MoveObject);
+	int num = 0;
+	for (int i = 0; i < MAXMOVEOBJECT; i++)
+	{
+		if (m_moveObject[i]->type != 0)
+		{
+			MoveObjectCopy(m_moveObject[num++], m_moveObject[i]);
+		}
+	}
+	for (int i = num; i < MAXMOVEOBJECT; i++)
+	{
+		m_moveObject[i]->type = 0;
+	}
+	if (num <= 1)
+	{
+		return;
+	}
+	BOOL flag;
+	do
+	{
+		flag = FALSE;
+		for (int i = 0; i < num - 1; i++)
+		{
+			if (SortGetType(m_moveObject[i]->type) > SortGetType(m_moveObject[i + 1]->type))
+			{
+				MoveObjectCopy(src, m_moveObject[i]);
+				MoveObjectCopy(m_moveObject[i], m_moveObject[i + 1]);
+				MoveObjectCopy(m_moveObject[i + 1], src);
+				flag = TRUE;
+			}
+		}
+	} while (flag);
+	UpdateCaisse();
+	m_nbLinkCaisse = 0;
+}
+
+int CDecor::MoveObjectSearch(POINT pos)
+{
+	return MoveObjectSearch(pos, -1);
+}
+
+int CDecor::MoveObjectSearch(POINT pos, int type)
+{
+	for (int i = 0; i < MAXMOVEOBJECT; i++)
+	{
+		if (m_moveObject[i]->type != 0 && (type == -1 ||
+			m_moveObject[i]->type == type))
+		{
+			if (m_moveObject[i]->type == 23 &&
+				m_moveObject[i]->posStart.x != m_moveObject[i]->posEnd.x)
+			{
+				if (m_moveObject[i]->posCurrent.x >= pos.x - 100 &&
+					m_moveObject[i]->posCurrent.x <= pos.x + 100 &&
+					m_moveObject[i]->posCurrent.y == pos.y)
+				{
+					return i;
+				}
+			}
+			else if (m_moveObject[i]->type == 23 &&
+				m_moveObject[i]->posStart.y != m_moveObject[i]->posEnd.y)
+			{
+				if (m_moveObject[i]->posCurrent.y >= pos.y - 100 &&
+					m_moveObject[i]->posCurrent.y <= pos.y + 100 &&
+					m_moveObject[i]->posCurrent.x == pos.x)
+				{
+					return i;
+				}
+			}
+			else if (m_moveObject[i]->posCurrent.x == pos.x &&
+				m_moveObject[i]->posCurrent.y == pos.y)
+			{
+				return i;
+			}
+		}
+	}
+	return -1;
+}
+
+void CDecor::VoyageInit(POINT start, POINT end, int icon, int channel)
+{
+	if (m_voyageIcon != -1)
+	{
+		m_voyagePhase = m_voyageTotal;
+		VoyageStep();
+	}
+
+}
+
 BOOL CDecor::SearchDoor(int n, POINT cel, POINT blupi)
 {
     for (int i = 0; i < 100; i++)

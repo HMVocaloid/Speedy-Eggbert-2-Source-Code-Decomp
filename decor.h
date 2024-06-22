@@ -618,6 +618,14 @@ public:
 	int		MoveAscenseurDetect(POINT pos, int height);
 	int		MoveChargeDetect(POINT pos);
 	int		MovePersoDetect(POINT pos);
+	int		MoveObjectDelete(POINT cel);
+	int		MoveObjectFree();
+	int		SortGetType(int type);
+	void	MoveObjectSort();
+	int		MoveObjectSearch(POINT pos);
+	int		MoveObjectSearch(POINT pos, int type);
+	void	VoyageInit(POINT start, POINT end, int icon, int channel);
+	void	VoyageStep();
 	void	DynamiteStart(int i, int dx, int dy);
 	int		AscenseurDetect(RECT rect, POINT oldpos, POINT newpos);
 	void	ByeByeHelico();
