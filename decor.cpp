@@ -8000,7 +8000,102 @@ void CDecor::VoyageInit(POINT start, POINT end, int icon, int channel)
 		m_voyagePhase = m_voyageTotal;
 		VoyageStep();
 	}
+	m_voyageStart = start;
+	m_voyageEnd = end;
+	m_voyageIcon = icon;
+	m_voyageChannel = channel;
+	int num = abs(end.x - start.x);
+	int num2 = abs(end.y - start.y);
+	m_voyagePhase = 0;
+	m_voyageTotal = (num + num2) / 10;
+	if (m_voyageIcon == 48 && m_voyageChannel == 2)
+	{
+		m_voyageTotal = 40;
+		m_nbVies--;
+		m_pSound->PlayImage(9, end, -1, FALSE);
+	}
+	if (m_voyageIcon == 21 && m_voyageChannel == 10)
+	{
+		m_pSound->PlayImage(12, start, -1, FALSE);
+	}
+	if (m_voyageIcon == 6 && m_voyageChannel == 10)
+	{
+		if (m_nbTresor == m_totalTresor - 1)
+		{
+			m_pSound->PlayImage(19, start, -1, FALSE);
+		}
+		else
+		{
+			m_pSound->PlayImage(11, start, -1, FALSE);
+		}
+	}
+	if (m_voyageIcon == 215 && m_voyageChannel == 10)
+	{
+		m_pSound->PlayImage(11, start, -1, FALSE);
+	}
+	if (m_voyageIcon == 222 && m_voyageChannel == 10)
+	{
+		m_pSound->PlayImage(11, start, -1, FALSE);
+	}
+	if (m_voyageIcon == 229 && m_voyageChannel == 10)
+	{
+		m_pSound->PlayImage(11, start, -1, FALSE);
+	}
+	if (m_voyageIcon == 108 && m_voyageChannel == 4)
+	{
+		m_pSound->PlayImage(60, start, -1, FALSE);
+	}
+	if (m_voyageIcon == 252 && m_voyageChannel == 10)
+	{
+		m_pSound->PlayImage(60, start, -1, FALSE);
+	}
+	if (m_voyageIcon == 177 && m_voyageChannel == 10)
+	{
+		m_pSound->PlayImage(54, start, -1, FALSE);
+	}
+	if (m_voyageIcon == 230 && m_voyageChannel == 10)
+	{
+		m_voyageTotal = 100;
+	}
+	if (m_voyageIcon == 40 && m_voyageChannel == 10)
+	{
+		m_voyageTotal = 50;
+	}
+}
 
+// Add VoyageStep
+
+// Add VoyageDraw
+
+BOOL CDecor::IsFloatingObject(int i)
+{
+	POINT posCurrent = m_moveObject[i]->posCurrent;
+	int num = (posCurrent.x + 32) / 64;
+	int num2 = posCurrent.y / 64 + 1;
+	int icon = m_decor[num, num2]->icon;
+	return IsPassIcon(icon);
+}
+
+// Add IsRightBorder
+
+BOOL CDecor::IsFromage(int x, int y)
+{
+	if (x < 0 || x >= 100 || y < 0 || y >= 100)
+	{
+		return FALSE;
+	}
+	int icon = m_decor[x, y]->icon;
+	return (icon >= 246 && icon <= 249) || icon == 339;
+}
+
+BOOL CDecor::IsGrotte(int x, int y)
+{
+	if (x < 0 || x >= 100 || y < 0 || y >= 100)
+	{
+		return FALSE;
+	}
+	int icon = m_decor[x, y]->icon;
+	return icon = 284 || icon == 301 || icon == 337;
 }
 
 BOOL CDecor::SearchDoor(int n, POINT cel, POINT blupi)

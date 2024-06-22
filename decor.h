@@ -626,6 +626,11 @@ public:
 	int		MoveObjectSearch(POINT pos, int type);
 	void	VoyageInit(POINT start, POINT end, int icon, int channel);
 	void	VoyageStep();
+	BOOL	IsFloatingObject(int i);
+	BOOL	IsRightBorder(int x, int y, int dx, int dy);
+	BOOL	IsFromage(int x, int y);
+	BOOL	IsGrotte(int x, int y);
+	void	AdaptMidBorder(int x, int y);
 	void	DynamiteStart(int i, int dx, int dy);
 	int		AscenseurDetect(RECT rect, POINT oldpos, POINT newpos);
 	void	ByeByeHelico();
@@ -689,6 +694,11 @@ protected:
 	BOOL		m_bSuperBlupi;
 	Random		m_random;
     WMessage    m_phase;
+	int			m_voyagePhase;
+	int			m_voyageTotal;
+	POINT		m_voyageStart;
+	POINT		m_voyageEnd;
+	int			m_voyageChannel;
     int         m_targetMission;
     char        m_missionTitle[100];
     int         m_nbCases;
