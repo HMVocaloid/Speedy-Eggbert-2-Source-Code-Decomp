@@ -22,7 +22,7 @@
 #define ICON_HILI_GO	117
 #define ICON_HILI_BUILD	118
 #define ICON_HILI_ERR	119
-#define ICON_BUTTON_PERSONALBOMBICON
+#define ICON_BUTTON_PERSONALBOMBICON 108
 #define MAXMOVEOBJECT  200
 #define MAXQUART  441
 #define BLUPIFLOOR 2
@@ -611,7 +611,7 @@ public:
 	BOOL	ObjectDelete(POINT pos, int type);
 	void	ModifDecor(POINT pos, int icon);
 	void	MoveObjectStep();
-	void	MoveObjectStepLine(int i);
+	void	MoveObjectStepLine(int i, MoveObject moveObject);
 	void	MoveObjectStepIcon(int i);
 	void	MoveObjectFollow(POINT pos);
 	int		MoveObjectDetect(POINT pos, BOOL bNear);
@@ -631,11 +631,15 @@ public:
 	BOOL	IsFromage(int x, int y);
 	BOOL	IsGrotte(int x, int y);
 	void	AdaptMidBorder(int x, int y);
+	void	PosSound(POINT pos);
+	void	AdaptBorder(POINT cel);
+	void	GetMissionPath(char* str, int user, int mission, BOOL bUser);
 	void	DynamiteStart(int i, int dx, int dy);
 	int		AscenseurDetect(RECT rect, POINT oldpos, POINT newpos);
 	void	ByeByeHelico();
 	void	ByeByeAdd(ByeByeObject byeByeObject, int channel, int icon, POINT pos, double rotationSpeed, double animationSpeed);
 	void	ByeByeStep();
+	void	BlupiSearchIcon();
 	void	ByeByeDraw(POINT posDecor);
 	void	AscenseurVertigo(int i, BOOL bVertigoLeft, BOOL bVertigoRight);
 	BOOL	AscenseurShift(int i);
@@ -679,14 +683,14 @@ protected:
 	int			m_blupiTimeShield;
 	POINT		m_blupiPosMagic;
 	POINT		m_blupiLastPos;
-	int			m_balleTraj;
+	int			m_balleTraj[1300];
 	POINT		m_blupiVector;
 	int			m_blupiSec;
 	int			m_blupiRealRotation;
 	int			m_blupiTransport;
 	int			m_detectIcon = -1;
     POINT       m_cameraPos;
-	int			m_moveTraj;
+	int			m_moveTraj[1300];
 	POINT		m_dimDecor;
 	BOOL		m_blupiRestart;
     POINT       m_worldDims;
@@ -695,6 +699,11 @@ protected:
 	Random		m_random;
     WMessage    m_phase;
 	int			m_voyagePhase;
+	POINT		m_sucettePos;
+	int			m_sucetteType;
+	double		m_blupiLastSpeedY;
+	int			m_blupiTimeOuf;
+	double		m_blupiLastSpeedX;
 	int			m_voyageTotal;
 	POINT		m_voyageStart;
 	POINT		m_voyageEnd;
@@ -702,8 +711,8 @@ protected:
     int         m_targetMission;
     char        m_missionTitle[100];
     int         m_nbCases;
-	int			m_linkCaisse;
-	int			m_blupiFifoPos;
+	int			m_linkCaisse[MAXMOVEOBJECT];
+	POINT		m_blupiFifoPos[10];
 	int			m_blupiFifoNb;
     int         m_caseIndexes[200];
     int         m_nbSomethings;
@@ -713,7 +722,7 @@ protected:
     POINT       m_safePos;
 	POINT		m_posDecor;
 	RECT		m_drawBounds;
-	byte		m_doors[200];
+	int 		m_doors[200];
     Action      m_action;
     int         m_direction;
     int         m_actionFrameCount;
@@ -730,15 +739,16 @@ protected:
     undefined
     undefined
     */
-	int			m_decor;
-	int			m_bigDecor;
+	Cellule		m_decor[100, 100];
+	Cellule		m_bigDecor[100, 100];
 	int			m_decorAction;
+	int			m_blupiLevel;
     IconChannel m_blupiChannel;
 	int			m_keyPress;
     POINT       m_activeConveyorVelocity;
 	int			m_decorPhase;
 	int			m_nbRankCaisse;
-	int			m_rankCaisse;
+	int			m_rankCaisse[MAXMOVEOBJECT];
 	int			m_nbLinkCaisse;
     int         m_activeLiftIndex;
     int         m_blupiChannel;
@@ -795,7 +805,7 @@ protected:
     BOOL        m_bIsTerminating;
 	POINT		m_blupiPos;
 	int			m_blupiDir;
-	int			m_lastDecorIcon;
+	int			m_lastDecorIcon[200];
     int         m_glue;
     int         m_keys;
     int         m_personalBombs;

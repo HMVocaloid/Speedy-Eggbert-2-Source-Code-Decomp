@@ -11,6 +11,7 @@ extern POINT ConvLongToPos(LPARAM lParam);
 extern void InitRandom();
 extern int  Random(int min, int max);
 
+extern int  Speed(double speed, int max);
 extern void GetCurrentDir(char *pName, int lg);
 extern void AddCDPath(char *pFilename);
 extern void AddUserPath(char *pFilename);

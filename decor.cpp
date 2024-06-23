@@ -31,13 +31,11 @@
 
 CDecor::CDecor()
 {
-    int i;
-
     m_hWnd   = NULL;
     m_pSound = NULL;
     m_pPixmap = NULL;
 
-    for (i = 0; i < 200; i++)
+    for (int i = 0; i < 200; i++)
     {
 		m_lastDecorIcon[i] = 0;
     }
@@ -103,7 +101,7 @@ BOOL CDecor::LoadImages()
         if (m_region == 0)
         {
             return FALSE;
-    }
+		}
         return TRUE;
 }
 
@@ -132,7 +130,7 @@ void CDecor::InitDecor(int channel, int icon)
         for (int j = 0; j < 100; j++)
         {
             m_decor[i, j]->icon = -1;
-            m_bigDecor[i, j]->icon = 1;
+            m_bigDecor[i, j].icon = 1;
         }
     }
     m_decor[3, 4]->icon = 40;
@@ -216,7 +214,7 @@ void CDecor::InitDecor(int channel, int icon)
     m_scrollAdd.x = 0;
     m_scrollAdd.y = 0;
     m_term = 0;
-    byeByeObject.Clear();
+    byeByeObjects = -1;
 }
 
 void CDecor::SetTime(int time)
@@ -477,11 +475,11 @@ void CDecor::Build()
 			{
 				int num2 = table_shield_blupi[m_time / 2 % 16];
 				tinyPoint.y -= 2;
-				QuickIcon(10, num2, tinyPoint, m_pPixmap);
+				m_pPixmap->QuickIcon(10, num2, tinyPoint);
 				tinyPoint.y += 2;
-				QuickIcon(10, num2, tinyPoint, m_pPixmap);
+				m_pPixmap->QuickIcon(10, num2, tinyPoint);
 			}
-			QuickIcon(m_blupiChannel, m_blupiIcon, tinyPoint, 1.0, rotation, m_pPixmap);
+			m_pPixmap->QuickIcon(m_blupiChannel, m_blupiIcon, tinyPoint, 1.0, rotation);
 		}
 		else if (m_blupiPower)
 		{
@@ -489,9 +487,9 @@ void CDecor::Build()
 			if (m_blupiTimeShield > 25 || m_time % 4 < 2)
 			{
 				int num2 = table_magicloop[m_time / 2 % 5];
-				QuickIcon(10, num2, tinyPoint);
+				m_pPixmap->QuickIcon(10, num2, tinyPoint);
 			}
-			QuickIcon(m_blupiChannel, m_blupiIcon, tinyPoint, 1.0, rotation, m_pPixmap);
+			m_pPixmap->QuickIcon(m_blupiChannel, m_blupiIcon, tinyPoint, 1.0, rotation);
 		}
 		else if (m_blupiCloud)
 		{
@@ -503,7 +501,7 @@ void CDecor::Build()
 					int num2 = 48 + (m_time + k) / 1 % 6;
 					pos.x = tinyPoint.x - 34;
 					pos.y = tinyPoint.y - 34;
-					QuickIcon(9, num2, pos, m_pPixmap);
+					m_pPixmap->QuickIcon(9, num2, pos);
 				}
 			}
 		}
@@ -600,6 +598,7 @@ POINT CDecor::DecorNextAction()
 	return posDecor;
 }
 
+/*
 void CDecor::TreatInput(UINT input)
 {
     m_keyPress = input;
@@ -615,6 +614,7 @@ void CDecor::TreatInput(UINT input)
         }
     }
 }
+*/
 
 void CDecor::SetSpeedX(double speed)
 {
@@ -727,24 +727,8 @@ void CDecor::PlaySound(int sound, POINT pos)
 
 void CDecor::StopSound(CSound sound)
 {
-    m_pSound->StopSound(sound);
-    if (sound == SOUND_16_HELICOHIGH)
-    {
-        m_bHelicopterFlying = FALSE;
-    }
-    if (sound == SOUND_18_HELICOLOW)
-    {
-        m_bHelicopterStationary = FALSE;
-    }
-    if (sound == SOUND_29_JEEPHIGH)
-    {
-        m_bCarMoving = FALSE;
-    }
-    if (sound == SOUND_31_JEEPLOW)
-    {
-        m_bCarStationary = FALSE;
-    }
-    return;
+	m_blupiMotorSound = 0;
+	m_pSound->StopSound();
 }
 
 void CDecor::AdaptMotorVehicleSound()
@@ -770,6 +754,16 @@ void CDecor::AdaptMotorVehicleSound()
         m_pSound->PlayImage(31, blupiPos);
     }
     return;
+}
+
+void CDecor::PosSound(POINT pos)
+{
+	if (m_blupiMotorSound != 0)
+	{
+		pos.x -= m_posDecor.x;
+		pos.y -= m_posDecor.y;
+		m_pSound->PosImage(m_blupiMotorSound, pos);
+	}
 }
 
 // TODO: Add VehicleSoundsPhase
@@ -804,7 +798,7 @@ BOOL CDecor::TestPushCaisse(int i, POINT pos, BOOL bPop)
     }
     for (int j = 0; j < m_nbLinkCaisse; j++)
     {
-        i = m_linkCaisse;
+        i = m_linkCaisse[j];
         int num = i;
         m_moveObject[num]->posCurrent.x = m_moveObject[num]->posCurrent.x + move.x;
         m_moveObject[num]->posStart.x = m_moveObject[num]->posStart.x + move.x;
@@ -823,30 +817,60 @@ void CDecor::SearchLinkCaisse(int rank, BOOL bPop)
 {
     m_nbLinkCaisse = 0;
     AddLinkCaisse(rank);
-    POINT posCurrent = m_moveObject;
+    POINT posCurrent = m_moveObject[rank]->posCurrent;
 
     BOOL flag;
-    do
-    {
-        flag = FALSE;
-        for (int i = 0; i < m_nbLinkCaisse; i++)
-        {
-            int num = m_linkCaisse[i];
-            if (m_moveObject[num]->posCurrent.y <=
-                posCurrent.y && (!bPop || (m_moveObject
-                    [num]->posCurrent.x >= posCurrent.x - 32 &&
-                    m_moveObject[num]->posCurrent.x <=
-                    posCurrent.x + 32)))
-            {
-
-            }
-        }
-    }
+	do
+	{
+		flag = FALSE;
+		for (int i = 0; i < m_nbLinkCaisse; i++)
+		{
+			int num = m_linkCaisse[i];
+			if (m_moveObject[num]->posCurrent.y <=
+				posCurrent.y && (!bPop || (m_moveObject
+					[num]->posCurrent.x >= posCurrent.x - 32 &&
+					m_moveObject[num]->posCurrent.x <=
+					posCurrent.x + 32)))
+			{
+				RECT src;
+				src.left = m_moveObject[num]->posCurrent.x - 1;
+				src.top = m_moveObject[num]->posCurrent.y - 1;
+				src.right = src.left + 64 + 1;
+				src.bottom = src.top + 64 + 1;
+				for (int j = 0; j < m_nbRankCaisse; j++)
+				{
+					int num2 = m_rankCaisse[j];
+					if (num2 != num && m_moveObject[num2]->posCurrent.y <= posCurrent.y && (!bPop || (m_moveObject[num2]->posCurrent.x >= posCurrent.x - 32 && m_moveObject[num2]->posCurrent.x <= posCurrent.x + 32)))
+					{
+						RECT src2;
+						src2.left = m_moveObject[num2]->posCurrent.x - 1;
+						src2.top = m_moveObject[num2]->posCurrent.y - 1;
+						src2.right = src2.left + 64 + 1;
+						src2.bottom = src2.top + 64 + 1;
+						RECT tinyRect;
+						if (IntersectRect(tinyRect, src2, src) && AddLinkCaisse(num2))
+						{
+							flag = TRUE;
+						}
+					}
+				}
+			}
+		}
+	} while (flag);
 }
 
 BOOL CDecor::AddLinkCaisse(int rank)
 {
-
+	for (int i = 0; i < m_nbLinkCaisse; i++)
+	{
+		if (m_linkCaisse[i] == rank)
+		{
+			return FALSE;
+		}
+	}
+	m_linkCaisse[m_nbLinkCaisse] = rank;
+	m_nbLinkCaisse++;
+	return TRUE;
 }
 
 
@@ -978,17 +1002,18 @@ void CDecor::GetDoors(int doors)
 {
     for (int i = 0; i < m_doors; i++)
     {
-        doors[i] = (int)
+		doors[i] = (int)m_doors[i + 3];
     }
 }
 
-
+/*
 void CDecor::SetAllMissions(BOOL CheatDoors)
 {
     m_bCheatDoors = CheatDoors;
     m_bPrivate, AdaptDoors(m_mission);
     return;
 }
+*/
 
 void CDecor::CheatAction(int cheat, MoveObject moveObject)
 {
@@ -1006,10 +1031,10 @@ void CDecor::CheatAction(int cheat, MoveObject moveObject)
                 m_moveObject[i]->type = 8;
                 m_moveObject[i]->phase = 0;
 
-               MoveObject[] moveObject = m_moveObject;
+               moveObject = m_moveObject;
                int num = i;
-               moveObject[num]->posCurrent.x = moveObject[num].posCurrent.x - 34;
-               MoveObject[] moveObject2 = m_moveObject;
+               moveObject[num]->posCurrent.x = moveObject[num]->posCurrent.x - 34;
+               moveObject2 = m_moveObject;
                int num2 = i;
                moveObject2[num2]->posCurrent.y = moveObject2[num2].posCurrent.y - 34;
                m_moveObject[i]->posStart = m_moveObject[i]->posCurrent;
@@ -1065,7 +1090,7 @@ void CDecor::CheatAction(int cheat, MoveObject moveObject)
     }
     if (cheat == cheat_alltreasure)
     {
-        for (int i = 0; i < MOVEOBJECT; i++)
+        for (int i = 0; i < MAXMOVEOBJECT; i++)
         {
             if (m_moveObject[i]->type == 5)
             {
@@ -1118,7 +1143,7 @@ void CDecor::CheatAction(int cheat, MoveObject moveObject)
                 }
                 else
                 {
-                    (m_moveObject[i]->posCurrent)->PlaySound(13);
+                    PlaySound(13, m_moveObject[i]->posCurrent);
                 }
                 m_goalPhase = 50;
             }
@@ -1247,7 +1272,59 @@ void CDecor::CheatAction(int cheat, MoveObject moveObject)
     }
 }
 
-/*
+void CDecor::BlupiSearchIcon()
+{
+	int num = 0;
+	int num2 = 2;
+	int num3 = m_blupiAction;
+	if (m_blupiVent && m_blupiHelico && m_blupiOver)
+	{
+		if (num3 == 1)
+		{
+			num3 = 8;
+		}
+		if (num3 == 2)
+		{
+			num3 = 14;
+		}
+	}
+	if (m_blupiHelico)
+	{
+		if (num3 == 1)
+		{
+			num3 = 15;
+		}
+		if (num3 == 2)
+		{
+			num3 = 16;
+		}
+		if (num3 == 3)
+		{
+			num3 = 17;
+		}
+		if (num3 == 10)
+		{
+			num3 = 15;
+		}
+		if (num3 == 9)
+		{
+			num3 = 15;
+		}
+		m_blupiRealRotation = (int)(m_blupiVitesseX * 2.0);
+	}
+	if (m_blupiOver)
+	{
+		if (num3 == 1)
+		{
+			num3 = 67;
+		}
+		if (num3 == 2)
+		{
+			num3 = 68;
+		}
+	}
+}
+
 void CDecor::BlupiStep()
 {
     POINT tinyPoint;
@@ -1358,8 +1435,8 @@ void CDecor::BlupiStep()
 		if (m_blupiJeep && !m_blupiShield && !m_blupiHide && !m_bSuperBlupi)
 		{
 			m_blupiJeep = false;
-			tinyPoint.X = tinyPoint3.X - 34;
-			tinyPoint.Y = tinyPoint3.Y - 34;
+			tinyPoint.x = tinyPoint3.x - 34;
+			tinyPoint.y = tinyPoint3.y - 34;
 			ObjectStart(tinyPoint, 9, 0);
 			m_decorAction = 1;
 			m_decorPhase = 0;
@@ -1372,8 +1449,8 @@ void CDecor::BlupiStep()
 		if (m_blupiTank && !m_blupiShield && !m_blupiHide && !m_bSuperBlupi)
 		{
 			m_blupiTank = false;
-			tinyPoint.X = tinyPoint3.X - 34;
-			tinyPoint.Y = tinyPoint3.Y - 34;
+			tinyPoint.x = tinyPoint3.x - 34;
+			tinyPoint.y = tinyPoint3.y - 34;
 			ObjectStart(tinyPoint, 9, 0);
 			m_decorAction = 1;
 			m_decorPhase = 0;
@@ -1386,8 +1463,8 @@ void CDecor::BlupiStep()
 		if (m_blupiSkate && !m_blupiShield && !m_blupiHide && !m_bSuperBlupi)
 		{
 			m_blupiSkate = false;
-			tinyPoint.X = tinyPoint3.X - 34;
-			tinyPoint.Y = tinyPoint3.Y - 34;
+			tinyPoint.x = tinyPoint3.x - 34;
+			tinyPoint.y = tinyPoint3.y - 34;
 			ObjectStart(tinyPoint, 9, 0);
 			m_decorAction = 1;
 			m_decorPhase = 0;
@@ -1461,17 +1538,17 @@ void CDecor::BlupiStep()
 			}
 			m_blupiVitesseY = 1.0;
 		}
-		tinyPoint3.Y += (int)(m_blupiVitesseY * 2.0);
+		tinyPoint3.y += (int)(m_blupiVitesseY * 2.0);
 		if (m_blupiVitesseY < 20.0)
 		{
 			m_blupiVitesseY += 2.0;
 		}
 		rect = BlupiRect(tinyPoint3);
-		rect.Top = tinyPoint3.Y + 60 - 30;
-		rect.Bottom = tinyPoint3.Y + 60 - 1;
+		rect.top = tinyPoint3.y + 60 - 30;
+		rect.bottom = tinyPoint3.y + 60 - 1;
 		if (m_blupiVitesseY >= 0.0 && DecorDetect(rect))
 		{
-			tinyPoint3.Y = tinyPoint3.Y / 32 * 32 + Decor.BLUPIOFFY;
+			tinyPoint3.y = tinyPoint3.y / 32 * 32 + BLUPIOFFY;
 			if (!IsRessort(tinyPoint3))
 			{
 				PlaySound(SoundEnviron(3, m_detectIcon), tinyPoint3);
@@ -1496,17 +1573,17 @@ void CDecor::BlupiStep()
 				m_blupiPhase = 0;
 			}
 		}
-		rect.Left = tinyPoint3.X + 20;
-		rect.Right = tinyPoint3.X + 60 - 20;
-		rect.Top = tinyPoint3.Y + 60 - 33;
-		rect.Bottom = tinyPoint3.Y + 60 - 1;
+		rect.left = tinyPoint3.x + 20;
+		rect.right = tinyPoint3.x + 60 - 20;
+		rect.top = tinyPoint3.y + 60 - 33;
+		rect.bottom = tinyPoint3.y + 60 - 1;
 		num = AscenseurDetect(rect, m_blupiPos, tinyPoint3);
 		if (m_blupiVitesseY >= 0.0 && num != -1)
 		{
 			m_blupiTransport = num;
 			flag4 = false;
 			PlaySound(3, tinyPoint3);
-			tinyPoint3.Y = m_moveObject[num].posCurrent.Y - 64 + Decor.BLUPIOFFY;
+			tinyPoint3.y = m_moveObject[num]->posCurrent.y - 64 + BLUPIOFFY;
 			if (m_blupiFocus)
 			{
 				if (m_blupiVitesseY > 20.0)
@@ -1548,11 +1625,11 @@ void CDecor::BlupiStep()
 	{
 		if (m_blupiPhase == 8)
 		{
-			tinyPoint.X = m_blupiPos.X;
-			tinyPoint.Y = m_blupiPos.Y + 40;
+			tinyPoint.x = m_blupiPos.x;
+			tinyPoint.y = m_blupiPos.y + 40;
 			if (m_blupiVitesseY > 0.0)
 			{
-				tinyPoint.Y += (int)(m_blupiVitesseY * 4.0);
+				tinyPoint.y += (int)(m_blupiVitesseY * 4.0);
 			}
 			m_blupiVitesseY -= 10.0;
 			if (ObjectStart(tinyPoint, 23, 55) != -1)
@@ -1593,25 +1670,25 @@ void CDecor::BlupiStep()
 		m_blupiAction = 1;
 		m_blupiPhase = 0;
 		m_blupiFocus = true;
-		num = MoveObjectDetect(tinyPoint3, out flag6);
-		if (num != -1 && !flag6 && tinyPoint3.Y - Decor.BLUPIFLOOR == m_moveObject[num].posCurrent.Y)
+		num = MoveObjectDetect(tinyPoint3, flag6);
+		if (num != -1 && !flag6 && tinyPoint3.y - BLUPIFLOOR == m_moveObject[num]->posCurrent.y)
 		{
-			if (m_blupiDir == 2 && tinyPoint3.X < m_moveObject[num].posCurrent.X)
+			if (m_blupiDir == 2 && tinyPoint3.x < m_moveObject[num]->posCurrent.x)
 			{
-				tinyPoint.X = tinyPoint3.X - 16;
-				tinyPoint.Y = tinyPoint3.Y;
-				int num2 = MoveObjectDetect(tinyPoint, out flag6);
+				tinyPoint.x = tinyPoint3.x - 16;
+				tinyPoint.y = tinyPoint3.y;
+				int num2 = MoveObjectDetect(tinyPoint, flag6);
 				if (num2 == -1)
 				{
 					m_blupiAction = 9;
 					m_blupiPhase = 0;
 				}
 			}
-			if (m_blupiDir == 1 && tinyPoint3.X > m_moveObject[num].posCurrent.X)
+			if (m_blupiDir == 1 && tinyPoint3.x > m_moveObject[num]->posCurrent.x)
 			{
-				tinyPoint.X = tinyPoint3.X + 16;
-				tinyPoint.Y = tinyPoint3.Y;
-				int num2 = MoveObjectDetect(tinyPoint, out flag6);
+				tinyPoint.x = tinyPoint3.x + 16;
+				tinyPoint.y = tinyPoint3.y;
+				int num2 = MoveObjectDetect(tinyPoint, flag6);
 				if (num2 == -1)
 				{
 					m_blupiAction = 9;
@@ -1749,44 +1826,44 @@ void CDecor::BlupiStep()
 	}
 	if (m_blupiAction == 7 && m_blupiPhase == 4)
 	{
-		m_scrollAdd.Y = -150;
+		m_scrollAdd.y = -150;
 		PlaySound(21, tinyPoint3);
 	}
 	if (m_blupiAction == 6 && m_blupiPhase == 4)
 	{
-		m_scrollAdd.Y = 150;
+		m_scrollAdd.y = 150;
 		PlaySound(7, tinyPoint3);
 	}
 	if (!m_blupiHelico && !m_blupiOver && !m_blupiBalloon && !m_blupiEcrase && !m_blupiJeep && !m_blupiTank && !m_blupiSkate && !m_blupiNage && !m_blupiSurf && !m_blupiSuspend && m_blupiFocus)
 	{
 		if (m_blupiSpeedY > 0.0 && m_blupiSpeedX == 0.0 && (m_keyPress & 1) == 0 && m_blupiAction != 28 && m_blupiDir == 1 && (num = CaisseInFront()) != -1)
 		{
-			tinyPoint3.X = m_moveObject[num].posCurrent.X + 64 - 5;
+			tinyPoint3.x = m_moveObject[num]->posCurrent.x + 64 - 5;
 			m_blupiAction = 28;
 			m_blupiPhase = 0;
-			m_scrollAdd.Y = 0;
+			m_scrollAdd.y = 0;
 			PlaySound(39, tinyPoint3);
 		}
 		if (m_blupiSpeedY > 0.0 && m_blupiSpeedX > 0.0 && (m_keyPress & 1) == 0 && m_blupiAction != 29 && m_blupiDir == 1 && CaisseInFront() != -1)
 		{
 			m_blupiAction = 29;
 			m_blupiPhase = 0;
-			m_scrollAdd.Y = 0;
+			m_scrollAdd.y = 0;
 			PlaySound(39, tinyPoint3);
 		}
 		if (m_blupiSpeedY > 0.0 && m_blupiSpeedX == 0.0 && (m_keyPress & 1) == 0 && m_blupiAction != 28 && m_blupiDir == 2 && (num = CaisseInFront()) != -1)
 		{
-			tinyPoint3.X = m_moveObject[num].posCurrent.X - 60 + 5;
+			tinyPoint3.x = m_moveObject[num]->posCurrent.x - 60 + 5;
 			m_blupiAction = 28;
 			m_blupiPhase = 0;
-			m_scrollAdd.Y = 0;
+			m_scrollAdd.y = 0;
 			PlaySound(39, tinyPoint3);
 		}
 		if (m_blupiSpeedY > 0.0 && m_blupiSpeedX < 0.0 && (m_keyPress & 1) == 0 && m_blupiAction != 29 && m_blupiDir == 2 && CaisseInFront() != -1)
 		{
 			m_blupiAction = 29;
 			m_blupiPhase = 0;
-			m_scrollAdd.Y = 0;
+			m_scrollAdd.y= 0;
 			PlaySound(39, tinyPoint3);
 		}
 		if (m_blupiAction == 29 && m_blupiActionOuf != 47)
@@ -1822,7 +1899,7 @@ void CDecor::BlupiStep()
 	int num4;
 	if (m_blupiSpeedX < 0.0 && m_blupiFocus)
 	{
-		if (m_blupiDir == 2 && m_blupiAction != 3 && m_blupiAction != 59 && m_blupiAction != 7 && m_blupiAction != 6 && m_blupiAction != 29 && ((!m_blupiJeep && !m_blupiTank && !m_blupiSkate) || Math.Abs(m_blupiVitesseX) <= 8.0))
+		if (m_blupiDir == 2 && m_blupiAction != 3 && m_blupiAction != 59 && m_blupiAction != 7 && m_blupiAction != 6 && m_blupiAction != 29 && ((!m_blupiJeep && !m_blupiTank && !m_blupiSkate) || abs(m_blupiVitesseX) <= 8.0))
 		{
 			if (m_blupiAir)
 			{
@@ -1847,7 +1924,7 @@ void CDecor::BlupiStep()
 		{
 			if (m_blupiAction == 14)
 			{
-				tinyPoint3.X -= CaisseGetMove(5);
+				tinyPoint3.x -= CaisseGetMove(5);
 			}
 			else
 			{
@@ -1856,23 +1933,23 @@ void CDecor::BlupiStep()
 				{
 					num3 = 3;
 				}
-				num4 = Tables.table_vitesse_march[num3];
+				num4 = table_vitesse_march[num3];
 				if (m_blupiPower)
 				{
 					num4 *= 3;
 					num4 /= 2;
 				}
-				tinyPoint3.X += Misc.Speed(m_blupiSpeedX, num4);
+				tinyPoint3.x += Speed(m_blupiSpeedX, num4);
 			}
 		}
 		if (m_blupiDir == 2 && m_blupiAction == 29)
 		{
-			tinyPoint3.X -= CaisseGetMove(3);
+			tinyPoint3.x -= CaisseGetMove(3);
 		}
 	}
 	if (m_blupiSpeedX > 0.0 && m_blupiFocus)
 	{
-		if (m_blupiDir == 1 && m_blupiAction != 3 && m_blupiAction != 59 && m_blupiAction != 7 && m_blupiAction != 6 && m_blupiAction != 29 && ((!m_blupiJeep && !m_blupiTank && !m_blupiSkate) || Math.Abs(m_blupiVitesseX) <= 8.0))
+		if (m_blupiDir == 1 && m_blupiAction != 3 && m_blupiAction != 59 && m_blupiAction != 7 && m_blupiAction != 6 && m_blupiAction != 29 && ((!m_blupiJeep && !m_blupiTank && !m_blupiSkate) || abs(m_blupiVitesseX) <= 8.0))
 		{
 			if (m_blupiAir)
 			{
@@ -1897,7 +1974,7 @@ void CDecor::BlupiStep()
 		{
 			if (m_blupiAction == 14)
 			{
-				tinyPoint3.X += CaisseGetMove(5);
+				tinyPoint3.x += CaisseGetMove(5);
 			}
 			else
 			{
@@ -1906,18 +1983,18 @@ void CDecor::BlupiStep()
 				{
 					num3 = 3;
 				}
-				num4 = Tables.table_vitesse_march[num3];
+				num4 = table_vitesse_march[num3];
 				if (m_blupiPower)
 				{
 					num4 *= 3;
 					num4 /= 2;
 				}
-				tinyPoint3.X += Misc.Speed(m_blupiSpeedX, num4);
+				tinyPoint3.x += Speed(m_blupiSpeedX, num4);
 			}
 		}
 		if (m_blupiDir == 1 && m_blupiAction == 29)
 		{
-			tinyPoint3.X += CaisseGetMove(3);
+			tinyPoint3.x += CaisseGetMove(3);
 		}
 	}
 	if (m_blupiHelico)
@@ -2080,7 +2157,7 @@ void CDecor::BlupiStep()
 			m_blupiPhase = 0;
 			PlaySound(20, tinyPoint3);
 		}
-		m_scrollAdd.Y = 0;
+		m_scrollAdd.y = 0;
 		if (blupiAction == 14)
 		{
 			StopSound(38);
@@ -2094,30 +2171,30 @@ void CDecor::BlupiStep()
 	{
 		if (m_blupiAction == 9 && m_blupiDir == 1)
 		{
-			tinyPoint3.X += 4;
+			tinyPoint3.x += 4;
 		}
 		if (m_blupiAction == 9 && m_blupiDir == 2)
 		{
-			tinyPoint3.X -= 4;
+			tinyPoint3.x -= 4;
 		}
 		if (m_blupiAction == 10 && m_blupiDir == 1)
 		{
-			tinyPoint3.X -= 4;
+			tinyPoint3.x -= 4;
 		}
 		if (m_blupiAction == 10 && m_blupiDir == 2)
 		{
-			tinyPoint3.X += 4;
+			tinyPoint3.x += 4;
 		}
 	}
 	if ((m_keyPress & -3) == 0 && m_blupiSpeedX == 0.0 && m_blupiSpeedY == 0.0 && (m_blupiJeep || m_blupiTank || m_blupiSkate) && m_blupiFocus)
 	{
 		if (m_blupiAction == 10 && m_blupiDir == 1)
 		{
-			tinyPoint3.X -= 5;
+			tinyPoint3.x -= 5;
 		}
 		if (m_blupiAction == 10 && m_blupiDir == 2)
 		{
-			tinyPoint3.X += 5;
+			tinyPoint3.x += 5;
 		}
 	}
 	if ((m_keyPress & -3) == 0 && m_blupiSpeedX == 0.0 && m_blupiSpeedY == 0.0 && m_blupiNage && m_blupiFocus && m_blupiAction == 2)
@@ -2159,7 +2236,7 @@ void CDecor::BlupiStep()
 				m_blupiVitesseY = 0.0;
 			}
 		}
-		if (Def.EasyMove)
+		if (EasyMove)
 		{
 			if (m_blupiSpeedY <= -1.0 || (m_keyPress & 1) != 0)
 			{
@@ -2190,7 +2267,7 @@ void CDecor::BlupiStep()
 					m_blupiVitesseY += 1.0;
 				}
 			}
-			tinyPoint3.Y += (int)m_blupiVitesseY;
+			tinyPoint3.y += (int)m_blupiVitesseY;
 		}
 		else
 		{
@@ -2219,9 +2296,9 @@ void CDecor::BlupiStep()
 					m_blupiVitesseY += 1.0;
 				}
 			}
-			tinyPoint3.Y += (int)m_blupiVitesseY;
+			tinyPoint3.y += (int)m_blupiVitesseY;
 		}
-		if (Def.EasyMove)
+		if (EasyMove)
 		{
 			if (m_blupiSpeedX <= -1.0)
 			{
@@ -2230,8 +2307,8 @@ void CDecor::BlupiStep()
 				{
 					m_blupiVitesseX -= 0.5;
 				}
-				tinyPoint.X = tinyPoint3.X + (int)m_blupiVitesseX;
-				tinyPoint.Y = tinyPoint3.Y;
+				tinyPoint.x = tinyPoint3.x + (int)m_blupiVitesseX;
+				tinyPoint.y = tinyPoint3.y;
 				if (BlupiBloque(tinyPoint, -1))
 				{
 					m_blupiVitesseX = 0.0;
@@ -2244,8 +2321,8 @@ void CDecor::BlupiStep()
 				{
 					m_blupiVitesseX += 0.5;
 				}
-				tinyPoint.X = tinyPoint3.X + (int)m_blupiVitesseX;
-				tinyPoint.Y = tinyPoint3.Y;
+				tinyPoint.x = tinyPoint3.x + (int)m_blupiVitesseX;
+				tinyPoint.y = tinyPoint3.y;
 				if (BlupiBloque(tinyPoint, 1))
 				{
 					m_blupiVitesseX = 0.0;
@@ -2270,7 +2347,7 @@ void CDecor::BlupiStep()
 					}
 				}
 			}
-			tinyPoint3.X += (int)m_blupiVitesseX;
+			tinyPoint3.x += (int)m_blupiVitesseX;
 		}
 		else
 		{
@@ -2281,8 +2358,8 @@ void CDecor::BlupiStep()
 				{
 					m_blupiVitesseX -= 1.0;
 				}
-				tinyPoint.X = tinyPoint3.X + (int)m_blupiVitesseX;
-				tinyPoint.Y = tinyPoint3.Y;
+				tinyPoint.x = tinyPoint3.x + (int)m_blupiVitesseX;
+				tinyPoint.y = tinyPoint3.y;
 				if (BlupiBloque(tinyPoint, -1))
 				{
 					m_blupiVitesseX = 0.0;
@@ -2295,8 +2372,8 @@ void CDecor::BlupiStep()
 				{
 					m_blupiVitesseX += 1.0;
 				}
-				tinyPoint.X = tinyPoint3.X + (int)m_blupiVitesseX;
-				tinyPoint.Y = tinyPoint3.Y;
+				tinyPoint.x = tinyPoint3.x + (int)m_blupiVitesseX;
+				tinyPoint.y = tinyPoint3.y;
 				if (BlupiBloque(tinyPoint, 1))
 				{
 					m_blupiVitesseX = 0.0;
@@ -2321,26 +2398,26 @@ void CDecor::BlupiStep()
 					}
 				}
 			}
-			tinyPoint3.X += (int)m_blupiVitesseX;
+			tinyPoint3.x += (int)m_blupiVitesseX;
 		}
 		MoveObjectPollution();
-		if (ButtonPressed == Def.ButtonGlygh.PlayAction && !flag4 && m_blupiTransport == -1)
+		if (ButtonPressed == ButtonGlygh.PlayAction && !flag4 && m_blupiTransport == -1)
 		{
-			ButtonPressed = Def.ButtonGlygh.None;
-			rect.Left = m_blupiPos.X + 20;
-			rect.Right = m_blupiPos.X + 22;
-			rect.Top = m_blupiPos.Y + 60 - 2;
-			rect.Bottom = m_blupiPos.Y + 60;
+			ButtonPressed = ButtonGlygh.None;
+			rect.left = m_blupiPos.x + 20;
+			rect.right = m_blupiPos.x + 22;
+			rect.top = m_blupiPos.y + 60 - 2;
+			rect.bottom = m_blupiPos.y + 60;
 			flag2 = !DecorDetect(rect);
-			rect.Left = m_blupiPos.X + 60 - 22;
-			rect.Right = m_blupiPos.X + 60 - 20;
-			rect.Top = m_blupiPos.Y + 60 - 2;
-			rect.Bottom = m_blupiPos.Y + 60;
+			rect.left = m_blupiPos.x + 60 - 22;
+			rect.right = m_blupiPos.x + 60 - 20;
+			rect.top = m_blupiPos.y + 60 - 2;
+			rect.bottom = m_blupiPos.y + 60;
 			flag3 = !DecorDetect(rect);
 			if (!flag2 && !flag3)
 			{
-				tinyPoint.X = m_blupiPos.X;
-				tinyPoint.Y = m_blupiPos.Y - Decor.BLUPIFLOOR;
+				tinyPoint.x = m_blupiPos.x;
+				tinyPoint.y = m_blupiPos.y - BLUPIFLOOR;
 				ObjectStart(tinyPoint, 13, 0);
 				m_blupiHelico = false;
 				m_blupiAction = 1;
@@ -2373,10 +2450,10 @@ void CDecor::BlupiStep()
 			}
 		}
 		rect = BlupiRect(tinyPoint3);
-		rect.Top = tinyPoint3.Y + 60 - 2;
-		rect.Bottom = tinyPoint3.Y + 60 + Decor.OVERHEIGHT - 1;
+		rect.top = tinyPoint3.y + 60 - 2;
+		rect.bottom = tinyPoint3.y + 60 + OVERHEIGHT - 1;
 		bool flag7 = !DecorDetect(rect);
-		num = MoveAscenseurDetect(m_blupiPos, Decor.OVERHEIGHT);
+		num = MoveAscenseurDetect(m_blupiPos, OVERHEIGHT);
 		if (num != -1)
 		{
 			flag7 = false;
@@ -2403,7 +2480,7 @@ void CDecor::BlupiStep()
 		{
 			m_blupiVitesseY += 1.0;
 		}
-		tinyPoint3.Y += (int)m_blupiVitesseY;
+		tinyPoint3.y += (int)m_blupiVitesseY;
 		if (m_blupiSpeedX < 0.0 && flag4)
 		{
 			int num9 = (int)(m_blupiSpeedX * 12.0);
@@ -2411,8 +2488,8 @@ void CDecor::BlupiStep()
 			{
 				m_blupiVitesseX -= 1.0;
 			}
-			tinyPoint.X = tinyPoint3.X + (int)m_blupiVitesseX;
-			tinyPoint.Y = tinyPoint3.Y;
+			tinyPoint.x = tinyPoint3.x + (int)m_blupiVitesseX;
+			tinyPoint.y = tinyPoint3.y;
 			if (BlupiBloque(tinyPoint, -1))
 			{
 				m_blupiVitesseX = 0.0;
@@ -2425,8 +2502,8 @@ void CDecor::BlupiStep()
 			{
 				m_blupiVitesseX += 1.0;
 			}
-			tinyPoint.X = tinyPoint3.X + (int)m_blupiVitesseX;
-			tinyPoint.Y = tinyPoint3.Y;
+			tinyPoint.x = tinyPoint3.x + (int)m_blupiVitesseX;
+			tinyPoint.y = tinyPoint3.y;
 			if (BlupiBloque(tinyPoint, 1))
 			{
 				m_blupiVitesseX = 0.0;
@@ -2443,25 +2520,25 @@ void CDecor::BlupiStep()
 				m_blupiVitesseX += 1.0;
 			}
 		}
-		tinyPoint3.X += (int)m_blupiVitesseX;
+		tinyPoint3.x += (int)m_blupiVitesseX;
 		MoveObjectPollution();
-		if (ButtonPressed == Def.ButtonGlygh.PlayAction && !flag4 && m_blupiTransport == -1)
+		if (ButtonPressed == ButtonGlygh.PlayAction && !flag4 && m_blupiTransport == -1)
 		{
 			ButtonPressed = Def.ButtonGlygh.None;
-			rect.Left = m_blupiPos.X + 20;
-			rect.Right = m_blupiPos.X + 22;
-			rect.Top = m_blupiPos.Y + 60 - 2;
-			rect.Bottom = m_blupiPos.Y + 60;
+			rect.left = m_blupiPos.x + 20;
+			rect.right = m_blupiPos.x + 22;
+			rect.top = m_blupiPos.y + 60 - 2;
+			rect.bottom = m_blupiPos.y + 60;
 			flag2 = !DecorDetect(rect);
-			rect.Left = m_blupiPos.X + 60 - 22;
-			rect.Right = m_blupiPos.X + 60 - 20;
-			rect.Top = m_blupiPos.Y + 60 - 2;
-			rect.Bottom = m_blupiPos.Y + 60;
+			rect.left = m_blupiPos.x + 60 - 22;
+			rect.right = m_blupiPos.x + 60 - 20;
+			rect.top = m_blupiPos.y + 60 - 2;
+			rect.bottom = m_blupiPos.y + 60;
 			flag3 = !DecorDetect(rect);
 			if (!flag2 && !flag3)
 			{
-				tinyPoint.X = m_blupiPos.X;
-				tinyPoint.Y = m_blupiPos.Y - Decor.BLUPIFLOOR;
+				tinyPoint.x = m_blupiPos.x;
+				tinyPoint.y = m_blupiPos.y - BLUPIFLOOR;
 				ObjectStart(tinyPoint, 46, 0);
 				m_blupiOver = false;
 				m_blupiAction = 1;
@@ -2494,7 +2571,7 @@ void CDecor::BlupiStep()
 		{
 			m_blupiVitesseY -= 1.0;
 		}
-		tinyPoint3.Y += (int)m_blupiVitesseY;
+		tinyPoint3.y += (int)m_blupiVitesseY;
 		if (m_blupiSpeedX < 0.0)
 		{
 			int num11 = (int)(m_blupiSpeedX * 10.0);
@@ -2502,8 +2579,8 @@ void CDecor::BlupiStep()
 			{
 				m_blupiVitesseX -= 1.0;
 			}
-			tinyPoint.X = tinyPoint3.X + (int)m_blupiVitesseX;
-			tinyPoint.Y = tinyPoint3.Y;
+			tinyPoint.x = tinyPoint3.x + (int)m_blupiVitesseX;
+			tinyPoint.y = tinyPoint3.y;
 			if (BlupiBloque(tinyPoint, -1))
 			{
 				m_blupiVitesseX = 0.0;
@@ -2516,8 +2593,8 @@ void CDecor::BlupiStep()
 			{
 				m_blupiVitesseX += 1.0;
 			}
-			tinyPoint.X = tinyPoint3.X + (int)m_blupiVitesseX;
-			tinyPoint.Y = tinyPoint3.Y;
+			tinyPoint.x = tinyPoint3.x + (int)m_blupiVitesseX;
+			tinyPoint.y = tinyPoint3.y;
 			if (BlupiBloque(tinyPoint, 1))
 			{
 				m_blupiVitesseX = 0.0;
@@ -2542,7 +2619,7 @@ void CDecor::BlupiStep()
 				}
 			}
 		}
-		tinyPoint3.X += (int)m_blupiVitesseX;
+		tinyPoint3.x += (int)m_blupiVitesseX;
 	}
 	if (m_blupiEcrase && m_blupiFocus)
 	{
@@ -2557,7 +2634,7 @@ void CDecor::BlupiStep()
 		{
 			m_blupiVitesseY = 0.0;
 		}
-		tinyPoint3.Y += (int)m_blupiVitesseY;
+		tinyPoint3.y += (int)m_blupiVitesseY;
 		if (flag4)
 		{
 			num3 = 7;
@@ -2573,8 +2650,8 @@ void CDecor::BlupiStep()
 			{
 				m_blupiVitesseX -= 1.0;
 			}
-			tinyPoint.X = tinyPoint3.X + (int)m_blupiVitesseX;
-			tinyPoint.Y = tinyPoint3.Y;
+			tinyPoint.x = tinyPoint3.x + (int)m_blupiVitesseX;
+			tinyPoint.y = tinyPoint3.y;
 			if (BlupiBloque(tinyPoint, -1))
 			{
 				m_blupiVitesseX = 0.0;
@@ -2586,8 +2663,8 @@ void CDecor::BlupiStep()
 			{
 				m_blupiVitesseX += 1.0;
 			}
-			tinyPoint.X = tinyPoint3.X + (int)m_blupiVitesseX;
-			tinyPoint.Y = tinyPoint3.Y;
+			tinyPoint.x = tinyPoint3.x + (int)m_blupiVitesseX;
+			tinyPoint.y = tinyPoint3.y;
 			if (BlupiBloque(tinyPoint, 1))
 			{
 				m_blupiVitesseX = 0.0;
@@ -2617,7 +2694,7 @@ void CDecor::BlupiStep()
 			m_blupiAction = 1;
 			m_blupiPhase = 0;
 		}
-		tinyPoint3.X += (int)m_blupiVitesseX;
+		tinyPoint3.x += (int)m_blupiVitesseX;
 	}
 	if (m_blupiJeep && m_blupiFocus)
 	{
@@ -2628,12 +2705,12 @@ void CDecor::BlupiStep()
 		}
 		m_blupiMotorHigh = (m_blupiAction != 1);
 		rect = BlupiRect(tinyPoint3);
-		rect.Right -= 40;
-		rect.Top = tinyPoint3.Y + 60 - 2;
-		rect.Bottom = tinyPoint3.Y + 60 - 1;
+		rect.right -= 40;
+		rect.top = tinyPoint3.y + 60 - 2;
+		rect.bottom = tinyPoint3.y + 60 - 1;
 		bool flag8 = !DecorDetect(rect);
-		rect.Left += 40;
-		rect.Right += 40;
+		rect.left += 40;
+		rect.right += 40;
 		bool flag9 = !DecorDetect(rect);
 		if (flag4)
 		{
@@ -2650,20 +2727,20 @@ void CDecor::BlupiStep()
 			}
 			m_blupiVitesseY = 0.0;
 		}
-		tinyPoint3.Y += (int)m_blupiVitesseY;
+		tinyPoint3.y += (int)m_blupiVitesseY;
 		if (m_blupiTransport == -1)
 		{
-			rect.Left = tinyPoint3.X + 20;
-			rect.Right = tinyPoint3.X + 60 - 20;
-			rect.Top = tinyPoint3.Y + 60 - 35;
-			rect.Bottom = tinyPoint3.Y + 60 - 1;
+			rect.left = tinyPoint3.x + 20;
+			rect.right = tinyPoint3.x + 60 - 20;
+			rect.top = tinyPoint3.y + 60 - 35;
+			rect.bottom = tinyPoint3.y + 60 - 1;
 			num = AscenseurDetect(rect, m_blupiPos, tinyPoint3);
 			if (m_blupiVitesseY >= 0.0 && num != -1)
 			{
 				m_blupiTransport = num;
 				flag4 = false;
 				PlaySound(3, tinyPoint3);
-				tinyPoint3.Y = m_moveObject[num].posCurrent.Y - 64 + Decor.BLUPIOFFY;
+				tinyPoint3.y = m_moveObject[num]->posCurrent.y - 64 + BLUPIOFFY;
 			}
 		}
 		if (flag8 && !flag9)
@@ -2721,26 +2798,26 @@ void CDecor::BlupiStep()
 		{
 			m_blupiVitesseX = 0.0;
 		}
-		tinyPoint3.X += (int)m_blupiVitesseX;
+		tinyPoint3.x += (int)m_blupiVitesseX;
 		if (flag8 && !flag9)
 		{
-			m_blupiRealRotation = Misc.Approch(m_blupiRealRotation, -45, 5);
+			m_blupiRealRotation = Approch(m_blupiRealRotation, -45, 5);
 		}
 		else if (!flag8 && flag9)
 		{
-			m_blupiRealRotation = Misc.Approch(m_blupiRealRotation, 45, 5);
+			m_blupiRealRotation = Approch(m_blupiRealRotation, 45, 5);
 		}
 		else if (!flag4)
 		{
 			m_blupiRealRotation = 0;
 		}
-		m_blupiOffsetY = Math.Abs(m_blupiRealRotation / 2);
+		m_blupiOffsetY = abs(m_blupiRealRotation / 2);
 		MoveObjectPollution();
-		if (ButtonPressed == Def.ButtonGlygh.PlayAction && !flag4 && m_blupiTransport == -1)
+		if (ButtonPressed == ButtonGlygh.PlayAction && !flag4 && m_blupiTransport == -1)
 		{
-			ButtonPressed = Def.ButtonGlygh.None;
-			tinyPoint.X = m_blupiPos.X;
-			tinyPoint.Y = m_blupiPos.Y - Decor.BLUPIFLOOR;
+			ButtonPressed = ButtonGlygh.None;
+			tinyPoint.x = m_blupiPos.x;
+			tinyPoint.y = m_blupiPos.y - BLUPIFLOOR;
 			ObjectStart(tinyPoint, 19, 0);
 			m_blupiJeep = false;
 			m_blupiAction = 1;
@@ -2768,15 +2845,15 @@ void CDecor::BlupiStep()
 			{
 				if (m_blupiDir == 1)
 				{
-					tinyPoint.X = m_blupiPos.X - 35;
-					tinyPoint.Y = m_blupiPos.Y;
+					tinyPoint.x = m_blupiPos.x - 35;
+					tinyPoint.y = m_blupiPos.y;
 					num4 = -5;
 					m_blupiVitesseX += 12.0;
 				}
 				else
 				{
-					tinyPoint.X = m_blupiPos.X + 35;
-					tinyPoint.Y = m_blupiPos.Y;
+					tinyPoint.x = m_blupiPos.x + 35;
+					tinyPoint.y = m_blupiPos.y;
 					num4 = 5;
 					m_blupiVitesseX -= 12.0;
 				}
@@ -2811,20 +2888,20 @@ void CDecor::BlupiStep()
 			}
 			m_blupiVitesseY = 0.0;
 		}
-		tinyPoint3.Y += (int)m_blupiVitesseY;
+		tinyPoint3.y += (int)m_blupiVitesseY;
 		if (m_blupiTransport == -1)
 		{
-			rect.Left = tinyPoint3.X + 20;
-			rect.Right = tinyPoint3.X + 60 - 20;
-			rect.Top = tinyPoint3.Y + 60 - 35;
-			rect.Bottom = tinyPoint3.Y + 60 - 1;
+			rect.left = tinyPoint3.x + 20;
+			rect.right = tinyPoint3.x + 60 - 20;
+			rect.top = tinyPoint3.y + 60 - 35;
+			rect.bottom = tinyPoint3.y + 60 - 1;
 			num = AscenseurDetect(rect, m_blupiPos, tinyPoint3);
 			if (m_blupiVitesseY >= 0.0 && num != -1)
 			{
 				m_blupiTransport = num;
 				flag4 = false;
 				PlaySound(3, tinyPoint3);
-				tinyPoint3.Y = m_moveObject[num].posCurrent.Y - 64 + Decor.BLUPIOFFY;
+				tinyPoint3.y = m_moveObject[num]->posCurrent.y - 64 + BLUPIOFFY;
 			}
 		}
 		if (m_blupiSpeedX < 0.0)
@@ -2866,13 +2943,13 @@ void CDecor::BlupiStep()
 		{
 			m_blupiVitesseX = 0.0;
 		}
-		tinyPoint3.X += (int)m_blupiVitesseX;
+		tinyPoint3.x += (int)m_blupiVitesseX;
 		MoveObjectPollution();
-		if (ButtonPressed == Def.ButtonGlygh.PlayAction && !flag4 && m_blupiTransport == -1)
+		if (ButtonPressed == ButtonGlygh.PlayAction && !flag4 && m_blupiTransport == -1)
 		{
-			ButtonPressed = Def.ButtonGlygh.None;
-			tinyPoint.X = m_blupiPos.X;
-			tinyPoint.Y = m_blupiPos.Y;
+			ButtonPressed = ButtonGlygh.None;
+			tinyPoint.x = m_blupiPos.x;
+			tinyPoint.y = m_blupiPos.y;
 			ObjectStart(tinyPoint, 28, 0);
 			m_blupiTank = false;
 			m_blupiAction = 1;
@@ -2929,8 +3006,8 @@ void CDecor::BlupiStep()
 		{
 			m_blupiVitesseX = 0.0;
 		}
-		tinyPoint3.X += (int)m_blupiVitesseX;
-		if (ButtonPressed == Def.ButtonGlygh.PlayAction && !flag4 && !m_blupiAir && m_blupiTransport == -1 && m_blupiVitesseX < 8.0)
+		tinyPoint3.x += (int)m_blupiVitesseX;
+		if (ButtonPressed == ButtonGlygh.PlayAction && !flag4 && !m_blupiAir && m_blupiTransport == -1 && m_blupiVitesseX < 8.0)
 		{
 			ButtonPressed = Def.ButtonGlygh.None;
 			m_blupiSkate = false;
@@ -2944,10 +3021,10 @@ void CDecor::BlupiStep()
 	{
 		if (m_blupiPhase == 8)
 		{
-			num = MoveObjectDetect(m_blupiPos, out flag6);
+			num = MoveObjectDetect(m_blupiPos, flag6);
 			if (num != -1)
 			{
-				ObjectDelete(m_moveObject[num].posCurrent, m_moveObject[num].type);
+				ObjectDelete(m_moveObject[num]->posCurrent, m_moveObject[num]->type);
 			}
 		}
 		if (m_blupiPhase == 20)
@@ -2961,8 +3038,8 @@ void CDecor::BlupiStep()
 	{
 		if (m_blupiPhase == 12)
 		{
-			tinyPoint.X = m_blupiPos.X;
-			tinyPoint.Y = m_blupiPos.Y - Decor.BLUPIFLOOR + 1;
+			tinyPoint.x = m_blupiPos.x;
+			tinyPoint.y = m_blupiPos.y - BLUPIFLOOR + 1;
 			ObjectStart(tinyPoint, 24, 0);
 		}
 		if (m_blupiPhase == 20)
@@ -3009,7 +3086,7 @@ void CDecor::BlupiStep()
 					m_blupiVitesseY += 1.0;
 				}
 			}
-			tinyPoint3.Y += (int)m_blupiVitesseY;
+			tinyPoint3.y += (int)m_blupiVitesseY;
 		}
 		if (m_blupiSpeedX < 0.0)
 		{
@@ -3046,8 +3123,8 @@ void CDecor::BlupiStep()
 				}
 			}
 		}
-		num = Tables.table_vitesse_nage[m_blupiPhase % 14 / 2];
-		tinyPoint3.X += (int)(m_blupiVitesseX * (double)num / 7.0);
+		num = table_vitesse_nage[m_blupiPhase % 14 / 2];
+		tinyPoint3.x += (int)(m_blupiVitesseX * (double)num / 7.0);
 		if (m_time % 70 == 0 || m_time % 70 == 28)
 		{
 			MoveObjectBlup(tinyPoint3);
@@ -3122,13 +3199,13 @@ void CDecor::BlupiStep()
 					m_blupiVitesseY += 1.0;
 				}
 			}
-			tinyPoint3.Y += (int)m_blupiVitesseY;
-			tinyPoint3.Y += Decor.BLUPISURF;
-			if (tinyPoint3.Y % 64 > 30)
+			tinyPoint3.y += (int)m_blupiVitesseY;
+			tinyPoint3.y += BLUPISURF;
+			if (tinyPoint3.y % 64 > 30)
 			{
-				tinyPoint3.Y += 64 - tinyPoint3.Y % 64;
+				tinyPoint3.y += 64 - tinyPoint3.y % 64;
 			}
-			tinyPoint3.Y -= Decor.BLUPISURF;
+			tinyPoint3.y -= BLUPISURF;
 		}
 		if (m_blupiSpeedX < 0.0)
 		{
@@ -3165,27 +3242,27 @@ void CDecor::BlupiStep()
 				}
 			}
 		}
-		num = Tables.table_vitesse_surf[m_blupiPhase % 12 / 2];
-		tinyPoint3.X += (int)(m_blupiVitesseX * (double)num / 10.0);
+		num = table_vitesse_surf[m_blupiPhase % 12 / 2];
+		tinyPoint3.x += (int)(m_blupiVitesseX * (double)num / 10.0);
 	}
-	TinyPoint tinyPoint4;
+	POINT tinyPoint4;
 	if (m_blupiSuspend && m_blupiFocus)
 	{
 		if (m_blupiSpeedX < 0.0 && m_blupiAction == 2)
 		{
 			int num25 = (int)(m_blupiSpeedX * 5.0);
-			tinyPoint3.X += num25;
+			tinyPoint3.x += num25;
 		}
 		if (m_blupiSpeedX > 0.0 && m_blupiAction == 2)
 		{
 			int num26 = (int)(m_blupiSpeedX * 5.0);
-			tinyPoint3.X += num26;
+			tinyPoint3.x += num26;
 		}
 		num = GetTypeBarre(tinyPoint3);
 		if (num == 2)
 		{
-			tinyPoint4.X = tinyPoint3.X;
-			tinyPoint4.Y = tinyPoint3.Y / 64 * 64 + Decor.BLUPIOFFY;
+			tinyPoint4.x = tinyPoint3.x;
+			tinyPoint4.y = tinyPoint3.y / 64 * 64 + BLUPIOFFY;
 			rect = BlupiRect(tinyPoint4);
 			if (!DecorDetect(rect, true))
 			{
@@ -3201,7 +3278,7 @@ void CDecor::BlupiStep()
 			m_blupiSuspend = false;
 			m_blupiAir = true;
 			m_blupiAction = 5;
-			tinyPoint3.Y = tinyPoint3.Y;
+			tinyPoint3.y = tinyPoint3.y;
 			m_blupiVitesseY = 0.0;
 			m_blupiNoBarre = 5;
 			m_blupiActionOuf = 65;
@@ -3223,26 +3300,26 @@ void CDecor::BlupiStep()
 			m_blupiAir = true;
 			m_blupiAction = 5;
 			m_blupiPhase = 0;
-			tinyPoint3.Y -= 2;
+			tinyPoint3.y -= 2;
 			m_blupiVitesseY = -11.0;
 			m_blupiNoBarre = 5;
 			PlaySound(35, tinyPoint3);
 		}
 	}
-	if (ButtonPressed == Def.ButtonGlygh.PlayAction && !m_blupiHelico && !m_blupiOver && !m_blupiBalloon && !m_blupiEcrase && !m_blupiTank && !m_blupiJeep && !m_blupiSkate && !flag4 && m_blupiTransport == -1 && m_blupiFocus)
+	if (ButtonPressed == ButtonGlygh.PlayAction && !m_blupiHelico && !m_blupiOver && !m_blupiBalloon && !m_blupiEcrase && !m_blupiTank && !m_blupiJeep && !m_blupiSkate && !flag4 && m_blupiTransport == -1 && m_blupiFocus)
 	{
 		if (m_blupiDynamite > 0)
 		{
 			ButtonPressed = Def.ButtonGlygh.None;
-			rect.Left = tinyPoint3.X + 18;
-			rect.Right = tinyPoint3.X + 20;
-			rect.Top = tinyPoint3.Y + 60 - 2;
-			rect.Bottom = tinyPoint3.Y + 60;
+			rect.left = tinyPoint3.x + 18;
+			rect.right = tinyPoint3.x + 20;
+			rect.top = tinyPoint3.y + 60 - 2;
+			rect.bottom = tinyPoint3.y + 60;
 			flag2 = !DecorDetect(rect);
-			rect.Left = tinyPoint3.X + 60 - 20;
-			rect.Right = tinyPoint3.X + 60 - 18;
-			rect.Top = tinyPoint3.Y + 60 - 2;
-			rect.Bottom = tinyPoint3.Y + 60;
+			rect.left = tinyPoint3.x + 60 - 20;
+			rect.right = tinyPoint3.x + 60 - 18;
+			rect.top = tinyPoint3.y + 60 - 2;
+			rect.bottom = tinyPoint3.y + 60;
 			flag3 = !DecorDetect(rect);
 			if (!flag2 && !flag3 && ObjectStart(tinyPoint3, 56, 0) != -1)
 			{
@@ -3255,19 +3332,19 @@ void CDecor::BlupiStep()
 		}
 		else if (m_blupiPerso > 0)
 		{
-			ButtonPressed = Def.ButtonGlygh.None;
-			num = MoveObjectDetect(tinyPoint3, out flag6);
-			if (num == -1 || m_moveObject[num].type != 200)
+			ButtonPressed = ButtonGlygh.None;
+			num = MoveObjectDetect(tinyPoint3, flag6);
+			if (num == -1 || m_moveObject[num]->type != 200)
 			{
-				rect.Left = tinyPoint3.X + 18;
-				rect.Right = tinyPoint3.X + 20;
-				rect.Top = tinyPoint3.Y + 60 - 2;
-				rect.Bottom = tinyPoint3.Y + 60;
+				rect.left = tinyPoint3.x + 18;
+				rect.right = tinyPoint3.x + 20;
+				rect.top = tinyPoint3.y + 60 - 2;
+				rect.bottom = tinyPoint3.y + 60;
 				flag2 = !DecorDetect(rect);
-				rect.Left = tinyPoint3.X + 60 - 20;
-				rect.Right = tinyPoint3.X + 60 - 18;
-				rect.Top = tinyPoint3.Y + 60 - 2;
-				rect.Bottom = tinyPoint3.Y + 60;
+				rect.left = tinyPoint3.x + 60 - 20;
+				rect.right = tinyPoint3.x + 60 - 18;
+				rect.top = tinyPoint3.y + 60 - 2;
+				rect.bottom = tinyPoint3.y + 60;
 				flag3 = !DecorDetect(rect);
 				num = MoveChargeDetect(tinyPoint3);
 				if (num == -1 && !flag2 && !flag3 && ObjectStart(tinyPoint3, 200, 0) != -1)
@@ -3289,54 +3366,54 @@ void CDecor::BlupiStep()
 	}
 	rect = BlupiRect(m_blupiPos);
 	tinyPoint4 = tinyPoint3;
-	TestPath(rect, m_blupiPos, ref tinyPoint3);
-	if (flag && m_blupiPos.X == tinyPoint3.X && m_blupiPos.X != tinyPoint4.X)
+	TestPath(rect, m_blupiPos, tinyPoint3);
+	if (flag && m_blupiPos.x == tinyPoint3.x && m_blupiPos.x != tinyPoint4.x)
 	{
-		tinyPoint3.Y = tinyPoint4.Y;
-		TestPath(rect, m_blupiPos, ref tinyPoint3);
+		tinyPoint3.y = tinyPoint4.y;
+		TestPath(rect, m_blupiPos, tinyPoint3);
 	}
-	if (m_blupiVent && m_blupiPos.Y == tinyPoint3.Y && m_blupiPos.Y != tinyPoint4.Y)
+	if (m_blupiVent && m_blupiPos.y == tinyPoint3.y && m_blupiPos.y != tinyPoint4.y)
 	{
-		tinyPoint3.X = tinyPoint4.X;
-		TestPath(rect, m_blupiPos, ref tinyPoint3);
+		tinyPoint3.x = tinyPoint4.x;
+		TestPath(rect, m_blupiPos, tinyPoint3);
 	}
-	if (m_blupiTransport != -1 && m_blupiPos.X == tinyPoint3.X && m_blupiPos.X != tinyPoint4.X)
+	if (m_blupiTransport != -1 && m_blupiPos.x == tinyPoint3.x && m_blupiPos.x != tinyPoint4.x)
 	{
-		tinyPoint3.Y = tinyPoint4.Y;
-		TestPath(rect, m_blupiPos, ref tinyPoint3);
+		tinyPoint3.y = tinyPoint4.y;
+		TestPath(rect, m_blupiPos, tinyPoint3);
 	}
 	if (m_blupiHelico || m_blupiOver || m_blupiBalloon || m_blupiEcrase || m_blupiJeep || m_blupiTank || m_blupiSkate || m_blupiNage)
 	{
-		if (m_blupiPos.X == tinyPoint3.X && m_blupiPos.X != tinyPoint4.X)
+		if (m_blupiPos.x == tinyPoint3.x && m_blupiPos.x != tinyPoint4.x)
 		{
-			tinyPoint3.Y = tinyPoint4.Y;
-			TestPath(rect, m_blupiPos, ref tinyPoint3);
+			tinyPoint3.y = tinyPoint4.y;
+			TestPath(rect, m_blupiPos, tinyPoint3);
 		}
-		else if (m_blupiPos.Y == tinyPoint3.Y && m_blupiPos.Y != tinyPoint4.Y)
+		else if (m_blupiPos.y == tinyPoint3.y && m_blupiPos.y != tinyPoint4.y)
 		{
-			tinyPoint3.X = tinyPoint4.X;
-			TestPath(rect, m_blupiPos, ref tinyPoint3);
+			tinyPoint3.x = tinyPoint4.x;
+			TestPath(rect, m_blupiPos, tinyPoint3);
 		}
 	}
-	TinyPoint blupiPos = m_blupiPos;
+	POINT blupiPos = m_blupiPos;
 	m_blupiPos = tinyPoint3;
 	if ((m_blupiAction == 1 || m_blupiAction == 60 || m_blupiAction == 7 || m_blupiAction == 6) && !m_blupiAir && !m_blupiBalloon && !m_blupiEcrase && !m_blupiJeep && !m_blupiTank && !m_blupiSkate && !m_blupiNage && !m_blupiSurf && !m_blupiSuspend && m_blupiFocus)
 	{
 		if (m_blupiTransport != -1)
 		{
-			AscenseurVertigo(m_blupiTransport, out flag2, out flag3);
+			AscenseurVertigo(m_blupiTransport, flag2, flag3);
 		}
 		else
 		{
-			rect.Left = tinyPoint3.X + 24;
-			rect.Right = tinyPoint3.X + 26;
-			rect.Top = tinyPoint3.Y + 60 - 2;
-			rect.Bottom = tinyPoint3.Y + 60;
+			rect.left = tinyPoint3.x + 24;
+			rect.right = tinyPoint3.x + 26;
+			rect.top = tinyPoint3.y + 60 - 2;
+			rect.bottom = tinyPoint3.y + 60;
 			flag2 = !DecorDetect(rect);
-			rect.Left = tinyPoint3.X + 60 - 26;
-			rect.Right = tinyPoint3.X + 60 - 24;
-			rect.Top = tinyPoint3.Y + 60 - 2;
-			rect.Bottom = tinyPoint3.Y + 60;
+			rect.left = tinyPoint3.x + 60 - 26;
+			rect.right = tinyPoint3.x + 60 - 24;
+			rect.top = tinyPoint3.y + 60 - 2;
+			rect.bottom = tinyPoint3.y + 60;
 			flag3 = !DecorDetect(rect);
 		}
 		if (m_blupiDir == 1 && flag2 && !flag3)
@@ -3381,19 +3458,19 @@ void CDecor::BlupiStep()
 	{
 		if (m_blupiTransport != -1)
 		{
-			AscenseurVertigo(m_blupiTransport, out flag2, out flag3);
+			AscenseurVertigo(m_blupiTransport, flag2, flag3);
 		}
 		else
 		{
-			rect.Left = tinyPoint3.X + 2;
-			rect.Right = tinyPoint3.X + 18;
-			rect.Top = tinyPoint3.Y + 60 - 2;
-			rect.Bottom = tinyPoint3.Y + 60;
+			rect.left = tinyPoint3.x + 2;
+			rect.right = tinyPoint3.x + 18;
+			rect.top = tinyPoint3.y + 60 - 2;
+			rect.bottom = tinyPoint3.y + 60;
 			flag2 = !DecorDetect(rect);
-			rect.Left = tinyPoint3.X + 60 - 18;
-			rect.Right = tinyPoint3.X + 60 - 2;
-			rect.Top = tinyPoint3.Y + 60 - 2;
-			rect.Bottom = tinyPoint3.Y + 60;
+			rect.left = tinyPoint3.x + 60 - 18;
+			rect.right = tinyPoint3.x + 60 - 2;
+			rect.top = tinyPoint3.y + 60 - 2;
+			rect.bottom = tinyPoint3.y + 60;
 			flag3 = !DecorDetect(rect);
 		}
 		if (flag2 && !flag3)
@@ -3411,19 +3488,19 @@ void CDecor::BlupiStep()
 	{
 		if (m_blupiTransport != -1)
 		{
-			AscenseurVertigo(m_blupiTransport, out flag2, out flag3);
+			AscenseurVertigo(m_blupiTransport, flag2, flag3);
 		}
 		else
 		{
-			rect.Left = tinyPoint3.X + 2;
-			rect.Right = tinyPoint3.X + 18;
-			rect.Top = tinyPoint3.Y + 60 - 2;
-			rect.Bottom = tinyPoint3.Y + 60;
+			rect.left = tinyPoint3.x + 2;
+			rect.right = tinyPoint3.x + 18;
+			rect.top = tinyPoint3.y + 60 - 2;
+			rect.bottom = tinyPoint3.y + 60;
 			flag2 = !DecorDetect(rect);
-			rect.Left = tinyPoint3.X + 60 - 18;
-			rect.Right = tinyPoint3.X + 60 - 2;
-			rect.Top = tinyPoint3.Y + 60 - 2;
-			rect.Bottom = tinyPoint3.Y + 60;
+			rect.left = tinyPoint3.x + 60 - 18;
+			rect.right = tinyPoint3.x + 60 - 2;
+			rect.top = tinyPoint3.y + 60 - 2;
+			rect.bottom = tinyPoint3.y + 60;
 			flag3 = !DecorDetect(rect);
 		}
 		if (flag2 && !flag3)
@@ -3441,19 +3518,19 @@ void CDecor::BlupiStep()
 	{
 		if (m_blupiTransport != -1)
 		{
-			AscenseurVertigo(m_blupiTransport, out flag2, out flag3);
+			AscenseurVertigo(m_blupiTransport, flag2, flag3);
 		}
 		else
 		{
-			rect.Left = tinyPoint3.X + 12;
-			rect.Right = tinyPoint3.X + 19;
-			rect.Top = tinyPoint3.Y + 60 - 2;
-			rect.Bottom = tinyPoint3.Y + 60;
+			rect.left = tinyPoint3.x + 12;
+			rect.right = tinyPoint3.x + 19;
+			rect.top = tinyPoint3.y + 60 - 2;
+			rect.bottom = tinyPoint3.y + 60;
 			flag2 = !DecorDetect(rect);
-			rect.Left = tinyPoint3.X + 60 - 19;
-			rect.Right = tinyPoint3.X + 60 - 12;
-			rect.Top = tinyPoint3.Y + 60 - 2;
-			rect.Bottom = tinyPoint3.Y + 60;
+			rect.left = tinyPoint3.x + 60 - 19;
+			rect.right = tinyPoint3.x + 60 - 12;
+			rect.top = tinyPoint3.y + 60 - 2;
+			rect.bottom = tinyPoint3.y + 60;
 			flag3 = !DecorDetect(rect);
 		}
 		if (flag2 && !flag3)
@@ -3574,17 +3651,17 @@ void CDecor::BlupiStep()
 		{
 			m_blupiInvert = false;
 			m_jauges[1].SetHide(true);
-			tinyPoint.X = m_blupiPos.X;
-			tinyPoint.Y = m_blupiPos.Y + 100;
+			tinyPoint.x = m_blupiPos.x;
+			tinyPoint.y = m_blupiPos.y + 100;
 			ObjectStart(tinyPoint, 42, -60);
-			tinyPoint.X = m_blupiPos.X;
-			tinyPoint.Y = m_blupiPos.Y - 100;
+			tinyPoint.x = m_blupiPos.x;
+			tinyPoint.y = m_blupiPos.y - 100;
 			ObjectStart(tinyPoint, 42, 60);
-			tinyPoint.X = m_blupiPos.X - 100;
-			tinyPoint.Y = m_blupiPos.Y;
+			tinyPoint.x = m_blupiPos.x - 100;
+			tinyPoint.y = m_blupiPos.y;
 			ObjectStart(tinyPoint, 42, 10);
-			tinyPoint.X = m_blupiPos.X + 100;
-			tinyPoint.Y = m_blupiPos.Y;
+			tinyPoint.x = m_blupiPos.x + 100;
+			tinyPoint.y = m_blupiPos.y;
 			ObjectStart(tinyPoint, 42, -10);
 			PlaySound(67, tinyPoint3);
 		}
@@ -3600,8 +3677,8 @@ void CDecor::BlupiStep()
 		{
 			m_blupiBalloon = false;
 			m_jauges[1].SetHide(true);
-			tinyPoint.X = m_blupiPos.X - 34;
-			tinyPoint.Y = m_blupiPos.Y - 34;
+			tinyPoint.x = m_blupiPos.x - 34;
+			tinyPoint.y = m_blupiPos.y - 34;
 			ObjectStart(tinyPoint, 91, 0);
 			PlaySound(41, m_blupiPos);
 		}
@@ -3622,8 +3699,8 @@ void CDecor::BlupiStep()
 			ObjectStart(m_blupiPos, 41, 60);
 			ObjectStart(m_blupiPos, 41, 10);
 			ObjectStart(m_blupiPos, 41, -10);
-			tinyPoint.X = m_blupiPos.X - 34;
-			tinyPoint.Y = m_blupiPos.Y - 34;
+			tinyPoint.x = m_blupiPos.x - 34;
+			tinyPoint.y = m_blupiPos.y - 34;
 			ObjectStart(tinyPoint, 90, 0);
 			PlaySound(41, m_blupiPos);
 		}
@@ -3633,39 +3710,39 @@ void CDecor::BlupiStep()
 			m_jauges[1].SetLevel(m_blupiTimeShield);
 		}
 	}
-	if (m_blupiPower && Math.Abs(m_blupiPos.X - m_blupiPosMagic.X) + Math.Abs(m_blupiPos.Y - m_blupiPosMagic.Y) >= 40)
+	if (m_blupiPower && abs(m_blupiPos.x - m_blupiPosMagic.x) + abs(m_blupiPos.y - m_blupiPosMagic.y) >= 40)
 	{
 		num = MoveObjectFree();
 		if (num != -1)
 		{
-			m_moveObject[num].type = 27;
-			m_moveObject[num].phase = 0;
-			m_moveObject[num].posCurrent = m_blupiPos;
-			m_moveObject[num].posStart = m_moveObject[num].posCurrent;
-			m_moveObject[num].posEnd = m_moveObject[num].posCurrent;
-			m_moveObject[num].step = 1;
-			m_moveObject[num].time = 0;
+			m_moveObject[num]->type = 27;
+			m_moveObject[num]->phase = 0;
+			m_moveObject[num]->posCurrent = m_blupiPos;
+			m_moveObject[num]->posStart = m_moveObject[num]->posCurrent;
+			m_moveObject[num]->posEnd = m_moveObject[num]->posCurrent;
+			m_moveObject[num]->step = 1;
+			m_moveObject[num]->time = 0;
 			MoveObjectStepIcon(num);
 			m_blupiPosMagic = m_blupiPos;
 		}
 	}
-	if (m_blupiShield && Math.Abs(m_blupiPos.X - m_blupiPosMagic.X) + Math.Abs(m_blupiPos.Y - m_blupiPosMagic.Y) >= 40)
+	if (m_blupiShield && abs(m_blupiPos.x - m_blupiPosMagic.x) + abs(m_blupiPos.y - m_blupiPosMagic.y) >= 40)
 	{
 		num = MoveObjectFree();
 		if (num != -1)
 		{
-			m_moveObject[num].type = 57;
-			m_moveObject[num].phase = 0;
-			m_moveObject[num].posCurrent = m_blupiPos;
-			m_moveObject[num].posStart = m_moveObject[num].posCurrent;
-			m_moveObject[num].posEnd = m_moveObject[num].posCurrent;
-			m_moveObject[num].step = 1;
-			m_moveObject[num].time = 0;
+			m_moveObject[num]->type = 57;
+			m_moveObject[num]->phase = 0;
+			m_moveObject[num]->posCurrent = m_blupiPos;
+			m_moveObject[num]->posStart = m_moveObject[num]->posCurrent;
+			m_moveObject[num]->posEnd = m_moveObject[num]->posCurrent;
+			m_moveObject[num]->step = 1;
+			m_moveObject[num]->time = 0;
 			MoveObjectStepIcon(num);
 			m_blupiPosMagic = m_blupiPos;
 		}
 	}
-	if (m_blupiHide && Math.Abs(m_blupiPos.X - m_blupiPosMagic.X) + Math.Abs(m_blupiPos.Y - m_blupiPosMagic.Y) >= 10)
+	if (m_blupiHide && abs(m_blupiPos.x - m_blupiPosMagic.x) + abs(m_blupiPos.y - m_blupiPosMagic.y) >= 10)
 	{
 		num = MoveObjectFree();
 		if (num != -1)
@@ -5191,7 +5268,7 @@ void CDecor::BlupiDead(int action1, int action2)
     if (m_blupiAction == 77)
     {
         ObjectStart(41, -70, m_blupiPos);
-        m_blupiPos->ObjectStart(41, 20);
+        ObjectStart(41, 20, m_blupiPos);
         m_blupiPos->ObjectStart(41, -20);
         PlaySound(75, m_blupiPos);
     }
@@ -5880,7 +5957,7 @@ BOOL CDecor::IsBlocIcon(int icon)
 	{
 		return FALSE;
 	}
-	if (icon == 324 && m_decor / 4 % 20 < 18)
+	if (icon == 324 && m_time / 4 % 20 < 18)
 	{
 		return FALSE;
 	}
@@ -6238,37 +6315,40 @@ void CDecor::MoveObjectStep()
 			if (m_moveObject[i]->type == 4 ||
 				m_moveObject[i]->type == 33 ||
 				m_moveObject[i]->type == 32)
+			{
 				int num = MovePersoDetect(m_moveObject[i]->posCurrent);
-			if (num != -1)
-			{
-				POINT posCurrent = m_moveObject[i]->posCurrent;
-				posCurrent.x -= 34;
-				posCurrent.y -= 34;
-				ObjectStart(posCurrent, 8, 0);
-				PlaySound(10, m_moveObject[i]->posCurrent);
-				m_decorAction = 1;
-				m_decorPhase = 0;
-				posCurrent = m_moveObject[i]->posCurrent;
-				posCurrent.x += 2;
-				posCurrent.y += BLUPIOFFY;
-				ObjectDelete(m_moveObject[i]->posCurrent, m_moveObject[i]->type);
-				ObjectStart(posCurrent, 37, 0);
-				ObjectDelete(m_moveObject[num]->posCurrent, m_moveObject[num]->type);
+				if (num != -1)
+				{
+					POINT posCurrent = m_moveObject[i]->posCurrent;
+					posCurrent.x -= 34;
+					posCurrent.y -= 34;
+					ObjectStart(posCurrent, 8, 0);
+					PlaySound(10, m_moveObject[i]->posCurrent);
+					m_decorAction = 1;
+					m_decorPhase = 0;
+					posCurrent = m_moveObject[i]->posCurrent;
+					posCurrent.x += 2;
+					posCurrent.y += BLUPIOFFY;
+					ObjectDelete(m_moveObject[i]->posCurrent, m_moveObject[i]->type);
+					ObjectStart(posCurrent, 37, 0);
+					ObjectDelete(m_moveObject[num]->posCurrent, m_moveObject[num]->type);
+				}
+				if (BlupiElectro(m_moveObject[i]->posCurrent))
+				{
+					POINT posCurrent = m_moveObject[i]->posCurrent;
+					posCurrent.x += 2;
+					posCurrent.y += BLUPIOFFY;
+					ObjectDelete(m_moveObject[i]->posCurrent, m_moveObject[i]->type);
+					ObjectStart(posCurrent, 38, 55);
+					PlaySound(59, posCurrent);
+				}
 			}
-			if (BlupiElectro(m_moveObject[i]->posCurrent))
-			{
-				POINT posCurrent = m_moveObject[i]->posCurrent;
-				posCurrent.x += 2;
-				posCurrent.y += BLUPIOFFY;
-				ObjectDelete(m_moveObject[i]->posCurrent, m_moveObject[i]->type);
-				ObjectStart(posCurrent, 38, 55);
-				PlaySound(59, posCurrent);
-			}
+			
 		}
 	}
 }
 
-void CDecor::MoveObjectStepLine(int i)
+void CDecor::MoveObjectStepLine(int i, MoveObject moveObject)
 {
 	POINT tinyPoint;
 	BOOL flag = FALSE;
@@ -6335,7 +6415,7 @@ void CDecor::MoveObjectStepLine(int i)
 		{
 			if (m_moveObject[i]->time < m_moveObject[i]->timeStopStart)
 			{
-				MoveObject[] moveObject = m_moveObject;
+				moveObject = m_moveObject;
 				moveObject[i]->time = moveObject[i]->time + 1;
 			}
 			else
@@ -7457,7 +7537,7 @@ void CDecor::AscenseurVertigo(int i, BOOL bVertigoLeft, BOOL bVertigoRight)
 	{
 		bVertigoRight = TRUE;
 	}
-	if (AscenseurDetect(i))
+	if (AscenseurShift(i))
 	{
 		if (bVertigoLeft)
 		{
@@ -7586,7 +7666,7 @@ int CDecor::CaisseInFront()
 	}
 	for (int i = 0; i < m_nbRankCaisse; i++)
 	{
-		int num = m_nbRankCaisse[i];
+		int num = m_rankCaisse[i];
 		if (tinyPoint.x > m_moveObject[num]->posCurrent.x &&
 			tinyPoint.x < m_moveObject[num]->posCurrent.x + 64 &&
 			tinyPoint.y > m_moveObject[num]->posCurrent.y &&
@@ -8098,6 +8178,212 @@ BOOL CDecor::IsGrotte(int x, int y)
 	return icon = 284 || icon == 301 || icon == 337;
 }
 
+void CDecor::AdaptMidBorder(int x, int y)
+{
+	if (x < 0 || x >= 100 || y < 0 || y >= 100)
+	{
+		return;
+	}
+	int num = 15;
+	if (!IsRightBorder(x, y + 1, 0, -1))
+	{
+		num &= -2;
+	}
+	if (!IsRightBorder(x, y + 1, 0, 1))
+	{
+		num &= -3;
+	}
+	if (!IsRightBorder(x + 1, y, -1, 0))
+	{
+		num &= -5;
+	}
+	if (!IsRightBorder(x - 1, y, 1, 0))
+	{
+		num &= -9;
+	}
+	int num2 = m_decor[x, y]->icon;
+	if (num2 == 156)
+	{
+		num2 = 35;
+	}
+	if (num2 == 252 || num2 == 253)
+	{
+		num2 = 251;
+	}
+	if (num2 == 255)
+	{
+		num2 = 254;
+	}
+	if (num2 == 362)
+	{
+		num2 = 347;
+	}
+	if (num2 == 363)
+	{
+		num2 = 348;
+	}
+	if (num2 >= 341 && num2 <= 346)
+	{
+		num2 = 341;
+	}
+	for (int i = 0; i < 144; i++)
+	{
+		if (num2 == table_adapt_decor[i])
+		{
+			num2 = table_adapt_decor[i / 16 * 16 + num];
+			if (num2 == 35 && m_random->next() % 2 == 0)
+			{
+				num2 = 156;
+			}
+			if (num2 == 251)
+			{
+				num2 = m_random->next(251, 253);
+			}
+			if (num2 == 254 && m_random->next() % 2 == 0)
+			{
+				num2 = 255;
+			}
+			if (num2 == 347 && m_random->next() % 2 == 0)
+			{
+				num2 = 362;
+			}
+			if (num2 == 348 && m_random->next() % 2 == 0)
+			{
+				num2 = 363;
+			}
+			if (num2 == 341)
+			{
+				num2 = m_random->next(341, 346);
+			}
+			m_decor[x, y]->icon = num2;
+			return;
+		}
+	}
+	num2 = m_decor[x, y]->icon;
+	if (num2 == -1 || (num2 >= 264 && num2 <= 282))
+	{
+		num = 15;
+		if (!IsFromage(x, y + 1))
+		{
+			num &= -2;
+		}
+		if (!IsFromage(x, y - 1))
+		{
+			num &= -3;
+		}
+		if (!IsFromage(x + 1, y))
+		{
+			num &= -5;
+		}
+		if (!IsFromage(x - 1, y))
+		{
+			num &= -9;
+		}
+		num2 = table_adapt_fromage[num];
+		if (num2 == 268 && m_random->next() % 2 == 0)
+		{
+			num2 = 279;
+		}
+		if (num2 == 269 && m_random->next() % 2 == 0)
+		{
+			num2 = 280;
+		}
+		if (num2 == 264 && m_random->next() % 2 == 0)
+		{
+			num2 = 281;
+		}
+		if (num2 == 265 && m_random->next() % 2 == 0)
+		{
+			num2 = 282;
+		}
+		m_decor[x, y]->icon = num2;
+	}
+	num2 = m_decor[x, y]->icon;
+	if (num2 == -1 || (num2 >= 285 && num2 <= 303 && num2 != 301))
+	{
+		num = 15;
+		if (!IsGrotte(x, y + 1))
+		{
+			num &= -2;
+		}
+		if (!IsGrotte(x, y - 1))
+		{
+			num &= -3;
+		}
+		if (!IsGrotte(x + 1, y))
+		{
+			num &= -5;
+		}
+		if (!IsGrotte(x - 1, y))
+		{
+			num &= -9;
+		}
+		num2 = table_adapt_fromage[num + 16];
+		if (num2 == 289 && m_random->next() % 2 == 0)
+		{
+			num2 == 300;
+		}
+		if (num2 == 285 && m_random->next() % 2 == 0)
+		{
+			num2 = 302;
+		}
+		if (num2 == 286 && m_random->next() % 2 == 0)
+		{
+			num2 = 303;
+		}
+		m_decor[x, y]->icon = num2;
+	}
+}
+
+void CDecor::AdaptBorder(POINT cel)
+{
+	AdaptMidBorder(cel.x, cel.y);
+	AdaptMidBorder(cel.x + 1, cel.y);
+	AdaptMidBorder(cel.x - 1, cel.y);
+	AdaptMidBorder(cel.x, cel.y + 1);
+	AdaptMidBorder(cel.x, cel.y - 1);
+	int icon = m_decor[cel.x, cel.y]->icon;
+	if (icon != -1 && !IsPassIcon(icon))
+	{
+		MoveObjectDelete(cel);
+	}
+	icon = m_decor[cel.x, cel.y]->icon;
+	if (icon == 304)
+	{
+		for (int i = 0; i < 4; i++)
+		{
+			cel.y++;
+			if (cel.y >= 100)
+			{
+				break;
+			}
+			icon = m_decor[cel.x, cel.y]->icon;
+			if (icon != -1)
+			{
+				break;
+			}
+			m_decor[cel.x, cel.y]->icon = 305;
+		}
+	}
+	if (icon == -1)
+	{
+		for (int i = 0; i < 4; i++)
+		{
+			cel.y++;
+			if (cel.y >= 100)
+			{
+				return;
+			}
+			icon = m_decor[cel.x, cel.y]->icon;
+			if (icon != 305)
+			{
+				return;
+			}
+			m_decor[cel.x, cel.y]->icon = -1;
+		}
+	}
+}
+
 BOOL CDecor::SearchDoor(int n, POINT cel, POINT blupi)
 {
     for (int i = 0; i < 100; i++)
@@ -8136,7 +8422,7 @@ BOOL CDecor::SearchDoor(int n, POINT cel, POINT blupi)
                     cel.x = i + 2;
                     cel.y = j;
                     blupi.x = (i + 3) * 64 + 2;
-                    blupi.y = j * 64 + BLUPIOFF;
+                    blupi.y = j * 64 + BLUPIOFFY;
                     return TRUE;
                 }
             }
@@ -8228,7 +8514,7 @@ void CDecor::GetBlupiInfo(BOOL bHelico, BOOL bJeep, BOOL bSkate, BOOL bNage)
 
 void CDecor::MoveObjectSort()
 {
-    CDecor.MoveObject src = (CDecor->MoveObject);
+    MoveObject src = default (MoveObject);
     int num = 0;
 	for (int i = 0; i < MAXMOVEOBJECT; i++)
 	{
@@ -8244,6 +8530,19 @@ char CDecor::GetMissionTitle()
 void CDecor::GetMissionsCleared()
 {
 
+}
+
+void CDecor::GetMissionPath(char* str, int user, int mission, BOOL bUser)
+{
+	if (bUser != 0)
+	{
+		sprintf(str, "data\u%.3d-%.3d.blp", user, mission);
+		AddUserPath(str);
+		return;
+	}
+	sprintf(str, "data\world%.3d.blp", mission);
+	AddUserPath(str);
+	return;
 }
 
 void CDecor::SetDemoState(BOOL demoState)

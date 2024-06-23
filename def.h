@@ -227,13 +227,13 @@
 #define SPRITE_FILL			14
 
 
-#define TYPE_BALLE
-#define	TYPE_CAISSE
-#define TYPE_GOAL
-#define TYPE_CLE
-#define TYPE_BLUPIHELICO
-#define TYPE_BLUPITANK
-#define TYPE_empty
+#define TYPE_BALLE			23
+#define	TYPE_CAISSE			12
+#define TYPE_GOAL			7
+#define TYPE_CLE			21
+#define TYPE_BLUPIHELICO	32
+#define TYPE_BLUPITANK		33
+#define TYPE_empty		   0
 #define MAXMOVEOBJECT = 200;
 #define INPUT_LEFT
 #define INPUT_RIGHT

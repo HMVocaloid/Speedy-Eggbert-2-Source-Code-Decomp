@@ -118,6 +118,19 @@ void GetCurrentDir(char *pName, int lg)
 	}
 }
 
+int Speed(double speed, int max)
+{
+    if (speed > 0.0)
+    {
+        return max((int)(speed * (double)max), 1);
+    }
+    if (speed < 0.0)
+    {
+        return min((int)(speed * (double)max), -1);
+    }
+    return 0;
+}
+
 void AddCDPath(char *pFilename)
 {
 	char	temp[MAX_PATH];
