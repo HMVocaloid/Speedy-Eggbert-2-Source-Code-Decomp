@@ -4,6 +4,10 @@
 
 /////////////////////////////////////////////////////////////////////////////
 
+#include "movie.h"
+#include "menu.h"
+#include "button.h"
+
 typedef struct
 {
 	UINT	message;
@@ -17,7 +21,7 @@ Button;
 typedef struct
 {
 	UINT	phase;
-	char	backName[20];
+	char	backName[36];
 	BOOL	bCDrom;
 	Button	buttons[MAXBUTTON];
 }
@@ -39,12 +43,33 @@ DemoHeader;
 typedef struct
 {
 	int		time;
+	short	input;
 	UINT	message;
 	WPARAM	wParam;
 	LPARAM	lParam;
 }
 DemoEvent;
 
+typedef enum
+{
+	cheat_cleanall = 2,
+	cheat_funskate = 6,
+	cheat_givecopter = 7,
+	cheat_jeepdrive = 8,
+	cheat_alltreasure = 9,
+	cheat_endgoal = 10,
+	cheat_roundshield = 12,
+	cheat_quicklollipop = 13,
+	cheat_tenbombs = 14,
+	cheat_birdlime = 15,
+	cheat_drivetank = 16,
+	cheat_powercharge = 17,
+	cheat_hidedrink = 18,
+	cheat_iovercraft = 22,
+	cheat_udynamite = 23,
+	cheat_wellkeys = 24
+}
+cheat;
 
 class CEvent
 {
@@ -159,7 +184,7 @@ protected:
     int         m_mission;
     int         m_private;
     int         m_maxMission;
-    WMessage    m_phase;
+    int		    m_phase;
     int         m_index;
 	int			m_playerIndex;
     BOOL        m_bSchool;

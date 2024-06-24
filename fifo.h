@@ -26,7 +26,7 @@ private:
 
 public:
     CPileTriee(long taille);
-    ~CPileLTriee();
+    ~CPileTriee();
 
     void        put(long pos, long dist);
     long        get();

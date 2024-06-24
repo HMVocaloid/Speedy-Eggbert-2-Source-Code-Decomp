@@ -674,7 +674,7 @@ static BOOL DoInit(HINSTANCE hInstance, LPSTR lpCmdLine, int nCmdShow)
 
 	g_pSound->Create(g_hWnd);
 	g_pSound->CacheAll();
-	g_pSoundSetState(TRUE);
+	g_pSound->SetState(TRUE);
 
 	g_pMovie = new CMovie;
 	if (g_pMovie == NULL) return InitFail("New movie", FALSE);

@@ -1678,7 +1678,7 @@ void CEvent::RestoreGame()
 void CEvent::SomethingDecor()
 {
 	m_input = 0;
-	m_pDecor->TreatEvent();
+	m_pDecor->TreatInput(0);
 }
 
 // CNetwork function needs to be implemented 
@@ -1688,7 +1688,7 @@ void CEvent::PauseStatus(UINT pause, int multiplayer)
 	UINT m_bPause;
 	m_bPause = pause;
 
-	m_pDecor->SetFieldCCA4(pause);
+	m_pDecor->SetPause(pause);
 
 	if (m_phase == WM_PHASE_PLAY ||
 		m_phase == WM_PHASE_PLAYTEST)
@@ -1774,7 +1774,7 @@ BOOL CEvent::DrawButtons()
     }
 	if (m_phase == WM_PHASE_INIT)
 	{
-		DrawTextNew(m_pPixmap, pos, "Version 2.0", FONTLITTLE);
+		DrawTextNew(m_pPixmap, pos, R"(Version 2.0)", FONTLITTLE);
 	}
 
 	if (m_phase == WM_PHASE_PLAY && m_phase == WM_PHASE_PLAYTEST && m_phase == WM_PHASE_BUILD)
@@ -1789,7 +1789,7 @@ BOOL CEvent::DrawButtons()
 BOOL CEvent::TextSomething()
 {
 	int textHiliStart;
-	char* pText;
+	char pText;
 
 	m_textHiliStart = textHiliStart;
 
@@ -1801,9 +1801,9 @@ BOOL CEvent::TextSomething()
 	do {
 		m_textInput[textHiliStart] =
 			m_textHiliEnd + textHiliStart;
-		*pText = m_textInput + textHiliStart;
+		pText = m_textInput + textHiliStart;
 		textHiliStart = textHiliStart + 1;
-	} while (*pText != '\0');
+	} while (pText != '\0');
 	m_textHiliEnd = m_textHiliStart;
 	return 1;
 }
@@ -1846,7 +1846,7 @@ int CEvent::MousePosToSprite(POINT pos)
 		m_phase == WM_PHASE_PLAYTEST ||
 		m_phase == WM_PHASE_BUILD ||
 		m_phase == WM_PHASE_BYE ||
-		MouseOnButton(pos.x, pos.y) = 0)
+		MouseOnButton(pos) = 0)
 	{
 		sprite = SPRITE_POINTER;
 	}
@@ -2030,7 +2030,7 @@ int CEvent::SearchPhase(UINT phase)
 int CEvent::GetWorld()
 {
 	if (m_bPrivate) return m_bPrivate;
-	if (m_bMulti)	return m_multi;
+	if (m_bMulti)	return m_multi+200;
 	else			return m_mission;
 }
 
@@ -2083,7 +2083,7 @@ BOOL CEvent::ChangePhase(UINT phase)
 
 	if (phase == WM_PHASE_634)
 	{
-		m_hWnd->PostMessage(16, 0, 0);
+	    PostMessageA(16, 0, 0, m_hWnd);
 		return TRUE;
 	}
 	if (m_mouseType == MOUSETYPEGRA && m_bFullScreen)
@@ -2093,11 +2093,11 @@ BOOL CEvent::ChangePhase(UINT phase)
 	}
 
 	m_pDecor->SetDemoState();
-	m_bDemoPlay->SetDemoState();
+	SetDemoState(m_bDemoPlay);
 
 	if (phase == WM_PHASE_608)
 	{
-		m_pDecor, m_gamer->Read(999, 1);
+		m_pDecor, Read(999, 1, m_gamer);
 		phase = WM_PHASE_BUILD;
 	}
 	if (m_bDemoPlay == 0 &&
@@ -2153,7 +2153,7 @@ BOOL CEvent::ChangePhase(UINT phase)
 				{
 					mission = (mission / 10) * 10;
 				}
-				m_mission->GetWorld();
+				GetWorld(m_mission);
 				m_phase = WM_PHASE_PLAY;
 				
 				return ChangePhase(WM_PHASE_PLAY);
@@ -2177,7 +2177,7 @@ BOOL CEvent::ChangePhase(UINT phase)
 	if (phase == WM_PHASE_GAMER || phase == WM_PHASE_PLAY)
 	{
 		OutputNetDebug();
-		m_gamer->WriteInfo();
+		WriteInfo(m_gamer);
 	}
 
 }

@@ -269,6 +269,7 @@
 #define TX_LASTWIN2                     3201
 #define TX_LASTWIN3                     3202
 #define IDM_EXIT                        40001
+#define TX_BUTTON_CREATE	6900
 
 // Next default values for new objects
 // 

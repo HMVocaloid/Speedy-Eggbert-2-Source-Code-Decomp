@@ -7,6 +7,17 @@
 #define FONTSLIM   2
 #define FONTLITTLE 10
 
+typedef struct
+{
+    char  charIcon;
+    char  charOffsetX;
+    char  charOffsetY;
+    char  accentIcon;
+    char  accentOffsetX;
+    char  accentOffsetY;
+}
+CharOffset;
+
 extern
 void DrawText(CPixmap *pPixmap, POINT pos, char *pText, int font);
 

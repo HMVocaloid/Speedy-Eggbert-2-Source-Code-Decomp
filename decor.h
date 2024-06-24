@@ -8,6 +8,7 @@
 #include "SOUND.H"
 #include "PIXMAP.H"
 #include "network.h"
+#include "jauge.h"
 
 /////////////////////////////////////////////////////////////////////////////
 
@@ -24,7 +25,7 @@
 #define ICON_HILI_ERR	119
 #define ICON_BUTTON_PERSONALBOMBICON 108
 #define MAXMOVEOBJECT  200
-#define MAXQUART  441
+ //#define MAXQUART  441
 #define BLUPIFLOOR 2
 #define BLUPIOFFY 4 + BLUPIFLOOR
 #define BLUPISURF 12
@@ -42,7 +43,7 @@ typedef struct
 	short	rankMove;		// rang dans m_move
 	short	workBlupi;		// rang du blupi travaillant ici
 	short	fire;
-	int		icon;
+	short	icon;
 }
 Cellule;
 // Cette structure doit �tre la plus petite possible, car
@@ -153,6 +154,50 @@ typedef struct
 }
 MoveObject;
 
+typedef struct
+{
+	int icon;
+}
+Icon;
+
+typedef struct
+{
+	short channel;
+}
+IconChannel;
+
+typedef enum
+{
+	icon_element_chest = 6,
+	icon_element_egg = 21,
+	icon_element_blupiburn = 40,
+	icon_blupi_life = 48,
+	icon_button_personalbombyellow = 108,
+	icon_element_glueball = 176,
+	icon_element_gluepile = 177,
+	icon_element_keyred = 215,
+	icon_element_keygreen = 222,
+	icon_element_keyblue = 229,
+	icon_element_blupiangel = 230,
+	icon_element_dynamite = 252
+}
+Icon;
+
+typedef enum
+{
+	STEP_STOPSTART = 1,
+	STEP_ADVANCE = 2,
+	STEP_STOPEND = 3,
+	STEP_RECEDE = 4
+}
+MoveObjectStep;
+
+typedef enum
+{
+	WM_NOMUSIC = 1044
+}
+WMessage;
+
 
 typedef struct
 {		
@@ -231,9 +276,6 @@ public:
 	double animationSpeed;
 	double rotationSpeed;
 	double speedX;
-
-protected:
-	ByeByeObject m_byeByeObjects;
 };
 
 
@@ -676,8 +718,7 @@ protected:
 	CPixmap*	m_pPixmap;
     CNetwork*   m_pNetwork;
     MoveObject  m_moveObject[100][100];
-    Explo       m_explos[100][100];
-    Perso       m_persos[200];
+	ByeByeObject m_byeByeObjects;
     int         m_input;
     int         m_previousInput;
 	int			m_blupiTimeShield;
@@ -696,7 +737,6 @@ protected:
     POINT       m_worldDims;
     POINT       m_selectedCelPos;
 	BOOL		m_bSuperBlupi;
-	Random		m_random;
     WMessage    m_phase;
 	int			m_voyagePhase;
 	POINT		m_sucettePos;
@@ -723,11 +763,11 @@ protected:
 	POINT		m_posDecor;
 	RECT		m_drawBounds;
 	int 		m_doors[200];
-    Action      m_action;
+    int         m_action;
     int         m_direction;
     int         m_actionFrameCount;
     POINT       m_velocity;
-    Icon4       m_blupiIcon;
+    Icon        m_blupiIcon;
 	POINT		m_blupiStartPos;
 	int			m_blupiStartDir;
 	int			m_blupiAction;
@@ -739,8 +779,8 @@ protected:
     undefined
     undefined
     */
-	Cellule		m_decor[100, 100];
-	Cellule		m_bigDecor[100, 100];
+	Cellule		m_decor[100][100];
+	Cellule		m_bigDecor[100][100];
 	int			m_decorAction;
 	int			m_blupiLevel;
     IconChannel m_blupiChannel;
@@ -750,6 +790,7 @@ protected:
 	int			m_nbRankCaisse;
 	int			m_rankCaisse[MAXMOVEOBJECT];
 	int			m_nbLinkCaisse;
+	BOOL		m_bInvincible;
     int         m_activeLiftIndex;
     int         m_blupiChannel;
 	double		m_blupiSpeedX;
@@ -812,7 +853,6 @@ protected:
     int         m_dynamite;
     int         m_powerEnergy;
     int         m_queuedActionFrames;
-    Action      m_queuedAction;
     int         m_nbSafePositions;
     POINT       m_safePositions[13];
     int         m_bMulti;
@@ -821,8 +861,18 @@ protected:
     int         m_netPacketsSent2;
     int         m_netPacketsRecieved;
     int         m_netPacketsRecieved2;
-    SoundEvent  m_soundEvents[20];
-    int         m_soundEventIndex1;
+	POINT		m_netPositions[4];
+	Icon		m_netIcons[4];
+	int			m_netPlayerPacketsRecieved[4];
+	int			m_netPlayerPacketsRecieved2[4];
+	int			m_bNetTimeSincePacket[4];
+	POINT		m_netVitesses[4];
+	POINT		m_netPacketPosition;
+	Icon		m_netPacketIcon;
+    NetEvent    m_netEvents[20];
+    int         m_netEventIndex1;
+	int			m_netEventIndex2;
+	int			m_netEventIndex3;
     char        m_messages[4][100];
     int         m_air;
     int         m_energyUnused;

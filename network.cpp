@@ -25,6 +25,15 @@ CNetwork::CNetwork()
 CNetwork::~CNetwork()
 {
     LPDIRECTPLAY2 lpDP;
+
+    FreeSessionList();
+    FreeSessionList2();
+    FreeField18();
+    if (m_pDP != lpDP = NULL)
+    {
+        lpDP->Release;
+    }
+    return;
 }
 
 void CNetwork::FreeSessionList()
