@@ -24,16 +24,16 @@ void InitHInstance(HINSTANCE hInstance)
     g_hInstance = hInstance;
 }
 
-void OutputDebug(char *pMessage)
+void OutputDebug(char *pMessage, char pMess)
 {
 #ifdef _DEBUG
-    OutputDebugString(pMessage);
+    OutputDebugStringA(pMessage);
 #endif
 }
 
 void LoadString(UINT nID, char *pBuffer, int lgBuffer)
 {
-    LoadString(g_hInstance, nID, pBuffer, lgBuffer);
+    LoadStringA(g_hInstance, nID, pBuffer, lgBuffer);
 }
 
 void ChangeSprite(int sprite)
@@ -43,20 +43,20 @@ void ChangeSprite(int sprite)
 	if ( g_mouseType == MOUSETYPEGRA )  return;
 	if ( g_lastSprite == sprite )  return;
 
-	if ( sprite == SPRITE_ARROW   )  hCursor = LoadCursor(g_hInstance, "IDC_ARROW");
-	if ( sprite == SPRITE_POINTER )  hCursor = LoadCursor(g_hInstance, "IDC_POINTER");
-	if ( sprite == SPRITE_MAP     )  hCursor = LoadCursor(g_hInstance, "IDC_MAP");
-	if ( sprite == SPRITE_ARROWU  )  hCursor = LoadCursor(g_hInstance, "IDC_ARROWU");
-	if ( sprite == SPRITE_ARROWD  )  hCursor = LoadCursor(g_hInstance, "IDC_ARROWD");
-	if ( sprite == SPRITE_ARROWL  )  hCursor = LoadCursor(g_hInstance, "IDC_ARROWL");
-	if ( sprite == SPRITE_ARROWR  )  hCursor = LoadCursor(g_hInstance, "IDC_ARROWR");
-	if ( sprite == SPRITE_ARROWUL )  hCursor = LoadCursor(g_hInstance, "IDC_ARROWUL");
-	if ( sprite == SPRITE_ARROWUR )  hCursor = LoadCursor(g_hInstance, "IDC_ARROWUR");
-	if ( sprite == SPRITE_ARROWDL )  hCursor = LoadCursor(g_hInstance, "IDC_ARROWDL");
-	if ( sprite == SPRITE_ARROWDR )  hCursor = LoadCursor(g_hInstance, "IDC_ARROWDR");
-	if ( sprite == SPRITE_WAIT    )  hCursor = LoadCursor(g_hInstance, "IDC_WAIT");
-	if ( sprite == SPRITE_EMPTY   )  hCursor = LoadCursor(g_hInstance, "IDC_EMPTY");
-	if ( sprite == SPRITE_FILL    )  hCursor = LoadCursor(g_hInstance, "IDC_FILL");
+	if ( sprite == SPRITE_ARROW   )  hCursor = LoadCursorA(g_hInstance, "IDC_ARROW");
+	if ( sprite == SPRITE_POINTER )  hCursor = LoadCursorA(g_hInstance, "IDC_POINTER");
+	if ( sprite == SPRITE_MAP     )  hCursor = LoadCursorA(g_hInstance, "IDC_MAP");
+	if ( sprite == SPRITE_ARROWU  )  hCursor = LoadCursorA(g_hInstance, "IDC_ARROWU");
+	if ( sprite == SPRITE_ARROWD  )  hCursor = LoadCursorA(g_hInstance, "IDC_ARROWD");
+	if ( sprite == SPRITE_ARROWL  )  hCursor = LoadCursorA(g_hInstance, "IDC_ARROWL");
+	if ( sprite == SPRITE_ARROWR  )  hCursor = LoadCursorA(g_hInstance, "IDC_ARROWR");
+	if ( sprite == SPRITE_ARROWUL )  hCursor = LoadCursorA(g_hInstance, "IDC_ARROWUL");
+	if ( sprite == SPRITE_ARROWUR )  hCursor = LoadCursorA(g_hInstance, "IDC_ARROWUR");
+	if ( sprite == SPRITE_ARROWDL )  hCursor = LoadCursorA(g_hInstance, "IDC_ARROWDL");
+	if ( sprite == SPRITE_ARROWDR )  hCursor = LoadCursorA(g_hInstance, "IDC_ARROWDR");
+	if ( sprite == SPRITE_WAIT    )  hCursor = LoadCursorA(g_hInstance, "IDC_WAIT");
+	if ( sprite == SPRITE_EMPTY   )  hCursor = LoadCursorA(g_hInstance, "IDC_EMPTY");
+	if ( sprite == SPRITE_FILL    )  hCursor = LoadCursorA(g_hInstance, "IDC_FILL");
 	SetCursor(hCursor);
 
 	g_lastSprite = sprite;
@@ -85,6 +85,20 @@ int Random(int min, int max)
     n = min+(n%(max-min+1));
 
     return (int)n;
+}
+
+BOOL IntersectRect(RECT dst, RECT src1, RECT src2)
+{
+    dst.left = max(src1.left, src2.left);
+    dst.right = min(src1.right, src2.right);
+    dst.top = max(src1.top, src2.top);
+    dst.bottom = min(src1.bottom, src2.bottom);
+    return IsRectEmpty(dst);
+}
+
+BOOL IsRectEmpty(RECT rect)
+{
+    return rect.left >= rect.right || rect.top >= rect.bottom;
 }
 
 void GetCurrentDir(char *pName, int lg)
@@ -186,7 +200,7 @@ void AddUserPath(char *pFilename)
 	att.nLength = sizeof(SECURITY_ATTRIBUTES);
 	att.lpSecurityDescriptor = NULL;
 	att.bInheritHandle = FALSE;
-	CreateDirectory(temp, &att);
+	CreateDirectoryA(temp, &att);
 
 	pText = strstr(pFilename, "\\");
 	if ( pText != NULL )
@@ -195,7 +209,7 @@ void AddUserPath(char *pFilename)
 		strcat(temp, pFilename);
 		last = temp[pos];
 		temp[pos] = 0;
-		CreateDirectory(temp, &att);
+		CreateDirectoryA(temp, &att);
 		temp[pos] = last;
 	}
 	else

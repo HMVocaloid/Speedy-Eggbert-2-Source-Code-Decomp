@@ -669,7 +669,7 @@ BOOL CPixmap::Cache(int channel, char *pFilename, POINT totalDim, POINT iconDim,
 
 // Cache une image globale.
 
-BOOL CPixmap::Cache2(int channel, char *pFilename, POINT totalDim, BOOL bUsePalette)
+BOOL CPixmap::Cache2(int channel, char *pFilename, POINT totalDim, POINT iconDim, BOOL bUsePalette)
 {
 	POINT		iconDim;
 

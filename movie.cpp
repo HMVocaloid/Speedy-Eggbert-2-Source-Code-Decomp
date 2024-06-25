@@ -53,7 +53,7 @@ void CMovie::termAVI()
 	
 	// Get the device ID for the opened device type and then close
 	// the device type.
-	mciID = mciGetDeviceID(AVI_VIDEO);
+	mciID = mciGetDeviceIDA(AVI_VIDEO);
 	mciSendCommand(mciID, MCI_CLOSE, 0L,
                    (DWORD)(LPMCI_GENERIC_PARMS)&mciClose);
 }

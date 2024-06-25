@@ -47,7 +47,7 @@ LPVOID WAVE_LoadResource
     LPVOID  lpMemory;
 
     // Find the resource and load into memory
-    if (((hResInfo = FindResource(hModule, MAKEINTRESOURCE(ID), "WAVE")) != NULL) &&
+    if (((hResInfo = FindResourceA(hModule, MAKEINTRESOURCEA(ID), "WAVE")) != NULL) &&
         ((hResData = LoadResource(hModule, hResInfo)) != NULL) &&
         ((pvRes = LockResource(hResData)) != NULL))
         {
@@ -231,7 +231,7 @@ void LoadWave(HINSTANCE hinst, int ResourceID,
   // Step 2: Create the buffer
   if (DS_OK != lpds->CreateSoundBuffer(&dsbd, &lpDSB, NULL))
     {
-    OutputDebugString("Failed to create sound buffer\n");
+    OutputDebugStringA("Failed to create sound buffer\n");
     return;
     }
 // Once this code succeeds, lpDSB will point to a DirectSoundBuffer. 
@@ -261,10 +261,10 @@ void LoadWave(HINSTANCE hinst, int ResourceID,
 
     // Unlock the buffer
     if (DS_OK != lpDSB->Unlock(pbData, dwLength, pbData2, dwLength2))
-      OutputDebugString("Unlock failed");
+      OutputDebugStringA("Unlock failed");
     }
   else
     {
-    OutputDebugString("Lock failed");
+    OutputDebugStringA("Lock failed");
     }
   } // LoadWave

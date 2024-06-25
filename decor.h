@@ -31,6 +31,7 @@
 #define BLUPISURF 12
 #define BLUPISUSPEND 12
 #define OVERHEIGHT 80
+#define MAXQUART 441
 
 // Descripteur d'une cellule du d�cor.
 typedef struct
@@ -437,7 +438,7 @@ public:
 	BOOL	MoveStartFire(POINT cel);
 	void	MoveProxiFire(POINT cel);
 	void	MoveFire(int rank);
-	void	MoveStep(BOOL bFirst);
+	void	MoveStep();
 	void	MoveFinish(POINT cel);
 	void	MoveFinish(int rankBlupi);
 	BOOL	MoveIsUsed(POINT cel);
@@ -491,7 +492,7 @@ public:
 	BOOL	LoadImages();
 	void	InitGamer();
 	BOOL	AddLinkCaisse(int rank);
-	void	InitDecor(int channel, int icon);
+	void	InitDecor();
 	void	InitAfterBuild();
 	void	SetTime(int time);
 	int	    GetTime();
@@ -712,7 +713,6 @@ protected:
 	int		GetSeeIcon(char *pBits, int index);
 
 protected:
-	static int	MAXQUART[441];
 	HWND		m_hWnd;
 	CSound*		m_pSound;
 	CPixmap*	m_pPixmap;
@@ -767,7 +767,7 @@ protected:
     int         m_direction;
     int         m_actionFrameCount;
     POINT       m_velocity;
-    Icon        m_blupiIcon;
+    int         m_blupiIcon;
 	POINT		m_blupiStartPos;
 	int			m_blupiStartDir;
 	int			m_blupiAction;
@@ -827,7 +827,7 @@ protected:
 	BOOL		m_blupiFront;
 	int			m_blupiNoBarre;
 	int			m_blupiFifoNb;
-	CJauge		m_jauges;
+	CJauge		m_jauges[2];
 	BOOL		m_bFoundCle;
 	BOOL		m_bPause;
 	int			m_blupiTimeFire;

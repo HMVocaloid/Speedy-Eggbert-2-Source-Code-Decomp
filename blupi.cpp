@@ -80,7 +80,7 @@ BOOL ReadConfig (LPSTR lpCmdLine)
 
     file = fopen("data\\config.def", "rb");
     if ( file == NULL )   return FALSE;
-    nb = fread(buffer, sizeof(char), 200-1 file);
+    nb = fread(buffer, sizeof(char), 200-1, file);
     buffer[nb] = 0;
     fclose(file);
 
@@ -241,7 +241,7 @@ void UpdateFrame(void)
 
 	if (phase == WM_PHASE_PLAYMOVIE || phase == WM_PHASE_WINMOVIE || WM_PHASE_WINMOVIEDESIGN || WM_PHASE_WINMOVIEMULTI)
 	{
-		g_pEvent->MovieToStart;
+		g_pEvent->MovieToStart();
 	}
 
 	if (phase == WM_PHASE_INSERT)
@@ -318,7 +318,7 @@ void SetDecor()
 
 	g_pPixmap->MouseBackClear();
 	g_pEvent->GetLastMousePos(&posMouse);
-	phase = g_pEvent->GetPhase;
+	phase = g_pEvent->GetPhase();
 
 	if (phase == WM_PHASE_PLAY || phase == WM_PHASE_PLAYTEST || phase == WM_PHASE_BUILD)
 	{
@@ -424,7 +424,7 @@ LRESULT CALLBACK WindowProc (HWND hWnd, UINT message,
 		    g_bActive = (wParam != 0);
 			if (g_pEvent != NULL)
 			{
-				g_pEvent->SomethingDecor;
+				g_pEvent->SomethingDecor();
 			}
 			if ( g_bActive )
 			{
@@ -439,13 +439,13 @@ LRESULT CALLBACK WindowProc (HWND hWnd, UINT message,
 					totalDim.y = 66;
 					iconDim.x = 64;
 					iconDim.y = 66/2;
-					g_pPixmap->Cache(CHLITTLE, "image16\\little.blp", totalDim, iconDim, TRUE);
+					g_pPixmap->Cache2(CHLITTLE, "image16\\little.blp", totalDim, iconDim, TRUE);
 					g_pPixmap->SetTransparent(CHLITTLE, RGB(0,0,255));
 
 					g_pPixmap->SavePalette();
 					g_pPixmap->InitSysPalette();
 				}
-				SetWindowText(hWnd, "Blupi");
+				SetWindowTextA(hWnd, "Blupi");
 				if ( g_pSound != NULL ) g_pSound->RestartMusic();
 			}
 			else
@@ -454,7 +454,7 @@ LRESULT CALLBACK WindowProc (HWND hWnd, UINT message,
 				{
 					FlushGame();
 				}
-				SetWindowText(hWnd, "Blupi -- stop");
+				SetWindowTextA(hWnd, "Blupi -- stop");
 				if ( g_pSound != NULL ) g_pSound->SuspendMusic();
 			}
 			return 0;
@@ -550,7 +550,7 @@ BOOL InitFail(char *msg, BOOL bDirectX)
 	else 			strcpy(buffer, "Error (");
 	strcat(buffer, msg);
 	strcat(buffer, ")");
-	MessageBox(g_hWnd, buffer, TITLE, MB_OK);
+	MessageBoxA(g_hWnd, buffer, TITLE, MB_OK);
 
 	FinishObjects();
 	DestroyWindow(g_hWnd);
@@ -562,7 +562,7 @@ BOOL InitFail(char *msg, BOOL bDirectX)
 
 static BOOL DoInit(HINSTANCE hInstance, LPSTR lpCmdLine, int nCmdShow)
 {
-	WNDCLASS 	   wc;
+	WNDCLASSA 	   wc;
 	POINT		   totalDim, iconDim;
 	RECT		   rcRect;
 	BOOL 		   bOK;
@@ -576,16 +576,16 @@ static BOOL DoInit(HINSTANCE hInstance, LPSTR lpCmdLine, int nCmdShow)
 	wc.cbClsExtra = 0;
 	wc.cbWndExtra = 0;
 	wc.hInstance = hInstance;
-	wc.hIcon = LoadIcon(hInstance, "IDR_MAINFRAME");
-	wc.hCursor = LoadCursor(hInstance, "IDC_POINTER");
+	wc.hIcon = LoadIconA(hInstance, "IDR_MAINFRAME");
+	wc.hCursor = LoadCursorA(hInstance, "IDC_POINTER");
 	wc.hbrBackground = GetStockBrush(BLACK_BRUSH);
-	wc.lpszMenuMane = NAME;
+	wc.lpszMenuName = NAME;
 	wc.lpszClassName = NAME;
-	RegisterClass(&wc);
+	RegisterClassA(&wc);
 
 	if (g_bFullScreen)
 	{
-		g_hWnd = CreateWindowEx
+		g_hWnd = CreateWindowExA
 		(
 			WS_EX_TOPMOST,
 			NAME,
@@ -613,7 +613,7 @@ static BOOL DoInit(HINSTANCE hInstance, LPSTR lpCmdLine, int nCmdShow)
 		AdjustWindowRect(&WindowRect, WS_POPUPWINDOW | WS_CAPTION, TRUE);
 		WindowRect.top += GetSystemMetrics(SM_CYCAPTION);
 
-		g_hWnd = CreateWindow
+		g_hWnd = CreateWindowA
 		(
 			NAME,
 			TITLE,
@@ -635,7 +635,7 @@ static BOOL DoInit(HINSTANCE hInstance, LPSTR lpCmdLine, int nCmdShow)
 
 	ChangeSprite(SPRITE_WAIT);
 
-	if (!bOk)
+	if (!bOK)
 	{
 		return InitFail("Game not correctly installed", FALSE);
 	}
@@ -684,13 +684,13 @@ static BOOL DoInit(HINSTANCE hInstance, LPSTR lpCmdLine, int nCmdShow)
 	g_pDecor = new CDecor;
 	if (g_pDecor == NULL) return InitFail("New decor", FALSE);
 
-	g_pDecor->Create(g_hWnd, g_pSound, g_pPixmap);
+	g_pDecor->Create(g_hWnd, g_pSound, g_pPixmap, g_pNetwork);
 	g_pDecor->MapInitColors();
 
 	g_pEvent = new CEvent;
 	if (g_pEvent == NULL) return InitFail("New event", FALSE);
 
-	g_pEvent->Create(g_hWnd, g_pPixmap, g_pDecor, g_pSound, g_pMovie);
+	g_pEvent->Create(g_hWnd, g_pPixmap, g_pDecor, g_pSound, g_pMovie, g_pNetwork);
 	g_pEvent->SetFullScreen(g_bFullScreen);
 	g_pEvent->SetMouseType(g_mouseType);
 #if _INTRO

@@ -1556,9 +1556,10 @@ void CEvent::SetMouseType(int mouseType)
 
 // Creates the event handler.
 
-void CEvent::Create(HINSTANCE hInstance, HWND hWnd, CPixmap *pPixmap, CDecor *pDecor,
+void CEvent::Create(HWND hWnd, CPixmap *pPixmap, CDecor *pDecor,
                     CSound *pSound, CMovie *pMovie, CNetwork *pNetwork)
 {
+	HINSTANCE hInstance;
     POINT   pos;
 
 	m_hInstance = hInstance;

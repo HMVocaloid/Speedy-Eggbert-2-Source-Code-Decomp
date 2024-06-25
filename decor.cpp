@@ -18,6 +18,7 @@
 #include "DECMOVE.h"
 #include "event.h"
 #include "dectables.h"
+#include "jauge.h"
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -65,6 +66,13 @@ CDecor::~CDecor()
 
 void CDecor::Create(HWND hWnd, CSound* pSound, CPixmap* pPixmap, CNetwork* pNetwork)
 {
+	POINT pos;
+	pos.x = 169;
+	pos.y = 450;
+	POINT pos2;
+	pos2.x = 295;
+	pos2.y = 450;
+
     m_hWnd = hWnd;
     m_pSound = pSound;
     m_pPixmap = pPixmap;
@@ -76,10 +84,10 @@ void CDecor::Create(HWND hWnd, CSound* pSound, CPixmap* pPixmap, CNetwork* pNetw
     m_bCarMoving = FALSE;
     m_bCarStationary = FALSE;
     InitDecor();
-    m_jauges->Create(m_hWnd, m_pPixmap, m_pSound, 169, 450, 1, FALSE);
-    m_jauges->SetHide(TRUE);
-    m_jauges->Create(m_hWnd, m_pPixmap, m_pSound, 295, 450, 3, FALSE);
-    m_jauges->SetHide(TRUE);
+    m_jauges[0].Create(m_hWnd, m_pPixmap, m_pSound, pos, 1, FALSE);
+    m_jauges[0].SetHide(TRUE);
+    m_jauges[1].Create(m_hWnd, m_pPixmap, m_pSound, pos2, 3, FALSE);
+    m_jauges[1].SetHide(TRUE);
 }
 
 // The only seemingly sane function.
@@ -113,7 +121,7 @@ void CDecor::InitGamer()
 
 // The fuck does this even do?
 
-void CDecor::InitDecor(int channel, int icon)
+void CDecor::InitDecor()
 {
     int i;
 
@@ -130,7 +138,7 @@ void CDecor::InitDecor(int channel, int icon)
         for (int j = 0; j < 100; j++)
         {
             m_decor[i, j]->icon = -1;
-            m_bigDecor[i, j].icon = 1;
+            m_bigDecor[i, j]->icon = 1;
         }
     }
     m_decor[3, 4]->icon = 40;
@@ -174,7 +182,7 @@ void CDecor::InitDecor(int channel, int icon)
     m_blupiStartDir = 2;
     m_blupiAction = 1;
     m_blupiPhase = 0;
-    m_blupiIcon.icon = 0;
+    m_blupiIcon = 0;
     m_blupiChannel = 2;
     m_blupiFocus = TRUE;
     m_blupiAir = FALSE;
@@ -231,6 +239,12 @@ int CDecor::GetTime()
 
 void CDecor::PlayPrepare(BOOL bTest)
 {
+	/*
+	int rand;
+
+	rand = Random(0, 23);
+	*/
+
     if (bTest)
     {
         m_nbVies = 3;
@@ -306,7 +320,7 @@ void CDecor::PlayPrepare(BOOL bTest)
             m_moveObject[i]->type == 96 ||
             m_moveObject[i]->type == 97)
         {
-            m_moveObject[i]->phase = m_random.Next(23);
+            m_moveObject[i]->phase = Random(0,23);
         }
         if (m_moveObject[i]->type == 23)
         {
@@ -343,6 +357,20 @@ void CDecor::PlayPrepare(BOOL bTest)
     MoveStep();
     m_scrollPoint.x = m_blupiPos.x + 30 + m_scrollAdd.x;
     m_scrollPoint.y = m_blupiPos.y + 30 + m_scrollAdd.y;
+}
+
+void CDecor::MoveStep()
+{
+	try
+	{
+		MoveObjectStep();
+		ByeByeStep();
+		BlupiStep();
+		AdaptMotorVehicleSound();
+	}
+	catch
+	{
+	}
 }
 
 // Sort of makes sense.
@@ -411,7 +439,7 @@ void CDecor::Build()
             {
                 if (i >= 0 && i < 100 && j >= 0 && j < 100)
                 {
-                    int num2 = m_bigDecor[i, j].icon;
+                    int num2 = m_bigDecor[i, j]->icon;
                     int channel = 9;
                     if (num2 != -1)
                     {
@@ -847,7 +875,7 @@ void CDecor::SearchLinkCaisse(int rank, BOOL bPop)
 						src2.top = m_moveObject[num2]->posCurrent.y - 1;
 						src2.right = src2.left + 64 + 1;
 						src2.bottom = src2.top + 64 + 1;
-						RECT tinyRect;
+						LPRECT tinyRect;
 						if (IntersectRect(tinyRect, src2, src) && AddLinkCaisse(num2))
 						{
 							flag = TRUE;
@@ -1057,7 +1085,7 @@ void CDecor::CheatAction(int cheat, MoveObject moveObject)
         m_blupiSurf = FALSE;
         m_blupiVent = FALSE;
         m_blupiSuspend = FALSE;
-        StopSound(16);
+        m_pSound->StopSound(SOUND_HELICOHIGH);
         StopSound(18);
         StopSound(29);
         StopSound(31);
@@ -1158,7 +1186,7 @@ void CDecor::CheatAction(int cheat, MoveObject moveObject)
         m_blupiHide = FALSE;
         m_blupiTimeShield = 100;
         m_blupiPosMagic = m_blupiPos;
-        m_jauges[1]->SetHide(FALSE);
+        m_jauges[1].SetHide(FALSE);
     }
     if (cheat == cheat_quicklollipop)
     {
@@ -1258,7 +1286,7 @@ void CDecor::CheatAction(int cheat, MoveObject moveObject)
     }
     if (m_blupiShield && m_blupiHide && m_blupiCloud && m_blupiPower)
     {
-        m_jauges[1]->SetHide(TRUE);
+        m_jauges[1].SetHide(TRUE);
     }
     if (m_blupiHelico && m_blupiOver)
     {
@@ -5289,8 +5317,8 @@ void CDecor::BlupiDead(int action1, int action2)
     m_blupiEcrase = FALSE;
     m_blupiRestart = FALSE;
     m_blupiActionOuf = 0;
-    m_jauges[0]->SetHide(TRUE);
-    m_jauges[1]->SetHide(TRUE);
+    m_jauges[0].SetHide(TRUE);
+    m_jauges[1].SetHide(TRUE);
     StopSound(16);
     StopSound(18);
     StopSound(29);
@@ -5318,9 +5346,9 @@ void CDecor::BlupiDead(int action1, int action2)
     }
     if (m_blupiAction == 77)
     {
-        ObjectStart(41, -70, m_blupiPos);
-        ObjectStart(41, 20, m_blupiPos);
-        m_blupiPos->ObjectStart(41, -20);
+        ObjectStart(m_blupiPos, 41, -70);
+        ObjectStart(m_blupiPos, 41, 20);
+        ObjectStart(m_blupiPos, 41, -20);
         PlaySound(75, m_blupiPos);
     }
 }
@@ -5355,7 +5383,7 @@ void CDecor::BlupiAddFifo(POINT pos)
 {
     if (m_blupiFifoNb < 10)
     {
-        if (m_blupiFifoNb > 0 && pos.x == m_blupiFifoPos[m_blupiFifoNb - 1] && pos.y == m_blupiFifoPos[m_blupiFifoNb - 1].y)
+        if (m_blupiFifoNb > 0 && pos.x == m_blupiFifoPos[m_blupiFifoNb - 1].x && pos.y == m_blupiFifoPos[m_blupiFifoNb - 1].y)
         {
             return;
         }

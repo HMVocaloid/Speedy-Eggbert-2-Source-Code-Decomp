@@ -34,12 +34,12 @@ CJauge::~CJauge()
 
 // Create a new Button.
 
-BOOL CJauge::Create(HWND hWnd, CPixmap *pPixmap, CDecor *pDecor,
+BOOL CJauge::Create(HWND hWnd, CPixmap *pPixmap, CSound *pSound,
                     POINT pos, int type, BOOL bMinimizeRedraw)
 {
     m_hWnd             = hWnd;
     m_pPixmap          = pPixmap;
-    m_pDecor           = pDecor;
+    m_pSound           = pSound;
     m_type             = type;
     m_bMinimizeRedraw  = bMinimizeRedraw;
     m_bHide            = TRUE;

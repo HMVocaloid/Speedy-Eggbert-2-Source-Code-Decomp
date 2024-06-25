@@ -111,7 +111,7 @@ BOOL CSound::ReadData(LPDIRECTSOUNDBUFFER lpDSB, FILE* pFile, DWORD dwSize, DWOR
         if ( fread(pData1, dwData1Size, 1, pFile) != 1 ) 
         {          
                         char holder[256];
-                        wsprintf(holder,"Data1 : %d, dwdata: %d, pFile: %d",pData1,dwData1Size,pFile);
+                        wsprintfA(holder,"Data1 : %d, dwdata: %d, pFile: %d",pData1,dwData1Size,pFile);
                         OutputDebug(holder);
             return FALSE;
         }
@@ -587,7 +587,7 @@ BOOL CSound::PlayMusic(HWND hWnd, LPSTR lpszMIDIFilename)
 	if ( dwReturn != 0 )
 	{
 		OutputDebug("PlayMusic-1\n");
-		mciGetErrorString(dwReturn, string, 128);
+		mciGetErrorStringA(dwReturn, string, 128);
 		OutputDebug(string);
 		// Failed to open device. Don't close it; just return error.
 		return FALSE;
@@ -605,7 +605,7 @@ BOOL CSound::PlayMusic(HWND hWnd, LPSTR lpszMIDIFilename)
 	if ( dwReturn != 0 )
 	{
 		OutputDebug("PlayMusic-2\n");
-		mciGetErrorString(dwReturn, string, 128);
+		mciGetErrorStringA(dwReturn, string, 128);
 		OutputDebug(string);
 		StopMusic();
 		return FALSE;
