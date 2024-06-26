@@ -90,6 +90,7 @@ public:
 	BOOL	ChangePhase(UINT phase);
 	void	MovieToStart();
 	UINT	GetPhase();
+	void	HandleInputs();
 	void	TryInsert();
 	void	SomethingUserMissions(LPCSTR lpFileName, LPCSTR thing);
 	void	RestoreGame();

@@ -116,6 +116,12 @@ BOOL CDecor::LoadImages()
 void CDecor::InitGamer()
 {
     m_nbVies = 3;
+	int ptr = m_doors;
+	for (int i = 50; i != 0; i--)
+	{
+		*(int*)ptr = 0x1010101;
+		ptr += 4;
+	}
 
 }
 
@@ -538,6 +544,15 @@ void CDecor::Build()
 	}
 }
 
+int CDecor::GetBlupiChannelStandard()
+{
+	if (m_bMulti && m_blupiChannel == CHBLUPI && m_team > 0)
+	{
+		return m_team + CHBLUPI1 - 1;
+	}
+	return m_blupiChannel;
+}
+
 BOOL CDecor::BlitzActif(int celx, int cely)
 {
     POINT pos;
@@ -561,7 +576,35 @@ void CDecor::DrawInfo()
 
     if (m_phase == WM_PHASE_PLAY || WM_PHASE_PLAYTEST)
     {
-
+		for (int i = 4; i != 0; i--)
+		{
+			if (m_messages[i] != '\0')
+			{
+				pos.x = 10;
+				pos.y = 10;
+				DrawText(m_pPixmap, pos, *m_messages[i], 0);
+			}
+		}
+		if (m_nbVies > 0)
+		{
+			pos.x = -15;
+			for (int i = 0; i < m_nbVies; i++)
+			{
+				pos.y = 417;
+				m_pPixmap->QuickIcon(GetBlupiChannelStandard(), 48, pos);
+				pos.x += 16;
+			}
+		}
+		if (m_blupiBullet > 0)
+		{
+			pos.x = -15;
+			pos.y = 398;
+			for (int i = 0; i < m_blupiBullet; i++)
+			{
+				m_pPixmap->QuickIcon(CHELEMENT, 176, pos);
+				pos.x += 4;
+			}
+		}
     }
 }
 
@@ -755,11 +798,26 @@ void CDecor::PlaySound(int sound, POINT pos)
     }
 }
 
-void CDecor::StopSound()
+void CDecor::StopSound(CSound sound)
 {
-	CSound sound;
-	m_blupiMotorSound = 0;
-	m_pSound->StopSound();
+	m_pSound->StopSound(sound);
+	if (sound == SOUND_16_HELICOHIGH)
+	{
+		m_bHelicopterFlying = FALSE;
+	}
+	if (sound == SOUND_18_HELICOLOW)
+	{
+		m_bHelicopterStationary = FALSE;
+	}
+	if (sound == SOUND_29_JEEPHIGH)
+	{
+		m_bCarMoving = FALSE;
+	}
+	if (sound == SOUND_31_JEEPLOW)
+	{
+		m_bCarStationary = FALSE;
+	}
+	return;
 
 }
 
@@ -1038,14 +1096,14 @@ void CDecor::GetDoors(int doors)
     }
 }
 
-/*
+
 void CDecor::SetAllMissions(BOOL CheatDoors)
 {
     m_bCheatDoors = CheatDoors;
-    m_bPrivate, AdaptDoors(m_mission);
+    m_bPrivate, m_mission->AdaptDoors();
     return;
 }
-*/
+
 
 void CDecor::CheatAction(int cheat, MoveObject moveObject)
 {
@@ -5065,12 +5123,12 @@ void CDecor::BlupiStep()
 
 BOOL CDecor::GetInvincible()
 {
-    return m_bInvincible;
+    return m_bSuperBlupi;
 }
 
 void CDecor::SetInvincible(BOOL invincible)
 {
-    m_bInvincible = invincible;
+    m_bSuperBlupi = invincible;
 }
 
 BOOL CDecor::GetShowSecret()

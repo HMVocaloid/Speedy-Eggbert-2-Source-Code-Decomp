@@ -168,6 +168,10 @@
     <ClCompile Include="text.cpp" />
     <ClCompile Include="wave.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\..\..\..\Music\Eggbert2.rc" />
+    <ResourceCompile Include="..\..\..\..\Music\StringTable.rc" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

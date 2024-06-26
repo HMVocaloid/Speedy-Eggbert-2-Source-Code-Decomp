@@ -617,6 +617,7 @@ public:
 	void	BlupiAddFifo(POINT pos);
 	void	MoveObjectPlouf(POINT pos);
 	void	MoveObjectTiplouf(POINT pos);
+	int		GetBlupiChannelStandard();
 	void	MoveObjectBlup(POINT pos);
 	int		IsWorld(POINT pos);
 	void	ActiveSwitch(BOOL bState, POINT cel);
@@ -727,6 +728,7 @@ protected:
 	int			m_balleTraj[1300];
 	POINT		m_blupiVector;
 	int			m_blupiSec;
+	BOOL		m_bSuperBlupi;
 	int			m_blupiRealRotation;
 	int			m_blupiTransport;
 	int			m_detectIcon = -1;

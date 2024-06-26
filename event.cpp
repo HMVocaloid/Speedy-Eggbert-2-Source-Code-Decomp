@@ -1679,17 +1679,57 @@ void CEvent::RestoreGame()
 {
     int     i;
 
-    if ( m_phase == WM_PHASE_PLAY || m_phase == WM_PHASE_PLAYTEST)
+    if ( m_phase == WM_PHASE_PLAY && m_phase == WM_PHASE_PLAYTEST)
 
     HideMouse(FALSE);
     WaitMouse(TRUE);
     WaitMouse(FALSE);
 }
 
+BOOL CEvent::CreateButtons()
+{
+	int		i = 0, message;
+	POINT	pos;
+	BOOL	bMinimizeRedraw = FALSE;
+
+	if (m_phase == WM_PHASE_PLAY)
+	{
+		bMinimizeRedraw = TRUE;
+	}
+	while (table[m_index].buttons[i].message != 0)
+	{
+		pos.x = table[m_index].buttons[i].x;
+		pos.y = table[m_index].buttons[i].y;
+		message = table[m_index].buttons[i].message;
+
+		if (m_bPrivate)
+		{
+			if (message == WM_PHASE_SKILL1)
+			{
+				pos.x = 117;
+				pos.y = 115;
+			}
+			if (message == WM_PHASE_SKILL2)
+			{
+
+			}
+		}
+	}
+}
+
 void CEvent::SomethingDecor()
 {
 	m_input = 0;
 	m_pDecor->TreatInput(0);
+}
+
+void CEvent::HandleInputs()
+{
+	if (m_bMulti != FALSE)
+	{
+		// Placeholder for unknown function
+	}
+	if (m_bInfoHelp == 0)
 }
 
 // CNetwork function needs to be implemented 
@@ -1793,6 +1833,11 @@ BOOL CEvent::DrawButtons()
 	if (m_phase == WM_PHASE_CREATE)
 	{
 		LoadString(TX_BUTTON_CREATE, res, 50);
+	}
+
+	if (m_phase == WM_PHASE_CREATE)
+	{
+		LoadString()
 	}
 
 }
