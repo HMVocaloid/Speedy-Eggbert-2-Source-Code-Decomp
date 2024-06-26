@@ -654,7 +654,7 @@ public:
 	BOOL	ObjectDelete(POINT pos, int type);
 	void	ModifDecor(POINT pos, int icon);
 	void	MoveObjectStep();
-	void	MoveObjectStepLine(int i, MoveObject moveObject);
+	void	MoveObjectStepLine(int i);
 	void	MoveObjectStepIcon(int i);
 	void	MoveObjectFollow(POINT pos);
 	int		MoveObjectDetect(POINT pos, BOOL bNear);

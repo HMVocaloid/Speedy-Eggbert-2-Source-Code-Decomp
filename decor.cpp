@@ -359,6 +359,7 @@ void CDecor::PlayPrepare(BOOL bTest)
     m_scrollPoint.y = m_blupiPos.y + 30 + m_scrollAdd.y;
 }
 
+/*
 void CDecor::MoveStep()
 {
 	try
@@ -372,6 +373,7 @@ void CDecor::MoveStep()
 	{
 	}
 }
+*/
 
 // Sort of makes sense.
 
@@ -753,10 +755,12 @@ void CDecor::PlaySound(int sound, POINT pos)
     }
 }
 
-void CDecor::StopSound(CSound sound)
+void CDecor::StopSound()
 {
+	CSound sound;
 	m_blupiMotorSound = 0;
 	m_pSound->StopSound();
+
 }
 
 void CDecor::AdaptMotorVehicleSound()
@@ -875,7 +879,7 @@ void CDecor::SearchLinkCaisse(int rank, BOOL bPop)
 						src2.top = m_moveObject[num2]->posCurrent.y - 1;
 						src2.right = src2.left + 64 + 1;
 						src2.bottom = src2.top + 64 + 1;
-						LPRECT tinyRect;
+						RECT tinyRect;
 						if (IntersectRect(tinyRect, src2, src) && AddLinkCaisse(num2))
 						{
 							flag = TRUE;
@@ -6427,8 +6431,9 @@ void CDecor::MoveObjectStep()
 	}
 }
 
-void CDecor::MoveObjectStepLine(int i, MoveObject moveObject)
+void CDecor::MoveObjectStepLine(int i)
 {
+	MoveObject moveObject;
 	POINT tinyPoint;
 	BOOL flag = FALSE;
 	RECT tinyRect;
@@ -7522,7 +7527,7 @@ void CDecor::DynamiteStart(int i, int dx, int dy)
 						int channel = m_moveObject[m_linkCaisse[l]]->channel;
 						int icon2 = m_moveObject[m_linkCaisse[l]]->icon;
 						POINT posCurrent = m_moveObject[m_linkCaisse[l]]->posCurrent;
-						double num = (double)m_random->next(7, 23);
+						double num = (double)Random(7, 23);
 						if (m_random->next(0, 100) % 2 == 0)
 						{
 							num = -num;
@@ -7646,8 +7651,8 @@ void CDecor::ByeByeHelico()
 
 void CDecor::ByeByeAdd(ByeByeObject byeByeObject, int channel, int icon, POINT pos, double rotationSpeed, double animationSpeed)
 {
-	int num = m_random->next(0, 10);
-	if (m_random->next(0, 1000) % 2 == 0)
+	int num = Random(0, 10);
+	if (Random(0, 1000) % 2 == 0)
 	{
 		byeByeObject.speedX = (double)(num + 10);
 	}
@@ -8171,46 +8176,46 @@ void CDecor::VoyageInit(POINT start, POINT end, int icon, int channel)
 	{
 		m_voyageTotal = 40;
 		m_nbVies--;
-		m_pSound->PlayImage(9, end, -1, FALSE);
+		m_pSound->PlayImage(9, end, -1);
 	}
 	if (m_voyageIcon == 21 && m_voyageChannel == 10)
 	{
-		m_pSound->PlayImage(12, start, -1, FALSE);
+		m_pSound->PlayImage(12, start, -1);
 	}
 	if (m_voyageIcon == 6 && m_voyageChannel == 10)
 	{
 		if (m_nbTresor == m_totalTresor - 1)
 		{
-			m_pSound->PlayImage(19, start, -1, FALSE);
+			m_pSound->PlayImage(19, start, -1);
 		}
 		else
 		{
-			m_pSound->PlayImage(11, start, -1, FALSE);
+			m_pSound->PlayImage(11, start, -1);
 		}
 	}
 	if (m_voyageIcon == 215 && m_voyageChannel == 10)
 	{
-		m_pSound->PlayImage(11, start, -1, FALSE);
+		m_pSound->PlayImage(11, start, -1);
 	}
 	if (m_voyageIcon == 222 && m_voyageChannel == 10)
 	{
-		m_pSound->PlayImage(11, start, -1, FALSE);
+		m_pSound->PlayImage(11, start, -1);
 	}
 	if (m_voyageIcon == 229 && m_voyageChannel == 10)
 	{
-		m_pSound->PlayImage(11, start, -1, FALSE);
+		m_pSound->PlayImage(11, start, -1);
 	}
 	if (m_voyageIcon == 108 && m_voyageChannel == 4)
 	{
-		m_pSound->PlayImage(60, start, -1, FALSE);
+		m_pSound->PlayImage(60, start, -1);
 	}
 	if (m_voyageIcon == 252 && m_voyageChannel == 10)
 	{
-		m_pSound->PlayImage(60, start, -1, FALSE);
+		m_pSound->PlayImage(60, start, -1);
 	}
 	if (m_voyageIcon == 177 && m_voyageChannel == 10)
 	{
-		m_pSound->PlayImage(54, start, -1, FALSE);
+		m_pSound->PlayImage(54, start, -1);
 	}
 	if (m_voyageIcon == 230 && m_voyageChannel == 10)
 	{
@@ -8510,7 +8515,7 @@ BOOL CDecor::SearchDoor(int n, POINT cel, POINT blupi)
     return FALSE;
 }
 
-BOOL SearchGold(int n, POINT cel)
+BOOL CDecor::SearchGold(int n, POINT cel)
 {
     for (int i = 99; i >= 0; i--)
     {
@@ -8615,7 +8620,7 @@ void CDecor::GetMissionPath(char* str, int user, int mission, BOOL bUser)
 {
 	if (bUser != 0)
 	{
-		sprintf(str, "data\u%.3d-%.3d.blp", user, mission);
+		sprintf(str, "data\%.3d-%.3d.blp", user, mission);
 		AddUserPath(str);
 		return;
 	}

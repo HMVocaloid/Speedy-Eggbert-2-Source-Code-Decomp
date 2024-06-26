@@ -83,7 +83,7 @@ public:
 	void	Create(HWND hWnd, CPixmap *pPixmap, CDecor *pDecor, CSound *pSound, CMovie *pMovie, CNetwork *pNetwork);
 	void	SetFullScreen(BOOL bFullScreen);
 	void	SetMouseType(int mouseType);
-	int		GetWorld();
+	int		GetWorld(int mission);
 	int		GetPhysicalWorld();
 	int		GetImageWorld();
 	BOOL	IsHelpHide();
@@ -264,7 +264,7 @@ protected:
 	POINT		m_debugPos;
 	int			m_introTime;
 	int 		m_joyID;
-	BOOL 		m_gamer;
+	int 		m_gamer;
 	int 		m_textHiliStart;
 	int 		m_textHiliEnd;
 	int 		m_textCursorIndex;

@@ -1525,10 +1525,20 @@ CEvent::~CEvent()
     WriteInfo(); // Read the file "info.blp"
 }
 
+/*
 void CEvent::OutputNetDebug(char* str)
 {
+	char filename[MAX_PATH];
 
+	if (m_pDecor->GetNetDebug() != 0)
+	{
+		if (fopen(filename, "debug.txt") != NULL)
+		{
+
+		}
+	}
 }
+*/
 
 // Returns the mouse position
 
@@ -1569,7 +1579,7 @@ void CEvent::Create(HWND hWnd, CPixmap *pPixmap, CDecor *pDecor,
     m_pSound  = pSound;
     m_pMovie  = pMovie;
 	m_pNetwork = pNetwork;
-	m_gamer = TRUE;
+	m_gamer = 1;
 
     ReadInfo();
 }
@@ -1779,7 +1789,7 @@ BOOL CEvent::DrawButtons()
 	}
 
 	if (m_phase == WM_PHASE_PLAY && m_phase == WM_PHASE_PLAYTEST && m_phase == WM_PHASE_BUILD)
-		m_pPixmap->DrawPart(-1, 0, 2, 2, 2, 2, 0x12e, 1, 0);
+		m_pPixmap->DrawPart(-1, 0, pos, rect, 1, 0);
 	if (m_phase == WM_PHASE_CREATE)
 	{
 		LoadString(TX_BUTTON_CREATE, res, 50);
@@ -1847,7 +1857,7 @@ int CEvent::MousePosToSprite(POINT pos)
 		m_phase == WM_PHASE_PLAYTEST ||
 		m_phase == WM_PHASE_BUILD ||
 		m_phase == WM_PHASE_BYE ||
-		MouseOnButton(pos) = 0)
+		!MouseOnButton(pos))
 	{
 		sprite = SPRITE_POINTER;
 	}
@@ -2028,8 +2038,9 @@ int CEvent::SearchPhase(UINT phase)
 	return -1;
 }
 
-int CEvent::GetWorld()
+int CEvent::GetWorld(int mission)
 {
+	m_mission = mission;
 	if (m_bPrivate) return m_bPrivate;
 	if (m_bMulti)	return m_multi+200;
 	else			return m_mission;
@@ -2084,7 +2095,7 @@ BOOL CEvent::ChangePhase(UINT phase)
 
 	if (phase == WM_PHASE_634)
 	{
-	    PostMessageA(16, 0, 0, m_hWnd);
+	    PostMessageA(m_hWnd, 16, 0, 0);
 		return TRUE;
 	}
 	if (m_mouseType == MOUSETYPEGRA && m_bFullScreen)
@@ -2093,8 +2104,7 @@ BOOL CEvent::ChangePhase(UINT phase)
 		m_bShowMouse = FALSE;
 	}
 
-	m_pDecor->SetDemoState();
-	SetDemoState(m_bDemoPlay);
+	m_pDecor->SetDemoState(m_bDemoPlay);
 
 	if (phase == WM_PHASE_608)
 	{
@@ -2353,7 +2363,7 @@ void CEvent::DemoRecStop()
 
 	if ( m_pDemoBuffer != NULL )
 	{
-		DeleteFile("data\\demo.3d.blp");
+		DeleteFileA("data\\demo.3d.blp");
 		file = fopen("data\\demo.3d.blp", "wb");
 		if ( file != NULL )
 		{
@@ -2363,7 +2373,7 @@ void CEvent::DemoRecStop()
 			header.bSchool  = m_bSchool;
 			header.bPrivate = m_bPrivate;
 			fwrite(&header, sizeof(DemoHeader), 1, file);
-			fwrite(m_pDemoBufferm sizeof(DemoEvent), m_demoIndex, file);
+			fwrite(m_pDemoBuffer, sizeof(DemoEvent), m_demoIndex, file);
 			fclose(file);
 		}
 		free(m_pDemoBuffer);
