@@ -84,6 +84,9 @@
     <ClInclude Include="texttables.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="resource1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="blupi.cpp">
@@ -136,7 +139,10 @@
     <ResourceCompile Include="..\..\..\..\Music\StringTable.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
-    <ResourceCompile Include="..\..\..\..\Music\Eggbert2.rc">
+    <ResourceCompile Include="Eggbert2.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+    <ResourceCompile Include="Resource.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
   </ItemGroup>

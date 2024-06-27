@@ -146,6 +146,7 @@
     <ClInclude Include="network.h" />
     <ClInclude Include="pixmap.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="resource1.h" />
     <ClInclude Include="sound.h" />
     <ClInclude Include="text.h" />
     <ClInclude Include="texttables.h" />
@@ -169,8 +170,9 @@
     <ClCompile Include="wave.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="..\..\..\..\Music\Eggbert2.rc" />
     <ResourceCompile Include="..\..\..\..\Music\StringTable.rc" />
+    <ResourceCompile Include="Eggbert2.rc" />
+    <ResourceCompile Include="Resource.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
