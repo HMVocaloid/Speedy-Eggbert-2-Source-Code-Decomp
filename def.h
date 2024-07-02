@@ -461,6 +461,12 @@
 #define WM_MOVIE				(WM_USER+602)
 #define WM_PHASE_CREATE 1579
 #define WM_PHASE_608	1544
+
+#define WM_PHASE_WINd   1546
+#define	WM_PHASE_LOSTd  1547
+#define WM_PHASE_WINm   1549
+#define WM_PHASE_LOSTm	1550
+#define WM_PHASE_READd  1560
 #define WM_PHASE_634	1588
 #define WM_PHASE_GREAD  1586
 #define WM_PHASE_GREADp 1585

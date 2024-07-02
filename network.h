@@ -45,15 +45,18 @@ public:
     ~CNetwork();
 
     BOOL    Create();
+    BOOL    IsSessionFree();
+    void    FreeCurrentSession();
     void    FreeSessionList();
     void    FreeSessionList2();
     void    FreeField18();
     BOOL    EnumerateCallback(LPGUID lpguidSP, LPSTR lpSTName, DWORD dwMajorVersion, DWORD dwMinorVersion, NetSessionList* lpContext);
 
 protected:
-    IDirectPlay2 m_pDP;
+    IDirectPlay m_pDP;
     LPVOID      m_pContext;
-    NetSessionList m_pSessions2;
+    LPVOID      m_pUnk4;
+    DPSESSIONDESC m_pCurrentSession;
     LPVOID         m_pUnkC;
     addr           m_pUnk18;
     NetSessionList m_pSessions;

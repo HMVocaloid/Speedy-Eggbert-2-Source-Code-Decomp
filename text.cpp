@@ -104,6 +104,12 @@ void DrawText(CPixmap *pPixmap, POINT pos, char *pText, int font)
 	}
 }
 
+void DrawTextLeft(CPixmap pPixmap, POINT pos, char *text, int font)
+{
+	DrawText(pPixmap, pos, text, font);
+	return;
+}
+
 void DrawTextNew(CPixmap* pPixmap, POINT pos, char* pText, int font)
 {
 	char text;

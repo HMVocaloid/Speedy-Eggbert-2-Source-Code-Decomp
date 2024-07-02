@@ -172,7 +172,26 @@
   <ItemGroup>
     <ResourceCompile Include="..\..\..\..\Music\StringTable.rc" />
     <ResourceCompile Include="Eggbert2.rc" />
-    <ResourceCompile Include="Resource.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cursor1.cur" />
+    <None Include="IDC_ARROW.cur" />
+    <None Include="IDC_ARROWD.cur" />
+    <None Include="IDC_ARROWDL.cur" />
+    <None Include="IDC_ARROWDR.cur" />
+    <None Include="IDC_ARROWL.cur" />
+    <None Include="IDC_ARROWR.cur" />
+    <None Include="IDC_ARROWU.cur" />
+    <None Include="IDC_ARROWUL.cur" />
+    <None Include="IDC_ARROWUR.cur" />
+    <None Include="IDC_EMPTY.cur" />
+    <None Include="IDC_FILL.cur" />
+    <None Include="IDC_MAP.cur" />
+    <None Include="IDC_POINTER.cur" />
+    <None Include="IDC_WAIT.cur" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="IDR_MAINFRAME.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

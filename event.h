@@ -83,13 +83,15 @@ public:
 	void	Create(HWND hWnd, CPixmap *pPixmap, CDecor *pDecor, CSound *pSound, CMovie *pMovie, CNetwork *pNetwork);
 	void	SetFullScreen(BOOL bFullScreen);
 	void	SetMouseType(int mouseType);
-	int		GetWorld(int mission);
+	int		GetWorld();
+	int		GetWorldGroup();
+	void	SetMission(int index);
 	int		GetPhysicalWorld();
 	int		GetImageWorld();
 	BOOL	IsHelpHide();
 	BOOL	ChangePhase(UINT phase);
+	HWND	GetPhase();
 	void	MovieToStart();
-	UINT	GetPhase();
 	void	HandleInputs();
 	void	TryInsert();
 	void	SomethingUserMissions(LPCSTR lpFileName, LPCSTR thing);

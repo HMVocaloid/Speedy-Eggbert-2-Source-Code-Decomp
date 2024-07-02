@@ -22,6 +22,9 @@ extern
 void DrawText(CPixmap *pPixmap, POINT pos, char *pText, int font);
 
 extern
+void DrawTextLeft(CPixmap* pPixmap, POINT pos, char *text, int font);
+
+extern
 void DrawTextNew(CPixmap *pPixmap, POINT pos, char* pText, int font);
 
 extern

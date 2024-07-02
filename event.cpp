@@ -1832,14 +1832,128 @@ BOOL CEvent::DrawButtons()
 		m_pPixmap->DrawPart(-1, 0, pos, rect, 1, 0);
 	if (m_phase == WM_PHASE_CREATE)
 	{
-		LoadString(TX_BUTTON_CREATE, res, 50);
+		LoadString(TX_MULTI_CREATE, res, 50);
+		lg=GetTextWidth(res);
+		pos.x = (320 - lg) / 2;
+		pos.y = 103;
+		DrawTextLeft(m_pPixmap, pos, res, FONTSLIM);
+		LoadString(TX_MULTI_GNAME, res, 100);
+		pos.x = (320 - lg) / 2;
+		pos.y = 190;
+		DrawTextLeft(m_pPixmap, pos, res, FONTSLIM);
 	}
-
-	if (m_phase == WM_PHASE_CREATE)
+	if (m_phase == WM_PHASE_SETUP || m_phase == WM_PHASE_SETUPp)
 	{
-		LoadString()
+		SetState(WM_BUTTON5, (m_pPixmap->GetTrueColor() == 0));
 	}
+	if (m_phase == WM_PHASE_PLAY || m_phase == WM_PHASE_PLAYTEST)
+	{
+		if (m_pDecor->GetPause() == 0)
+		{
+			if (m_bDemoRec != 0)
+			{
+				LoadString(TX_DEMOREC, res, 100);
+				DrawTextLeft(m_pPixmap, pos, res, FONTRED);
+			}
+			if (m_bDemoPlay != 0)
+			{
+				LoadString(TX_DEMOPLAY, res, 100);
+				DrawTextLeft(m_pPixmap, pos, res, FONTRED);
+			}
+		}
+		else
+		{
+			if (m_pDecor->GetTime() % 20 < 15)
+			{
+				DrawTextCenter(TX_PAUSE, 320, 240, 0);
+			}
+		}
+		if (m_speed > 1)
+		{
+			sprintf(res, "x%d", m_speed);
+			DrawTextLeft(m_pPixmap, pos, res, FONTWHITE);
+		}
+	}
+	if (m_phase == WM_PHASE_STOP)
+	{
+		LoadString(TX_GAMEPAUSE, res, 100);
+		lg = GetTextWidth(res);
+		pos.x = (319 - lg) / 2;
+		pos.y = 103;
+		DrawTextLeft(m_pPixmap, pos, res, FONTRED);
+	}
+	if (m_phase == WM_PHASE_MUSIC)
+	{
+		LoadString(TX_MUSIC, res, 100);
+		lg=GetTextWidth(res);
+		pos.x = (320 - lg) / 2;
+		pos.y = 84;
+		DrawTextLeft(m_pPixmap, pos, res, FONTRED);
+	}
+	if (m_phase == WM_PHASE_REGION)
+	{
+		LoadString(TX_REGION, res, 100);
+		lg = GetTextWidth(res);
+		pos.x = (320 - lg) / 2;
+		pos.y = 26;
+		DrawTextLeft(m_pPixmap, pos, res, FONTRED);
+	}
+	if (m_phase == WM_PHASE_LOST || m_phase == WM_PHASE_LOSTd || m_phase == WM_PHASE_WINm)
+	{
+		LoadString(TX_LOST1 + GetWorld() % 5, res, 50);
+		DrawTextLeft(m_pPixmap, pos, res, FONTWHITE);
+	}
+	if (m_phase == WM_PHASE_WIN || m_phase == WM_PHASE_WINd || m_phase == WM_PHASE_LOSTm)
+	{
+		LoadString(TX_WIN1 + GetWorld() % 5, res, 50);
+		DrawTextLeft(m_pPixmap, pos, res, FONTWHITE);
+	}
+	if (m_phase == WM_PHASE_READd)
+	{
 
+	}
+	if (m_phase == WM_PHASE_GREAD || m_phase == WM_PHASE_GREADp || m_phase == WM_PHASE_GWRITE)
+	{
+		if (m_phase == WM_PHASE_GREAD)
+		{
+			LoadString(TX_SAVE_CGAME, res, 50);
+		}
+		else
+		{
+			LoadString(TX_LOAD_CGAME, res, 50);
+		}
+	}
+	if (m_phase == WM_PHASE_BYE)
+	{
+		LoadString(TX_FULL_END1, res, 100);
+		lg = GetTextWidth(res);
+		pos.x = (320 - lg) / 2;
+		pos.y = 20;
+		DrawTextLeft(m_pPixmap, pos, res, FONTRED);
+		LoadString(TX_FULL_END2, res, 100);
+		lg = GetTextWidth(res);
+		pos.x = (320 - lg) / 2;
+		pos.y = 40;
+		DrawTextLeft(m_pPixmap, pos, res, FONTRED);
+		LoadString(TX_FULL_END3, res, 100);
+		lg = GetTextWidth(res);
+		pos.x = (320 - lg) / 2;
+		pos.y = 430;
+		DrawTextLeft(m_pPixmap, pos, res, FONTRED);
+		LoadString(TX_FULL_END4, res, 100);
+		lg = GetTextWidth(res);
+		pos.x = (320 - lg) / 2;
+		pos.y = 450;
+		DrawTextLeft(m_pPixmap, pos, res, FONTRED);
+	}
+	if (m_phase == WM_PHASE_INSERT)
+	{
+		DrawTextCenter(TX_INSERT, LXIMAGE / 2, 20);
+	}
+	if (m_textToolTips[0] != '\0')
+	{
+		DrawTextLeft(m_pPixmap, m_posToolTips, m_textToolTips, FONTWHITE);
+	}
 }
 
 BOOL CEvent::TextSomething()
@@ -1952,7 +2066,7 @@ void CEvent::HideMouse(BOOL bHide)
 
 	if ( bHide )
 	{
-		m_mouseSprite = SPRITE_WAIT;
+		m_mouseSprite = SPRITE_EMPTY;
 	}
 	else
 	{
@@ -2083,9 +2197,9 @@ int CEvent::SearchPhase(UINT phase)
 	return -1;
 }
 
-int CEvent::GetWorld(int mission)
+int CEvent::GetWorld()
 {
-	m_mission = mission;
+	//m_mission = mission;
 	if (m_bPrivate) return m_bPrivate;
 	if (m_bMulti)	return m_multi+200;
 	else			return m_mission;
@@ -2106,6 +2220,36 @@ BOOL CEvent::IsPrivate()
 BOOL CEvent::IsMulti()
 {
 	return m_bMulti;
+}
+
+int CEvent::GetWorldGroup()
+{
+	int mission;
+	m_mission = mission;
+	
+	if (m_mission % 10 != 0 && m_mission != 99)
+	{
+		m_mission = (mission / 10) * 10;
+		return -(m_mission >> 31);
+	}
+	m_mission = 1;
+	return m_mission / 10;
+}
+
+void CEvent::SetMission(int index)
+{
+	if (m_bPrivate != 0)
+	{
+		m_private = index;
+		return;
+	}
+	if (m_bMulti != 0)
+	{
+		m_multi = index;
+		return;
+	}
+	m_mission = index;
+	return;
 }
 
 UINT CDecor::GetPhase()
@@ -2143,19 +2287,23 @@ BOOL CEvent::ChangePhase(UINT phase)
 	    PostMessageA(m_hWnd, 16, 0, 0);
 		return TRUE;
 	}
-	if (m_mouseType == MOUSETYPEGRA && m_bFullScreen)
+	m_pDecor->SetSpeedY(m_bDemoPlay);
+	if (m_mouseType == MOUSETYPEGRA && m_bFullScreen != 0)
 	{
 		ShowCursor(FALSE);
 		m_bShowMouse = FALSE;
 	}
-
-	m_pDecor->SetDemoState(m_bDemoPlay);
-
 	if (phase == WM_PHASE_608)
 	{
-		m_pDecor, Read(999, 1, m_gamer);
+		m_pDecor->CurrentRead(999, 1, m_gamer);
 		phase = WM_PHASE_BUILD;
 	}
+
+	if (m_movieToStart + 8 == 1 && m_movieToStart + 4 != 0)
+	{
+		m_bDemoRec = 0;
+	}
+
 	if (m_bDemoPlay == 0 &&
 		phase == WM_PHASE_PLAY ||
 		m_phase == WM_PHASE_PLAY ||
@@ -2236,6 +2384,11 @@ BOOL CEvent::ChangePhase(UINT phase)
 		WriteInfo(m_gamer);
 	}
 
+}
+
+HWND CEvent::GetPhase()
+{
+	return m_hWnd;
 }
 
 // Implement LoadLevel
@@ -2338,6 +2491,28 @@ void CEvent::StopMovie()
 BOOL CEvent::IsMovie()
 {
 	return m_bRunMovie;
+}
+
+BOOL CEvent::ReadLibelle(int world, BOOL bSchool, BOOL bHelp)
+{
+	FILE* file = NULL;
+	char* pBuffer = NULL;
+	char* pText;
+	char* pDest;
+	char  indic;
+	int	  nb, h1, h2;
+
+	pBuffer = (char*)malloc(sizeof(char) * 2560);
+	if (pBuffer == NULL) goto error;
+	memset(pBuffer, 0, sizeof(char) * 2560);
+
+	//file = fopen
+
+
+error:
+	if (pBuffer != NULL) free(pBuffer);
+	if (file	!= NULL) fclose(file);
+	return FALSE;
 }
 
 void CEvent::SetLives(int lives)

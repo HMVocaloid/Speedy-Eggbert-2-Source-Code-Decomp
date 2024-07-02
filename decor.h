@@ -264,6 +264,33 @@ typedef struct
 }
 Move;
 
+typedef struct
+{
+	short	majRev;
+	short	minRev;
+	long	nbDecor;
+	long	lgDecor;
+	long	nbBlupi;
+	long	lgBlupi;
+	long	nbMove;
+	long	lgMove;
+	short	reserve1[100];
+	POINT	celCoin;
+	POINT	cameraPos;
+	POINT	worldDim;
+	short	world;
+	long	time;
+	char	ButtonExist[MAXBUTTON];
+	Term	term;
+	short	music;
+	short	region;
+	long	totalTime;
+	short	skill;
+	POINT	memoPos[4];
+	short	reserve2[29];
+}
+DescFile;
+
 
 class ByeByeObject
 {
@@ -708,6 +735,8 @@ public:
 	void	DoorsLost();
 	void	GetMissionsCleared();
 	void	SetDemoState(BOOL demoState);
+	BOOL	CurrentWrite(int gamer, int mission, BOOL bUser);
+	BOOL	CurrentRead(int gamer, int mission, BOOL bUser);
 	
 protected:
 	BOOL	GetSeeBits(POINT cel, char *pBits, int index);

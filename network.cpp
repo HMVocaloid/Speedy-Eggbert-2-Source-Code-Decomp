@@ -31,8 +31,27 @@ CNetwork::~CNetwork()
     FreeField18();
     if (m_pDP != lpDP = NULL)
     {
-        lpDP->Release;
+        lpDP->Release();
     }
+    return;
+}
+
+BOOL CNetwork::IsSessionFree()
+{
+    DPSESSIONDESC sessionDesc;
+    HRESULT result;
+    FreeCurrentSession();
+    m_pUnk4 = 0;
+}
+
+void CNetwork::FreeCurrentSession()
+{
+    if (m_pCurrentSession != FALSE)
+    {
+        free(m_pCurrentSession);
+    }
+    m_pUnk4 = 0;
+    m_pCurrentSession = 0;
     return;
 }
 
