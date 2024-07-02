@@ -1,6 +1,6 @@
 #include "dplay.h"
 
-typedef struct
+typedef struct NetSessionList
 {
     int           nbSessions;
     DPSESSIONDESC sessions[100];
@@ -46,21 +46,26 @@ public:
 
     BOOL    Create();
     BOOL    IsSessionFree();
+    LPVOID  GetContext();
+    BOOL    AllocateSessionList2();
     void    FreeCurrentSession();
     void    FreeSessionList();
     void    FreeSessionList2();
     void    FreeField18();
-    BOOL    EnumerateCallback(LPGUID lpguidSP, LPSTR lpSTName, DWORD dwMajorVersion, DWORD dwMinorVersion, NetSessionList* lpContext);
+    BOOL    EnumerateCallback(LPGUID lpguidSP, LPSTR lpSTName, DWORD dwMajorVersion, DWORD dwMinorVersion, LPVOID lpContext);
+    int     GetSessionSomethingFromIndex(int index);
+    BOOL    CreateDirectPlayInterface(LPGUID lpguidServiceProvider, LPDIRECTPLAY2A* lplpDirectPlay2A);
 
 protected:
-    IDirectPlay m_pDP;
-    LPVOID      m_pContext;
-    LPVOID      m_pUnk4;
-    DPSESSIONDESC m_pCurrentSession;
-    LPVOID         m_pUnkC;
-    addr           m_pUnk18;
-    NetSessionList m_pSessions;
-    BOOL           m_pUnk1C;
-    DPID           m_pDPID;
-    NetPlayer   m_players[4];
+    IDirectPlay2    m_pDP;
+    DPID            m_pDPID;
+    LPVOID          m_pContext;
+    LPVOID          m_pUnk4;
+    NetSessionList  m_pSessionsDesc;
+    DPSESSIONDESC   m_pCurrentSession;
+    LPVOID          m_pUnkC;
+    addr            m_pUnk18;
+    NetSessionList  m_pSessions;
+    BOOL            m_pUnk1C;
+    NetPlayer       m_players[4];
 };

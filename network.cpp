@@ -36,12 +36,83 @@ CNetwork::~CNetwork()
     return;
 }
 
+BOOL CNetwork::EnumerateCallback(LPGUID lpguidSP, LPSTR lpSTName, DWORD dwMajorVersion, DWORD dwMinorVersion, LPVOID lpContext)
+{
+    HWND hWnd = lpContext;
+    LPGUID lpGuid;
+
+    if (lpContext->nbSessions < 100)
+    {
+
+    }
+}
+
+BOOL CNetwork::AllocateSessionList2()
+{
+    NetSessionList* sessionDesc;
+    HRESULT hr;
+
+    FreeSessionList2();
+    m_pContext = NULL;
+    sessionDesc = (NetSessionList*)malloc(sizeof(11600));
+    
+    if (sessionDesc == NULL)
+    {
+        return FALSE;
+    }
+
+    hr = DirectPlayEnumerateA(EnumerateCallback, m_pContext);
+    if (hr != DP_OK)
+    {
+        FreeSessionList2;
+        return FALSE;
+    }
+    return TRUE;
+
+}
+
 BOOL CNetwork::IsSessionFree()
 {
     DPSESSIONDESC sessionDesc;
     HRESULT result;
     FreeCurrentSession();
     m_pUnk4 = 0;
+}
+
+int CNetwork::GetSessionSomethingFromIndex(int index)
+{
+    if (m_pContext <= index)
+    {
+        return 0;
+    }
+    return m_pSessionsDesc->sessions[index].guidSession.Data4 + 4;
+}
+
+BOOL CNetwork::CreateDirectPlayInterface(LPGUID lpguidServiceProvider, LPDIRECTPLAY2A* lplpDirectPlay2A)
+{
+    HRESULT hr;
+    LPDIRECTPLAY lpDirectPlay1 = NULL;
+    LPDIRECTPLAY2A lpDirectPlay2A = NULL;
+
+    if (m_pContext <= index)
+    {
+        return TRUE;
+    }
+    hr = DirectPlayCreate(lpguidServiceProvider, &lpDirectPlay1, NULL);
+    if (hr == DP_OK)
+    {
+        return TRUE;
+    }
+    hr = lpDirectPlay1->QueryInterface(IID IDirectPlay2A, (LPVOID*)&lpDirectPlay2A);
+    if (hr == DP_OK)
+    {
+        return TRUE;
+    }
+    if (lpDirectPlay1 != NULL)
+    {
+        lpDirectPlay1->Release();
+    }
+    return FALSE;
 }
 
 void CNetwork::FreeCurrentSession()
@@ -63,6 +134,11 @@ void CNetwork::FreeSessionList()
     }
     m_pUnkC = NULL;
     m_pSessions = NULL;
+}
+
+LPVOID CNetwork::GetContext()
+{
+    return m_pContext;
 }
 
 void TraceErrorDP(HRESULT hErr, char *sFile, int nLine)
