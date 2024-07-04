@@ -249,6 +249,7 @@
 #define WM_DECOR4				(WM_USER+23)
 #define WM_DECOR5				(WM_USER+24)
 
+
 #define WM_ACTION_GO			(WM_USER+30)
 #define WM_ACTION_ABAT1			(WM_USER+31)
 #define WM_ACTION_ABAT2			(WM_USER+32)

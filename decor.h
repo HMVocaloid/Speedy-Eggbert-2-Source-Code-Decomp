@@ -625,7 +625,7 @@ public:
 	BOOL	GetPause();
 	void	SetPause(BOOL bPause);
 	void	GetDoors(int doors);
-	void	InitalizeDoors();
+	void	InitalizeDoors(GameData gameData);
 	void	SetAllMissions(BOOL CheatDoors);
 	void	CheatAction(int cheat, MoveObject moveObject);
 	void	SetAccessBuild(BOOL build);

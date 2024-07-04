@@ -51,6 +51,8 @@ DescInfo;
 
 
 
+
+
 // Toutes les premi�res lettres doivent
 // �tre diff�rentes !
 
@@ -93,28 +95,6 @@ static Phase table[] =
 	{
 		WM_PHASE_TESTCD,
 		"image16\\init.blp",
-		FALSE,
-		{
-			{
-				0
-			},
-		},
-	},
-
-	{
-		WM_PHASE_INTRO1,
-		"image\\intro1.blp",
-		FALSE,
-		{
-			{
-				0
-			},
-		},
-	},
-
-	{
-		WM_PHASE_INTRO2,
-		"image16\\intro2.blp",
 		FALSE,
 		{
 			{
@@ -1525,6 +1505,50 @@ CEvent::~CEvent()
     WriteInfo(); // Read the file "info.blp"
 }
 
+void CEvent::Create(HWND hWnd, CPixmap *pPixmap, CDecor *pDecor,
+                    CSound *pSound, CMovie *pMovie, CNetwork *pNetwork)
+{
+	HINSTANCE hInstance;
+    POINT   pos;
+
+	m_hInstance = hInstance;
+    m_hWnd    = hWnd;
+    m_pPixmap = pPixmap;
+    m_pDecor  = pDecor;
+    m_pSound  = pSound;
+    m_pMovie  = pMovie;
+	m_pNetwork = pNetwork;
+	m_gamer = 1;
+
+    ReadInfo();
+}
+
+int CEvent::GetButtonIndex(int button)
+{
+    int         i=0;
+
+    while ( table[m_index].buttons[i].message != 0 )
+    {
+        if ( (UINT)button == table[m_index].buttons[i].message )
+        {
+            return i;
+        }
+        i ++;
+    }
+
+    return -1;
+}
+
+int CEvent::GetState(int button)
+{
+    int     index;
+
+    index = GetButtonIndex(button);
+    if ( index < 0 ) return 0;
+
+    return m_buttons[index].GetState();
+}
+
 /*
 void CEvent::OutputNetDebug(char* str)
 {
@@ -1566,52 +1590,11 @@ void CEvent::SetMouseType(int mouseType)
 
 // Creates the event handler.
 
-void CEvent::Create(HWND hWnd, CPixmap *pPixmap, CDecor *pDecor,
-                    CSound *pSound, CMovie *pMovie, CNetwork *pNetwork)
-{
-	HINSTANCE hInstance;
-    POINT   pos;
-
-	m_hInstance = hInstance;
-    m_hWnd    = hWnd;
-    m_pPixmap = pPixmap;
-    m_pDecor  = pDecor;
-    m_pSound  = pSound;
-    m_pMovie  = pMovie;
-	m_pNetwork = pNetwork;
-	m_gamer = 1;
-
-    ReadInfo();
-}
 
 
 // Returns the index of the button.
 
-int CEvent::GetButtonIndex(int button)
-{
-    int         i=0;
 
-    while ( table[m_index].buttons[i].message != 0 )
-    {
-        if ( (UINT)button == table[m_index].buttons[i].message )
-        {
-            return i;
-        }
-        i ++;
-    }
-
-    return -1;
-}
-
-int CEvent::GetState(int button)
-{
-    int     index;
-
-    index = GetButtonIndex(button);
-    if ( index < 0 ) return 0;
-
-    return m_buttons[index].GetState();
-}
 
 void CEvent::SetState(int button, int state)
 {
@@ -1725,11 +1708,39 @@ void CEvent::SomethingDecor()
 
 void CEvent::HandleInputs()
 {
+	BOOL state;
+	BOOL bHelicopter;
+	BOOL bCar;
+	BOOL bSkateboard;
+	BOOL bWater;
+
 	if (m_bMulti != FALSE)
 	{
 		// Placeholder for unknown function
 	}
-	if (m_bInfoHelp == 0)
+	if (m_bInfoHelp == 0 || m_bDemoPlay != FALSE)
+	{
+		m_pDecor->SetSpeedX(0);
+	}
+	else
+	{
+		m_pDecor->GetBlupiInfo(bHelicopter, bCar, bSkateboard, bWater);
+		state = TRUE;
+		if (bHelicopter != FALSE || bCar != FALSE || bSkateboard != FALSE)
+		{
+			state = FALSE;
+		}
+	}
+}
+
+BOOL CEvent::NetworkNuggets(int fuck)
+{
+	BOOL shit;
+
+	TryPhase();
+	shit = m_pNetwork->CreateDirectPlayInterface(fuck);
+	UnTryPhase();
+	return shit;
 }
 
 // CNetwork function needs to be implemented 
@@ -1752,6 +1763,11 @@ void CEvent::PauseStatus(UINT pause, int multiplayer)
 		}
 
 	}
+	if (m_multi != 0 && multiplayer != 0)
+	{
+		m_pNetwork->Send(pause, 3, 1);
+	}
+	return;
 }
 
 void AddCheatCode(char *pDst, char *pSrc)
@@ -2002,6 +2018,72 @@ BOOL CEvent::TreatEvent(UINT message, WPARAM wParam, LPARAM lParam)
 	}
 
 	return TreatEventBase(message, wParam, lParam);
+}
+
+BOOL CEvent::TreatEventBase(UINT message, WPARAM wParam, LPARAM lParam)
+{
+	POINT	pos;
+	int		fwKeys;
+	int		i, sound;
+	char	c;
+	BOOL	bEnable;
+
+	pos = ConvLongToPos(lParam);
+	fwKeys = wParam;
+
+	switch (message)
+	{
+	case WM_KEYDOWN:
+		if (wParam >= 'A' && wParam <= 'Z')
+		{
+			if (m_posCheat == 0)
+			{
+				m_rankCheat = -1;
+				
+				for (i = 0; i < 9; i++)
+				{
+					if ((char)wParam == cheat_code[i][0])
+					{
+						m_rankCheat = i;
+						break;
+					}
+				}
+			}
+			if (m_rankCheat != -1)
+			{
+				c = cheat_code[m_rankCheat][m_posCheat];
+				if (m_posCheat != 0 && m_rankCheat == 0) c++;
+				if ((char)wParam == c)
+				{
+					m_posCheat++;
+
+				}
+			}
+		}
+	}
+
+	if (m_phase != WM_PHASE_PLAY && m_phase != WM_PHASE_PLAYTEST)
+	{
+		return 0;
+	}
+	// Unknown Function
+
+	switch (wParam)
+	{
+	case WM_RBUTTONDOWN:
+		m_bMouseDown = TRUE;
+		MouseSprite(pos);
+		if (EventButtons(message, wParam, lParam)) return TRUE;
+		if (m_phase == WM_PHASE_BUILD)
+		{
+			if (BuildDown(pos, fwKeys)) return TRUE;
+		}
+		if (m_phase == WM_PHASE_PLAY)
+		{
+			if (PlayDown(pos, fwKeys)) return TRUE;
+		}
+		break;
+	}
 }
 
 
@@ -2412,6 +2494,41 @@ void CEvent::MovieToStart()
 	}
 }
 
+BOOL CEvent::BuildDown(POINT pos, int fwKeys, BOOL bMix)
+{
+	POINT cel;
+	int	  menu, channel, icon;
+	
+	if (pos.x < POSDRAWX || pos.x > POSDRAWX + DIMDRAWX ||
+		pos.y < POSDRAWY || pos.y > POSDRAWY + DIMDRAWY) return FALSE;
+
+	if (GetState(WM_DECOR1) == 1)
+	{
+		cel = m_pDecor->ConvPosToCel2(pos);
+		m_pDecor->BlupiDelete(pos);
+	}
+	if (GetState(WM_DECOR2) == 2)
+	{
+		cel = m_pDecor->ConvPosToCel2(pos);
+		menu = GetMenu(WM_DECOR2);
+	}
+}
+
+BOOL CEvent::BuildMove(POINT pos, int fwKeys)
+{
+	if (fwKeys & MK_LBUTTON)
+	{
+		BuildDown(pos, fwKeys, FALSE);
+	}
+	m_pDecor->ConvPosToCel2(pos);
+	return TRUE;
+}
+
+BOOL CEvent::BuildUp(POINT pos, int fwKeys)
+{
+	return TRUE;
+}
+
 void CEvent::TryPhase()
 {
 	m_tryPhase = 1;
@@ -2432,6 +2549,14 @@ int CEvent::GetTryPhase()
 void CEvent::SomethingUserMissions(LPCSTR lpFileName, LPCSTR thing)
 {
 
+}
+
+void CEvent::GetDoors(int doors)
+{
+	for (int i = 0; i < 200; i++)
+	{
+		doors[i] = (int)data[Gamer];
+	}
 }
 
 void CEvent::TableSomething()
@@ -2751,6 +2876,8 @@ BOOL CEvent::WriteInfo()
 	FILE*		file = NULL;
 	DescInfo	info;
 	int			nb;
+	int			doors;
+	GameData	door[200];
 
 	strcpy(filename, "data\\info%.blp");
 	AddUserPath(filename);
@@ -2768,10 +2895,12 @@ BOOL CEvent::WriteInfo()
 	info.bHiliInfoButton = m_bHiliInfoButton;
 	info.bAccessBuild = m_bAccessBuild;
 
-	info.skill = m_pDecor->GetMissionsCleared();
+	m_pDecor->InitalizeDoors(door)
 
 	info.audioVolume = m_pSound->GetAudioVolume();
 	info.midiVolume = m_pSound->GetMidiVolume();
+
+
 
 	nb = fwrite(&info, sizeof(DescInfo), 1, file);
 	if (nb < 1) goto error;

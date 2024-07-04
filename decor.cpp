@@ -8646,6 +8646,11 @@ void CDecor::DoorsLost()
     m_nbVies = 3;
 }
 
+void CDecor::InitalizeDoors(GameData gameData)
+{
+	gameData.GetDoors(m_doors);
+}
+
 void CDecor::GetBlupiInfo(BOOL bHelico, BOOL bJeep, BOOL bSkate, BOOL bNage)
 {
     bHelico = m_blupiHelico;

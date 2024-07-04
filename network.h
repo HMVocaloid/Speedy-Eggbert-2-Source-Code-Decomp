@@ -52,12 +52,13 @@ public:
     void    FreeSessionList();
     void    FreeSessionList2();
     void    FreeField18();
-    BOOL    EnumerateCallback(LPGUID lpguidSP, LPSTR lpSTName, DWORD dwMajorVersion, DWORD dwMinorVersion, LPVOID lpContext);
+    BOOL    Send(LPVOID lpData, DWORD lpdwDataSize, int dwFlags);
+    BOOL    EnumerateCallback(LPGUID lpguidSP, LPSTR lpSTName, DWORD dwMajorVersion, DWORD dwMinorVersion, NetSessionList *lpContext);
     int     GetSessionSomethingFromIndex(int index);
     BOOL    CreateDirectPlayInterface(LPGUID lpguidServiceProvider, LPDIRECTPLAY2A* lplpDirectPlay2A);
 
 protected:
-    IDirectPlay2    m_pDP;
+    IDirectPlay2*   m_pDP;
     DPID            m_pDPID;
     LPVOID          m_pContext;
     LPVOID          m_pUnk4;

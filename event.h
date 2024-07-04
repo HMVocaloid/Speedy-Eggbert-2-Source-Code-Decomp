@@ -27,6 +27,16 @@ typedef struct
 }
 Phase;
 
+typedef struct
+{
+	int	HeaderLength[10];
+	int DoorsLength[200];
+	int GamerLength[10 + 200];
+	int MaxGamer[3];
+	int TotalLength[10 + (10 + 200) + 3];
+	byte data;
+}
+GameData;
 
 typedef struct
 {
@@ -92,6 +102,7 @@ public:
 	BOOL	ChangePhase(UINT phase);
 	HWND	GetPhase();
 	void	MovieToStart();
+	BOOL	NetworkNuggets(int fuck);
 	void	HandleInputs();
 	void	TryInsert();
 	void	SomethingUserMissions(LPCSTR lpFileName, LPCSTR thing);
@@ -137,6 +148,7 @@ public:
 	void	SetSpeed(int speed);
 	int		GetSpeed();
 	BOOL	GetPause();
+	void	GetDoors(int doors);
 	BOOL	IsShift();
 
 	void	DemoStep();
