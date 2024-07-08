@@ -121,20 +121,6 @@ static Phase table[] =
 				{1,TX_BUTTON_APPRENDRE},
 			},
 			{
-				WM_PHASE_MISSION,
-				0, {1,80},
-				16, 424-60-42*1,
-				{1,TX_BUTTON_JOUER},
-			},
-#if !_DEMO
-			{
-				WM_PHASE_PRIVATE,
-				0, {1,49},
-				16, 424-60-42*0,
-				{1,TX_BUTTON_PRIVE},
-			},
-#endif
-			{
 				WM_PHASE_BYE,
 //?				WM_CLOSE,
 				0, {1,36},
