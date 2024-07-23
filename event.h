@@ -130,7 +130,7 @@ public:
 	void	WaitMouse(BOOL bWait);
 	void	HideMouse(BOOL bHide);
 	void	FillMouse(int bFill);
-	POINT	GetLastMousePos();
+	POINT	GetLastMousePos(POINT out);
 	BOOL	TreatEvent(UINT message, WPARAM wParam, LPARAM lParam);
 	BOOL	TreatEventBase(UINT message, WPARAM wParam, LPARAM lParam);
 

@@ -30,6 +30,7 @@ public:
     BOOL    Cache(int channel, char *pFilename, POINT totalDim, POINT iconDim, BOOL bUsePalette);
     BOOL    Cache2(int channel, char *pFilename, POINT totalDim, POINT iconDim, BOOL bUsePalette);
     BOOL    Cache(int channel, HBITMAP hbm, POINT totalDim);
+    BOOL    CacheAll(BOOL cache, HWND hWnd, BOOL bFullScreen, BOOL bTrueColor, BOOL bTrueColorDecor, int mouseType, char* pFilename, int region);
     void    Flush(int channel);
     void    SetTransparent(int channel, COLORREF color);
     void    SetTransparent2(int channel, COLORREF color1, COLORREF color2);

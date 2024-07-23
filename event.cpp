@@ -1980,9 +1980,11 @@ BOOL CEvent::TextSomething()
 	return 1;
 }
 
-POINT CEvent::GetLastMousePos()
+POINT CEvent::GetLastMousePos(POINT out)
 {
-	return m_oldMousePos;
+	out.x = m_oldMousePos.x;
+	out.y = m_oldMousePos.y;
+	return;
 }
 
 BOOL CEvent::TreatEvent(UINT message, WPARAM wParam, LPARAM lParam)
@@ -2849,11 +2851,6 @@ void CEvent::DemoRecEvent(UINT message, UINT input, WPARAM wParam, LPARAM lParam
 	{
 		DemoRecStop();
 	}
-}
-
-POINT CEvent::GetLastMousePos()
-{
-	return m_oldMousePos;
 }
 
 BOOL CEvent::WriteInfo()

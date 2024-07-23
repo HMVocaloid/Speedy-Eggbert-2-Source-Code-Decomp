@@ -730,6 +730,39 @@ BOOL CPixmap::Cache(int channel, HBITMAP hbm, POINT totalDim)
 	return TRUE;
 }
 
+BOOL CPixmap::CacheAll(BOOL cache, HWND hWnd, BOOL bFullScreen, BOOL bTrueColor, BOOL bTrueColorDecor, int mouseType, char* pFilename, int region)
+{
+	char filename[100];
+
+	POINT totalDim;
+
+	if (cache == 0)
+	{
+		~CPixmap();
+		hWnd = m_hWnd;
+		bFullScreen = m_bFullScreen;
+		bTrueColor = m_bTrueColor;
+		bTrueColorDecor = m_bTrueColorDecor;
+		mouseType = m_mouseType;
+	}
+
+	OutputDebug("Image:_init\n");
+
+	OutputDebug("InitSysPalette\n");
+	InitSysPalette();
+	SetDebug(FALSE);
+	if (cache == 0)
+	{
+		if (Cache(pFilename, totalDim, 0) == NULL)
+		{
+			return NULL;
+		}
+	}
+	else
+	{
+		DrawImage()
+	}
+}
 
 // Purge une image.
 

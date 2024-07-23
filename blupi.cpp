@@ -209,7 +209,7 @@ void UpdateFrame(void)
     RECT            clip, rcRect;
 	UINT			phase;
 	POINT			posMouse;
-	int				i, term, speed;
+	int				i, term, speed, targetlevel;
 
 	g_pPixmap->MouseBackClear();  // enl�ve la souris dans "back"
 	posMouse = g_pEvent->GetLastMousePos();
@@ -251,10 +251,7 @@ void UpdateFrame(void)
 
 	if ( phase == WM_PHASE_PLAY )
 	{
-		clip.left   = POSDRAWX;
-		clip.top    = POSDRAWY+g_pDecor->GetInfoHeight();
-		clip.right  = POSDRAWX+DIMDRAWX;
-		clip.bottom = POSDRAWY+DIMDRAWY;
+		targetlevel = g_pDecor->GetTargetLevel();
 
 		if ( g_pEvent->IsShift() )  // shift en cours ?
 		{
@@ -317,7 +314,7 @@ void SetDecor()
 	POINT posMouse;
 
 	g_pPixmap->MouseBackClear();
-	g_pEvent->GetLastMousePos(&posMouse);
+	g_pEvent->GetLastMousePos(posMouse);
 	phase = g_pEvent->GetPhase();
 
 	if (phase == WM_PHASE_PLAY || phase == WM_PHASE_PLAYTEST || phase == WM_PHASE_BUILD)
