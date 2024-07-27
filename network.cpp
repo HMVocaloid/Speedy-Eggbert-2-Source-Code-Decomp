@@ -14,10 +14,10 @@ CNetwork::CNetwork()
 {
              m_pDP;
              m_pDPID;
-             m_bUnk1C;
+             m_bHost = FALSE;
              m_pContext;
              m_pSessions2;
-             m_pUnkC;
+             m_pContext2;
              m_pSessions;
              m_pUnk18;
 }
@@ -29,7 +29,10 @@ CNetwork::~CNetwork()
     FreeSessionList();
     FreeSessionList2();
     FreeField18();
-    if (m_pDP != lpDP = NULL)
+
+    m_pDP = lpDP;
+
+    if (lpDP != NULL)
     {
         lpDP->Release();
     }
@@ -38,7 +41,6 @@ CNetwork::~CNetwork()
 
 BOOL CNetwork::EnumerateCallback(LPGUID lpguidSP, LPSTR lpSTName, DWORD dwMajorVersion, DWORD dwMinorVersion, NetSessionList *lpContext)
 {
-    HWND hWnd = lpContext;
     LONG iIndex;
     LPGUID lpGuid;
 
@@ -81,13 +83,40 @@ BOOL CNetwork::IsSessionFree()
     m_pUnk4 = 0;
 }
 
-int CNetwork::GetSessionSomethingFromIndex(int index)
+char CNetwork::GetStringFromSessionData1(int index)
 {
-    if (m_pContext <= index)
+    if ((int)m_pContext <= index)
     {
-        return 0;
+        return (char)0;
     }
-    return m_pSessionsDesc->sessions[index].guidSession.Data4 + 4;
+    return (char)m_pSessions.sessions[index].guidSession.Data4 + 4;
+}
+
+BOOL CNetwork::Create(int index)
+{
+    HRESULT hr;
+    LPDIRECTPLAY lpDP;
+    BOOL created;
+
+    created = FALSE;
+    lpDP = 0;
+    if ((int)m_pContext <= index)
+    {
+        return FALSE;
+    }
+
+    if (DirectPlayCreate(m_pSessions->sessions[index + -1].dwUser3, &lpDP, 0) == DP_OK)
+    {
+        if (lpDP->QueryInterface(&IID_00434010, m_pDP) == DP_OK)
+        {
+            created = TRUE;
+        }
+    }
+    if (lpDP != 0)
+    {
+        lpDP->Release();
+    }
+    return created;
 }
 
 BOOL CNetwork::CreateDirectPlayInterface(LPGUID lpguidServiceProvider, LPDIRECTPLAY2A* lplpDirectPlay2A)
@@ -153,7 +182,7 @@ void CNetwork::FreeSessionList()
     {
         free(m_pSessions);
     }
-    m_pUnkC = NULL;
+    m_pContext = NULL;
     m_pSessions = NULL;
 }
 

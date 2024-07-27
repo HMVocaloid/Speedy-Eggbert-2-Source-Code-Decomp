@@ -735,6 +735,11 @@ BOOL CPixmap::CacheAll(BOOL cache, HWND hWnd, BOOL bFullScreen, BOOL bTrueColor,
 	char filename[100];
 
 	POINT totalDim;
+	POINT iconDim;
+	RECT rect;
+	POINT dim;
+
+	m_dim = dim;
 
 	if (cache == 0)
 	{
@@ -746,6 +751,15 @@ BOOL CPixmap::CacheAll(BOOL cache, HWND hWnd, BOOL bFullScreen, BOOL bTrueColor,
 		mouseType = m_mouseType;
 	}
 
+	if (Create(hWnd, dim, bFullScreen, mouseType, bTrueColorDecor, bTrueColor) == 0)
+	{
+		return 0;
+	}
+	if (Cache2(0, "init.blp", totalDim, iconDim, TRUE) == 0)
+	{
+		return 0;
+	}
+
 	OutputDebug("Image:_init\n");
 
 	OutputDebug("InitSysPalette\n");
@@ -753,15 +767,42 @@ BOOL CPixmap::CacheAll(BOOL cache, HWND hWnd, BOOL bFullScreen, BOOL bTrueColor,
 	SetDebug(FALSE);
 	if (cache == 0)
 	{
-		if (Cache(pFilename, totalDim, 0) == NULL)
+		if (Cache2(0, pFilename, totalDim, iconDim, FALSE) == NULL)
 		{
 			return NULL;
 		}
 	}
 	else
 	{
-		DrawImage()
+		DrawImage(0, 0, rect, 1);
+		Display();
 	}
+	if (Cache2(CHOBJECT, "object.blp", totalDim, iconDim, FALSE) == NULL)
+	{
+		return NULL;
+	}
+	SetTransparent(CHBLUPI, RGB(0, 0, 255));
+	if (Cache2(CHBLUPI, "blupi000.blp", totalDim, iconDim, FALSE) == NULL)
+	{
+		return NULL;
+	}
+	SetTransparent(CHBLUPI1, RGB(0, 0, 255));
+	if (Cache2(CHBLUPI1, "blupi001.blp", totalDim, iconDim, FALSE) == NULL)
+	{
+		return NULL;
+	}
+	SetTransparent(CHBLUPI2, RGB(0, 0, 255));
+	if (Cache2(CHBLUPI2, "blupi002.blp", totalDim, iconDim, FALSE) == NULL)
+	{
+		return NULL;
+	}
+	SetTransparent(CHBLUPI3, RGB(0, 0, 255));
+	if (Cache2(CHBLUPI3, "blupi003.blp", totalDim, iconDim, FALSE) == NULL)
+	{
+		return NULL;
+	}
+	SetTransparent(CHMAP, )
+
 }
 
 // Purge une image.

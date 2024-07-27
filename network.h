@@ -44,7 +44,7 @@ public:
     CNetwork();
     ~CNetwork();
 
-    BOOL    Create();
+    BOOL    Create(int index);
     BOOL    IsSessionFree();
     LPVOID  GetContext();
     BOOL    AllocateSessionList2();
@@ -54,19 +54,18 @@ public:
     void    FreeField18();
     BOOL    Send(LPVOID lpData, DWORD lpdwDataSize, int dwFlags);
     BOOL    EnumerateCallback(LPGUID lpguidSP, LPSTR lpSTName, DWORD dwMajorVersion, DWORD dwMinorVersion, NetSessionList *lpContext);
-    int     GetSessionSomethingFromIndex(int index);
+    char    GetStringFromSessionData1(int index);
     BOOL    CreateDirectPlayInterface(LPGUID lpguidServiceProvider, LPDIRECTPLAY2A* lplpDirectPlay2A);
 
 protected:
     IDirectPlay2*   m_pDP;
-    DPID            m_pDPID;
     LPVOID          m_pContext;
-    LPVOID          m_pUnk4;
-    NetSessionList  m_pSessionsDesc;
-    DPSESSIONDESC   m_pCurrentSession;
-    LPVOID          m_pUnkC;
-    addr            m_pUnk18;
     NetSessionList  m_pSessions;
-    BOOL            m_pUnk1C;
+    LPVOID          m_pContext2;
+    NetSessionList  m_pSessions2;
+    LPVOID          m_pUnk4;
+    addr            m_pUnk18;
+    BOOL            m_bHost;
+    DPID            m_pDPID;
     NetPlayer       m_players[4];
 };
