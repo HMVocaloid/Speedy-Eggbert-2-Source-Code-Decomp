@@ -50,17 +50,21 @@ BOOL CNetwork::EnumerateCallback(LPGUID lpguidSP, LPSTR lpSTName, DWORD dwMajorV
     }
 }
 
+/*
 BOOL CNetwork::AllocateSessionList2()
 {
     NetSessionList* sessionDesc;
     HRESULT hr;
-    LPGUID lpGuid;
+    DPSESSIONDESC2* pSessions;
+    DPSESSIONDESC   sessions;
 
     FreeSessionList2();
     m_pContext = NULL;
     sessionDesc = (NetSessionList*)malloc(sizeof(11600));
     
-    if (sessionDesc == NULL)
+    m_pSessions2 = sessionDesc;
+
+    if (m_pSessions2 == NULL)
     {
         return FALSE;
     }
@@ -73,6 +77,50 @@ BOOL CNetwork::AllocateSessionList2()
     }
     return TRUE;
 
+}
+*/
+
+BOOL CNetwork::EnumSessions()
+{
+    NetSessionList* sessionDesc;
+    HRESULT hr;
+    DPSESSIONDESC2* pSessions;
+    DPSESSIONDESC2  sessions;
+
+    FreeSessionList2();
+    m_pContext2 = (LPVOID)0;
+    sessionDesc = (NetSessionList*)malloc(11600);
+    m_pSessions2 = sessionDesc;
+    if (sessionDesc == (NetSessionList*)0)
+    {
+        return FALSE;
+    }
+    pSessions = &sessions;
+    for (hr = 20; hr != 0; hr++)
+    {
+        pSessions->dwSize = 0;
+        pSessions = (DPSESSIONDESC2*)&pSessions->dwFlags;
+    }
+    sessions.guidApplication.Data1 = 3192584608;
+    sessions.guidApplication.Data4[4] = 246;
+    sessions.guidApplication.Data4[5] = 148;
+    sessions.guidApplication.Data4[6] = 'H';
+    sessions.guidApplication.Data4[7] = '8';
+    sessions.guidApplication.Data4[0] = 190;
+    sessions.guidApplication.Data4[1] = 'b';
+    sessions.guidApplication.Data4[2] = '\0';
+    sessions.guidApplication.Data4[3] = '@';
+    sessions.guidApplication.Data2 = 49937;
+    sessions.guidApplication.Data3 = 4561;
+    sessions.dwSize = 80;
+    hr = m_pDP->EnumSessions(&sessions, 0, EnumSessionsCallback, m_pContext2, DPENUMSESSIONS_AVAILABLE);
+
+    if (hr != DP_OK)
+    {
+        FreeSessionList2();
+        return FALSE;
+    }
+    return TRUE;
 }
 
 BOOL CNetwork::IsSessionFree()
@@ -105,7 +153,7 @@ BOOL CNetwork::Create(int index)
         return FALSE;
     }
 
-    if (DirectPlayCreate(m_pSessions->sessions[index + -1].dwUser3, &lpDP, 0) == DP_OK)
+    if (DirectPlayCreate(m_pSessions.sessions[index + -1].dwUser3, &lpDP, 0) == DP_OK)
     {
         if (lpDP->QueryInterface(&IID_00434010, m_pDP) == DP_OK)
         {
@@ -165,6 +213,43 @@ BOOL CNetwork::Send(LPVOID lpData, DWORD lpdwDataSize, int dwFlags)
     return TRUE;
 }
 
+BOOL CNetwork::Recieve(void* pDest, int dataSize, int* pPlayer)
+{
+    HRESULT hr;
+    DPID from;
+    DWORD dwDataSize;
+    DPID to;
+    int dataBuffer[125];
+    LPDPSESSIONDESC2 lpsd;
+
+    from = 0;
+    to = 0;
+    dwDataSize = 500;
+
+    hr = m_pDP->Receive(&from, &to, DPRECEIVE_ALL, dataBuffer, &dwDataSize);
+    if (hr != DP_OK)
+    {
+        if (hr != DPERR_NOMESSAGES)
+        {
+            TraceErrorDP(hr);
+        }
+        return FALSE;
+    }
+}
+
+BOOL CNetwork::Close()
+{
+    HRESULT hr;
+
+    hr = m_pDP->Close();
+    return (UINT)(hr == DP_OK);
+}
+
+BOOL CNetwork::IsHost()
+{
+    return m_bHost;
+}
+
 void CNetwork::FreeCurrentSession()
 {
     if (m_pCurrentSession != FALSE)
@@ -178,12 +263,14 @@ void CNetwork::FreeCurrentSession()
 
 void CNetwork::FreeSessionList()
 {
-    if (m_pSessions != NULL)
+    if (m_pSessions2 != NULL)
     {
-        free(m_pSessions);
+        free(m_pSessions2);
     }
-    m_pContext = NULL;
-    m_pSessions = NULL;
+    m_pContext2 = NULL;
+    m_pSessions2 = NULL;
+
+    return;
 }
 
 LPVOID CNetwork::GetContext()

@@ -48,11 +48,16 @@ public:
     BOOL    IsSessionFree();
     LPVOID  GetContext();
     BOOL    AllocateSessionList2();
+    BOOL    EnumSessions();
+    BOOL    EnumSessionsCallback(LPDPSESSIONDESC2 lpThisSD, LPDWORD lpdwTimeOut, DWORD dwFlags, NetSessionList* lpContext);
     void    FreeCurrentSession();
     void    FreeSessionList();
     void    FreeSessionList2();
     void    FreeField18();
     BOOL    Send(LPVOID lpData, DWORD lpdwDataSize, int dwFlags);
+    BOOL    Recieve(void* pDest, int dataSize, int* pPlayer);
+    BOOL    Close();
+    BOOL    IsHost();
     BOOL    EnumerateCallback(LPGUID lpguidSP, LPSTR lpSTName, DWORD dwMajorVersion, DWORD dwMinorVersion, NetSessionList *lpContext);
     char    GetStringFromSessionData1(int index);
     BOOL    CreateDirectPlayInterface(LPGUID lpguidServiceProvider, LPDIRECTPLAY2A* lplpDirectPlay2A);
@@ -62,7 +67,7 @@ protected:
     LPVOID          m_pContext;
     NetSessionList  m_pSessions;
     LPVOID          m_pContext2;
-    NetSessionList  m_pSessions2;
+    NetSessionList* m_pSessions2;
     LPVOID          m_pUnk4;
     addr            m_pUnk18;
     BOOL            m_bHost;
