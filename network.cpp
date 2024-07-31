@@ -15,11 +15,12 @@ CNetwork::CNetwork()
              m_pDP;
              m_pDPID;
              m_bHost = FALSE;
-             m_pContext;
-             m_pSessions2;
-             m_pContext2;
              m_pSessions;
-             m_pUnk18;
+             m_pSessions2;
+             m_pContext;
+             m_pContext2;
+             m_nbSessions3Unused;
+             m_pSessions3Unused;
 }
 
 CNetwork::~CNetwork()
@@ -28,7 +29,7 @@ CNetwork::~CNetwork()
 
     FreeSessionList();
     FreeSessionList2();
-    FreeField18();
+    FreeSessionList3Unused();
 
     m_pDP = lpDP;
 
@@ -39,14 +40,117 @@ CNetwork::~CNetwork()
     return;
 }
 
-BOOL CNetwork::EnumerateCallback(LPGUID lpguidSP, LPSTR lpSTName, DWORD dwMajorVersion, DWORD dwMinorVersion, NetSessionList *lpContext)
+BOOL CNetwork::EnumSessionsCallback1(LPGUID lpguidSP, LPSTR lpSTName, DWORD dwMajorVersion, DWORD dwMinorVersion, NetSessionList *lpContext)
 {
     LONG iIndex;
     LPGUID lpGuid;
+    int index;
 
-    if (lpContext->nbSessions < 100)
+    index = lpContext->sessions[0].index;
+
+    if (index < 100)
     {
-        lpContext->sessions.guidSession.data1 + lpContext->nbSessions * 116;
+        lpGuid = (ULONG*)((int)lpContext->sessions[0].lpID + index * 116);
+        *lpGuid = lpguidSP->Data1;
+        lpGuid[1] = *(ULONG*)&lpguidSP->Data2;
+        lpGuid[2] = *(ULONG*)lpguidSP->Data4;
+        lpGuid[3] = *(ULONG*)(lpguidSP->Data4 + 4);
+    }
+    lpContext->sessions[0].index = lpContext->sessions[0].index + 1;
+
+    return TRUE;
+}
+
+BOOL CNetwork::EnumSessions1()
+{
+    NetSession (*pList)[100];
+    HRESULT hr;
+
+    FreeSessionList1();
+    m_nbSessions1 = 0;
+    pList = (NetSession(*)[100])malloc(sizeof(11600));
+    m_pSessions1 = pList;
+    if (pList == (NetSession(*)[100])0)
+    {
+        return FALSE;
+    }
+    hr = DirectPlayEnumerateA(EnumSessionsCallback1, m_nbSessions1);
+    if (hr != DP_OK)
+    {
+        FreeSessionList1();
+        return FALSE;
+    }
+    return TRUE;
+}
+
+DPSESSIONDESC* CNetwork::GetSessionDesc1(int index)
+{
+    if (m_nbSessions1 <= index)
+    {
+        return (DPSESSIONDESC*)0;
+    }
+    return &(m_pSessions1)[index]->desc;
+}
+
+BOOL CNetwork::Create(int index)
+{
+    HRESULT hr;
+    int     hr2;
+    LPDIRECTPLAY lpDP;
+    BOOL bOk;
+
+    bOk = FALSE;
+    lpDP = (LPDIRECTPLAY)0;
+    if ((int)m_pContext <= index)
+    {
+        return FALSE;
+    }
+
+    hr = DirectPlayCreate(m_pSessions1 + index, &lpDP, 0);
+
+    if (hr == DP_OK)
+    {
+        hr2 = (*lpDP->QueryInterface) (lpDP, &IID_0434010, m_pDP);
+        if (hr2 == DP_OK)
+        {
+            bOk = TRUE;
+        }
+    }
+    if (lpDP != (LPDIRECTPLAY)0)
+    {
+        lpDP->Release();
+    }
+    return bOk;
+}
+
+void CNetwork::FreeSessionList1()
+{
+    if (m_pSessions1 != (NetSession(*)[100]) NULL)
+    {
+        free(m_pSessions1);
+    }
+    m_nbSessions1 = NULL;
+    m_pSessions1 = (NetSession(*) [100]) NULL;
+
+    return;
+}
+
+BOOL CNetwork::EnumSessionsCallback2(LPDPSESSIONDESC2 lpThisSD, LPDWORD lpwdTimeOut, DWORD dwFlags, NetSession2* lpContext)
+{
+    int index;
+    LPGUID guid;
+
+    if ((dwFlags & 1) != 0)
+    {
+        return FALSE;
+    }
+    index = lpContext->index;
+    if (index < 100)
+    {
+        guid = (LPGUID)((int)lpContext->lpID + index * 116);
+        guid->Data1 = (lpThisSD->guidInstance).Data1;
+        guid->Data2 = (lpThisSD->guidInstance).Data2;
+        
     }
 }
 
@@ -80,40 +184,41 @@ BOOL CNetwork::AllocateSessionList2()
 }
 */
 
-BOOL CNetwork::EnumSessions()
+BOOL CNetwork::EnumSessions2()
 {
-    NetSessionList* sessionDesc;
+    NetSession2(*pList)[100];
     HRESULT hr;
-    DPSESSIONDESC2* pSessions;
-    DPSESSIONDESC2  sessions;
+    int i;
+    DPSESSIONDESC2* pDesc;
+    DPSESSIONDESC2  desc;
 
     FreeSessionList2();
-    m_pContext2 = (LPVOID)0;
-    sessionDesc = (NetSessionList*)malloc(11600);
-    m_pSessions2 = sessionDesc;
-    if (sessionDesc == (NetSessionList*)0)
+    m_nbSessions2 = 0;
+    pList = (NetSession2(*)[100])malloc(11600);
+    m_pSessions2 = pList;
+    if (pList == (NetSession2(*)[100])0)
     {
         return FALSE;
     }
-    pSessions = &sessions;
-    for (hr = 20; hr != 0; hr++)
+    pDesc = &desc;
+    for (i = 20; i != 0; i++)
     {
-        pSessions->dwSize = 0;
-        pSessions = (DPSESSIONDESC2*)&pSessions->dwFlags;
+        pDesc->dwSize = 0;
+        pDesc = (DPSESSIONDESC2*)&pDesc->dwFlags;
     }
-    sessions.guidApplication.Data1 = 3192584608;
-    sessions.guidApplication.Data4[4] = 246;
-    sessions.guidApplication.Data4[5] = 148;
-    sessions.guidApplication.Data4[6] = 'H';
-    sessions.guidApplication.Data4[7] = '8';
-    sessions.guidApplication.Data4[0] = 190;
-    sessions.guidApplication.Data4[1] = 'b';
-    sessions.guidApplication.Data4[2] = '\0';
-    sessions.guidApplication.Data4[3] = '@';
-    sessions.guidApplication.Data2 = 49937;
-    sessions.guidApplication.Data3 = 4561;
-    sessions.dwSize = 80;
-    hr = m_pDP->EnumSessions(&sessions, 0, EnumSessionsCallback, m_pContext2, DPENUMSESSIONS_AVAILABLE);
+    desc.guidApplication.Data1 = 3192584608;
+    desc.guidApplication.Data4[4] = 246;
+    desc.guidApplication.Data4[5] = 148;
+    desc.guidApplication.Data4[6] = 'H';
+    desc.guidApplication.Data4[7] = '8';
+    desc.guidApplication.Data4[0] = 190;
+    desc.guidApplication.Data4[1] = 'b';
+    desc.guidApplication.Data4[2] = '\0';
+    desc.guidApplication.Data4[3] = '@';
+    desc.guidApplication.Data2 = 49937;
+    desc.guidApplication.Data3 = 4561;
+    desc.dwSize = 80;
+    hr = m_pDP->EnumSessions(&desc, 0, EnumSessionsCallback2, m_nbSessions2, DPENUMSESSIONS_AVAILABLE);
 
     if (hr != DP_OK)
     {
@@ -121,6 +226,30 @@ BOOL CNetwork::EnumSessions()
         return FALSE;
     }
     return TRUE;
+}
+
+DPSESSIONDESC2* CNetwork::GetSessionDesc2(int index)
+{
+    if (m_nbSessions2 <= index)
+    {
+        return (DPSESSIONDESC2*)0;
+    }
+    return &(*m_pSessions2)[index].desc;
+}
+
+BOOL CNetwork::JoinSession(int index)
+{
+    int hr;
+    int i;
+    DPSESSIONDESC2* pDesc;
+    DPNAME dName;
+    DPSESSIONDESC2 desc;
+    NetSession2* pList;
+
+    if (m_nbSessions2 <= index)
+    {
+        return FALSE;
+    }
 }
 
 BOOL CNetwork::IsSessionFree()
@@ -140,32 +269,6 @@ char CNetwork::GetStringFromSessionData1(int index)
     return (char)m_pSessions.sessions[index].guidSession.Data4 + 4;
 }
 
-BOOL CNetwork::Create(int index)
-{
-    HRESULT hr;
-    LPDIRECTPLAY lpDP;
-    BOOL created;
-
-    created = FALSE;
-    lpDP = 0;
-    if ((int)m_pContext <= index)
-    {
-        return FALSE;
-    }
-
-    if (DirectPlayCreate(m_pSessions.sessions[index + -1].dwUser3, &lpDP, 0) == DP_OK)
-    {
-        if (lpDP->QueryInterface(&IID_00434010, m_pDP) == DP_OK)
-        {
-            created = TRUE;
-        }
-    }
-    if (lpDP != 0)
-    {
-        lpDP->Release();
-    }
-    return created;
-}
 
 BOOL CNetwork::CreateDirectPlayInterface(LPGUID lpguidServiceProvider, LPDIRECTPLAY2A* lplpDirectPlay2A)
 {
@@ -261,17 +364,6 @@ void CNetwork::FreeCurrentSession()
     return;
 }
 
-void CNetwork::FreeSessionList()
-{
-    if (m_pSessions2 != NULL)
-    {
-        free(m_pSessions2);
-    }
-    m_pContext2 = NULL;
-    m_pSessions2 = NULL;
-
-    return;
-}
 
 LPVOID CNetwork::GetContext()
 {
