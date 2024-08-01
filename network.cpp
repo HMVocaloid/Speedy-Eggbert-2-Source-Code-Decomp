@@ -99,6 +99,7 @@ void CNetwork::FreeProviderList()
 	m_providers.nb = 0;
 	*m_providers.list = NULL;
 }
+*/
 
 static BOOL EnumSessionsCallback(LPDPSESSIONDESC2 lpThisSD,
 	LPDWORD lpdwTimeOut, DWORD dwFlags, NamedGUIDList* lpContext)
