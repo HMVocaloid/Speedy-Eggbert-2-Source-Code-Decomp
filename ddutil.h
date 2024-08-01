@@ -18,6 +18,7 @@ extern DWORD                DDColorMatch(IDirectDrawSurface *pdds, COLORREF rgb)
 extern HRESULT              DDSetColorKey(IDirectDrawSurface *pdds, COLORREF rgb);
 extern HRESULT              DDSetColorKey2(IDirectDrawSurface *pdds, COLORREF rgb1, COLORREF rgb2);
 
+/*
 #ifdef __cplusplus
 }
 #endif  /* __cplusplus */

@@ -8,6 +8,8 @@
 #include <stdlib.h>
 #include "def.h"
 
+#pragma warning (disable : 4996)
+
 
 // Global Variables
 
@@ -24,7 +26,7 @@ void InitHInstance(HINSTANCE hInstance)
     g_hInstance = hInstance;
 }
 
-void OutputDebug(char *pMessage, char pMess)
+void OutputDebug(const char *pMessage)
 {
 #ifdef _DEBUG
     OutputDebugStringA(pMessage);
@@ -69,7 +71,7 @@ POINT ConvLongToPos(LPARAM lParam)
     pos.x = LOWORD(lParam);
     pos.y = HIWORD(lParam);
 
-    return;
+    return pos;
 }
 
 void InitRandom()
@@ -87,6 +89,7 @@ int Random(int min, int max)
     return (int)n;
 }
 
+/*
 BOOL IntersectRect(RECT dst, RECT src1, RECT src2)
 {
     dst.left = max(src1.left, src2.left);
@@ -100,6 +103,7 @@ BOOL IsRectEmpty(RECT rect)
 {
     return rect.left >= rect.right || rect.top >= rect.bottom;
 }
+*/
 
 void GetCurrentDir(char *pName, int lg)
 {
@@ -220,7 +224,7 @@ void AddUserPath(char *pFilename)
 	strcpy(pFilename, temp);
 }
 
-void TraceErrorDD(HRESULT hErr, char *sFile, int nLine)
+void TraceErrorDD(HRESULT hErr, const char *sFile, int nLine)
 {       
     char dderr[256];
     char err[1024];

@@ -19,7 +19,7 @@ typedef struct
 CharOffset;
 
 extern
-void DrawText(CPixmap *pPixmap, POINT pos, char *pText, int font);
+void DrawTextB(CPixmap *pPixmap, POINT pos, char *pText, int font);
 
 extern
 void DrawTextLeft(CPixmap* pPixmap, POINT pos, char *text, int font);

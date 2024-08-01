@@ -1,66 +1,26 @@
-﻿  menu.cpp
+﻿  button.cpp
 C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\def.h(237,9): warning C4005: 'MAXMOVEOBJECT': macro redefinition
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\menu.h(36,11): error C2143: syntax error: missing ';' before '*'
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\menu.h(36,5): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\menu.h(36,26): error C2238: unexpected token(s) preceding ';'
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\button.h(54,8): error C2143: syntax error: missing ';' before '*'
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\button.h(54,2): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\button.h(54,19): error C2238: unexpected token(s) preceding ';'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\menu.h(41,11): error C2143: syntax error: missing ';' before '*'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\menu.h(41,5): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\menu.h(41,26): error C2238: unexpected token(s) preceding ';'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\button.h(65,8): error C2143: syntax error: missing ';' before '*'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\button.h(65,2): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\button.h(65,19): error C2238: unexpected token(s) preceding ';'
 C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.h(20,1): error C2371: 'Button': redefinition; different basic types
 C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.h(94,43): error C2061: syntax error: identifier 'CDecor'
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.h(214,11): error C2143: syntax error: missing ';' before '*'
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.h(214,5): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.h(214,25): error C2238: unexpected token(s) preceding ';'
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.h(278,8): error C2086: 'int CEvent::m_tryPhase': redefinition
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.h(290,8): error C2086: 'int CEvent::m_mission': redefinition
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.h(104,11): error C3646: 'GetPhase': unknown override specifier
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.h(104,19): error C2059: syntax error: '('
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.h(104,21): error C2238: unexpected token(s) preceding ';'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.h(204,17): error C3646: 'm_phase': unknown override specifier
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.h(204,5): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.h(215,11): error C2143: syntax error: missing ';' before '*'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.h(215,5): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.h(215,25): error C2238: unexpected token(s) preceding ';'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.h(220,11): error C3646: 'm_phaseAfterMovie': unknown override specifier
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.h(220,2): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.h(279,8): error C2086: 'int CEvent::m_tryPhase': redefinition
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.h(291,8): error C2086: 'int CEvent::m_mission': redefinition
 C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.h(29,9): warning C4005: 'MAXMOVEOBJECT': macro redefinition
 C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.h(930,11): error C2086: 'Cellule CDecor::m_decor[100][100]': redefinition
 C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.h(950,8): error C2086: 'BOOL CDecor::m_bInvincible': redefinition
 C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.h(957,8): error C2371: 'CDecor::m_phase': redefinition; different basic types
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\button.h(9,1): error C2371: 'Button': redefinition; different basic types
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\button.h(11,7): error C2011: 'CButton': 'class' type redefinition
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\menu.h(7,7): error C2011: 'CMenu': 'class' type redefinition
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\menu.cpp(76,8): error C2027: use of undefined type 'CMenu'
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\menu.cpp(76,8): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\menu.cpp(78,5): error C2065: 'm_nbButtons': undeclared identifier
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\menu.cpp(79,5): error C2065: 'm_selRank': undeclared identifier
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\menu.cpp(80,1): warning C4508: '{ctor}': function should return a value; 'void' return type assumed
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\menu.cpp(82,9): error C2027: use of undefined type 'CMenu'
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\menu.cpp(82,9): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\menu.cpp(84,1): warning C4508: '{dtor}': function should return a value; 'void' return type assumed
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\menu.cpp(86,13): error C2027: use of undefined type 'CMenu'
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\menu.cpp(88,5): error C2065: 'm_nbButtons': undeclared identifier
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\menu.cpp(89,5): error C2065: 'm_selRank': undeclared identifier
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\menu.cpp(92,13): error C2027: use of undefined type 'CMenu'
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\menu.cpp(96,10): error C2065: 'm_nbButtons': undeclared identifier
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\menu.cpp(104,18): error C3861: 'MouseDown': identifier not found
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\menu.cpp(108,18): error C3861: 'MouseMove': identifier not found
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\menu.cpp(112,18): error C3861: 'MouseUp': identifier not found
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\menu.cpp(119,12): error C2027: use of undefined type 'CMenu'
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\menu.cpp(123,18): error C2065: 'm_pos': undeclared identifier
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\menu.cpp(123,37): error C2065: 'm_pos': undeclared identifier
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\menu.cpp(123,45): error C2065: 'm_dim': undeclared identifier
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\menu.cpp(124,18): error C2065: 'm_pos': undeclared identifier
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\menu.cpp(124,37): error C2065: 'm_pos': undeclared identifier
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\menu.cpp(124,45): error C2065: 'm_dim': undeclared identifier
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\menu.cpp(126,21): error C2065: 'm_pos': undeclared identifier
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\menu.cpp(127,21): error C2065: 'm_pos': undeclared identifier
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\menu.cpp(127,53): error C2065: 'm_nbCel': undeclared identifier
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\menu.cpp(129,18): error C2065: 'm_nbButtons': undeclared identifier
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\menu.cpp(133,13): error C2027: use of undefined type 'CMenu'
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\menu.cpp(138,13): error C2027: use of undefined type 'CMenu'
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\menu.cpp(140,2): error C2065: 'm_mousePos': undeclared identifier
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\menu.cpp(141,2): error C2065: 'm_selRank': undeclared identifier
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\menu.cpp(143,15): error C2065: 'm_pos': undeclared identifier
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\menu.cpp(144,12): error C2065: 'm_pos': undeclared identifier
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\menu.cpp(144,20): error C2065: 'm_dim': undeclared identifier
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\menu.cpp(145,12): error C2065: 'm_pos': undeclared identifier
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\menu.cpp(146,12): error C2065: 'm_pos': undeclared identifier
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\menu.cpp(146,20): error C2065: 'm_dim': undeclared identifier
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\menu.cpp(154,13): error C2027: use of undefined type 'CMenu'
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\menu.cpp(156,5): error C2065: 'm_mousePos': undeclared identifier
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\menu.cpp(157,5): error C2065: 'm_selRank': undeclared identifier
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\menu.cpp(162,13): error C2027: use of undefined type 'CMenu'
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\menu.cpp(164,10): error C2065: 'm_selRank': undeclared identifier
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\menu.cpp(166,21): error C2065: 'm_hWnd': undeclared identifier
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\menu.cpp(166,40): error C2065: 'm_selRank': undeclared identifier

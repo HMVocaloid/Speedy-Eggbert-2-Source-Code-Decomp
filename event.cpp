@@ -1692,6 +1692,11 @@ void CEvent::SomethingDecor()
 	m_pDecor->TreatInput(0);
 }
 
+void CEvent::ReadInput()
+{
+
+}
+
 void CEvent::HandleInputs()
 {
 	BOOL state;
@@ -2456,9 +2461,9 @@ BOOL CEvent::ChangePhase(UINT phase)
 
 }
 
-HWND CEvent::GetPhase()
+WMessage CEvent::GetPhase()
 {
-	return m_hWnd;
+	return m_phase;
 }
 
 // Implement LoadLevel

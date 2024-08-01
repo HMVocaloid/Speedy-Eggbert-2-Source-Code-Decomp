@@ -16,6 +16,8 @@
 #include "ddutil.h"
 #include "misc.h"
 
+#pragma warning (disable :4996)
+
 
 // Le message :
 // First-chance exception in Blupi.exe (GDI32.DLL): 0xC0000005: Access Violation.
@@ -87,12 +89,12 @@ extern "C" IDirectDrawSurface * DDLoadBitmap(IDirectDraw *pdd, LPCSTR szBitmap, 
     //
     //  try to load the bitmap as a resource, if that fails, try it as a file
     //
-    hbm = (HBITMAP)LoadImage(GetModuleHandle(NULL), szBitmap, IMAGE_BITMAP, dx, dy, LR_CREATEDIBSECTION);
+    hbm = (HBITMAP)LoadImageA(GetModuleHandle(NULL), szBitmap, IMAGE_BITMAP, dx, dy, LR_CREATEDIBSECTION);
 
 	if ( g_bDebug )  OutputDebug("DDLoadBitmap\n");
     if (hbm == NULL)
 	{
-        hbm = (HBITMAP)LoadImage(NULL, szBitmap, IMAGE_BITMAP, dx, dy, LR_LOADFROMFILE|LR_CREATEDIBSECTION);  // (@)
+        hbm = (HBITMAP)LoadImageA(NULL, szBitmap, IMAGE_BITMAP, dx, dy, LR_LOADFROMFILE|LR_CREATEDIBSECTION);  // (@)
 	}
 
     if ( hbm == NULL )  return NULL;
@@ -145,10 +147,10 @@ HRESULT DDReLoadBitmap(IDirectDrawSurface *pdds, LPCSTR szBitmap)
     //
     //  try to load the bitmap as a resource, if that fails, try it as a file
     //
-    hbm = (HBITMAP)LoadImage(GetModuleHandle(NULL), szBitmap, IMAGE_BITMAP, 0, 0, LR_CREATEDIBSECTION);
+    hbm = (HBITMAP)LoadImageA(GetModuleHandle(NULL), szBitmap, IMAGE_BITMAP, 0, 0, LR_CREATEDIBSECTION);
 
     if (hbm == NULL)
-        hbm = (HBITMAP)LoadImage(NULL, szBitmap, IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE|LR_CREATEDIBSECTION);
+        hbm = (HBITMAP)LoadImageA(NULL, szBitmap, IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE|LR_CREATEDIBSECTION);
 
     if (hbm == NULL)
     {
@@ -265,7 +267,7 @@ extern "C" IDirectDrawPalette * DDLoadPalette(IDirectDraw *pdd, LPCSTR szBitmap)
     //
     // get a pointer to the bitmap resource.
     //
-    if (szBitmap && (h = FindResource(NULL, szBitmap, RT_BITMAP)))
+    if (szBitmap && (h = FindResourceA(NULL, szBitmap, RT_BITMAP)))
     {
 		if ( g_bDebug )  OutputDebug("DDLoadPalette -a\n");
         lpbi = (LPBITMAPINFOHEADER)LockResource(LoadResource(NULL, h));

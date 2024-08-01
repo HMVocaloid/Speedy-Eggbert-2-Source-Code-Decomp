@@ -101,10 +101,11 @@ public:
 	int		GetImageWorld();
 	BOOL	IsHelpHide();
 	BOOL	ChangePhase(UINT phase);
-	HWND	GetPhase();
+	WMessage GetPhase();
 	void	MovieToStart();
 	BOOL	NetworkNuggets(int fuck);
 	void	HandleInputs();
+	void	ReadInput();
 	void	TryInsert();
 	void	SomethingUserMissions(LPCSTR lpFileName, LPCSTR thing);
 	void	RestoreGame();
@@ -151,6 +152,8 @@ public:
 	BOOL	GetPause();
 	void	GetDoors(int doors);
 	BOOL	IsShift();
+	BOOL    IsMulti();
+	BOOL	IsPrivate();
 
 	void	DemoStep();
 	void	DebugDisplay(char m);
@@ -179,9 +182,7 @@ protected:
 	void	PrivateLibelle();
 	BOOL	ReadLibelle(int world, BOOL bSchool, BOOL bHelp);
 	BOOL	WriteInfo();
-	BOOL	ReadInfo();
-	BOOL    IsMulti();
-	BOOL	IsPrivate();	
+	BOOL	ReadInfo();	
 	void	TryPhase();
 	void	UnTryPhase();
 	int		GetTryPhase();
@@ -200,7 +201,7 @@ protected:
     int         m_mission;
     int         m_private;
     int         m_maxMission;
-    int		    m_phase;
+    WMessage    m_phase;
     int         m_index;
 	int			m_playerIndex;
     BOOL        m_bSchool;
@@ -216,7 +217,7 @@ protected:
     CMovie*		m_pMovie;
 	CNetwork* 	m_pNetwork;
 	char		m_movieToStart[MAX_PATH];
-	int			m_phaseAfterMovie;
+	WMessage	m_phaseAfterMovie;
 	CButton		m_buttons[MAXBUTTON];
 	int			m_lastFloor[MAXBUTTON];
 	int			m_lastObject[MAXBUTTON];

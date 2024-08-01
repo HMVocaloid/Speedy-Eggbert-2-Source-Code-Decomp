@@ -1,6 +1,11 @@
 // Menu.h
 
+#pragma once
 
+using namespace std;
+
+#include <minwindef.h>
+#include <windef.h>
 
 //////////////////////////////////////////////////////////////////////
 

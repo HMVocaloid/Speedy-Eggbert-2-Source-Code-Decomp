@@ -9,6 +9,7 @@
 #include "text.h"
 #include "texttables.h"
 
+#pragma warning (disable: 4996)
 
 /////////////////////////////////////////////////////////////////////////////
 
@@ -77,7 +78,7 @@ int GetCharWidth(char c, int font)
 
 // Affiche un texte.
 
-void DrawText(CPixmap *pPixmap, POINT pos, char *pText, int font)
+void DrawTextB(CPixmap *pPixmap, POINT pos, char *pText, int font)
 {
 	int		rank;
 
@@ -104,12 +105,13 @@ void DrawText(CPixmap *pPixmap, POINT pos, char *pText, int font)
 	}
 }
 
-void DrawTextLeft(CPixmap pPixmap, POINT pos, char *text, int font)
+void DrawTextLeft(CPixmap* pPixmap, POINT pos, char *text, int font)
 {
-	DrawText(pPixmap, pos, text, font);
+	DrawTextB(pPixmap, pos, text, font);
 	return;
 }
 
+/*
 void DrawTextNew(CPixmap* pPixmap, POINT pos, char* pText, int font)
 {
 	char text;
@@ -123,6 +125,7 @@ void DrawTextNew(CPixmap* pPixmap, POINT pos, char* pText, int font)
 		text = *pText;
 	}
 }
+*/
 
 //Implement later
 
@@ -216,7 +219,7 @@ void DrawTextRect(CPixmap *pPixmap, POINT pos, char *pText,
 
 		if ( pente == 0 )
 		{
-			DrawText(pPixmap, pos, pDest, font);
+			DrawTextB(pPixmap, pos, pDest, font);
 		}
 		else
 		{
@@ -261,7 +264,7 @@ void DrawTextCenter(CPixmap *pPixmap, POINT pos, char *pText, int font)
 		pDest = text;
 		start.x = pos.x - GetTextWidth(pDest)/2;
 		start.y = pos.y;
-		DrawText(pPixmap, start, pDest, font);
+		DrawTextB(pPixmap, start, pDest, font);
 
 		if ( pDest[0] == 0 )  // ligne vide ?
 		{

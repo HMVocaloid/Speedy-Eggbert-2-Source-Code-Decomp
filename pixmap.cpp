@@ -278,6 +278,7 @@ BOOL CPixmap::Restore()
 	return TRUE;
 }
 
+/*
 void HudIcon(int channel, int rank, POINT pos)
 {
 	pos.x = (int)((double)pos.x + CPixmap::originX)
@@ -294,6 +295,7 @@ void CPixmap::QuickIcon(int channel, int rank, POINT pos)
 	};
 	DrawIcon(channel, rank, rect, 1.0, TRUE);
 }
+*/
 
 // Initialise la palette syst�me.
 
@@ -336,18 +338,19 @@ void CPixmap::SetTrueColorDecor(BOOL bTrueColorDecor)
 {
 	m_bTrueColorDecor = bTrueColorDecor;
 }
-
+/*
 void CPixmap::DrawChar(int rank, POINT pos, double size)
 {
 	pos.x = (int)((double)pos.x + originX);
 	pos.y = (int)((double)pos.y + originY);
 	RECT rect;
 	rect.left = pos.x,
-	rect.top = pos.y,
-	rect.right = pos.x + (int)(32.0 * size),
-	rect.bottom = pos.y + (int)(32.0 * size)
+		rect.top = pos.y,
+		rect.right = pos.x + (int)(32.0 * size),
+		rect.bottom = pos.y + (int)(32.0 * size);
 	DrawIcon(6, rank, rect, 1.0, FALSE);
 }
+*/
 
 // Indique si l'on utilise une palette.
 
@@ -667,7 +670,7 @@ BOOL CPixmap::Cache(int channel, char *pFilename, POINT totalDim, POINT iconDim,
 
 // Cache une image globale.
 
-BOOL CPixmap::Cache2(int channel, char *pFilename, POINT totalDim, POINT iconDim, BOOL bUsePalette)
+BOOL CPixmap::Cache2(int channel, const char *pFilename, POINT totalDim, POINT iconDim, BOOL bUsePalette)
 {
 	POINT		iconDim;
 
@@ -730,6 +733,7 @@ BOOL CPixmap::Cache(int channel, HBITMAP hbm, POINT totalDim)
 	return TRUE;
 }
 
+/*
 BOOL CPixmap::CacheAll(BOOL cache, HWND hWnd, BOOL bFullScreen, BOOL bTrueColor, BOOL bTrueColorDecor, int mouseType, char* pFilename, int region)
 {
 	char filename[100];
@@ -804,6 +808,7 @@ BOOL CPixmap::CacheAll(BOOL cache, HWND hWnd, BOOL bFullScreen, BOOL bTrueColor,
 	SetTransparent(CHMAP, )
 
 }
+*/
 
 // Purge une image.
 

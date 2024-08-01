@@ -6,7 +6,7 @@
 using namespace std;
 
 extern void InitHInstance(HINSTANCE hInstance);
-extern void OutputDebug(char *pMessage);
+extern void OutputDebug(const char *pMessage);
 extern void LoadString(UINT nID, char *pBuffer, int lgBuffer);
 extern void ChangeSprite(int sprite);
 
@@ -22,5 +22,5 @@ extern void GetCurrentDir(char *pName, int lg);
 extern void AddCDPath(char *pFilename);
 extern void AddUserPath(char *pFilename);
 
-extern void TraceErrorDD(HRESULT hErr, char *sFile, int nLine);
+extern void TraceErrorDD(HRESULT hErr, const char *sFile, int nLine);
 extern void TraceErrorDS(HRESULT hErr, char *sFile, int nLine);

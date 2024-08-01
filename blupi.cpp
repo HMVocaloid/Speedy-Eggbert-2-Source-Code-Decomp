@@ -220,30 +220,34 @@ void UpdateFrame(void)
 {
     RECT            clip, rcRect;
 	UINT			phase;
+	BOOL			type;
 	POINT			posMouse;
 	int				i, term, speed, targetlevel;
 
 	g_pPixmap->MouseBackClear();  // enl�ve la souris dans "back"
 	posMouse = g_pEvent->GetLastMousePos();
 
-	phase = g_pEvent.GetPhase();
+
+	g_pEvent->ReadInput();
+	phase = g_pEvent->GetPhase();
 
 	if ( phase == g_lastPhase &&
 		 phase == WM_PHASE_PLAY || phase == WM_PHASE_PLAYTEST || phase == WM_PHASE_BUILD )
 	{
-//?		rcRect.left   = POSDRAWX;
-//?		rcRect.top    = POSDRAWY;
-//?		rcRect.right  = POSDRAWX+DIMDRAWX;
-//?		rcRect.bottom = POSDRAWY+DIMDRAWY;
-//?		g_pPixmap->DrawImage(-1, CHBACK, rcRect, 1);  // dessine le fond
-	}
-	else
-	{
-		rcRect.left   = 0;
-		rcRect.top    = 0;
-		rcRect.right  = LXIMAGE;
-		rcRect.bottom = LYIMAGE;
-		g_pPixmap->DrawImage(-1, CHBACK, rcRect, 1);  // dessine le fond
+		type = g_pDecor->GetPause();
+		if (type == FALSE)
+		{
+			speed = g_pEvent->GetSpeed();
+			term = 0;
+			speed = speed * g_speedRate;
+			if (0 < speed)
+			{
+				do {
+					g_pDecor->MoveStep();
+					g_pEvent->DemoStep();
+					term++;
+				} while (term < speed);
+		}
 	}
 
 	if (phase == WM_PHASE_INIT)
@@ -292,8 +296,22 @@ void UpdateFrame(void)
 	if ( phase == WM_PHASE_PLAY )
 	{
 		term = g_pDecor->IsTerminated();
+		type = g_pEvent->IsPrivate();
+
+		if (type == FALSE)
+		{
+			type = g_pEvent->IsMulti();
+		}
+		if (type == FALSE)
+		{
+			if (speed == -1)
+			{
+
+			}
+		}
 		if ( term == 1 )  g_pEvent->ChangePhase(WM_PHASE_LOST);  // perdu
 		if ( term == 2 )  g_pEvent->ChangePhase(WM_PHASE_WINMOVIE);   // gagn�
+
 	}
 
 	g_pPixmap->MouseBackDraw();  // remet la souris dans "back"
