@@ -7,6 +7,7 @@
 #include "movie.h"
 #include "menu.h"
 #include "button.h"
+#include "decor.h"
 
 typedef struct
 {
@@ -34,7 +35,7 @@ typedef struct
 	int GamerLength[10 + 200];
 	int MaxGamer[3];
 	int TotalLength[10 + (10 + 200) + 3];
-	byte data;
+	BYTE data;
 }
 GameData;
 

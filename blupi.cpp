@@ -77,6 +77,7 @@ BOOL ReadConfig (LPSTR lpCmdLine)
     char*       pText;
     int         nb;
 	int 		i;
+	_MEMORYSTATUS memstatus;
 
     file = fopen("data\\config.def", "rb");
     if ( file == NULL )   return FALSE;
@@ -199,6 +200,17 @@ BOOL ReadConfig (LPSTR lpCmdLine)
 		if (i == 16) g_bTrueColorDecor = 1;
 	}
 
+	memstatus.dwLength = 32;
+	GlobalMemoryStatus(&memstatus);
+	if (memstatus.dwTotalPhys < 32000000)
+	{
+		g_bBenchmarkSuccess = FALSE;
+	}
+	if (g_bBenchmarkSuccess = FALSE)
+	{
+		g_bTrueColorBack = FALSE;
+		g_bTrueColorDecor = FALSE;
+	}
 	return TRUE;
 }
 
@@ -214,7 +226,7 @@ void UpdateFrame(void)
 	g_pPixmap->MouseBackClear();  // enl�ve la souris dans "back"
 	posMouse = g_pEvent->GetLastMousePos();
 
-	phase = g_pEvent->GetPhase();
+	phase = g_pEvent.GetPhase();
 
 	if ( phase == g_lastPhase &&
 		 phase == WM_PHASE_PLAY || phase == WM_PHASE_PLAYTEST || phase == WM_PHASE_BUILD )

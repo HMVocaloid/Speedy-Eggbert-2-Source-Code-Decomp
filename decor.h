@@ -3,12 +3,14 @@
 #pragma once
 
 #include <Windows.h>
+#include <minwindef.h>
 
 #include "DEF.H"
 #include "SOUND.H"
 #include "PIXMAP.H"
 #include "network.h"
 #include "jauge.h"
+#include "event.h"
 
 /////////////////////////////////////////////////////////////////////////////
 
@@ -182,7 +184,7 @@ typedef enum
 	icon_element_blupiangel = 230,
 	icon_element_dynamite = 252
 }
-Icon;
+IconItem;
 
 typedef enum
 {
@@ -521,8 +523,6 @@ public:
 	BOOL	AddLinkCaisse(int rank);
 	void	InitDecor();
 	void	InitAfterBuild();
-	void	SetTime(int time);
-	int	    GetTime();
 	void	PlayPrepare(BOOL bTest);
 	void	BuildPrepare();
 	void	Build();
@@ -539,8 +539,6 @@ public:
 	BOOL	TestPushCaisse(int i, POINT pos, BOOL bPop);
 	void	SearchLinkCaisse(int rank, BOOL bPop);
 	void	ResetHili();
-	BOOL	LoadImages();
-	int		IsTerminated();
 	BOOL	LoadBackgroundImages();
 	BOOL	TestPushOneCaisse(int i, POINT move, int b);
 	void	ClearFog();
@@ -610,14 +608,10 @@ public:
 	void	UndoCopy();
 	void	UndoBack();
 	BOOL	IsUndo();
-	BOOL	GetShowSecret();
 	BOOL	GetNetPacked();
 	BOOL	GetNetMovePredict();
 	UINT	GetPhase();
 	char	GetMissionTitle();
-	void	SetRegion(int region);
-	int		GetMusic();
-	void	SetMusic(int music);
 	void	GetDims(POINT* ptr);
 	void	SetDims(POINT dims);
 	int		GetNbVies();
@@ -692,7 +686,6 @@ public:
 	int		MoveObjectDelete(POINT cel);
 	int		MoveObjectFree();
 	int		SortGetType(int type);
-	void	MoveObjectSort();
 	int		MoveObjectSearch(POINT pos);
 	int		MoveObjectSearch(POINT pos, int type);
 	void	VoyageInit(POINT start, POINT end, int icon, int channel);
@@ -709,7 +702,6 @@ public:
 	int		AscenseurDetect(RECT rect, POINT oldpos, POINT newpos);
 	void	ByeByeHelico();
 	void	ByeByeAdd(ByeByeObject byeByeObject, int channel, int icon, POINT pos, double rotationSpeed, double animationSpeed);
-	void	ByeByeStep();
 	void	BlupiSearchIcon();
 	void	ByeByeDraw(POINT posDecor);
 	void	AscenseurVertigo(int i, BOOL bVertigoLeft, BOOL bVertigoRight);
@@ -723,7 +715,6 @@ public:
 	void	BlupiStep();
 	BOOL	DecorDetect(RECT rect);
 	BOOL	DecorDetect(RECT rect, BOOL bCaisse);
-	int		IsWorld(POINT pos);
 	BOOL	SearchDoor(int n, POINT cel, POINT blupi);
 	BOOL	SearchGold(int n, POINT cel);
 	BOOL	TestPath(RECT rect, POINT start, POINT end);
@@ -767,7 +758,6 @@ protected:
 	BOOL		m_blupiRestart;
     POINT       m_worldDims;
     POINT       m_selectedCelPos;
-	BOOL		m_bSuperBlupi;
     WMessage    m_phase;
 	int			m_voyagePhase;
 	POINT		m_sucettePos;
@@ -784,7 +774,6 @@ protected:
     int         m_nbCases;
 	int			m_linkCaisse[MAXMOVEOBJECT];
 	POINT		m_blupiFifoPos[10];
-	int			m_blupiFifoNb;
     int         m_caseIndexes[200];
     int         m_nbSomethings;
 	int			m_blupiOffsetY;
@@ -821,9 +810,7 @@ protected:
 	int			m_nbRankCaisse;
 	int			m_rankCaisse[MAXMOVEOBJECT];
 	int			m_nbLinkCaisse;
-	BOOL		m_bInvincible;
     int         m_activeLiftIndex;
-    int         m_blupiChannel;
 	double		m_blupiSpeedX;
 	double		m_blupiSpeedY;
 	BOOL		m_blupiFocus;
@@ -900,7 +887,7 @@ protected:
 	POINT		m_netVitesses[4];
 	POINT		m_netPacketPosition;
 	Icon		m_netPacketIcon;
-    NetEvent    m_netEvents[20];
+    NamedGUID   m_netEvents[20];
     int         m_netEventIndex1;
 	int			m_netEventIndex2;
 	int			m_netEventIndex3;

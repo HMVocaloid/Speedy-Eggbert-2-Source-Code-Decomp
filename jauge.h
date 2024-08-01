@@ -3,6 +3,9 @@
 
 
 //////////////////////////////////////////////////////////////////////////
+#include <minwindef.h>
+#include <Windows.h>
+#include "decor.h"
 
 class CJauge
 {
@@ -29,7 +32,6 @@ public:
 protected:
     HWND        m_hWnd;
     CPixmap*    m_pPixmap;
-    CDecor*     m_pDecor;
     CSound*     m_pSound;
     BOOL        m_bHide;
     POINT       m_pos;
