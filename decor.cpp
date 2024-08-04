@@ -19,6 +19,7 @@
 #include "event.h"
 #include "dectables.h"
 #include "jauge.h"
+#include "network.h"
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -40,6 +41,7 @@ CDecor::CDecor()
     {
 		m_lastDecorIcon[i] = 0;
     }
+	m_lastRegion = 0;
     m_time = 0;
     m_bAllMissions = FALSE;
     m_bInvincible  = FALSE;
@@ -88,6 +90,104 @@ void CDecor::Create(HWND hWnd, CSound* pSound, CPixmap* pPixmap, CNetwork* pNetw
     m_jauges[0].SetHide(TRUE);
     m_jauges[1].Create(m_hWnd, m_pPixmap, m_pSound, pos2, 3, FALSE);
     m_jauges[1].SetHide(TRUE);
+	NetMessageIndexFlush();
+	NotifFlush();
+}
+
+void CDecor::NetMessageIndexFlush()
+{
+	m_netMessageIndex1 = 0;
+	m_netMessageIndex2 = 0;
+	m_netMessageIndex3 = 0;
+	return;
+}
+
+void CDecor::NotifFlush()
+{
+	int players;
+	char* notifBuffer[100];
+
+	notifBuffer = m_notifText;
+
+	m_notifTime = 0;
+}
+
+BOOL CDecor::NetMessagePush(NetMessage* message)
+{
+	NetMessage* messages;
+	BYTE		data;
+	short		pos;
+	int			i;
+
+	if (m_netMessageIndex1 == NETEVENTMAX)
+	{
+		return FALSE;
+	}
+	
+	i = m_netMessageIndex2;
+	data = message->data1;
+	pos = message->x;
+	messages = m_netMessages + i;
+	messages->messageType = message->messageType;
+	messages->data1 = data;
+	pos = message->channel;
+
+	m_netMessages[i].y = message->y;
+	m_netMessages[i].channel = pos;
+	i = m_netMessageIndex2 + 1;
+	m_netMessageIndex1++;
+	m_netMessageIndex2 = i;
+
+	if (i == NETEVENTMAX)
+	{
+		m_netEventIndex2 = 0;
+	}
+	return TRUE;
+}
+
+void CDecor::NetSendData(BYTE bufferSize, UCHAR send)
+{
+	int data;
+
+	data = ((UINT)bufferSize, 4);
+	data = (send, (int)data);
+	m_pNetwork->Send(&data, 4, DPSEND_GUARANTEED);
+	return;
+}
+
+void CDecor::NetPlayerCollide(POINT pos, int* out)
+{
+	tagRECT rect1;
+	RECT	rect2;
+	RECT	rect3;
+
+
+}
+
+void CDecor::NetPlaySound(short channel, POINT pos)
+{
+	NetMessage event;
+
+	event.y = (short)pos.y;
+	event.x = (short)pos.x;
+	event.messageType = PK_PLAYSOUND;
+	event.data1 = 0;
+	event.channel = channel;
+	NetMessagePush(&event);
+	return;
+}
+
+void CDecor::NetStopCloud(int rank)
+{
+	NetMessage cloud;
+
+	cloud.data1 = 0;
+	cloud.x = 0;
+	cloud.y = 0;
+	cloud.messageType = 60;
+	cloud.channel = (short)rank;
+	NetMessagePush(cloud);
+	return;
 }
 
 // The only seemingly sane function.
@@ -115,17 +215,21 @@ BOOL CDecor::LoadImages()
 
 void CDecor::InitGamer()
 {
-    m_nbVies = 3;
-	int ptr = m_doors;
-	for (int i = 50; i != 0; i--)
-	{
-		*(int*)ptr = 0x1010101;
-		ptr += 4;
-	}
+	int	  i;
+	BYTE* door;
 
+	m_nbVies = 3;
+
+	door = m_doors;
+
+	for (i != 0; i = 50; i++)
+	{
+		*(int*)door = 0x1010101;
+		door = door + 4;
+	}
+	return;
 }
 
-// The fuck does this even do?
 
 void CDecor::InitDecor()
 {
@@ -353,6 +457,8 @@ void CDecor::PlayPrepare(BOOL bTest)
     m_blupiValidPos = m_blupiPos;
     m_blupiFifoNb = 0;
     m_blupiTimeFire = 0;
+	NotifFlush();
+	NetDataFlush();
     m_voyageIcon = -1;
     m_jauges[0].SetHide(TRUE);
     m_jauges[1].SetHide(TRUE);
@@ -396,9 +502,13 @@ void CDecor::BuildPrepare()
             m_moveObject[i]->type = 0;
         }
     }
+	m_time = 0;
     m_voyageIcon = -1;
-    m_time = 0;
+	m_posCelHili.x = -1;
+	m_2ndPositionCalculationSlot = -1;
     m_bPause = FALSE;
+	NetDataFlush();
+	return;
 }
 
 int CDecor::IsTerminated()
@@ -672,7 +782,7 @@ POINT CDecor::DecorNextAction()
 }
 
 
-void CDecor::TreatInput(UINT input)
+void CDecor::SetInput(UINT input)
 {
     m_keyPress = input;
     if (m_blupiInvert != 0)
@@ -5181,6 +5291,20 @@ void CDecor::SetTeam(int team)
     m_team = team;
 }
 
+void CDecor::MemorizeDoors(BYTE* doors)
+{
+	int i;
+
+	i = 0;
+
+	do
+	{
+		m_doors[i] = doors[i];
+		i++;
+	} while (i < 200);
+	return;
+}
+
 BOOL CDecor::BlupiIsGround()
 {
     if (m_blupiTransport == -1)
@@ -8646,12 +8770,23 @@ void CDecor::DoorsLost()
     m_nbVies = 3;
 }
 
+void CDecor::OutputNetDebug(char* text)
+{
+	char textbuffer[100];
+
+	if (m_bNetDebug != FALSE)
+	{
+		sprintf(textbuffer, "/ snd=%d(%d)_rcv=%d(%d)", m_netPacketsSent, m_netPacketsSent2, m_netPacketsRecieved, m_netPacketsRecieved2);
+
+	}
+}
+
 void CDecor::InitalizeDoors(GameData gameData)
 {
 	gameData.GetDoors(m_doors);
 }
 
-void CDecor::GetBlupiInfo(BOOL bHelico, BOOL bJeep, BOOL bSkate, BOOL bNage)
+void CDecor::GetBlupiInfo(BOOL* bHelico, BOOL* bJeep, BOOL* bSkate, BOOL* bNage)
 {
     bHelico = m_blupiHelico;
     bJeep = (m_blupiJeep | m_blupiTank);

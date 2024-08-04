@@ -82,6 +82,19 @@ typedef enum
 }
 cheat;
 
+typedef enum
+{
+	KEY_NONE,
+	KEY_LEFT,
+	KEY_RIGHT,
+	KEY_UP,
+	KEY_DOWN,
+	KEY_JUMP,
+	INPUT_DOWN,
+	INPUT_UP,
+	KEY_FIRE
+};
+
 class CEvent
 {
 public:
@@ -89,7 +102,7 @@ public:
 	~CEvent();
 
 
-	void	OutputNetDebug(char* str);
+	void	OutputNetDebug(const char* str);
 	POINT	GetMousePos();
 	void	Create(HWND hWnd, CPixmap *pPixmap, CDecor *pDecor, CSound *pSound, CMovie *pMovie, CNetwork *pNetwork);
 	void	SetFullScreen(BOOL bFullScreen);
@@ -123,7 +136,9 @@ public:
 	int		GetMenu(int button);
 	void	SetMenu(int button, int menu);
 	void	SomethingDecor();
-	void	PauseStatus(UINT pause, int multiplayer);
+
+	void	NetSetPause(BOOL bPause, int players);
+	void	NetSendLobby();
 
 	BOOL	DrawButtons();
 	BOOL	TextSomething();
@@ -141,6 +156,8 @@ public:
 	BOOL	StartMovie(char *pFilename);
 	void	StopMovie();
 	BOOL	IsMovie();
+
+	void	FlushInput();
 
 	BOOL	FlipObject();
 
@@ -182,7 +199,7 @@ protected:
 	void	PrivateLibelle();
 	BOOL	ReadLibelle(int world, BOOL bSchool, BOOL bHelp);
 	BOOL	WriteInfo();
-	BOOL	ReadInfo();	
+	BOOL	ReadInfo(int gamer);	
 	void	TryPhase();
 	void	UnTryPhase();
 	int		GetTryPhase();
@@ -195,10 +212,28 @@ protected:
 	void	DemoPlayStop();
 	void	DemoRecEvent(UINT message, UINT input, WPARAM wParam, LPARAM lParam);
 
+	//		Network Functions
+	BOOL	NetCreate(int session);
+	BOOL	NetEnumSessions();
+	int		NetSearchPlayer(DPID dpid);
+	void	NetStartPlay();
+	void	NetSend(NetMessageType message, USHORT data);
+	void	NetDraw();
+	void	ChatSend();
+
+	void	MouseRelease();
+	void	MouseCapture();
+
+
 protected:
     int         m_speed;
     int         m_exercice;
     int         m_mission;
+	char		m_gamerName[100];
+	void*		m_somethingJoystick;
+	int			m_menuIndex;
+	int			m_menuDecor[10];
+	BOOL		m_bMouseRelease;
     int         m_private;
     int         m_maxMission;
     WMessage    m_phase;

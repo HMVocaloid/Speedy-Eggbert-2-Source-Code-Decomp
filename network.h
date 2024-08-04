@@ -38,6 +38,26 @@ typedef struct
 }
 NamedGUIDList;
 
+typedef struct
+{
+	BYTE	messageType;
+	BYTE	data1;
+	short	x;
+	short	y;
+	short   channel;
+}
+NetMessage;
+
+typedef enum
+{
+	MESS_RESUME,
+	MESS_PAUSE,
+	MESS_START,
+	MESS_LEAVE,
+	MESS_LOST,
+}
+NetMessageType;
+
 class CNetwork
 {
 public:
@@ -60,14 +80,17 @@ public:
 	void FreeUnknownList();
 	BOOL IsHost();
 
+	NetPlayer		m_players[4];
+	DPID			m_dpid;
+
 protected:
 	LPDIRECTPLAY2	m_pDP;
 	NamedGUIDList	m_providers;
 	NamedGUIDList	m_sessions;
 	NamedGUIDList	m_unknown;
 	BOOL			m_bHost;
-	DPID			m_dpid;
-	NetPlayer		m_players[4];
+	
+//  NetPlayer		m_players[4];
 };
 
 static BOOL EnumProvidersCallback(LPGUID lpguidSP, LPSTR lpSTName,

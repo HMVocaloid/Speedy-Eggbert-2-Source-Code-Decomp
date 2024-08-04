@@ -733,7 +733,6 @@ BOOL CPixmap::Cache(int channel, HBITMAP hbm, POINT totalDim)
 	return TRUE;
 }
 
-/*
 BOOL CPixmap::CacheAll(BOOL cache, HWND hWnd, BOOL bFullScreen, BOOL bTrueColor, BOOL bTrueColorDecor, int mouseType, char* pFilename, int region)
 {
 	char filename[100];
@@ -745,9 +744,9 @@ BOOL CPixmap::CacheAll(BOOL cache, HWND hWnd, BOOL bFullScreen, BOOL bTrueColor,
 
 	m_dim = dim;
 
-	if (cache == 0)
+	if (cache == FALSE)
 	{
-		~CPixmap();
+		delete this;
 		hWnd = m_hWnd;
 		bFullScreen = m_bFullScreen;
 		bTrueColor = m_bTrueColor;
@@ -755,21 +754,24 @@ BOOL CPixmap::CacheAll(BOOL cache, HWND hWnd, BOOL bFullScreen, BOOL bTrueColor,
 		mouseType = m_mouseType;
 	}
 
-	if (Create(hWnd, dim, bFullScreen, mouseType, bTrueColorDecor, bTrueColor) == 0)
+	if (Create(hWnd, dim, bFullScreen, mouseType, bTrueColorDecor, bTrueColor) == FALSE)
 	{
-		return 0;
-	}
-	if (Cache2(0, "init.blp", totalDim, iconDim, TRUE) == 0)
-	{
-		return 0;
+		return FALSE;
 	}
 
 	OutputDebug("Image:_init\n");
+	if (Cache2(0, "init.blp", totalDim, iconDim, TRUE) == FALSE)
+	{
+		return FALSE;
+	}
 
+	OutputDebug("SavePalette\n");
+	SavePalette();
 	OutputDebug("InitSysPalette\n");
 	InitSysPalette();
 	SetDebug(FALSE);
-	if (cache == 0)
+
+	if (cache == FALSE)
 	{
 		if (Cache2(0, pFilename, totalDim, iconDim, FALSE) == NULL)
 		{
@@ -781,34 +783,91 @@ BOOL CPixmap::CacheAll(BOOL cache, HWND hWnd, BOOL bFullScreen, BOOL bTrueColor,
 		DrawImage(0, 0, rect, 1);
 		Display();
 	}
-	if (Cache2(CHOBJECT, "object.blp", totalDim, iconDim, FALSE) == NULL)
+	if (Cache2(CHOBJECT, "object.blp", totalDim, iconDim, FALSE) == FALSE)
 	{
-		return NULL;
+		return FALSE;
+	}
+	SetTransparent(CHOBJECT, RGB(0, 0, 255));
+	if (Cache2(CHBLUPI, "blupi000.blp", totalDim, iconDim, FALSE) == FALSE)
+	{
+		return FALSE;
 	}
 	SetTransparent(CHBLUPI, RGB(0, 0, 255));
-	if (Cache2(CHBLUPI, "blupi000.blp", totalDim, iconDim, FALSE) == NULL)
+	if (Cache2(CHBLUPI1, "blupi001.blp", totalDim, iconDim, FALSE) == FALSE)
 	{
-		return NULL;
+		return FALSE;
 	}
 	SetTransparent(CHBLUPI1, RGB(0, 0, 255));
-	if (Cache2(CHBLUPI1, "blupi001.blp", totalDim, iconDim, FALSE) == NULL)
+	if (Cache2(CHBLUPI2, "blupi002.blp", totalDim, iconDim, FALSE) == FALSE)
 	{
-		return NULL;
+		return FALSE;
 	}
 	SetTransparent(CHBLUPI2, RGB(0, 0, 255));
-	if (Cache2(CHBLUPI2, "blupi002.blp", totalDim, iconDim, FALSE) == NULL)
+	if (Cache2(CHBLUPI3, "blupi003.blp", totalDim, iconDim, FALSE) == FALSE)
 	{
-		return NULL;
+		return FALSE;
 	}
 	SetTransparent(CHBLUPI3, RGB(0, 0, 255));
-	if (Cache2(CHBLUPI3, "blupi003.blp", totalDim, iconDim, FALSE) == NULL)
+	if (Cache2(CHTEMP, "temp.blp", totalDim, iconDim, FALSE) == FALSE)
 	{
-		return NULL;
+		return FALSE;
 	}
-	SetTransparent(CHMAP, )
+	SetTransparent(CHTEMP, RGB(0, 0, 255));
+	if (Cache2(CHMAP, "map.blp", totalDim, iconDim, FALSE) == FALSE)
+	{
+		return FALSE;
+	}
+	SetTransparent(CHMAP, RGB(0, 0, 255));
+	if (Cache2(CHELEMENT, "element.blp", totalDim, iconDim, FALSE) == FALSE)
+	{
+		return FALSE;
+	}
+	SetTransparent(CHELEMENT, RGB(0, 0, 255));
+	if (Cache2(CHEXPLO, "explo.blp", totalDim, iconDim, FALSE) == FALSE)
+	{
+		return FALSE;
+	}
+	SetTransparent(CHEXPLO, RGB(0, 0, 255));
+	sprintf(filename, "decor%.3d.blp", region);
+	if (Cache2(CHDECOR, filename, totalDim, iconDim, FALSE) == FALSE)
+	{
+		return FALSE;
+	}
+	if (Cache2(CHBUTTON, "button00.blp", totalDim, iconDim, FALSE) == FALSE)
+	{
+		return FALSE;
+	}
+	SetTransparent(CHBUTTON, RGB(0, 0, 255));
+	if (Cache2(CHJAUGE, "jauge.blp", totalDim, iconDim, FALSE) == FALSE)
+	{
+		return FALSE;
+	}
+	SetTransparent(CHJAUGE, RGB(0, 0, 255));
+	if (Cache2(CHTEXT, "text.blp", totalDim, iconDim, FALSE) == FALSE)
+	{
+		return FALSE;
+	}
+	SetTransparent(CHTEXT, RGB(0, 0, 255));
+	if (Cache2(CHLITTLE, "little.blp", totalDim, iconDim, FALSE) == FALSE)
+	{
+		SetTransparent(CHLITTLE, RGB(0, 0, 255));
+		Benchmark();
+		return TRUE;
+	}
+	return FALSE;
+}
+
+int CPixmap::Benchmark()
+{
 
 }
-*/
+
+void CPixmap::SetDebug(BOOL bDebug)
+{
+	m_bDebug = bDebug;
+	DDSetDebug(bDebug);
+}
+
 
 // Purge une image.
 

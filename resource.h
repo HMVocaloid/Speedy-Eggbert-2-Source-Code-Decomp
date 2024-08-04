@@ -64,6 +64,7 @@
 #define TX_BUTTON_TESTMISSION			124
 #define TX_PAUSE						125
 #define TX_MUSIC						149
+#define TX_READINFO						167
 #define TX_REGION						178
 #define TX_INSERT						182
 #define TX_GAMEPAUSE					197

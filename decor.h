@@ -518,6 +518,7 @@ public:
 	POINT	ConvPosToCel2(POINT pos);
 
 	void	Create(HWND hWnd, CSound *pSound, CPixmap *pPixmap, CNetwork *pNetwork);
+
 	BOOL	LoadImages();
 	void	InitGamer();
 	BOOL	AddLinkCaisse(int rank);
@@ -530,7 +531,7 @@ public:
 	void	DrawInfo();
 	void	UpdateCaisse();
 	POINT	DecorNextAction();
-	void	TreatInput(UINT input);
+	void	SetInput(UINT input);
 	void	SetSpeedX(double speed);
 	void	SetSpeedY(double speed);
 	int		SoundEnviron(int sound, int obstacle);
@@ -579,7 +580,7 @@ public:
 	int		GetInfoHeight();
 
 	int 	GetTargetLevel();
-	void	GetBlupiInfo(BOOL bHelico, BOOL bJeep, BOOL bSkate, BOOL bNage);
+	void	GetBlupiInfo(BOOL* bHelico, BOOL* bJeep, BOOL* bSkate, BOOL* bNage);
 
 	char*	GetButtonExist();
 
@@ -728,7 +729,26 @@ public:
 	void	SetDemoState(BOOL demoState);
 	BOOL	CurrentWrite(int gamer, int mission, BOOL bUser);
 	BOOL	CurrentRead(int gamer, int mission, BOOL bUser);
-	
+	void	SetJoystickEnable(BOOL bJoystick);
+	BOOL	GetShowSecret();
+
+	void	MemorizeDoors(BYTE* doors);
+
+
+	// Network Related Functions
+	void	NetMessageIndexFlush();
+	void	NotifFlush();
+	void	NetDataFlush();
+	void	NetPlaySound(short channel, POINT pos);
+	void	NetStopCloud(int rank);
+	BOOL	NetMessagePush(NetMessage* message);
+	BOOL	DrawMap(BOOL bPlay, int player);
+	void	NetSendData(BYTE bufferSize, UCHAR send);
+	void	NetPlayerCollide(POINT pos, int* out);
+	void	TreatNetData();
+	void	OutputNetDebug(char* text);
+
+
 protected:
 	BOOL	GetSeeBits(POINT cel, char *pBits, int index);
 	int		GetSeeIcon(char *pBits, int index);
@@ -738,6 +758,7 @@ protected:
 	CSound*		m_pSound;
 	CPixmap*	m_pPixmap;
     CNetwork*   m_pNetwork;
+	NetMessage	m_netMessages[20];
     MoveObject  m_moveObject[100][100];
 	ByeByeObject m_byeByeObjects;
     int         m_input;
@@ -765,6 +786,8 @@ protected:
 	double		m_blupiLastSpeedY;
 	int			m_blupiTimeOuf;
 	double		m_blupiLastSpeedX;
+	POINT		m_posCelHili;
+	int			m_2ndPositionCalculationSlot;
 	int			m_voyageTotal;
 	POINT		m_voyageStart;
 	POINT		m_voyageEnd;
@@ -782,7 +805,7 @@ protected:
     POINT       m_safePos;
 	POINT		m_posDecor;
 	RECT		m_drawBounds;
-	int 		m_doors[200];
+	BYTE 		m_doors[200];
     int         m_action;
     int         m_direction;
     int         m_actionFrameCount;
@@ -815,13 +838,13 @@ protected:
 	double		m_blupiSpeedY;
 	BOOL		m_blupiFocus;
     BOOL        m_blupiAir;
-    BOOL        m_blupiHelico;
+    BOOL*       m_blupiHelico;
     BOOL        m_blupiOver;
-    BOOL        m_blupiJeep;
-    BOOL        m_blupiTank;
-    BOOL        m_blupiSkate;
-    BOOL        m_blupiNage;
-    BOOL        m_blupiSurf;
+    BOOL*       m_blupiJeep;
+    BOOL*       m_blupiTank;
+    BOOL*       m_blupiSkate;
+    BOOL*       m_blupiNage;
+    BOOL*       m_blupiSurf;
     BOOL        m_bInWind;
 	BOOL		m_blupiVent;
     BOOL        m_blupiSuspend;
@@ -891,6 +914,10 @@ protected:
     int         m_netEventIndex1;
 	int			m_netEventIndex2;
 	int			m_netEventIndex3;
+	int			m_netMessageIndex1;
+	int			m_netMessageIndex2;
+	int			m_netMessageIndex3;
+
     char        m_messages[4][100];
     int         m_air;
     int         m_energyUnused;
@@ -924,6 +951,8 @@ protected:
     POINT       m_flyupEndPos;
 	BOOL 		m_bScreenShake;
 	int 		m_screenShakeIndex;
+	char		m_notifText[4][100];
+	int			m_notifTime;
 	int 		m_menuSelections[112];
 	BYTE 		m_overloadProtection[100000];
 	Cellule*	m_pUndoDecor;
@@ -1015,7 +1044,6 @@ protected:
     int GetBlupiChannel();
 	int GetPersonalBombIcon();
     int GetTargetLevel(int mission);
-	BOOL GetShowSecret();
     void SetShowSecret(BOOL secret);
 	void GetBlupiHitbox(RECT *out, POINT pos);
 };

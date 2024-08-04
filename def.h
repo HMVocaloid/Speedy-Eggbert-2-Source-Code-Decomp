@@ -65,6 +65,7 @@
 #define CHBUTTON		4
 #define CHJAUGE			5
 #define CHTEXT			6
+#define	CHMAP			8
 #define CHEXPLO			9
 #define CHELEMENT		10
 #define CHBLUPI1		11
@@ -77,7 +78,14 @@
 #define CHLITTLE		18
 #define CHBIGNUM		19
 
+#define CHTEMP			14
+
 #define MAXMOVEOBJECT	200
+
+#define MESS_LOBBY		4
+#define NETEVENTMAX		20
+
+#define PK_PLAYSOUND	40
 
 
 // Directions :

@@ -135,10 +135,7 @@ void CButton::SetSomethingMenu(int somethingMenu)
 {
 	int i = somethingMenu;
 
-	while (0 < i)
-	{
 
-	}
 }
 
 // Draw a button in its state

@@ -1,26 +1,3 @@
-﻿  button.cpp
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\def.h(237,9): warning C4005: 'MAXMOVEOBJECT': macro redefinition
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\menu.h(41,11): error C2143: syntax error: missing ';' before '*'
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\menu.h(41,5): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\menu.h(41,26): error C2238: unexpected token(s) preceding ';'
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\button.h(65,8): error C2143: syntax error: missing ';' before '*'
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\button.h(65,2): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\button.h(65,19): error C2238: unexpected token(s) preceding ';'
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.h(20,1): error C2371: 'Button': redefinition; different basic types
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.h(94,43): error C2061: syntax error: identifier 'CDecor'
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.h(104,11): error C3646: 'GetPhase': unknown override specifier
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.h(104,19): error C2059: syntax error: '('
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.h(104,21): error C2238: unexpected token(s) preceding ';'
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.h(204,17): error C3646: 'm_phase': unknown override specifier
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.h(204,5): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.h(215,11): error C2143: syntax error: missing ';' before '*'
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.h(215,5): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.h(215,25): error C2238: unexpected token(s) preceding ';'
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.h(220,11): error C3646: 'm_phaseAfterMovie': unknown override specifier
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.h(220,2): error C4430: missing type specifier - int assumed. Note: C++ does not support default-int
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.h(279,8): error C2086: 'int CEvent::m_tryPhase': redefinition
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.h(291,8): error C2086: 'int CEvent::m_mission': redefinition
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.h(29,9): warning C4005: 'MAXMOVEOBJECT': macro redefinition
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.h(930,11): error C2086: 'Cellule CDecor::m_decor[100][100]': redefinition
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.h(950,8): error C2086: 'BOOL CDecor::m_bInvincible': redefinition
-C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.h(957,8): error C2371: 'CDecor::m_phase': redefinition; different basic types
+﻿  text.cpp
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\def.h(243,9): warning C4005: 'MAXMOVEOBJECT': macro redefinition
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\text.cpp(147,28): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
