@@ -25,7 +25,7 @@ CButton::CButton()
     m_type              = 0;
     m_bEnable           = TRUE;
     m_bHide             = FALSE;
-	m_bSomething 		= 0;
+	m_bSomething 		= FALSE;
     m_state             = 0;
     m_mouseState        = 0;
     m_nbMenu            = 0;
@@ -46,10 +46,7 @@ CButton::~CButton()
 // Create a new Button
 
 BOOL CButton::Create(HWND hWnd, CPixmap *pPixmap, CSound *pSound,
-                     POINT pos, int type, BOOL bMinimizeRedraw,
-                     int *pMenu, int nbMenu,
-                     int *pToolTips, int nbToolTips,
-                     int region, UINT message)
+                     POINT pos, int type, BOOL bMinimizeRedraw, int region, UINT message)
 {
     POINT iconDim;
     int i, icon;
@@ -71,14 +68,14 @@ BOOL CButton::Create(HWND hWnd, CPixmap *pPixmap, CSound *pSound,
 	m_bMinimizeRedraw	= bMinimizeRedraw;
 	m_bEnable			= TRUE;
 	m_bHide				= FALSE;
-	m_bSomething 		= 0;
+	m_bSomething 		= FALSE;
 	m_message			= message;
 	m_pos.x				= pos.x;
 	m_pos.y 			= pos.y;
 	m_dim.x				= iconDim.x;
 	m_dim.y 			= iconDim.y;
-	m_nbMenu			= nbMenu;
-	m_nbToolTips		= nbToolTips;
+	m_nbMenu			= 0;
+	m_nbToolTips		= 0;
 	m_selMenu			= 0;
 	m_state				= 0;
 	m_mouseState		= 0;
@@ -135,7 +132,10 @@ void CButton::SetSomethingMenu(int somethingMenu)
 {
 	int i = somethingMenu;
 
+	while (0 < i)
+	{
 
+	}
 }
 
 // Draw a button in its state

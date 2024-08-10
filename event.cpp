@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <ddraw.h>
+#include <direct.h>
 #include "def.h"
 #include "resource.h"
 #include "pixmap.h"
@@ -1425,7 +1426,8 @@ CEvent::CEvent()
     int     i;
 
 
-	
+	CMenu(m_menu);
+
 	m_somethingJoystick = 0;
     m_bFullScreen   = TRUE;
 	m_mouseType     = MOUSETYPEGRA;
@@ -1487,7 +1489,12 @@ CEvent::CEvent()
 
 CEvent::~CEvent()
 {
-    WriteInfo(); // Read the file "info.blp"
+	char* filename;
+
+    WriteInfo(m_gamer, filename); // Read the file "info.blp"
+	OutputDebug(filename);
+
+	return;
 }
 
 void CEvent::Create(HWND hWnd, CPixmap *pPixmap, CDecor *pDecor,
@@ -1950,17 +1957,88 @@ void CEvent::ChatSend()
 	int		netplay;
 	UINT	i;
 	char*	text;
-	char	end;
+	char	end[4];
+	POINT*  pos;
 	DPID	dpid;
 	LPVOID	data[25];
+	char	textInput[100];
 
 	text = m_textInput;
 	if (m_textInput[0] != '\0')
 	{
 		netplay = NetSearchPlayer(m_pNetwork->m_dpid);
-		i = 0xFFFFFFFF;
-		end = &'<';
+		strcpy(textInput, "<");
 	}
+	if (netplay != -1)
+	{
+		strcat(textInput, (const char*)m_pNetwork->m_players[netplay].name);
+		strcat(textInput, "> ");
+		strcat(textInput, text);
+		ChatMessageSound((char*)textInput);
+		end[0] = 108;
+		end[1] = 11;
+		dpid = m_pNetwork->m_dpid;
+		m_pNetwork->Send(&end, 108, 1);
+		text = 0;
+		pos[132].x = 0;
+		pos[132].y = strlen(text);
+		pos[133].x = 0;
+		m_textHiliEnd = i - 1;
+		m_textCursorIndex = 0;
+		SetEnable(WM_BUTTON20, 0);
+	}
+	return;
+}
+
+void CEvent::ChatMessageSound(char* data)
+{
+	int num;
+	char (*chatZone);
+	char(*chat)[5];
+	POINT pos;
+
+	num = 3;
+	chatZone = m_chatZone[0];
+	do
+	{
+		if (chatZone == '\0')
+		{
+			chat = m_chatZone + num * 20;
+			goto error;
+		}
+		num++;
+		chatZone = chatZone + 100;
+	} while (num < 6);
+	HandleChatBuffer();
+	chat = (char(*) [5])m_text;
+	return;
+
+error:
+	strcpy((char*)chat, data);
+	pos.x = 320;
+	pos.y = 240;
+	m_pSound->PlayImage(11, pos, -1);
+}
+
+void CEvent::HandleChatBuffer()
+{
+	char (*chatZone)[5];
+	int num;
+	int result;
+	char* text;
+
+	num = 5;
+	chatZone = m_chatZone;
+	do
+	{
+		result = strlen((const char*)chatZone + 100) + 1;
+		text = (char*)chatZone;
+		chatZone += 100;
+		memcpy(text, chatZone, result);
+		--num;
+	} while (num);
+	*((BYTE*)m_text) = 0;
+	return;
 }
 
 void CEvent::OutputNetDebug(const char* str)
@@ -1969,15 +2047,17 @@ void CEvent::OutputNetDebug(const char* str)
 	FILE* streamf;
 	UINT  element;
 
+	streamf = (FILE*)m_pDecor->GetNetDebug();
+
 	if (m_pDecor->GetNetDebug() != FALSE)
 	{
 		if (fopen("debug.txt", "ab") != (FILE*)0)
 		{
-			element = 0xFFFFFFFF;
-			strcpy(stream, str);
+			fwrite(str, 1, strlen((const char*)str), streamf);
+			streamf = (FILE*)fclose(streamf);
 		}
-		fwrite(str, 1, (element - 1), streamf);
-		fclose(streamf);
+	
+		
 	}
 	return;
 }
@@ -2014,12 +2094,16 @@ BOOL CEvent::DrawButtons()
     int         i;
     int         levels[2];
     int         types[2];
-    int         world, time, lg, button, volume, pente, icon;
+    int         world, time, lg, button, volume, pente, icon, sound;
+	BOOL		soundEnabled;
     char        res[100];
+	char		textLeft[24];
     char        text[100];
+	char		pText[5];
     POINT       pos;
     RECT        rect;
     BOOL        bEnable;
+	WMessage	phase;
 
     if ( (m_phase == WM_PHASE_INSERT && m_phase == WM_PHASE_BYE ))
     {
@@ -2053,10 +2137,42 @@ BOOL CEvent::DrawButtons()
     }
 	m_pDecor->OutputNetDebug(text);
 
+	phase = m_phase;
+
+	if (((phase != WM_PHASE_PLAY) && (phase != WM_PHASE_PLAYTEST)) && (phase != WM_PHASE_BUILD))
+	{
+		rect.right = 302;
+		rect.left = 2;
+		rect.top = 2;
+		rect.bottom = 14;
+		m_pPixmap->DrawPart(-1, 0, pos, rect, 1, FALSE);
+	}
+	DrawTextLeft(m_pPixmap, pos, textLeft, 10);
 
 	if (m_phase == WM_PHASE_INIT)
 	{
-		DrawTextNew(m_pPixmap, pos, R"(Version 2.0)", FONTLITTLE);
+		DrawTextB(m_pPixmap, pos, "Version 2.0", FONTLITTLE);
+	}
+
+	if (m_phase == WM_PHASE_GAMER)
+	{
+		LoadString(TX_CHOOSEGAMER, res, 100);
+		lg = GetTextWidth(res, 0);
+		pos.y = 26;
+		pos.x = LXIMAGE / 2 - lg / 2;
+		DrawTextLeft(m_pPixmap, pos, res, 1);
+		pText = m_gamerNameList;
+		lg = 8;
+		do
+		{
+			pos.y = 69;
+			pos.x = 110;
+			DrawTextB(m_pPixmap, pos, pText, 0);
+			69 = 69 + 40;
+			pText++;
+			lg++;
+		} while (lg != 0);
+		SetEnable(WM_PHASE_CLEARg, (m_filenameBuffer + -1) + m_gamer * 4 + 212);
 	}
 
 	if (m_phase == WM_PHASE_PLAY && m_phase == WM_PHASE_PLAYTEST && m_phase == WM_PHASE_BUILD)
@@ -2075,7 +2191,12 @@ BOOL CEvent::DrawButtons()
 	}
 	if (m_phase == WM_PHASE_SETUP || m_phase == WM_PHASE_SETUPp)
 	{
-		SetState(WM_BUTTON5, (m_pPixmap->GetTrueColor() == 0));
+		sound = m_pSound->GetAudioVolume();
+		soundEnabled = TRUE;
+		if ((sound == 0) || (m_pSound->GetEnable()) == FALSE)
+		{
+			soundEnabled = FALSE;
+		}
 	}
 	if (m_phase == WM_PHASE_PLAY || m_phase == WM_PHASE_PLAYTEST)
 	{
@@ -2185,6 +2306,118 @@ BOOL CEvent::DrawButtons()
 	{
 		DrawTextLeft(m_pPixmap, m_posToolTips, m_textToolTips, FONTWHITE);
 	}
+	if (m_phase == WM_PHASE_CLEARg)
+	{
+		LoadString(TX_CHOOSEGAMER, res, 100);
+		lg = GetTextWidth((char*)res, 0);
+		pos.y = 102;
+		pos.x = 320 - lg / 2;
+		DrawTextLeft(m_pPixmap, pos, (char*)res, 1);
+		LoadString(TX_DISCARDGAME, res, 100);
+		lg = GetTextWidth(res, 0);
+		strcpy(text, (const char*)m_gamerName);
+		strcat(text, "?");
+		lg = GetTextWidth(text, 0);
+		DrawTextLeft(m_pPixmap, pos, res, 0);
+	}
+	if (m_phase == WM_PHASE_CLEARd)
+	{
+		LoadString(TX_DESIGNMISSION, res, 100);
+		lg = GetTextWidth(res, 0);
+		pos.y = 104;
+		pos.x = 320 - lg / 2;
+		DrawTextLeft(m_pPixmap, pos, res, 1);
+		LoadString(TX_DELETEMISSION, res, 100);
+		GetWorld();
+		sprintf(text, res);
+		lg = GetTextWidth(text, 0);
+		pos.y = 210;
+		pos.x = 320 - lg / 2;
+		DrawTextLeft(m_pPixmap, pos, text, 0);
+		strcpy(text, (char*)m_pDecor->GetMissionTitle());
+		
+		if (text[0] == '\0')
+		{
+			LoadString(TX_NONAME, res, 100);
+		}
+		strcat(text, "?");
+		lg = GetTextWidth(text, 0);
+		pos.y = 230;
+		pos.x = 320 - lg / 2;
+		DrawTextLeft(m_pPixmap, pos, res, 0);
+	}
+	if (m_phase == WM_PHASE_INFO)
+	{
+		LoadString(TX_DESIGNMISSION, res, 100);
+		lg = GetTextWidth(res, 0);
+		pos.y = 37;
+		pos.x = 320 - lg / 2;
+		DrawTextLeft(m_pPixmap, pos, res, 0);
+		// Unknown Field
+		// DrawIcon
+		// End of if function
+		LoadString(TX_MISSIONNUM, res, 100);
+		sprintf(text, res);
+		lg = GetTextWidth(text, 0);
+		pos.y = 106;
+		pos.x = 250 - lg / 2;
+		DrawTextLeft(m_pPixmap, pos, text, 1);
+		strcpy(text, (char*)m_pDecor->GetMissionTitle());
+		if (res[0] == '\0')
+		{
+			LoadString(TX_NONAME, res, 100);
+		}
+		lg = GetTextWidth(res, 0);
+		pos.y = 269;
+		pos.x = 250 - lg / 2;
+		DrawTextLeft(m_pPixmap, pos, res, 0);
+	}
+}
+
+void CEvent::PutTextInputBox(POINT pos)
+{
+	char textInput[100];
+	char* textConst;
+	int	 text;
+	CPixmap* pPixmap;
+	int  num;
+	UINT textHili;
+	LONG posD;
+
+	text = GetTextWidth(m_textInput, 0);
+	posD = pos.x - text / 2;
+	textHili = m_textHiliStart;
+
+	if (0 < (int)textHili)
+	{
+		memcpy(textInput, textConst, textHili);
+		pPixmap = m_pPixmap;
+		textInput[textHili] = 0;
+		DrawTextLeft(pPixmap, pos, textInput, 0);
+		text += GetTextWidth(textInput, 0);
+	}
+	if (m_textHiliStart < m_textHiliEnd)
+	{
+		textHili = m_textHiliEnd - m_textHiliStart;
+		memcpy(textInput, m_textInput + m_textHiliStart, text);
+		pPixmap = m_pPixmap;
+		textInput[textHili] = 0;
+		DrawTextLeft(pPixmap, pos, textInput, 2);
+		text += GetTextWidth(textInput, 0);
+	}
+	if (m_textCursorIndex % 16 < 8)
+	{
+		DrawTextLeft(pPixmap, pos, &"|", 0);
+	}
+	num = m_textCursorIndex;
+
+	if (num < (int)strlen((const char*)m_textInput))
+	{
+		strcpy(textInput, num + m_textInput);
+		DrawTextLeft(pPixmap, pos, textInput, 0);
+	}
+	m_textCursorIndex = m_textCursorIndex + 1;
+	return;
 }
 
 BOOL CEvent::TextSomething()
@@ -2568,6 +2801,67 @@ void CEvent::TryInsert()
 	}
 }
 
+void CEvent::ReadAll()
+{
+	BOOL mission;
+	BOOL read;
+	BOOL bUser;
+	BOOL bPrivate;
+	BOOL bMission;
+
+	if ((-1 < m_fileIndex) && (*(int*)((int)(m_filenameBuffer + -1) + m_fileIndex * 4 + 216) != 0))
+	{
+		mission = m_pDecor->MissionStart(m_gamer, 999, bUser);
+		
+		if (mission != FALSE)
+		{
+			read = m_pDecor->Read(m_gamer, m_fileIndex, bMission, bPrivate);
+			
+			if (read != FALSE)
+			{
+				m_pDecor->DrawMap(FALSE, -1);
+			}
+			m_pDecor->Read(m_gamer, 999, bMission, bPrivate);
+		}
+	}
+	return;
+}
+
+BOOL CEvent::SaveState(int rank)
+{
+	BOOL bMission;
+	BOOL bUser;
+	char str[100];
+
+	bMission = m_pDecor->MissionStart(m_gamer, rank, bUser);
+
+	if (bMission == FALSE)
+	{
+		return FALSE;
+	}
+	LoadString(TX_GAMESAVED, str, 100);
+	m_pDecor->NotifPush(str);
+	// m_field959_0x6d10 = rank;
+	return TRUE;
+}
+
+void CEvent::SomethingUserMissions(char* lpFilename, LPCSTR fileSomething)
+{
+	UINT buffer;
+	char* folderName;
+
+	mkdir("\\User");
+	strcpy(lpFilename, "\\User\\");
+	strcat(lpFilename, fileSomething);
+
+	if ((folderName = strstr(folderName, ".xch")) || ((buffer = 0, folderName - lpFilename != strlen(lpFilename) - 4)))
+	{
+		buffer = 0;
+		strcat(lpFilename, ".xch");
+	}
+	return;
+}
+
 // Add SomethingHubWorld once figured out.
 
 // Very rough code, needs improvement
@@ -2795,11 +3089,6 @@ void CEvent::UnTryPhase()
 int CEvent::GetTryPhase()
 {
 	return m_tryPhase;
-}
-
-void CEvent::SomethingUserMissions(LPCSTR lpFileName, LPCSTR thing)
-{
-
 }
 
 void CEvent::GetDoors(int doors)
@@ -3116,20 +3405,22 @@ void CEvent::DemoRecEvent(UINT message, UINT input, WPARAM wParam, LPARAM lParam
 	}
 }
 
-BOOL CEvent::WriteInfo()
+BOOL CEvent::WriteInfo(int gamer, char* playername)
 {
 	char		filename[MAX_PATH];
 	FILE*		file = NULL;
 	DescInfo	info;
 	int			nb;
 	int			doors;
-	GameData	door[200];
+	BYTE		door[200];
+	char		text[100];
 
-	strcpy(filename, "data\\info%.blp");
+	sprintf(filename, "data\\info%.3d.blp", gamer);
 	AddUserPath(filename);
-
 	file = fopen(filename, "wb");
 	if (file == NULL) goto error;
+
+	strcpy(text, (const char*)m_gamerName);
 
 	info.majRev = 1;
 	info.prive = m_private;
@@ -3141,7 +3432,7 @@ BOOL CEvent::WriteInfo()
 	info.bHiliInfoButton = m_bHiliInfoButton;
 	info.bAccessBuild = m_bAccessBuild;
 
-	m_pDecor->InitalizeDoors(door)
+	m_pDecor->InitalizeDoors(door);
 
 	info.audioVolume = m_pSound->GetAudioVolume();
 	info.midiVolume = m_pSound->GetMidiVolume();
@@ -3178,9 +3469,8 @@ BOOL CEvent::ReadInfo(int gamer)
 	LoadString(TX_READINFO, buffer, 100);
 	sprintf(m_gamerName, buffer, gamer);
 	sprintf(filename, "data\\info%.3d.blp", gamer);
-
-	strcpy(filename, "data\\info%.3d.blp");
 	AddUserPath(filename);
+
 
 	file = fopen(filename, "rb");
 	if (file == NULL) goto error;
@@ -3188,6 +3478,10 @@ BOOL CEvent::ReadInfo(int gamer)
 	nb = fread(&info, sizeof(DescInfo), 1, file);
 	if (nb < 1) goto error;
 
+	if ((BYTE*)m_gamerName)
+	{
+		strcpy((char*)m_gamerName, buffer);
+	}
 
 	info.majRev = 1;
 	info.prive = m_private;
@@ -3221,4 +3515,7 @@ BOOL CEvent::ReadPlayer()
 
 	strcpy(filename, "data\\info%.3d.blp");
 	AddUserPath(filename);
+	remove(filename);
+	return TRUE;
 }
+

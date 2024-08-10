@@ -5,6 +5,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <ddraw.h>
+#include <time.h>
+#include <sys/timeb.h>
 #include "def.h"
 #include "pixmap.h"
 #include "misc.h"
@@ -672,33 +674,68 @@ BOOL CPixmap::Cache(int channel, char *pFilename, POINT totalDim, POINT iconDim,
 
 BOOL CPixmap::Cache2(int channel, const char *pFilename, POINT totalDim, POINT iconDim, BOOL bUsePalette)
 {
-	POINT		iconDim;
+	IDirectDrawPalette* dDP;
+	LPDIRECTDRAWSURFACE dDS;
+	HRESULT		hErr;
 
-	if (strstr(pFilename, "blupi") == pFilename)
+	if ((channel < 0) || (channel > 99))
 	{
 		return FALSE;
 	}
-	else
+
+	if (m_lpDDSurface[channel] != (LPDIRECTDRAWSURFACE)0)
 	{
-		if (strstr(pFilename, "element") == pFilename)
-		{
-			return FALSE;
-		}
-		if (strstr(pFilename, "explo") == pFilename)
-		{
-			return FALSE;
-		}
-		if (strstr(pFilename, "object") == pFilename)
-		{
-			return FALSE;
-		}
-		return TRUE;
+		Flush(channel);
 	}
 
-	if (bUsePalette != 0)
+	if (bUsePalette != FALSE)
 	{
-
+		if (m_bDebug != FALSE)
+		{
+		OutputDebug("Use palette");
+		}
+		if (m_lpDDPal != (LPDIRECTDRAWPALETTE)0)
+		{
+			if (m_bDebug != FALSE)
+			{
+				OutputDebug("Release palette");
+			}
+			m_lpDDPal->Release();
+			m_lpDDPal = (LPDIRECTDRAWPALETTE)0;
+		}
 	}
+	dDP = DDLoadPalette(m_lpDD, pFilename);
+	m_lpDDPal = (LPDIRECTDRAWPALETTE)0;
+	
+	if (dDP != (IDirectDrawPalette*)0)
+	{
+		if (m_bDebug != FALSE)
+		{
+			OutputDebug("Set palette");
+		}
+		m_lpDDSPrimary->SetPalette((LPDIRECTDRAWPALETTE)0);
+		hErr = (m_lpDDSPrimary->SetPalette(m_lpDDPal));
+		if (hErr != 0)
+		{
+			TraceErrorDD(hErr, pFilename, 1);
+		}
+	}
+	dDS = (LPDIRECTDRAWSURFACE)DDLoadBitmap(m_lpDD, pFilename, 0, 0);
+	m_lpDDSurface[channel] = dDS;
+	if (dDS == (LPDIRECTDRAWSURFACE)0)
+	{
+		OutputDebug("Fatal error: DDLoadBitmap");
+		return FALSE;
+	}
+	if (m_bDebug != FALSE)
+	{
+		OutputDebug("DDSetColorKey");
+	}
+	DDSetColorKey(m_lpDDSurface[channel], RGB(0, 0, 255));
+	strcpy((char*)(m_filename + channel), pFilename);
+	m_totalDim[channel] = totalDim;
+	m_iconDim[channel] = iconDim;
+	return TRUE;
 }
 
 // Cache une image provenant d'un bitmap.
@@ -859,7 +896,52 @@ BOOL CPixmap::CacheAll(BOOL cache, HWND hWnd, BOOL bFullScreen, BOOL bTrueColor,
 
 int CPixmap::Benchmark()
 {
+	timeb time[2];
+	RECT  rect;
+	FILE* file;
+	int   num;
+	int	  num2;
+	int   num3;
+	UINT  num4;
+	int	  num5;
+	int	  num6;
+	int	  i;
+	POINT pos;
+	POINT dest;
+	char  buffer[100];
 
+	ftime(time);
+	num = num4;
+	num2 = 29;
+	num3 = 10;
+
+	rect.top = num;
+	rect.left = 29;
+	rect.right = 669;
+	rect.bottom = 509;
+	num5 = 120;
+	DrawPart(-1, -3, dest, rect, 1, FALSE);
+	do
+	{
+		QuickIcon(1, 1, pos);
+		num5++;
+	} while (num5);
+	ftime(time);
+	i = num4;
+
+	if (num > num4)
+	{
+		i = num4 + 100;
+	}
+	num6 = i - num;
+	sprintf(buffer, "Benchmark = %d\r\n", i - num);
+
+	if (fopen("data\\bench.blp", "wb"))
+	{
+		fwrite(buffer, strlen(buffer), 1, file);
+		fclose(file);
+	}
+	return num6;
 }
 
 void CPixmap::SetDebug(BOOL bDebug)

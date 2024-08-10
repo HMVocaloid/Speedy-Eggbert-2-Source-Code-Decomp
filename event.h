@@ -177,6 +177,12 @@ public:
 
 	void	IntroStep();
 
+	void	ReadAll();
+	BOOL	SaveState(int rank);
+	void	SomethingUserMissions(char* lpFilename, LPCSTR fileSomething);
+
+	
+
 protected:
 	void	DrawTextCenter(int res, int x, int y, int font=0);
 	BOOL	CreateButtons();
@@ -198,12 +204,13 @@ protected:
 
 	void	PrivateLibelle();
 	BOOL	ReadLibelle(int world, BOOL bSchool, BOOL bHelp);
-	BOOL	WriteInfo();
+	BOOL	WriteInfo(int gamer, char* playername);
 	BOOL	ReadInfo(int gamer);	
 	void	TryPhase();
 	void	UnTryPhase();
 	int		GetTryPhase();
 	BOOL	ReadPlayer();
+	void	PutTextInputBox(POINT pos);
 	void	SetLives(int lives);
 
 	void	DemoRecStart();
@@ -220,6 +227,8 @@ protected:
 	void	NetSend(NetMessageType message, USHORT data);
 	void	NetDraw();
 	void	ChatSend();
+	void	HandleChatBuffer();
+	void	ChatMessageSound(char* data);
 
 	void	MouseRelease();
 	void	MouseCapture();
@@ -230,8 +239,10 @@ protected:
     int         m_exercice;
     int         m_mission;
 	char		m_gamerName[100];
+	char		m_gamerNameList[10][100];
 	void*		m_somethingJoystick;
 	int			m_menuIndex;
+	int			m_fileIndex;
 	int			m_menuDecor[10];
 	BOOL		m_bMouseRelease;
     int         m_private;
@@ -326,6 +337,9 @@ protected:
 	int 		m_mission;
 	int 		m_multi;
 	HINSTANCE	m_hInstance;
-	char 		m_chatZone[100][5];
+	char		m_chatZone[100][5];
 	char 		m_text[100];
 };
+
+extern
+int		DirectoryThing(LPCSTR filename);

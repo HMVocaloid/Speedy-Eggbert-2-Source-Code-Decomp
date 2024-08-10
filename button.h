@@ -26,10 +26,7 @@ public:
 	~CButton();
 
 	BOOL	Create(HWND hWnd, CPixmap *pPixmap, CSound *pSound,
-				   POINT pos, int type, BOOL bMinimizeRedraw,
-				   int *pMenu, int nbMenu,
-				   int *pTooltips, int nbToolTips,
-				   int region, UINT message);
+				   POINT pos, int type, BOOL bMinimizeRedraw, int region, UINT message);
 	void	SetSomethingMenu(int somethingMenu);
 	void	Draw();
 	void	Redraw();

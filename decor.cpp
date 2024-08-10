@@ -94,6 +94,27 @@ void CDecor::Create(HWND hWnd, CSound* pSound, CPixmap* pPixmap, CNetwork* pNetw
 	NotifFlush();
 }
 
+BOOL CDecor::LoadImages()
+{
+    POINT totalDim, iconDim;
+    char filename[52];
+
+    if (m_lastRegion == m_region) return TRUE;
+    m_lastRegion = m_region;
+
+    totalDim.x = DIMCELX * 2 * 16;
+    totalDim.y = DIMCELY * 2 * 6;
+    iconDim.x = DIMCELX * 2;
+    iconDim.y = DIMCELY * 2;
+        sprintf(filename, "decor%.3d.blp", m_region);
+        if (!m_pPixmap->Cache2(CHBACK, filename, totalDim, iconDim, FALSE)) return FALSE;
+        if (m_region == 0)
+        {
+            return FALSE;
+		}
+        return TRUE;
+}
+
 void CDecor::NetMessageIndexFlush()
 {
 	m_netMessageIndex1 = 0;
@@ -192,26 +213,6 @@ void CDecor::NetStopCloud(int rank)
 
 // The only seemingly sane function.
 
-BOOL CDecor::LoadImages()
-{
-    POINT totalDim, iconDim;
-    char filename[52];
-
-    if (m_lastRegion == m_region) return TRUE;
-    m_lastRegion = m_region;
-
-    totalDim.x = DIMCELX * 2 * 16;
-    totalDim.y = DIMCELY * 2 * 6;
-    iconDim.x = DIMCELX * 2;
-    iconDim.y = DIMCELY * 2;
-        sprintf(filename, "decor%.3d.blp", m_region);
-        if (!m_pPixmap->Cache2(CHBACK, filename, totalDim, iconDim, FALSE)) return FALSE;
-        if (m_region == 0)
-        {
-            return FALSE;
-		}
-        return TRUE;
-}
 
 void CDecor::InitGamer()
 {
@@ -293,7 +294,8 @@ void CDecor::InitDecor()
     m_blupiAction = 1;
     m_blupiPhase = 0;
     m_blupiIcon = 0;
-    m_blupiChannel = 2;
+    m_blupiChannel.channel = CHBLUPI;
+	m_blupiChannel.blupiChannel = 0;
     m_blupiFocus = TRUE;
     m_blupiAir = FALSE;
     m_blupiHelico = FALSE;
@@ -332,7 +334,7 @@ void CDecor::InitDecor()
     m_scrollAdd.x = 0;
     m_scrollAdd.y = 0;
     m_term = 0;
-    byeByeObjects = -1;
+	m_2ndPositionCalculationSlot = -1;
 }
 
 void CDecor::SetTime(int time)
@@ -355,32 +357,42 @@ void CDecor::PlayPrepare(BOOL bTest)
 	rand = Random(0, 23);
 	*/
 
-    if (bTest)
-    {
-        m_nbVies = 3;
-    }
+	int blupiStart;
 
-    if (m_bMulti == 0) {
-        m_blupiPos = m_blupiStartPos;
-        m_blupiDir = m_blupiStartDir;
-    }
-    else
-    {
-        m_nbVies = 10;
-        m_blupiPos = m_blupiStartPos;
-        m_blupiDir = m_blupiStartDir;
+	if (bTest != FALSE)
+	{
+		*(BYTE*)(m_doors + 198) = 3;
+	}
 
-    }
-    if (m_blupiDir == 1)
-    {
-        m_blupiIcon = 4;
-    }
-    else
-    {
-        m_blupiIcon = 0;
-    }
-    m_blupiAction = 1;
+	if (*(int*)((int)m_blupiStartDir + 14) == FALSE)
+	{
+		m_blupiPos.x = *(LONG*)((int)&m_blupiFifoPos[9].y + 2);
+		m_blupiPos.y = *(LONG*)((int)&m_blupiStartPos[0].x + 2);
+		blupiStart = *(int*)((int)&m_blupiStartPos[3].y + 2);
+	}
+	else
+	{
+		*(BYTE*)(m_doors + 198) = 10;
+		blupiStart = *(int*)((int)&m_bMulti + 2);
+		m_blupiPos.x = *(LONG*)((int)&m_blupiFifoPos[blupiStart + 9].y + 2);
+		m_blupiPos.y = *(LONG*)((int)&m_blupiStartPos[blupiStart].x + 2);
+		blupiStart = *(int*)((int)m_blupiStartDir + *(int*)((int)&m_bMulti + 2) * 4 + -2);
+	}
+	m_blupiDir = blupiStart;
+	if (blupiStart == DIR_LEFT)
+	{
+		m_blupiIcon.icon = 4;
+		m_blupiIcon.type = 0;
+	}
+	else
+	{
+		m_blupiIcon.icon = 4;
+		m_blupiIcon.type = 0;
+	}
+
+    m_blupiAction = ACTION_STOP;
     m_blupiPhase = 0;
+	m_blupiTransport = DIR_LEFT;
     m_blupiFocus = TRUE;
     m_blupiAir = FALSE;
     m_blupiHelico = FALSE;
@@ -447,6 +459,7 @@ void CDecor::PlayPrepare(BOOL bTest)
     }
     m_goalPhase = 0;
     MoveObjectSort();
+	UpdateCaisse();
     m_scrollPoint = m_blupiPos;
     m_scrollAdd.x = 0;
     m_scrollAdd.y = 0;
@@ -514,6 +527,75 @@ void CDecor::BuildPrepare()
 int CDecor::IsTerminated()
 {
 	return m_term;
+}
+
+void CDecor::MoveStep()
+{
+	LONG* longDecor;
+	UINT  posDecor;
+	int	  dimDecor;
+
+	MoveObjectStep();
+
+	if ((m_phase == WM_PHASE_PLAY) || (m_phase == WM_PHASE_PLAYTEST))
+	{
+		BlupiStep();
+
+		NotifStep();
+	}
+
+	if (m_phase == WM_PHASE_BUILD)
+	{
+		if ((m_keyPress & 2) != 0)
+		{
+			posDecor = m_posDecor.x + 50;
+			dimDecor = -(UINT)((m_dimDecor).x != 0) & 5760;
+			m_posDecor.x = dimDecor;
+			if ((int)posDecor < dimDecor)
+			{
+				m_posDecor.x = posDecor;
+			}
+			m_posCelHili.x = -1;
+		}
+		if ((m_keyPress & 1) != 0)
+		{
+			longDecor = &m_posDecor.y;
+			*longDecor = *longDecor + 50;
+			dimDecor = -(UINT)(m_dimDecor.y != 0) & 5920;
+			if ((int)dimDecor < m_posDecor.y)
+			{
+				m_posDecor.y = dimDecor;
+			}
+			m_posCelHili.y = dimDecor;
+		}
+		m_posCelHili.x = -1;
+	}
+	if ((m_keyPress & 4) != 0)
+	{
+		posDecor = m_posDecor.y + -50;
+		m_posDecor.y = posDecor;
+		if (posDecor < 0)
+		{
+			m_posDecor.y = 0;
+		}
+		m_posCelHili.x = -1;
+	}
+	return;
+}
+
+void CDecor::NotifStep()
+{
+	int i;
+
+	i = *(int*)(m_notifText[3] + 98);
+
+	if (i == 0)
+	{
+		NotifPop();
+		return;
+	}
+	*(int*)(m_notifText[3] + 98) = i + -1;
+	return;
 }
 
 // Fuck this function. That's all I can say.
@@ -656,12 +738,21 @@ void CDecor::Build()
 
 int CDecor::GetBlupiChannelStandard()
 {
-	if (m_bMulti && m_blupiChannel == CHBLUPI && m_team > 0)
+	int channel1;
+	int channel2;
+
+	if (((*(int*)((int)m_blupiStartDir + 14) != FALSE) &&
+		(channel1._0_2_ = m_blupiChannel.channel,
+			channel1._2_2_ = m_blupiChannel.blupiChannel, channel1 == 2)) &&
+		(channel1 = *(int*)((int)&m_bMulti + 2), 0 < channel1))
 	{
-		return m_team + CHBLUPI1 - 1;
+		return channel1 + 10;
 	}
-	return m_blupiChannel;
+	channel2._0_2_ = m_blupiChannel.channel;
+	channel2._2_2_ = m_blupiChannel.blupiChannel;
+	return channel2;
 }
+
 
 BOOL CDecor::BlitzActif(int celx, int cely)
 {
@@ -692,7 +783,7 @@ void CDecor::DrawInfo()
 			{
 				pos.x = 10;
 				pos.y = 10;
-				DrawText(m_pPixmap, pos, *m_messages[i], 0);
+				DrawTextB(m_pPixmap, pos, m_messages[i], 0);
 			}
 		}
 		if (m_nbVies > 0)
@@ -798,6 +889,11 @@ void CDecor::SetInput(UINT input)
     }
 }
 
+void CDecor::SetJoystickEnable(BOOL bJoystick)
+{
+	m_bJoystick = bJoystick;
+	return;
+}
 
 void CDecor::SetSpeedX(double speed)
 {
@@ -966,6 +1062,41 @@ void CDecor::PosSound(POINT pos)
 	}
 }
 
+void CDecor::DeleteCel(int celX, int celY)
+{
+	POINT cel;
+	POINT pos;
+
+	m_2ndPositionCalculationSlot = -1;
+	
+	if ((((-1 < celX) && (celX < MAXCELX)) && (-1 < celY)) && (celY < MAXCELY))
+	{
+		m_decor[celX][celY].icon = -1;
+		cel.y = celY;
+		cel.x = celX;
+		AdaptBorder(cel);
+		m_bigDecor[celX][celY].icon = -1;
+		pos.y = celY;
+		pos.x = celX;
+		MoveObjectDelete(pos);
+	}
+	return;
+}
+
+void CDecor::SetGamerName(const char* playerName)
+{
+	char* name;
+	int result;
+
+	name = m_missionTitle;
+
+	result = strlen(playerName) + 1;
+
+	strncpy(name, playerName, result);
+
+	return;
+}
+
 // TODO: Add VehicleSoundsPhase
 
 void CDecor::UpdateCaisse()
@@ -1108,14 +1239,14 @@ int CDecor::SetBlupiChannel()
 
 int CDecor::GetBlupiChannel()
 {
-    int m_blupiChannel = CHBLUPI;
+	int channel;
 
-
-    if ( m_bMulti != 0 ||
-         m_team > 0);{
-        return m_team + 10;
-         }
-    return CHBLUPI;
+	if ((*(int*)((int)m_blupiStartDir + 14) != 0) &&
+		(channel = *(int*)((int)&m_bMulti + 2), 0 < channel))
+	{
+		return channel + CHELEMENT;
+	}
+	return CHBLUPI;
 }
 
 
@@ -1210,7 +1341,7 @@ void CDecor::GetDoors(int doors)
 void CDecor::SetAllMissions(BOOL CheatDoors)
 {
     m_bCheatDoors = CheatDoors;
-    m_bPrivate, m_mission->AdaptDoors();
+	m_bPrivate->AdaptDoors(m_mission);
     return;
 }
 
@@ -5291,6 +5422,17 @@ void CDecor::SetTeam(int team)
     m_team = team;
 }
 
+void CDecor::SetNetDebug(BOOL bNetDebug)
+{
+	m_bNetDebug = bNetDebug;
+
+	if (bNetDebug != FALSE)
+	{
+		remove("debug.txt");
+	}
+	return;
+}
+
 void CDecor::MemorizeDoors(BYTE* doors)
 {
 	int i;
@@ -6136,6 +6278,15 @@ BOOL CDecor::SearchTeleporte(POINT pos, POINT newpos)
 		}
 	}
 	return FALSE;
+}
+
+BOOL CDecor::SomethingMissionPath(int user, int mission, BOOL bUser)
+{
+	char str[260];
+
+	GetMissionPath(str, user, mission, bUser);
+	remove(str);
+	return TRUE;
 }
 
 BOOL CDecor::IsNormalJump(POINT pos)
@@ -8777,13 +8928,23 @@ void CDecor::OutputNetDebug(char* text)
 	if (m_bNetDebug != FALSE)
 	{
 		sprintf(textbuffer, "/ snd=%d(%d)_rcv=%d(%d)", m_netPacketsSent, m_netPacketsSent2, m_netPacketsRecieved, m_netPacketsRecieved2);
-
+		strcat(text, textbuffer);
 	}
+	return;
 }
 
-void CDecor::InitalizeDoors(GameData gameData)
+void CDecor::InitalizeDoors(BYTE* doors)
 {
-	gameData.GetDoors(m_doors);
+	int i;
+
+	i = 0;
+
+	do
+	{
+		doors[i] = (BYTE)m_doors[i];
+		i++;
+	} while (i < 200);
+	return;
 }
 
 void CDecor::GetBlupiInfo(BOOL* bHelico, BOOL* bJeep, BOOL* bSkate, BOOL* bNage)

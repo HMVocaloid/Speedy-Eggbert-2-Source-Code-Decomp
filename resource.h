@@ -63,10 +63,16 @@
 #define TX_BUTTON_ONLYVSCROLL			123
 #define TX_BUTTON_TESTMISSION			124
 #define TX_PAUSE						125
+#define TX_DISCARDGAME					145
+#define TX_DESIGNMISSION				147
+#define TX_CHOOSEGAMER					148
 #define TX_MUSIC						149
 #define TX_READINFO						167
 #define TX_REGION						178
 #define TX_INSERT						182
+#define TX_DELETEMISSION				184
+#define TX_NONAME						187
+#define TX_MISSIONNUM					189
 #define TX_GAMEPAUSE					197
 #define TX_FULL_END1					203
 #define TX_FULL_END2					204
@@ -78,6 +84,7 @@
 #define TX_MULTI_GNAME					251
 #define TX_LOAD_CGAME					269
 #define TX_SAVE_CGAME					270
+#define TX_GAMESAVED					288
 
 #define TX_REPEAT_CULTIVE               500
 #define TX_REPEAT_FLEUR                 501

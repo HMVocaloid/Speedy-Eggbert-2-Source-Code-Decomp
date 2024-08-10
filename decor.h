@@ -159,13 +159,16 @@ MoveObject;
 
 typedef struct
 {
-	int icon;
+	short icon;
+	short type;
 }
-Icon;
+Icon4;
 
 typedef struct
 {
 	short channel;
+	short blupiChannel;
+	short itemChannel;
 }
 IconChannel;
 
@@ -200,6 +203,13 @@ typedef enum
 	WM_NOMUSIC = 1044
 }
 WMessage;
+
+typedef enum
+{
+	DIR_LEFT,
+	DIR_RIGHT
+}
+Direction;
 
 
 typedef struct
@@ -620,7 +630,7 @@ public:
 	BOOL	GetPause();
 	void	SetPause(BOOL bPause);
 	void	GetDoors(int doors);
-	void	InitalizeDoors(GameData gameData);
+	void	InitalizeDoors(BYTE* doors);
 	void	SetAllMissions(BOOL CheatDoors);
 	void	CheatAction(int cheat, MoveObject moveObject);
 	void	SetAccessBuild(BOOL build);
@@ -731,9 +741,13 @@ public:
 	BOOL	CurrentRead(int gamer, int mission, BOOL bUser);
 	void	SetJoystickEnable(BOOL bJoystick);
 	BOOL	GetShowSecret();
+	BOOL	MissionStart(int gamer, int rank, BOOL bUser);
 
 	void	MemorizeDoors(BYTE* doors);
-
+	void	NotifPush(char* str);
+	void	DeleteCel(int celX, int celY);
+	void	SetGamerName(const char* playerName);
+	BOOL	SomethingMissionPath(int user, int mission, BOOL bUser);
 
 	// Network Related Functions
 	void	NetMessageIndexFlush();
@@ -747,6 +761,9 @@ public:
 	void	NetPlayerCollide(POINT pos, int* out);
 	void	TreatNetData();
 	void	OutputNetDebug(char* text);
+	void	NotifStep();
+	void	NotifPop();
+	void	SetNetDebug(BOOL bNetDebug);
 
 
 protected:
@@ -762,6 +779,7 @@ protected:
     MoveObject  m_moveObject[100][100];
 	ByeByeObject m_byeByeObjects;
     int         m_input;
+	int			m_bJoystick;
     int         m_previousInput;
 	int			m_blupiTimeShield;
 	POINT		m_blupiPosMagic;
@@ -810,8 +828,8 @@ protected:
     int         m_direction;
     int         m_actionFrameCount;
     POINT       m_velocity;
-    int         m_blupiIcon;
-	POINT		m_blupiStartPos;
+    Icon4       m_blupiIcon;
+	POINT		m_blupiStartPos[4];
 	int			m_blupiStartDir;
 	int			m_blupiAction;
 	BOOL		m_bCheatDoors;
