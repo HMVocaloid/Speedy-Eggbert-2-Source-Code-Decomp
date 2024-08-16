@@ -1,6 +1,7 @@
 FullScreen=0
-TrueColorBack=16
-TrueColorDecor=16
+TrueColorBack=8
+TrueColor=8
+TrueColorDecor=8
 MouseType=1
 SpeedRate=1
 Timer=50ms

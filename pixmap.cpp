@@ -876,15 +876,15 @@ BOOL CPixmap::Cache(int channel, HBITMAP hbm, POINT totalDim)
 	return TRUE;
 }
 
-BOOL CPixmap::BackgroundCache(int channel, char* pFilename, POINT totalDim, POINT iconDim, BOOL bUsePalette)
+BOOL CPixmap::BackgroundCache(int channel, const char* pFilename, POINT totalDim, POINT iconDim, BOOL bUsePalette)
 {	
 	BOOL decor;
 	char file[100];
 
-	decor = strstr(pFilename, "blupi") != pFilename &&
-		strstr(pFilename, "element") != pFilename &&
-		strstr(pFilename, "explo") != pFilename &&
-		strstr(pFilename, "object") != pFilename;
+	decor = strstr((char*)pFilename, "blupi") != (char*)pFilename &&
+		strstr((char*)pFilename, "element") != (char*)pFilename &&
+		strstr((char*)pFilename, "explo") != (char*)pFilename &&
+		strstr((char*)pFilename, "object") != (char*)pFilename;
 	if (bUsePalette)
 	{
 		goto LABEL1;
@@ -901,14 +901,14 @@ BOOL CPixmap::BackgroundCache(int channel, char* pFilename, POINT totalDim, POIN
 		}
 	}
 	strcpy(file, "image16\\");
-	strcat(file, pFilename);
+	strcat(file, (char*)pFilename);
 	if (Cache2(channel, file, totalDim, iconDim, FALSE))
 	{
 		return TRUE;
 	}
 LABEL1:
 	strcpy(file, "image08\\");
-	strcat(file, pFilename);
+	strcat(file, (char*)pFilename);
 	return Cache2(channel, file, totalDim, iconDim, bUsePalette);
 }
 
@@ -946,7 +946,7 @@ BOOL CPixmap::CacheAll(BOOL cache, HWND hWnd, BOOL bFullScreen, BOOL bTrueColor,
 	}
 
 	OutputDebug("Image:_init\n");
-	if (BackgroundCache(0, (char*)"init.blp", totalDim, iconDim, TRUE) == FALSE)
+	if (BackgroundCache(0, "init.blp", totalDim, iconDim, TRUE) == FALSE)
 	{
 		return FALSE;
 	}
@@ -959,7 +959,7 @@ BOOL CPixmap::CacheAll(BOOL cache, HWND hWnd, BOOL bFullScreen, BOOL bTrueColor,
 
 	if (cache == FALSE)
 	{
-		if (BackgroundCache(0, (char*)pFilename, totalDim, iconDim, FALSE) == FALSE)
+		if (BackgroundCache(0, pFilename, totalDim, iconDim, FALSE) == FALSE)
 		{
 			return FALSE;
 		}
@@ -974,76 +974,77 @@ BOOL CPixmap::CacheAll(BOOL cache, HWND hWnd, BOOL bFullScreen, BOOL bTrueColor,
 		DrawImage(0, 0, rect, 1);
 		Display();
 	}
-	if (BackgroundCache(CHOBJECT, (char*)"object.blp", totalDim, iconDim, FALSE) == FALSE)
+	if (BackgroundCache(CHOBJECT, "object.blp", totalDim, iconDim, FALSE) == FALSE)
 	{
 		return FALSE;
 	}
 	SetTransparent(CHOBJECT, RGB(0, 0, 255));
-	if (BackgroundCache(CHBLUPI, (char*)"blupi000.blp", totalDim, iconDim, FALSE) == FALSE)
+	if (BackgroundCache(CHBLUPI, "blupi000.blp", totalDim, iconDim, FALSE) == FALSE)
 	{
 		return FALSE;
 	}
 	SetTransparent(CHBLUPI, RGB(0, 0, 255));
-	if (BackgroundCache(CHBLUPI1, (char*)"blupi001.blp", totalDim, iconDim, FALSE) == FALSE)
+	if (BackgroundCache(CHBLUPI1, "blupi001.blp", totalDim, iconDim, FALSE) == FALSE)
 	{
 		return FALSE;
 	}
 	SetTransparent(CHBLUPI1, RGB(0, 0, 255));
-	if (BackgroundCache(CHBLUPI2, (char*)"blupi002.blp", totalDim, iconDim, FALSE) == FALSE)
+	if (BackgroundCache(CHBLUPI2, "blupi002.blp", totalDim, iconDim, FALSE) == FALSE)
 	{
 		return FALSE;
 	}
 	SetTransparent(CHBLUPI2, RGB(0, 0, 255));
-	if (BackgroundCache(CHBLUPI3, (char*)"blupi003.blp", totalDim, iconDim, FALSE) == FALSE)
+	if (BackgroundCache(CHBLUPI3, "blupi003.blp", totalDim, iconDim, FALSE) == FALSE)
 	{
 		return FALSE;
 	}
 	SetTransparent(CHBLUPI3, RGB(0, 0, 255));
-	if (BackgroundCache(CHTEMP, (char*)"temp.blp", totalDim, iconDim, FALSE) == FALSE)
+	if (BackgroundCache(CHTEMP, "temp.blp", totalDim, iconDim, FALSE) == FALSE)
 	{
 		return FALSE;
 	}
 	SetTransparent(CHTEMP, RGB(0, 0, 255));
-	if (BackgroundCache(CHMAP, (char*)"map.blp", totalDim, iconDim, FALSE) == FALSE)
+	if (BackgroundCache(CHMAP, "map.blp", totalDim, iconDim, FALSE) == FALSE)
 	{
 		return FALSE;
 	}
 	SetTransparent(CHMAP, RGB(0, 0, 255));
-	if (BackgroundCache(CHELEMENT, (char*)"element.blp", totalDim, iconDim, FALSE) == FALSE)
+	if (BackgroundCache(CHELEMENT, "element.blp", totalDim, iconDim, FALSE) == FALSE)
 	{
 		return FALSE;
 	}
 	SetTransparent(CHELEMENT, RGB(0, 0, 255));
-	if (BackgroundCache(CHEXPLO, (char*)"explo.blp", totalDim, iconDim, FALSE) == FALSE)
+	if (BackgroundCache(CHEXPLO, "explo.blp", totalDim, iconDim, FALSE) == FALSE)
 	{
 		return FALSE;
 	}
 	SetTransparent(CHEXPLO, RGB(0, 0, 255));
-	sprintf(filename, (char*)"decor%.3d.blp", region);
+	sprintf(filename, "decor%.3d.blp", region);
 	if (BackgroundCache(CHDECOR, filename, totalDim, iconDim, FALSE) == FALSE)
 	{
 		return FALSE;
 	}
-	if (BackgroundCache(CHBUTTON, (char*)"button00.blp", totalDim, iconDim, FALSE) == FALSE)
+	if (BackgroundCache(CHBUTTON, "button00.blp", totalDim, iconDim, FALSE) == FALSE)
 	{
 		return FALSE;
 	}
 	SetTransparent(CHBUTTON, RGB(0, 0, 255));
-	if (BackgroundCache(CHJAUGE, (char*)"jauge.blp", totalDim, iconDim, FALSE) == FALSE)
+	if (BackgroundCache(CHJAUGE, "jauge.blp", totalDim, iconDim, FALSE) == FALSE)
 	{
 		return FALSE;
 	}
 	SetTransparent(CHJAUGE, RGB(0, 0, 255));
-	if (BackgroundCache(CHTEXT, (char*)"text.blp", totalDim, iconDim, FALSE) == FALSE)
+	if (BackgroundCache(CHTEXT, "text.blp", totalDim, iconDim, FALSE) != FALSE)
 	{
 		return FALSE;
-	}
-	SetTransparent(CHTEXT, RGB(0, 0, 255));
-	if (BackgroundCache(CHLITTLE, (char*)"little.blp", totalDim, iconDim, FALSE) == FALSE)
-	{
-		SetTransparent(CHLITTLE, RGB(0, 0, 255));
-		Benchmark();
-		return TRUE;
+		SetTransparent(CHTEXT, RGB(0, 0, 255));
+		if (BackgroundCache(CHLITTLE, "little.blp", totalDim, iconDim, FALSE) != FALSE)
+		{
+			SetTransparent(CHLITTLE, RGB(0, 0, 255));
+			Benchmark();
+			return TRUE;
+		}
+		return FALSE;
 	}
 	return FALSE;
 }

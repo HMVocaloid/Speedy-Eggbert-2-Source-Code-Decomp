@@ -750,8 +750,8 @@ static BOOL DoInit(HINSTANCE hInstance, LPSTR lpCmdLine, int nCmdShow)
 	iconDim.x = 0;
 	iconDim.y = 0;
 
-	if (!g_pPixmap->CacheAll(TRUE, g_hWnd, g_bFullScreen, g_bTrueColorBack, g_bTrueColorDecor, g_mouseType, "image08\\init.blp", 0))
-		return InitFail("CacheAll", TRUE);
+	if (!g_pPixmap->CacheAll(TRUE, g_hWnd, g_bFullScreen, g_bTrueColor, g_bTrueColorDecor, g_mouseType, "init.blp", 0))
+		return FALSE;
 
 	OutputDebug("SavePalette\n");
 	g_pPixmap->SavePalette();
