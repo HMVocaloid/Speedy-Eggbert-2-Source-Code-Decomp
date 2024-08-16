@@ -3,11 +3,21 @@
 
 #define WIN32_LEAN_AND_MEAN
 
+#pragma once
+
+#pragma comment(lib, "winmm.lib")
+
+using namespace std;
+
 #include <windows.h>
 #include <windowsx.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <mmsystem.h>
+#include <time.h>
+#include <sys/timeb.h>
+#include <mmiscapi2.h>
+#include <WinBase.h>
 #include "def.h"
 #include "resource.h"
 #include "ddutil.h"
@@ -21,6 +31,8 @@
 #include "event.h"
 #include "misc.h"
 #include "network.h"
+
+#pragma warning (disable : 4996)
 
 // Define Globals
 
@@ -50,10 +62,15 @@ BOOL 		g_bTrueColorDecor;
 MMRESULT    g_updateTimer;			// timer g�n�ral
 BOOL		g_bActive = TRUE;		// is application active ?
 BOOL		g_bTermInit = FALSE;	// initialisation en cours
+int			g_bTimer;
 int			g_objectMax;
 int			g_elementMax;
 int			g_blupiMax;
 int			g_exploMax;
+short		g_object[6];
+short		g_element[6];
+short		g_blupiCh[6];
+short		g_explo[6];
 
 UINT		g_lastPhase = 999;
 
@@ -218,21 +235,17 @@ BOOL ReadConfig (LPSTR lpCmdLine)
 
 void UpdateFrame(void)
 {
-    RECT            clip, rcRect;
+	RECT            clip, rcRect;
 	UINT			phase;
 	BOOL			type;
 	POINT			posMouse;
 	int				i, term, speed, targetlevel;
 
-	g_pPixmap->MouseBackClear();  // enl�ve la souris dans "back"
-	posMouse = g_pEvent->GetLastMousePos();
-
-
 	g_pEvent->ReadInput();
 	phase = g_pEvent->GetPhase();
 
-	if ( phase == g_lastPhase &&
-		 phase == WM_PHASE_PLAY || phase == WM_PHASE_PLAYTEST || phase == WM_PHASE_BUILD )
+	if (phase == g_lastPhase &&
+		phase == WM_PHASE_PLAY || phase == WM_PHASE_PLAYTEST || phase == WM_PHASE_BUILD)
 	{
 		type = g_pDecor->GetPause();
 		if (type == FALSE)
@@ -247,93 +260,81 @@ void UpdateFrame(void)
 					g_pEvent->DemoStep();
 					term++;
 				} while (term < speed);
+			}
 		}
-	}
 
-	if (phase == WM_PHASE_INIT)
-	{
-		g_pEvent->DemoStep();  // d�marre �v. d�mo automatique
-	}
-
-	if (phase == WM_PHASE_PLAYMOVIE || phase == WM_PHASE_WINMOVIE || WM_PHASE_WINMOVIEDESIGN || WM_PHASE_WINMOVIEMULTI)
-	{
-		g_pEvent->MovieToStart();
-	}
-
-	if (phase == WM_PHASE_INSERT)
-	{
-		g_pEvent->TryInsert();
-	}
-
-	if ( phase == WM_PHASE_PLAY )
-	{
-		targetlevel = g_pDecor->GetTargetLevel();
-
-		if ( g_pEvent->IsShift() )  // shift en cours ?
+		if (phase == WM_PHASE_INIT)
 		{
-			g_pEvent->DecorAutoShift(posMouse);
-			g_pDecor->Build(clip, posMouse);  // construit juste le d�cor
+			g_pEvent->DemoStep();  // d�marre �v. d�mo automatique
 		}
-		else
+
+		if (phase == WM_PHASE_PLAYMOVIE || phase == WM_PHASE_WINMOVIE || WM_PHASE_WINMOVIEDESIGN || WM_PHASE_WINMOVIEMULTI)
 		{
-			if ( !g_pEvent->GetPause() )
+			g_pEvent->MovieToStart();
+		}
+
+		if (phase == WM_PHASE_INSERT)
+		{
+			g_pEvent->TryInsert();
+		}
+
+		if (phase == WM_PHASE_PLAY)
+		{
+			if (g_pEvent->IsPrivate() == FALSE)
 			{
-				speed = g_pEvent->GetSpeed() * g_speedRate;
-				for ( i=0 ; i<speed ; i++ )
+				if (g_pEvent->IsMulti() == FALSE)
 				{
-					g_pDecor->BlupiStep(i==0);  // avance tous les blupi
-					g_pDecor->MoveStep(i==0);   // avance tous les d�cors
-					g_pEvent->DemoStep();       // avance enregistrement/reproduction
+					if (g_pDecor->IsTerminated() == -1)
+					{
+						g_pEvent->GetWorldGroup();
+						g_pEvent->SetLives(g_pDecor->GetNbVies());
+						g_pEvent->ChangePhase(WM_PHASE_LOST);
+					}
+					if (g_pDecor->IsTerminated() == -2)
+					{
+						g_pEvent->SetLives(g_pDecor->GetNbVies());
+						g_pEvent->ChangePhase(WM_PHASE_WINMOVIE);
+					}
+					if (0 < g_pDecor->IsTerminated())
+					{
+						g_pEvent->SetLives(g_pDecor->GetNbVies());
+						g_pEvent->SetMission(g_pDecor->IsTerminated());
+						g_pEvent->ChangePhase(WM_PHASE_PLAY);
+					}
+				}
+				else
+				{
+					if (g_pDecor->IsTerminated() == -1)
+					{
+						g_pEvent->ChangePhase(WM_PHASE_WINm);
+						return;
+					}
+					if (g_pDecor->IsTerminated() != 0)
+					{
+						g_pEvent->ChangePhase(WM_PHASE_WINMOVIEm);
+						return;
+					}
 				}
 			}
-
-			g_pEvent->DecorAutoShift(posMouse);
-			g_pDecor->Build(clip, posMouse);  // construit le d�cor
-			g_pDecor->NextPhase(1);  // refait la carte de temps en temps
-		}
-	}
-
-	if ( phase == WM_PHASE_PLAY )
-	{
-		term = g_pDecor->IsTerminated();
-		type = g_pEvent->IsPrivate();
-
-		if (type == FALSE)
-		{
-			type = g_pEvent->IsMulti();
-		}
-		if (type == FALSE)
-		{
-			if (speed == -1)
+			else
 			{
-
+				if (g_pDecor->IsTerminated() == -1)
+				{
+					g_pEvent->ChangePhase(WM_PHASE_LOSTd);
+					return;
+				}
+				if (g_pDecor->IsTerminated() != 0)
+				{
+					g_pEvent->ChangePhase(WM_PHASE_WINMOVIEd);
+					return;
+				}
 			}
 		}
-		if ( term == 1 )  g_pEvent->ChangePhase(WM_PHASE_LOST);  // perdu
-		if ( term == 2 )  g_pEvent->ChangePhase(WM_PHASE_WINMOVIE);   // gagn�
-
 	}
-
-	g_pPixmap->MouseBackDraw();  // remet la souris dans "back"
+	return;
 }
 
-void Benchmark()
-{
-	int	i;
-	POINT	pos = { 0, 0 };
 
-	g_pPixmap->DrawIcon(-1, 2, 10, pos, 0);
-
-	pos.x = 300;
-	pos.y = 350;
-	for (i = 0; i < 10000; i++)
-	{
-		g_pPixmap->DrawIcon(-1, 2, i % 4, pos, 0);
-	}
-
-	g_pPixmap->DrawIcon(-1, 2, 10, pos, 0);
-	g_pSound->Play(0);
-}
 
 // Incomplete
 
@@ -342,16 +343,36 @@ void SetDecor()
 	RECT rect;
 	UINT phase;
 	POINT posMouse;
+	char  test[12];
 
 	g_pPixmap->MouseBackClear();
-	g_pEvent->GetLastMousePos(posMouse);
+	g_pEvent->GetLastMousePos();
 	phase = g_pEvent->GetPhase();
 
 	if (phase == WM_PHASE_PLAY || phase == WM_PHASE_PLAYTEST || phase == WM_PHASE_BUILD)
 	{
-
+		*(char*)test = (LXIMAGE) << 64;
+		rect.bottom = LYIMAGE;
+		rect.left = LOWORD(test);
+		rect.top = HIWORD(test);
+		rect.right = HIWORD(test);
+		g_pDecor->Build(rect);
 	}
+	else
+	{
+		*(char*)test = (LXIMAGE) << 64;
+		rect.bottom = LYIMAGE;
+		rect.left = LOWORD(test);
+		rect.top = HIWORD(test);
+		rect.right = HIWORD(test);
+		g_pPixmap->DrawImage(-1, 0, rect, 1);
+	}
+	g_pEvent->DrawButtons();
+	g_lastPhase = phase;
+	g_pPixmap->MouseBackDraw();
+	return;
 }
+
 BOOL RestoreGame()
 {
 	if ( g_pPixmap == NULL ) return FALSE;
@@ -415,14 +436,6 @@ LRESULT CALLBACK WindowProc (HWND hWnd, UINT message,
 {
 	static HINSTANCE   hInstance;
 	POINT 			   mousePos, totalDim, iconDim;
-#if 0
-	if ( message != WM_TIMER )
-	{
-		char s[100];
-		sprintf(s, "message=%d,%d\n", message, wParam);
-		OutputDebug(s);
-	}
-#endif
 
 	if ( message == WM_SYSKEYDOWN && wParam == VK_F10 )
 	{
@@ -451,7 +464,7 @@ LRESULT CALLBACK WindowProc (HWND hWnd, UINT message,
 		    g_bActive = (wParam != 0);
 			if (g_pEvent != NULL)
 			{
-				g_pEvent->SomethingDecor();
+				g_pEvent->FlushInput();
 			}
 			if ( g_bActive )
 			{
@@ -569,7 +582,17 @@ LRESULT CALLBACK WindowProc (HWND hWnd, UINT message,
 
 }
 
-BOOL InitFail(char *msg, BOOL bDirectX)
+LPTIMECALLBACK TimerStep()
+{
+	if ((g_bActive != FALSE) && (g_bTimer == 0))
+	{
+		g_bTimer = 1;
+		PostAppMessageA(g_hWnd, 1025, 0, 0);
+	}
+	return NULL;
+}
+
+BOOL InitFail(const char *msg, BOOL bDirectX)
 {
 	char	buffer[100];
 
@@ -584,8 +607,54 @@ BOOL InitFail(char *msg, BOOL bDirectX)
 	return FALSE;
 }
 
-//Space for SetTimer
+int Benchmark()
+{
+	timeb time[6];
+	int num0;
+	int num;
+	int num2;
+	int num3;
+	int i;
+	short crap[6];
+	FILE* open;
+	int frame;
+	_MEMORYSTATUS buffer;
+	char file[100];
 
+	ftime(time);
+
+	num = (int)time;
+	frame = 10;
+
+	do
+	{
+		UpdateFrame();
+		SetDecor();
+		g_pPixmap->Display();
+		frame++;
+	} while (frame);
+
+	ftime(time);
+	i = (int)time;
+
+	num0 = HIWORD(crap) & 0xFFFF;
+
+	if (num0 < num)
+	{
+		num0 = num0 + 1000;
+	}
+	num3 = i - num0;
+	buffer.dwLength = 32;
+	GlobalMemoryStatus(&buffer);
+	sprintf(file, "CheckTime = %d\r\nMemory = %d", num3, buffer.dwTotalPhys);
+
+	if (fopen("data\\time.blp", "wb"))
+	{
+		fwrite(file, strlen(file), 1, fopen("data\\time.blp", "wb"));
+		fclose(fopen("data\\time.blp", "wb"));
+	}
+	return num3;
+}
 
 static BOOL DoInit(HINSTANCE hInstance, LPSTR lpCmdLine, int nCmdShow)
 {
@@ -672,7 +741,7 @@ static BOOL DoInit(HINSTANCE hInstance, LPSTR lpCmdLine, int nCmdShow)
 
 	totalDim.x = LXIMAGE;
 	totalDim.y = LYIMAGE;
-	if (!g_pPixmap->Create(g_hWnd, totalDim, g_bFullScreen, g_mouseType))
+	if (!g_pPixmap->Create(g_hWnd, totalDim, g_bFullScreen, g_mouseType, g_bTrueColorBack, g_bTrueColorDecor))
 		return InitFail("Create pixmap", TRUE);
 
 	OutputDebug("Image: init\n");
@@ -681,15 +750,8 @@ static BOOL DoInit(HINSTANCE hInstance, LPSTR lpCmdLine, int nCmdShow)
 	iconDim.x = 0;
 	iconDim.y = 0;
 
-	if (!g_pPixmap->CacheAll(g_hWnd, g_bFullScreen, g_bTrueColor, g_bTrueColorDecor, g_mouseType, "image16\\init.blp", FALSE))
-		return InitFail("CacheAll", TRUE)
-
-#if _INTRO
-		if (!g_pPixmap->Cache(CHBACK, "image16\\init.blp", totalDim, iconDim, TRUE))
-#else
-		if (!g_pPixmap->Cache(CHBACK, "image16\\init.blp", totalDim, iconDim, TRUE))
-#endif
-			return FALSE;
+	if (!g_pPixmap->CacheAll(TRUE, g_hWnd, g_bFullScreen, g_bTrueColorBack, g_bTrueColorDecor, g_mouseType, "image08\\init.blp", 0))
+		return InitFail("CacheAll", TRUE);
 
 	OutputDebug("SavePalette\n");
 	g_pPixmap->SavePalette();
@@ -712,7 +774,6 @@ static BOOL DoInit(HINSTANCE hInstance, LPSTR lpCmdLine, int nCmdShow)
 	if (g_pDecor == NULL) return InitFail("New decor", FALSE);
 
 	g_pDecor->Create(g_hWnd, g_pSound, g_pPixmap, g_pNetwork);
-	g_pDecor->MapInitColors();
 
 	g_pEvent = new CEvent;
 	if (g_pEvent == NULL) return InitFail("New event", FALSE);
@@ -720,11 +781,11 @@ static BOOL DoInit(HINSTANCE hInstance, LPSTR lpCmdLine, int nCmdShow)
 	g_pEvent->Create(g_hWnd, g_pPixmap, g_pDecor, g_pSound, g_pMovie, g_pNetwork);
 	g_pEvent->SetFullScreen(g_bFullScreen);
 	g_pEvent->SetMouseType(g_mouseType);
-#if _INTRO
-	g_pEvent->ChangePhase(WM_PHASE_INTRO1);
-#else
-	g_pEvent->ChangePhase(WM_PHASE_TESTCD);
-#endif
+	g_pEvent->ChangePhase(WM_PHASE_INIT);
+
+	g_pNetwork = new CNetwork;
+	if (g_pNetwork == NULL) return InitFail("New network", FALSE);
+	g_pNetwork->CreateProvider(0);
 
 	g_bTermInit = TRUE;
 	return TRUE;
@@ -734,13 +795,15 @@ int WINAPI WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance,
 					LPSTR lpCmdLine, int nCmdShow)
 {
 	MSG		msg;
+	LPTIMECALLBACK timeStep;
 
 	if ( !DoInit(hInstance, lpCmdLine, nCmdShow) )
 	{
 		return FALSE;
 	}
 
-	SetTimer(g_hWnd, 1, g_timerInterval, NULL);
+	Benchmark();
+	g_hWnd = (HWND)timeSetEvent(g_timerInterval, (g_timerInterval + (g_timerInterval >> 31 & 3U)) >> 2, TimerStep(), 0, 1);
 
 	while ( TRUE )
 	{

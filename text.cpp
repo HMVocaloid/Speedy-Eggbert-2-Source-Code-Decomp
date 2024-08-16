@@ -111,50 +111,27 @@ void DrawTextLeft(CPixmap* pPixmap, POINT pos, char *text, int font)
 	return;
 }
 
-/*
-void DrawTextNew(CPixmap* pPixmap, POINT pos, char* pText, int font)
-{
-	char text;
-
-	text = *pText;
-	
-	while (text != '\0')
-	{
-		pText = pText + 1;
-		DrawChar(pPixmap, &pos, text, font);
-		text = *pText;
-	}
-}
-*/
 
 //Implement later
 
-void DrawChar(CPixmap* pPixmap, POINT* pos, char c, double size)
+void DrawChar(CPixmap* pPixmap, POINT* pos, char c, int font)
 {
-	POINT pos2;
-	int num = (int)((short)c * 6);
-	int num2 = (int)table_char[num];
-	pos2.x = pos->x + (int)table_char[num + 1];
-	pos2.y = pos->y + (int)table_char[num + 2];
-	DrawCharSingle(pPixmap, pos2, num2, size);
-	num2 = (int)table_char[num + 3];
-	if (num2 != -1)
+	POINT pos1;
+	int width;
+	UINT index;
+
+	index = (UINT)(BYTE)c;
+	
+}
+
+void DrawCharSingle(CPixmap pPixmap, POINT pos, char* pText, int font)
+{
+	if (font == FONTLITTLE)
 	{
-		pos2.x = pos->x + (int)table_char[num + 4];
-		pos2.y = pos->y + (int)table_char[num + 5];
-		DrawCharSingle(pPixmap, pos2, num2, size);
+		pPixmap.DrawIcon(-1, CHLITTLE, (int)pText, pos, 0, FALSE);
+		return;
 	}
-	pos->x += GetCharWidth(c, size);
-}
-
-void DrawCharSingle(CPixmap pPixmap, POINT pos, int rank, double size)
-{
-	pPixmap.DrawChar(rank, pos, size);
-}
-
-void GetSomethingDrawText(CPixmap* pPixmap, POINT pos, char* pText, int font)
-{
-	DrawTextNew(pPixmap, pos, pText, font);
+	pPixmap.DrawIcon(-1, CHTEXT, (int)(pText + font * 128), pos, 0, FALSE);
 	return;
 }
 

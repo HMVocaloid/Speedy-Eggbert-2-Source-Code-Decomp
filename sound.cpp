@@ -3,10 +3,16 @@
 
 #include <dsound.h>
 #include <stdio.h>
+#include <mciapi.h>
 #include "sound.h"
 #include "misc.h"
 #include "def.h"
 #include "resource.h"
+
+#pragma warning (disable : 4996)
+#pragma comment(lib, "dsound.lib")
+
+using namespace std;
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -60,7 +66,7 @@ BOOL CSound::CreateSoundBuffer(int dwBuf, DWORD dwBufSize, DWORD dwFreq, DWORD d
     dsbdesc.dwBufferBytes    = dwBufSize; 
     dsbdesc.lpwfxFormat      = (LPWAVEFORMATEX)&pcmwf;
 
-    TRY_DS(m_lpDS->CreateSoundBuffer(&dsbdesc, &m_lpDSB[dwBuf], NULL))
+    TRY_DS(m_lpDS->CreateSoundBuffer(&dsbdesc, &m_lpDSB[dwBuf], NULL), 63)
     return TRUE;
 }
 
@@ -476,23 +482,19 @@ BOOL CSound::Play(int channel, int volume, int pan)
 	return TRUE;
 }
 
-BOOL CSound::StopSound(int channel, int volume, int pan)
+BOOL CSound::StopSound(Sound channel)
 {
 	if (m_bEnable) return FALSE;
 	if (m_bState || m_audioVolume == 0) return FALSE;
 
-	volume -= (MAXVOLUME - m_audioVolume) * ((10000 / 4) / MAXVOLUME);
-
-
 	if (0 < channel || channel < MAXSOUND)
 	{
 		if (m_lpDSB[channel] == NULL)
-			return;
+			return (BOOL)m_lpDSB[channel];
+		m_lpDSB[channel]->Stop();
+		m_lpDSB[channel]->SetCurrentPosition(0);
+		return TRUE;
 	}
-	m_lpDSB[channel]->SetVolume(volume);
-	m_lpDSB[channel]->SetPan(pan);
-	m_lpDSB[channel]->Play(0, 0, 0);
-
 	return FALSE;
 }
 
@@ -578,8 +580,8 @@ BOOL CSound::PlayMusic(HWND hWnd, LPSTR lpszMIDIFilename)
 
 	// Open the device by specifying the device and filename.
 	// MCI will attempt to choose the MIDI mapper as the output port.
-	mciOpenParms.lpstrDeviceType = "sequencer";
-	mciOpenParms.lpstrElementName = string;
+	mciOpenParms.lpstrDeviceType = (LPCWSTR)"sequencer";
+	mciOpenParms.lpstrElementName = (LPCWSTR)string;
 	dwReturn = mciSendCommand(NULL,
 							  MCI_OPEN,
 							  MCI_OPEN_TYPE|MCI_OPEN_ELEMENT,

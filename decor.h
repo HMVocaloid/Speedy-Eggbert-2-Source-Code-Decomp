@@ -2,15 +2,15 @@
 
 #pragma once
 
-#include <Windows.h>
-#include <minwindef.h>
+using namespace std;
 
-#include "DEF.H"
-#include "SOUND.H"
-#include "PIXMAP.H"
+#include <windows.h>
+#include <minwindef.h>
+#include <windef.h>
+#include "def.h"
 #include "network.h"
 #include "jauge.h"
-#include "event.h"
+
 
 /////////////////////////////////////////////////////////////////////////////
 
@@ -200,6 +200,22 @@ MoveObjectStep;
 
 typedef enum
 {
+	TYPE_EMPTY,
+	TYPE_ASCENSEUR,
+	TYPE_BOMBEDOWN,
+	TYPE_BOMBEUP,
+	TYPE_CAISSE,
+	TYPE_GOAL,
+	TYPE_CLE,
+	TYPE_BLUPIHELICO,
+	TYPE_BLUPITANK,
+	TYPE_BALLE,
+	TYPE_DOOR
+}
+MoveObjectType;
+
+typedef enum
+{
 	WM_NOMUSIC = 1044
 }
 WMessage;
@@ -247,6 +263,7 @@ typedef struct
 Perso;
 
 
+
 // Descripteur d'un d�cor anim�.
 #define MAXMOVE		100
 #define MOVEICONNB	1000
@@ -280,44 +297,19 @@ typedef struct
 {
 	short	majRev;
 	short	minRev;
-	long	nbDecor;
-	long	lgDecor;
-	long	nbBlupi;
-	long	lgBlupi;
-	long	nbMove;
-	long	lgMove;
 	short	reserve1[100];
-	POINT	celCoin;
-	POINT	cameraPos;
-	POINT	worldDim;
-	short	world;
-	long	time;
-	char	ButtonExist[MAXBUTTON];
-	Term	term;
+	POINT   posDecor;
+	POINT   dimDecor;
+	short   world;
 	short	music;
 	short	region;
-	long	totalTime;
-	short	skill;
-	POINT	memoPos[4];
-	short	reserve2[29];
+	short	reserve2[51];
+	POINT	blupiPos[4];
+	int		blupiDir[4];
+	char	name[100];
+	short	reserve3[196];
 }
 DescFile;
-
-
-class ByeByeObject
-{
-public:
-	int channel;
-	int icon;
-	double posX;
-	double posY;
-	double rotation;
-	double phase;
-	double animationSpeed;
-	double rotationSpeed;
-	double speedX;
-};
-
 
 #define MAXLASTDRAPEAU	50
 
@@ -485,8 +477,8 @@ public:
 	BOOL	MovePutObject(POINT cel, int channel, int icon);
 
 	// DecIO.cpp
-	BOOL	Write(int rank, BOOL bUser, int world, int time, int total);
-	BOOL	Read(int rank, BOOL bUser, int &world, int &time, int &total);
+	BOOL	Write(int gamer, int mission, char* rank);
+	BOOL	Read(int gamer, int rank, BOOL* pbMission, BOOL* pbPrivate);
 	BOOL	FileExist(int rank, BOOL bUser, int &world, int &time, int &total);
 	void	Flush();
 
@@ -536,7 +528,7 @@ public:
 	void	InitAfterBuild();
 	void	PlayPrepare(BOOL bTest);
 	void	BuildPrepare();
-	void	Build();
+	void	Build(RECT rect);
 	BOOL	BlitzActif(int celx, int cely);
 	void	DrawInfo();
 	void	UpdateCaisse();
@@ -545,7 +537,7 @@ public:
 	void	SetSpeedX(double speed);
 	void	SetSpeedY(double speed);
 	int		SoundEnviron(int sound, int obstacle);
-	void	StopSound(CSound sound);
+	void	StopSound(Sound sound);
 	void	AdaptMotorVehicleSound();
 	BOOL	TestPushCaisse(int i, POINT pos, BOOL bPop);
 	void	SearchLinkCaisse(int rank, BOOL bPop);
@@ -590,7 +582,8 @@ public:
 	int		GetInfoHeight();
 
 	int 	GetTargetLevel();
-	void	GetBlupiInfo(BOOL* bHelico, BOOL* bJeep, BOOL* bSkate, BOOL* bNage);
+	void	GetBlupiInfo(BOOL bHelico, BOOL bJeep, BOOL bSkate, BOOL bNage);
+	void	AdaptDoors(BOOL bPrivate, int mission);
 
 	char*	GetButtonExist();
 
@@ -622,7 +615,7 @@ public:
 	BOOL	GetNetPacked();
 	BOOL	GetNetMovePredict();
 	UINT	GetPhase();
-	char	GetMissionTitle();
+	char*   GetMissionTitle();
 	void	GetDims(POINT* ptr);
 	void	SetDims(POINT dims);
 	int		GetNbVies();
@@ -681,11 +674,10 @@ public:
 	BOOL	IsMoveTraj(POINT pos);
 	int		SearchDistRight(POINT pos, POINT dir, int type);
 	BOOL	IsVentillo(POINT pos);
-	void	NetStopCloud(int rank);
 	void	StartSploutchGlu(POINT pos);
 	int		ObjectStart(POINT pos, int type, int speed);
-	BOOL	ObjectDelete(POINT pos, int type);
-	void	ModifDecor(POINT pos, int icon);
+	BOOL	ObjectDelete(POINT pos, int type, int something);
+	void	ModifDecor(POINT pos, int icon, BOOL bMulti);
 	void	MoveObjectStep();
 	void	MoveObjectStepLine(int i);
 	void	MoveObjectStepIcon(int i);
@@ -711,10 +703,7 @@ public:
 	void	GetMissionPath(char* str, int user, int mission, BOOL bUser);
 	void	DynamiteStart(int i, int dx, int dy);
 	int		AscenseurDetect(RECT rect, POINT oldpos, POINT newpos);
-	void	ByeByeHelico();
-	void	ByeByeAdd(ByeByeObject byeByeObject, int channel, int icon, POINT pos, double rotationSpeed, double animationSpeed);
 	void	BlupiSearchIcon();
-	void	ByeByeDraw(POINT posDecor);
 	void	AscenseurVertigo(int i, BOOL bVertigoLeft, BOOL bVertigoRight);
 	BOOL	AscenseurShift(int i);
 	void	AscenseurSynchro(int i);
@@ -722,14 +711,13 @@ public:
 	int		CaisseGetMove(int max);
 	int		MockeryDetect(POINT pos);
 	BOOL	BlupiElectro(POINT pos);
-	void	ByeByeStep();
 	void	BlupiStep();
 	BOOL	DecorDetect(RECT rect);
 	BOOL	DecorDetect(RECT rect, BOOL bCaisse);
 	BOOL	SearchDoor(int n, POINT cel, POINT blupi);
 	BOOL	SearchGold(int n, POINT cel);
 	BOOL	TestPath(RECT rect, POINT start, POINT end);
-	void	PlaySound(int sound, POINT pos);
+	void	PlaySoundB(int sound, POINT pos, int net);
 	void	OpenDoorsTresor();
 	void	OpenDoor(POINT cel);
 	void	OpenDoorsWin();
@@ -748,6 +736,9 @@ public:
 	void	DeleteCel(int celX, int celY);
 	void	SetGamerName(const char* playerName);
 	BOOL	SomethingMissionPath(int user, int mission, BOOL bUser);
+	void	MoveObjectPriority(int i);
+
+
 
 	// Network Related Functions
 	void	NetMessageIndexFlush();
@@ -777,7 +768,6 @@ protected:
     CNetwork*   m_pNetwork;
 	NetMessage	m_netMessages[20];
     MoveObject  m_moveObject[100][100];
-	ByeByeObject m_byeByeObjects;
     int         m_input;
 	int			m_bJoystick;
     int         m_previousInput;
@@ -840,7 +830,7 @@ protected:
     undefined
     undefined
     */
-	Cellule		m_decor[100][100];
+	Cellule		m_decor[MAXCELX / 2][MAXCELY / 2];
 	Cellule		m_bigDecor[100][100];
 	int			m_decorAction;
 	int			m_blupiLevel;
@@ -856,13 +846,13 @@ protected:
 	double		m_blupiSpeedY;
 	BOOL		m_blupiFocus;
     BOOL        m_blupiAir;
-    BOOL*       m_blupiHelico;
+    BOOL        m_blupiHelico;
     BOOL        m_blupiOver;
-    BOOL*       m_blupiJeep;
-    BOOL*       m_blupiTank;
-    BOOL*       m_blupiSkate;
-    BOOL*       m_blupiNage;
-    BOOL*       m_blupiSurf;
+    BOOL        m_blupiJeep;
+    BOOL        m_blupiTank;
+    BOOL        m_blupiSkate;
+    BOOL        m_blupiNage;
+    BOOL        m_blupiSurf;
     BOOL        m_bInWind;
 	BOOL		m_blupiVent;
     BOOL        m_blupiSuspend;
@@ -921,13 +911,13 @@ protected:
     int         m_netPacketsRecieved;
     int         m_netPacketsRecieved2;
 	POINT		m_netPositions[4];
-	Icon		m_netIcons[4];
+	Icon4		m_netIcons[4];
 	int			m_netPlayerPacketsRecieved[4];
 	int			m_netPlayerPacketsRecieved2[4];
 	int			m_bNetTimeSincePacket[4];
 	POINT		m_netVitesses[4];
 	POINT		m_netPacketPosition;
-	Icon		m_netPacketIcon;
+	Icon4		m_netPacketIcon;
     NamedGUID   m_netEvents[20];
     int         m_netEventIndex1;
 	int			m_netEventIndex2;
@@ -974,7 +964,6 @@ protected:
 	int 		m_menuSelections[112];
 	BYTE 		m_overloadProtection[100000];
 	Cellule*	m_pUndoDecor;
-	Cellule		m_decor[MAXCELX/2][MAXCELY/2];
 	short		m_rankBlupi[MAXCELX][MAXCELY];
 	Blupi		m_blupi[MAXBLUPI];
 	Move		m_move[MAXMOVE];
@@ -994,14 +983,12 @@ protected:
 	int			m_rankBlupiHili;	// rang blupi s�lectionn�
 	BOOL		m_bFog;				// TRUE -> brouillard (jeu)
 	BOOL		m_bBuild;			// TRUE -> construction
-	BOOL		m_bInvincible;		// TRUE -> cheat code
 	BOOL		m_bSuper;			// TRUE -> cheat code
 	short		m_colors[100];
 	int			m_time;				// temps relatif global
 	int			m_timeConst;		// temps relatif global constant
 	int			m_timeFlipOutline;	// temps quand basculer mode outline
 	int			m_totalTime;		// temps total pass� sur une partie
-	int			m_phase;			// phase pour la carte
 	POINT		m_celArrow;			// cellule avec fl�che
 	BOOL		m_bOutline;
 	BOOL		m_bGroundRedraw;
@@ -1060,7 +1047,8 @@ protected:
 
     int SetBlupiChannel();
     int GetBlupiChannel();
-	int GetPersonalBombIcon();
+	int GetBlupiChannelActual();
+	int GetIconPerso();
     int GetTargetLevel(int mission);
     void SetShowSecret(BOOL secret);
 	void GetBlupiHitbox(RECT *out, POINT pos);
@@ -1078,6 +1066,7 @@ POINT GetCel (int x, int y);
 POINT GetCel (POINT cel, int x, int y);
 BOOL IsValid (POINT cel);
 POINT GetVector (int direct);
+
 extern int table_multi_goal[];
 extern short table_actions[];
 

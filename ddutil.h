@@ -1,12 +1,10 @@
 
 
+using namespace std;
 
+#pragma once
 
-
-
-#ifdef _cplusplus
-extern "C" {
-#endif
+#include "ddraw.h"
 
 extern void DDSetDebug (BOOL bDebug);
 extern IDirectDrawSurface * DDConnectBitmap(IDirectDraw *pdd, HBITMAP hbm);
@@ -18,7 +16,4 @@ extern DWORD                DDColorMatch(IDirectDrawSurface *pdds, COLORREF rgb)
 extern HRESULT              DDSetColorKey(IDirectDrawSurface *pdds, COLORREF rgb);
 extern HRESULT              DDSetColorKey2(IDirectDrawSurface *pdds, COLORREF rgb1, COLORREF rgb2);
 
-/*
-#ifdef __cplusplus
-}
-#endif  /* __cplusplus */
+

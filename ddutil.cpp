@@ -36,7 +36,7 @@ void DDSetDebug(BOOL bDebug)
  *  create a DirectDrawSurface from a bitmap resource.
  *
  */
-extern "C" IDirectDrawSurface * DDConnectBitmap(IDirectDraw *pdd, HBITMAP hbm)
+extern IDirectDrawSurface * DDConnectBitmap(IDirectDraw *pdd, HBITMAP hbm)
 {
     BITMAP              bm;
     DDSURFACEDESC       ddsd;
@@ -77,7 +77,7 @@ extern "C" IDirectDrawSurface * DDConnectBitmap(IDirectDraw *pdd, HBITMAP hbm)
  *  create a DirectDrawSurface from a bitmap resource.
  *
  */
-extern "C" IDirectDrawSurface * DDLoadBitmap(IDirectDraw *pdd, LPCSTR szBitmap, int dx, int dy)
+extern IDirectDrawSurface * DDLoadBitmap(IDirectDraw *pdd, LPCSTR szBitmap, int dx, int dy)
 {
     HBITMAP             hbm;
     BITMAP              bm;
@@ -175,7 +175,7 @@ HRESULT DDReLoadBitmap(IDirectDrawSurface *pdds, LPCSTR szBitmap)
  *  draw a bitmap into a DirectDrawSurface
  *
  */
-extern "C" HRESULT DDCopyBitmap(IDirectDrawSurface *pdds, HBITMAP hbm, int x, int y, int dx, int dy)
+extern HRESULT DDCopyBitmap(IDirectDrawSurface *pdds, HBITMAP hbm, int x, int y, int dx, int dy)
 {
     HDC                 hdcImage;
     HDC                 hdc;
@@ -242,7 +242,7 @@ extern "C" HRESULT DDCopyBitmap(IDirectDrawSurface *pdds, HBITMAP hbm, int x, in
 //  if the resource does not exist or NULL is passed create a
 //  default 332 palette.
 //
-extern "C" IDirectDrawPalette * DDLoadPalette(IDirectDraw *pdd, LPCSTR szBitmap)
+extern IDirectDrawPalette * DDLoadPalette(IDirectDraw *pdd, LPCSTR szBitmap)
 {
     IDirectDrawPalette* ddpal;
     int                 i;
@@ -267,7 +267,7 @@ extern "C" IDirectDrawPalette * DDLoadPalette(IDirectDraw *pdd, LPCSTR szBitmap)
     //
     // get a pointer to the bitmap resource.
     //
-    if (szBitmap && (h = FindResourceA(NULL, szBitmap, RT_BITMAP)))
+    if (szBitmap && (h = FindResourceA(NULL, szBitmap, (LPCSTR)RT_BITMAP)))
     {
 		if ( g_bDebug )  OutputDebug("DDLoadPalette -a\n");
         lpbi = (LPBITMAPINFOHEADER)LockResource(LoadResource(NULL, h));
@@ -346,7 +346,7 @@ extern "C" IDirectDrawPalette * DDLoadPalette(IDirectDraw *pdd, LPCSTR szBitmap)
  * we do this by leting GDI SetPixel() do the color matching
  * then we lock the memory and see what it got mapped to.
  */
-extern "C" DWORD DDColorMatch(IDirectDrawSurface *pdds, COLORREF rgb)
+extern DWORD DDColorMatch(IDirectDrawSurface *pdds, COLORREF rgb)
 {
     COLORREF rgbT;
     HDC hdc;
@@ -397,7 +397,7 @@ extern "C" DWORD DDColorMatch(IDirectDrawSurface *pdds, COLORREF rgb)
  * if you pass CLR_INVALID as the color key, the pixel
  * in the upper-left corner will be used.
  */
-extern "C" HRESULT DDSetColorKey(IDirectDrawSurface *pdds, COLORREF rgb)
+extern HRESULT DDSetColorKey(IDirectDrawSurface *pdds, COLORREF rgb)
 {
     DDCOLORKEY          ddck;
 
@@ -406,7 +406,7 @@ extern "C" HRESULT DDSetColorKey(IDirectDrawSurface *pdds, COLORREF rgb)
     return pdds->SetColorKey(DDCKEY_SRCBLT, &ddck);
 }
 
-extern "C" HRESULT DDSetColorKey2(IDirectDrawSurface *pdds, COLORREF rgb1,
+extern HRESULT DDSetColorKey2(IDirectDrawSurface *pdds, COLORREF rgb1,
 															COLORREF rgb2)
 {
     DDCOLORKEY          ddck;

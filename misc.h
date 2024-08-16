@@ -23,4 +23,4 @@ extern void AddCDPath(char *pFilename);
 extern void AddUserPath(char *pFilename);
 
 extern void TraceErrorDD(HRESULT hErr, const char *sFile, int nLine);
-extern void TraceErrorDS(HRESULT hErr, char *sFile, int nLine);
+extern void TraceErrorDS(HRESULT hErr, const char *sFile, int nLine);

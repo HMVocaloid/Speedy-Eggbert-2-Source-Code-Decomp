@@ -2,6 +2,7 @@
 //
 
 using namespace std;
+#pragma once
 
 #include <windows.h>
 #include <stdlib.h>
@@ -52,27 +53,41 @@ BOOL CJauge::Create(HWND hWnd, CPixmap *pPixmap, CSound *pSound,
     m_dim.y            = DIMJAUGEY;
     m_level            = 0;
     m_bRedraw          = TRUE;
+    return TRUE;
 }
 
 void CJauge::Draw()
 {
-    int			part;
     RECT		rect;
+    char        num2[12];
 
     if (m_bMinimizeRedraw && !m_bRedraw)  return;
     m_bRedraw = FALSE;
 
     if (m_bHide)  // bouton cach� ?
     {
-        m_pPixmap->DrawPart(-1, 0, m_pos, rect);
+        rect.right = m_dim.x + m_pos.x;
+        rect.left = m_pos.x;
+        rect.top = m_pos.y;
+        rect.bottom = m_dim.y + m_pos.y;
+        m_pPixmap->DrawPart(-1, 0, m_pos, rect, 1, FALSE);
         return;
     }
     int num = m_level * 114 / 100;
 
-    m_pPixmap->DrawPart(-1, 5, m_pos, rect);
+    *(char*)num2 = (124) << 64;
+    rect.bottom = 22;
+    rect.left = LOWORD(num2);
+    rect.top = HIWORD(num2);
+    rect.right = HIWORD(num2);
+    m_pPixmap->DrawPart(-1, 5, m_pos, rect, 0, FALSE);
     if (num > 0)
     {
-        m_pPixmap->DrawPart(-1, 5, m_pos, rect);
+        rect.bottom = num + 6;
+        rect.left = m_type * 22;
+        rect.top = (m_type + 1) * 22;
+        rect.right = 0;
+        m_pPixmap->DrawPart(-1, 5, m_pos, rect, 0, FALSE);
     }
 
 }

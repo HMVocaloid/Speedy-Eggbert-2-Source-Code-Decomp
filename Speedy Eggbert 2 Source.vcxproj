@@ -73,13 +73,15 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <SDLCheck>true</SDLCheck>
+      <SDLCheck>false</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalOptions>/FORCE:MULTIPLE  /DYNAMICBASE "legacy_stdio_definitions.lib" %(AdditionalOptions) </AdditionalOptions>
+      <AdditionalLibraryDirectories>C:\DIRECTX3\DIRECTX3\SDK\LIB;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -156,7 +158,6 @@
     <ClCompile Include="blupi.cpp" />
     <ClCompile Include="button.cpp" />
     <ClCompile Include="ddutil.cpp" />
-    <ClCompile Include="decblupi.cpp" />
     <ClCompile Include="decor.cpp" />
     <ClCompile Include="event.cpp" />
     <ClCompile Include="jauge.cpp" />
@@ -170,7 +171,6 @@
     <ClCompile Include="wave.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="..\..\..\..\Music\StringTable.rc" />
     <ResourceCompile Include="Eggbert2.rc" />
   </ItemGroup>
   <ItemGroup>

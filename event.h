@@ -4,10 +4,14 @@
 
 /////////////////////////////////////////////////////////////////////////////
 
+#pragma once
+
+using namespace std;
+
 #include "movie.h"
 #include "menu.h"
 #include "button.h"
-#include "decor.h"
+
 
 typedef struct
 {
@@ -129,7 +133,7 @@ public:
 	int		GetState(int button);
 	void	SetState(int button, int state);
 	BOOL	GetEnable(int button);
-	void	SetEnable(int button, BOOL bEnable);
+	void	SetEnable(WMessage button, int bEnable);
 	void	SetSomething(int button, int bSomething);
 	BOOL	GetHide(int button);
 	void	SetHide(int button, BOOL bHide);
@@ -147,7 +151,7 @@ public:
 	void	WaitMouse(BOOL bWait);
 	void	HideMouse(BOOL bHide);
 	void	FillMouse(int bFill);
-	POINT	GetLastMousePos(POINT out);
+	POINT	GetLastMousePos();
 	BOOL	TreatEvent(UINT message, WPARAM wParam, LPARAM lParam);
 	BOOL	TreatEventBase(UINT message, WPARAM wParam, LPARAM lParam);
 
@@ -176,6 +180,7 @@ public:
 	void	DebugDisplay(char m);
 
 	void	IntroStep();
+	void	SetLives(int lives);
 
 	void	ReadAll();
 	BOOL	SaveState(int rank);
@@ -211,7 +216,7 @@ protected:
 	int		GetTryPhase();
 	BOOL	ReadPlayer();
 	void	PutTextInputBox(POINT pos);
-	void	SetLives(int lives);
+	
 
 	void	DemoRecStart();
 	void	DemoRecStop();
@@ -322,7 +327,6 @@ protected:
 	int			m_demoIndex;
 	int			m_demoEnd;
 	int			m_demoNumber;
-	int			m_tryPhase;
 	BOOL		m_bCtrlDown;
 	POINT		m_debugPos;
 	int			m_introTime;
@@ -334,7 +338,6 @@ protected:
 	char 		m_textInput[100];
 	char 		m_pPlayerName[100];
 	int 		m_lives;
-	int 		m_mission;
 	int 		m_multi;
 	HINSTANCE	m_hInstance;
 	char		m_chatZone[100][5];

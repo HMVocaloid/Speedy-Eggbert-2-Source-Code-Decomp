@@ -3,12 +3,15 @@
 
 #include <stdio.h>
 #include <windows.h>
+#include "dplay.h"
 #include "misc.h"
 #include "network.h"
 
 #define _CRT_SECURE_NO_WARNINGS_GLOBALS
 #define WIN32_LEAN_AND_MEAN
 #pragma warning(disable : 4996)
+#pragma comment(lib, "dplayx.lib")
+#pragma comment(lib, "dxguid.lib")
 
 // a0f94abe-11c3-d111-be62-0040f6944838
 #define APP_GUID { 0xbe4af9a0, 0xc311, 0x11d1, { 0xbe, 0x62, 0x00, 0x40, 0xf6, 0x94, 0x48, 0x38 } };

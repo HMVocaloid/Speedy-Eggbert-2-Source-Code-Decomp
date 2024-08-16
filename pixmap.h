@@ -1,5 +1,7 @@
 // CPixmap.h
 
+using namespace std;
+
 #pragma once
 
 #include <ddraw.h>
@@ -30,13 +32,14 @@ public:
     BOOL    Cache(int channel, char *pFilename, POINT totalDim, POINT iconDim, BOOL bUsePalette);
     BOOL    Cache2(int channel, const char *pFilename, POINT totalDim, POINT iconDim, BOOL bUsePalette);
     BOOL    Cache(int channel, HBITMAP hbm, POINT totalDim);
-    BOOL    CacheAll(BOOL cache, HWND hWnd, BOOL bFullScreen, BOOL bTrueColor, BOOL bTrueColorDecor, int mouseType, char* pFilename, int region);
+    BOOL    BackgroundCache(int channel, char* pFilename, POINT totalDim, POINT iconDim, BOOL bUsePalette);
+    BOOL    CacheAll(BOOL cache, HWND hWnd, BOOL bFullScreen, BOOL bTrueColor, BOOL bTrueColorDecor, int mouseType, const char* pFilename, int region);
     int     Benchmark();
     void    Flush(int channel);
     void    SetTransparent(int channel, COLORREF color);
     void    SetTransparent2(int channel, COLORREF color1, COLORREF color2);
     void    SetClipping(RECT clip);
-    RECT    GetClipping();
+    RECT    GetClipping(RECT* rect);
     void    HudIcon(int channel, int rank, POINT pos);
     void    QuickIcon(int channel, int rank, POINT pos);
 

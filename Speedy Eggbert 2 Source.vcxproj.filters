@@ -98,9 +98,6 @@
     <ClCompile Include="ddutil.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="decblupi.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="decor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -136,9 +133,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="..\..\..\..\Music\StringTable.rc">
-      <Filter>Resource Files</Filter>
-    </ResourceCompile>
     <ResourceCompile Include="Eggbert2.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>

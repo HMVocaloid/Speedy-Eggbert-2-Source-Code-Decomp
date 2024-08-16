@@ -1,6 +1,10 @@
 // movie.cpp
 //
 
+using namespace std;
+
+#pragma once
+
 #include <windows.h>
 #include <windowsx.h>
 #include <commdlg.h>
@@ -10,10 +14,12 @@
 #include <direct.h>
 #include <mmsystem.h>		
 #include <digitalv.h>		
+#include <mciapi.h>
 #include "def.h"
 #include "movie.h"
 #include "misc.h"
 
+#pragma warning (disable : 4996)
 
 //----------------------------------------------------------------------------
 
@@ -33,7 +39,7 @@ BOOL CMovie::initAVI()
 	// set up the open parameters
 	mciOpen.dwCallback 		 = 0L;
 	mciOpen.wDeviceID 		 = 0;
-	mciOpen.lpstrDeviceType  = AVI_VIDEO;
+	mciOpen.lpstrDeviceType  = (LPWSTR)AVI_VIDEO;
 	mciOpen.lpstrElementName = NULL;
 	mciOpen.lpstrAlias 		 = NULL;
 	mciOpen.dwStyle 		 = 0;
@@ -120,7 +126,7 @@ BOOL CMovie::fileOpenMovie(HWND hWnd, RECT rect, char *pFilename)
 	mciOpen.dwCallback       = 0L;
 	mciOpen.wDeviceID        = 0;
 	mciOpen.lpstrDeviceType  = NULL;
-	mciOpen.lpstrElementName = string;
+	mciOpen.lpstrElementName = (LPWSTR)string;
 	mciOpen.lpstrAlias       = NULL;
 	mciOpen.dwStyle          = WS_CHILD;
 	mciOpen.hWndParent       = hWnd;
@@ -138,7 +144,7 @@ BOOL CMovie::fileOpenMovie(HWND hWnd, RECT rect, char *pFilename)
 		mciWindow.dwCallback = 0L;
 		mciWindow.hWnd       = NULL;
 		mciWindow.nCmdShow   = SW_SHOW;
-		mciWindow.lpstrText  = (LPSTR)NULL;
+		mciWindow.lpstrText  = (LPWSTR)NULL;
 //		mciSendCommand(m_wMCIDeviceID, MCI_WINDOW,
 //					   MCI_DGV_WINDOW_STATE,
 //					   (DWORD)(LPMCI_DGV_WINDOW_PARMS)&mciWindow);

@@ -1,11 +1,19 @@
 // Jauge.h
 
 
+using namespace std;
 
 //////////////////////////////////////////////////////////////////////////
 #include <minwindef.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <windef.h>
 #include <Windows.h>
+
 #include "decor.h"
+
+#pragma once
+#define WIN32_LEAN_AND_MEAN
 
 class CJauge
 {

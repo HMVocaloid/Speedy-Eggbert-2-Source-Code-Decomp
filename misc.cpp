@@ -347,7 +347,7 @@ void TraceErrorDD(HRESULT hErr, const char *sFile, int nLine)
 //
 //----------------------------------------------------------------------
 
-void TraceErrorDS(HRESULT hErr, char *sFile, int nLine)
+void TraceErrorDS(HRESULT hErr, const char *sFile, int nLine)
 {       
     char dserr[256];
     char err[1024];

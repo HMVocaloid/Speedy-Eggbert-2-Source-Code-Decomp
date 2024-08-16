@@ -153,7 +153,6 @@ void CButton::Draw()
 	{
 		pos.y 	   = m_pos.y;
 		pos.x	   = m_pos.x;
-		m_pPixmap->DrawPart(-1, CHBACK, m_pos, rect, 1); // Draw the background
 		return;
 	}
 
@@ -375,7 +374,6 @@ BOOL CButton::MouseDown(POINT pos)
 	m_bRedraw	 = TRUE;
 	PostMessage(m_hWnd, WM_UPDATE, 0, 0);
 
-	m_pSound->PlayImage(SOUND_CLICK, pos);
 	return TRUE;
 }
 

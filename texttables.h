@@ -131,9 +131,8 @@ extern int table_width[]
 	0
 };
 
-// WindowsPhoneSpeedyBlupi.Text
-// Token: 0x0400035A RID: 858
-extern int table_char[]
+
+extern char table_char[]
 	{
 		0,
 			0,

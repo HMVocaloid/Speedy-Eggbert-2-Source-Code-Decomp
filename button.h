@@ -8,17 +8,6 @@
 
 using namespace std;
 
-
-typedef struct
-{
-	int		message;
-	int		type;
-	int		iconMenu[20];
-	POINT	pos;
-	int		toolTips[20];
-}
-Button;
-
 class CButton
 {
 public:
