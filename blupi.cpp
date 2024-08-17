@@ -736,6 +736,7 @@ static BOOL DoInit(HINSTANCE hInstance, LPSTR lpCmdLine, int nCmdShow)
 		return InitFail("Game not correctly installed", FALSE);
 	}
 
+
 	g_pPixmap = new CPixmap;
 	if (g_pPixmap == NULL) return InitFail("New pixmap", TRUE);
 
@@ -744,6 +745,7 @@ static BOOL DoInit(HINSTANCE hInstance, LPSTR lpCmdLine, int nCmdShow)
 	if (!g_pPixmap->Create(g_hWnd, totalDim, g_bFullScreen, g_mouseType, g_bTrueColorBack, g_bTrueColorDecor))
 		return InitFail("Create pixmap", TRUE);
 
+	g_pPixmap->SetBenchmarkSuccess(g_bBenchmarkSuccess);
 	OutputDebug("Image: init\n");
 	totalDim.x = LXIMAGE;
 	totalDim.y = LYIMAGE;
@@ -757,6 +759,8 @@ static BOOL DoInit(HINSTANCE hInstance, LPSTR lpCmdLine, int nCmdShow)
 	g_pPixmap->SavePalette();
 	OutputDebug("InitSysPalette\n");
 	g_pPixmap->InitSysPalette();
+	g_pPixmap->SetTrueColor(TRUE);
+	g_pPixmap->SetTrueColorDecor(TRUE);
 
 	g_pSound = new CSound;
 	if (g_pSound == NULL) return InitFail("New sound", TRUE);

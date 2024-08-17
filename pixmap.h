@@ -64,6 +64,9 @@ public:
 	void	MouseInvalidate();
 	void	MouseBackClear();
 	void	MouseBackDraw();
+    void    SetBenchmarkSuccess(BOOL bSuccess);
+    void    SetTrueColor(BOOL bTrueColor);
+    void    SetTrueColorDecor(BOOL bTrueColorDecor);
 
 protected:
 	HRESULT	RestoreAll();
@@ -80,9 +83,7 @@ protected:
 	void	MouseHotSpot();
     BOOL    GetTrueColor();
 
-    void SetBenchmarkSuccess(BOOL bSuccess);
-    void SetTrueColor(BOOL bTrueColor);
-    void SetTrueColorDecor(BOOL bTrueColorDecor);
+   
 
 protected:
     BOOL                   m_bFullScreen;

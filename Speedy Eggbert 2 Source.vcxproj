@@ -80,8 +80,9 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalOptions>/FORCE:MULTIPLE  /DYNAMICBASE "legacy_stdio_definitions.lib" %(AdditionalOptions) </AdditionalOptions>
+      <AdditionalOptions>/FORCE:MULTIPLE  /DYNAMICBASE "legacy_stdio_definitions.lib" %(AdditionalOptions) /VERBOSE</AdditionalOptions>
       <AdditionalLibraryDirectories>C:\DIRECTX3\DIRECTX3\SDK\LIB;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <TreatLinkerWarningAsErrors>false</TreatLinkerWarningAsErrors>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

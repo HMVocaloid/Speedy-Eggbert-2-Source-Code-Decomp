@@ -16,7 +16,8 @@ public:
 
 	BOOL	Create(HWND hWnd, CPixmap *pPixmap, CSound *pSound,
 				   POINT pos, int type, BOOL bMinimizeRedraw, int region, UINT message);
-	void	SetSomethingMenu(int somethingMenu);
+	void	SetSomethingMenu(int* icon, int somethingMenu);
+	void	MenuToolTips(int* menu, int menuTooltips);
 	void	Draw();
 	void	Redraw();
 

@@ -1644,9 +1644,7 @@ void CEvent::NetSetPause(BOOL bPause, int players)
 
 void CEvent::NetSendLobby()
 {
-	int i;
 	NetPlayer* player;
-	NetPlayer* playerPacket;
 	UCHAR (packet)[132];
 	CNetwork* pNetwork;
 
@@ -1655,13 +1653,7 @@ void CEvent::NetSendLobby()
 	packet[0] = 132;
 	packet[1] = MESS_LOBBY;
 	player = pNetwork->m_players;
-	playerPacket = (NetPlayer*)(packet + 4);
-	for (i != 0; i = sizeof(NetPlayer); i++)
-	{
-		playerPacket = (NetPlayer*)player;
-		player = (NetPlayer*)&player->dpid;
-		playerPacket++;
-	}
+	memcpy(packet, pNetwork, 128);
 	pNetwork->Send(packet, 132, DPSEND_GUARANTEED);
 	return;
 }
@@ -1672,13 +1664,9 @@ int	CEvent::NetSearchPlayer(DPID dpid)
 	BYTE* pDpid;
 	
 	i = 0;
-	pDpid = (BYTE*)&m_pNetwork->m_players[0].dpid;
-
-	while ((pDpid[-4] == 0 || (dpid != *(DPID*)pDpid)))
+	for (pDpid = (BYTE*)m_pNetwork->m_players[0].dpid; !pDpid[-4] == 0 || (dpid != *pDpid); pDpid += 32)
 	{
-		i++;
-		pDpid = pDpid + sizeof(NetPlayer);
-		if (3 < i)
+		if (i++ >= 4)
 		{
 			return -1;
 		}
@@ -1749,7 +1737,7 @@ void CEvent::NetDraw()
 	//m_pDecor->DrawMap(TRUE, player);
 	return;
 }
-/*
+
 void CEvent::ChatSend()
 {
 	int		netplay;
@@ -1772,7 +1760,7 @@ void CEvent::ChatSend()
 		strcat(textInput, (const char*)m_pNetwork->m_players[netplay].name);
 		strcat(textInput, "> ");
 		strcat(textInput, text);
-		ChatMessageSound((char*)textInput);
+		//ChatMessageSound((char*)textInput);
 		end[0] = 108;
 		end[1] = 11;
 		dpid = m_pNetwork->m_dpid;
@@ -1783,12 +1771,12 @@ void CEvent::ChatSend()
 		pos[133].x = 0;
 		m_textHiliEnd = i - 1;
 		m_textCursorIndex = 0;
-		SetEnable(WM_BUTTON20, 0);
+		SetEnable((WMessage)WM_BUTTON20, 0);
 	}
 	return;
 }
 
-
+/*
 void CEvent::ChatMessageSound(char* data)
 {
 	int num;
@@ -1800,7 +1788,7 @@ void CEvent::ChatMessageSound(char* data)
 	chatZone = m_chatZone[0];
 	do
 	{
-		if (chatZone == '\0')
+		if (chatZone = '\0')
 		{
 			chat = m_chatZone + num * 20;
 			goto error;
@@ -1853,11 +1841,9 @@ void CEvent::OutputNetDebug(const char* str)
 	{
 		if (fopen("debug.txt", "ab") != (FILE*)0)
 		{
-			fwrite(str, 1, strlen((const char*)str), streamf);
+			fwrite(str, 1, strlen(str), streamf);
 			streamf = (FILE*)fclose(streamf);
 		}
-	
-		
 	}
 	return;
 }

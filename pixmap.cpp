@@ -881,10 +881,10 @@ BOOL CPixmap::BackgroundCache(int channel, const char* pFilename, POINT totalDim
 	BOOL decor;
 	char file[100];
 
-	decor = strstr((char*)pFilename, "blupi") != (char*)pFilename &&
-		strstr((char*)pFilename, "element") != (char*)pFilename &&
-		strstr((char*)pFilename, "explo") != (char*)pFilename &&
-		strstr((char*)pFilename, "object") != (char*)pFilename;
+	decor = strstr(pFilename, "blupi") != pFilename &&
+		strstr(pFilename, "element") != pFilename &&
+		strstr(pFilename, "explo") != pFilename &&
+		strstr(pFilename, "object") != pFilename;
 	if (bUsePalette)
 	{
 		goto LABEL1;
@@ -894,26 +894,24 @@ BOOL CPixmap::BackgroundCache(int channel, const char* pFilename, POINT totalDim
 		if (m_bTrueColor == FALSE)
 		{
 			if (decor) goto LABEL1;
-		}
-		else
-		{
 			if (m_bTrueColorDecor == FALSE) goto LABEL1;
 		}
 	}
 	strcpy(file, "image16\\");
-	strcat(file, (char*)pFilename);
-	if (Cache2(channel, file, totalDim, iconDim, FALSE))
+	strcat(file, pFilename);
+	if (Cache(channel, file, totalDim, iconDim, FALSE))
 	{
 		return TRUE;
 	}
 LABEL1:
 	strcpy(file, "image08\\");
 	strcat(file, (char*)pFilename);
-	return Cache2(channel, file, totalDim, iconDim, bUsePalette);
+	return Cache(channel, file, totalDim, iconDim, bUsePalette);
 }
 
 BOOL CPixmap::CacheAll(BOOL cache, HWND hWnd, BOOL bFullScreen, BOOL bTrueColor, BOOL bTrueColorDecor, int mouseType, const char* pFilename, int region)
 {
+	SetDebug(TRUE);
 	char filename[100];
 	char image[12];
 	POINT totalDim;
@@ -955,7 +953,6 @@ BOOL CPixmap::CacheAll(BOOL cache, HWND hWnd, BOOL bFullScreen, BOOL bTrueColor,
 	SavePalette();
 	OutputDebug("InitSysPalette\n");
 	InitSysPalette();
-	SetDebug(FALSE);
 
 	if (cache == FALSE)
 	{
