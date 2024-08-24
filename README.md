@@ -5,18 +5,18 @@
 
  | CPP File | Progress |
  | -------- | -------- |
- | blupi.cpp | 95% complete  |
- | button.cpp | 98% complete |
- | decblupi.cpp  | 1% complete |
- | decor.cpp     | 8% complete |
- | event.cpp	 | 30% complete |
+ | blupi.cpp | 99% complete  |
+ | button.cpp | 100% complete |
+ | decor.cpp     | 80% complete |
+ | event.cpp	 | 70% complete |
  | menu.cpp		 | 100% complete |
  | misc.cpp		 | 100% complete |
  | movie.cpp	 | 100% complete |
- | network.cpp	 | 2% complete  |
- | pixmap.cpp	 | 80% complete |
- | sound.cpp	 | 90% complete |
- | text.cpp		 | 85% complete |
+ | network.cpp	 | 100% complete  |
+ | pixmap.cpp	 | 99% complete |
+ | sound.cpp	 | 100% complete |
+ | text.cpp		 | 100% complete |
+ | wave.cpp   | 100% complete |
 
  
  Credit to jummy over at the Blupi Games Fan Server for doing the decompilation work on the game.
