@@ -899,14 +899,14 @@ BOOL CPixmap::BackgroundCache(int channel, const char* pFilename, POINT totalDim
 	}
 	strcpy(file, "image16\\");
 	strcat(file, pFilename);
-	if (Cache(channel, file, totalDim, iconDim, FALSE))
+	if (Cache2(channel, file, totalDim, iconDim, FALSE))
 	{
 		return TRUE;
 	}
 LABEL1:
 	strcpy(file, "image08\\");
 	strcat(file, (char*)pFilename);
-	return Cache(channel, file, totalDim, iconDim, bUsePalette);
+	return Cache2(channel, file, totalDim, iconDim, bUsePalette);
 }
 
 BOOL CPixmap::CacheAll(BOOL cache, HWND hWnd, BOOL bFullScreen, BOOL bTrueColor, BOOL bTrueColorDecor, int mouseType, const char* pFilename, int region)

@@ -40,18 +40,15 @@ CDecor::CDecor()
     m_hWnd   = NULL;
     m_pSound = NULL;
     m_pPixmap = NULL;
-
-    for (int i = 0; i < 200; i++)
-    {
-		m_lastDecorIcon[i] = 0;
-    }
+	memset(m_lastDecorIcon, 0, 800);
 	m_lastRegion = 0;
+	m_menuType = 0;
     m_time = 0;
-    m_bAllMissions = FALSE;
-    m_bInvincible  = FALSE;
-    m_bShowSecret  = FALSE;
-    m_bAccessBuild = FALSE;
-    m_bNetPacked   = FALSE;
+    m_bAllMissions = FALSE; // m_bCheatDoors
+    m_bInvincible  = FALSE; // m_bSuperBlupi
+    m_bShowSecret  = FALSE; // m_bDrawSecret
+    m_bAccessBuild = FALSE; // m_buildOfficialMissions
+    m_bNetPacked   = FALSE; 
     m_bNetMovePredict = TRUE;
     m_bNetDebug = FALSE;
     m_bMulti       = FALSE;
@@ -111,11 +108,7 @@ BOOL CDecor::LoadImages()
     iconDim.x = DIMCELX * 2;
     iconDim.y = DIMCELY * 2;
         sprintf(filename, "decor%.3d.blp", m_region);
-        if (!m_pPixmap->Cache2(CHBACK, filename, totalDim, iconDim, FALSE)) return FALSE;
-        if (m_region == 0)
-        {
-            return FALSE;
-		}
+        if (!m_pPixmap->BackgroundCache(CHBACK, filename, totalDim, iconDim, FALSE)) return FALSE;
         return TRUE;
 }
 
@@ -125,14 +118,7 @@ void CDecor::InitGamer()
 	BYTE* door;
 
 	m_nbVies = 3;
-
-	door = m_doors;
-
-	for (i != 0; i = 50; i++)
-	{
-		*(int*)door = 0x1010101;
-		door = door + 4;
-	}
+	memset(m_doors, 1, 200);
 	return;
 }
 
@@ -856,7 +842,23 @@ void CDecor::AdaptMotorVehicleSound()
     return;
 }
 
+/*
+POINT CDecor::ScreenPosToCelPos(POINT* pos, POINT cel)
+{
+	POINT res;
 
+	if (cel.x < 0 || cel.x >= LXIMAGE || cel.y < 0 || cel.y >= LYIMAGE)
+	{
+		pos->x = 0xFFFFFFFF;
+		pos->y = 0xFFFFFFFF;
+		res.x = (LONG)pos;
+	}
+	else
+	{
+
+	}
+}
+*/
 
 void CDecor::DeleteCel(int celX, int celY)
 {

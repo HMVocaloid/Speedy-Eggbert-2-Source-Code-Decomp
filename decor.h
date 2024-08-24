@@ -712,6 +712,7 @@ public:
 	int		MockeryDetect(POINT pos);
 	BOOL	BlupiElectro(POINT pos);
 	void	BlupiStep();
+	POINT   ScreenPosToCelPos(POINT* pos, POINT cel);
 	BOOL	DecorDetect(RECT rect);
 	BOOL	DecorDetect(RECT rect, BOOL bCaisse);
 	BOOL	SearchDoor(int n, POINT cel, POINT blupi);
@@ -925,7 +926,7 @@ protected:
 	int			m_netMessageIndex1;
 	int			m_netMessageIndex2;
 	int			m_netMessageIndex3;
-
+	int			m_menuType;
     char        m_messages[4][100];
     int         m_air;
     int         m_energyUnused;

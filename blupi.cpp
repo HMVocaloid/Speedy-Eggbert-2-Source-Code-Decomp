@@ -223,7 +223,7 @@ BOOL ReadConfig (LPSTR lpCmdLine)
 	{
 		g_bBenchmarkSuccess = FALSE;
 	}
-	if (g_bBenchmarkSuccess = FALSE)
+	if (g_bBenchmarkSuccess == FALSE)
 	{
 		g_bTrueColorBack = FALSE;
 		g_bTrueColorDecor = FALSE;
@@ -268,7 +268,7 @@ void UpdateFrame(void)
 			g_pEvent->DemoStep();  // d�marre �v. d�mo automatique
 		}
 
-		if (phase == WM_PHASE_PLAYMOVIE || phase == WM_PHASE_WINMOVIE || WM_PHASE_WINMOVIEDESIGN || WM_PHASE_WINMOVIEMULTI)
+		if (phase == WM_PHASE_PLAYMOVIE || phase == WM_PHASE_WINMOVIE || phase == WM_PHASE_WINMOVIEDESIGN || phase == WM_PHASE_WINMOVIEMULTI)
 		{
 			g_pEvent->MovieToStart();
 		}
@@ -479,7 +479,7 @@ LRESULT CALLBACK WindowProc (HWND hWnd, UINT message,
 					totalDim.y = 66;
 					iconDim.x = 64;
 					iconDim.y = 66/2;
-					g_pPixmap->Cache2(CHLITTLE, "image16\\little.blp", totalDim, iconDim, TRUE);
+					g_pPixmap->Cache2(CHLITTLE, "little.blp", totalDim, iconDim, TRUE);
 					g_pPixmap->SetTransparent(CHLITTLE, RGB(0,0,255));
 
 					g_pPixmap->SavePalette();
@@ -811,14 +811,14 @@ int WINAPI WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 	while ( TRUE )
 	{
-		if ( PeekMessage(&msg, NULL, 0,0, PM_NOREMOVE) )
+		if ( PeekMessageA(&msg, NULL, 0,0, PM_NOREMOVE) )
 		{
 			if ( !GetMessage(&msg, NULL, 0, 0) )
 			{
 				return msg.wParam;
 			}
 			TranslateMessage(&msg);
-			DispatchMessage(&msg);
+			DispatchMessageA(&msg);
 		}
 		else
 		{
