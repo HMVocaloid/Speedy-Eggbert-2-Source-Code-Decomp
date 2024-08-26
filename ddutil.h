@@ -4,7 +4,13 @@ using namespace std;
 
 #pragma once
 
-#include "ddraw.h"
+#include <ddraw.h>
+
+#define DIRECTDRAW_VERSION 0x0300
+
+#ifdef __cplusplus
+extern "C" {            /* Assume C declarations for C++ */
+#endif
 
 extern void DDSetDebug (BOOL bDebug);
 extern IDirectDrawSurface * DDConnectBitmap(IDirectDraw *pdd, HBITMAP hbm);
@@ -15,5 +21,6 @@ extern HRESULT              DDCopyBitmap(IDirectDrawSurface *pdds, HBITMAP hbm, 
 extern DWORD                DDColorMatch(IDirectDrawSurface *pdds, COLORREF rgb);
 extern HRESULT              DDSetColorKey(IDirectDrawSurface *pdds, COLORREF rgb);
 extern HRESULT              DDSetColorKey2(IDirectDrawSurface *pdds, COLORREF rgb1, COLORREF rgb2);
-
-
+#ifdef __cplusplus
+}
+#endif  /* __cplusplus */

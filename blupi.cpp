@@ -194,8 +194,8 @@ BOOL ReadConfig (LPSTR lpCmdLine)
 	if ( pText != NULL )
 	{
 		i = GetNum(pText + 10);
-		if (i == 8) g_bTrueColor = 0;
-		if (i == 16) g_bTrueColor = 1;
+		if (i == 8) g_bTrueColor = FALSE;
+		if (i == 16) g_bTrueColor = TRUE;
 		g_bTrueColorDecor = g_bTrueColor;
 	}
 
@@ -203,18 +203,18 @@ BOOL ReadConfig (LPSTR lpCmdLine)
 	if ( pText != NULL )
 	{
 		i = GetNum(pText+14);
-		if (i == 8) g_bTrueColor = 0;
+		if (i == 8) g_bTrueColor = FALSE;
 
-		if (i == 16) g_bTrueColor = 1;
+		if (i == 16) g_bTrueColor = TRUE;
 	}
 
 	pText = strstr(buffer, "TrueColorDecor=");
 	if ( pText != NULL )
 	{
 		i = GetNum(pText + 15);
-		if (i == 8) g_bTrueColorDecor = 0;
+		if (i == 8) g_bTrueColorDecor = FALSE;
 
-		if (i == 16) g_bTrueColorDecor = 1;
+		if (i == 16) g_bTrueColorDecor = TRUE;
 	}
 
 	memstatus.dwLength = 32;
@@ -475,11 +475,11 @@ LRESULT CALLBACK WindowProc (HWND hWnd, UINT message,
 				}
 				if ( !g_bFullScreen && g_bTermInit )
 				{
-					totalDim.x = 64;
-					totalDim.y = 66;
-					iconDim.x = 64;
-					iconDim.y = 66/2;
-					g_pPixmap->Cache2(CHLITTLE, "little.blp", totalDim, iconDim, TRUE);
+					totalDim.x = 256;
+					totalDim.y = 96;
+					iconDim.x = DIMLITTLEX;
+					iconDim.y = DIMLITTLEY;
+					g_pPixmap->BackgroundCache(CHLITTLE, "little.blp", totalDim, iconDim, TRUE);
 					g_pPixmap->SetTransparent(CHLITTLE, RGB(0,0,255));
 
 					g_pPixmap->SavePalette();
@@ -731,6 +731,8 @@ static BOOL DoInit(HINSTANCE hInstance, LPSTR lpCmdLine, int nCmdShow)
 
 	ChangeSprite(SPRITE_WAIT);
 
+	ZeroMemory(&g_pPixmap, sizeof(7068));
+
 	if (!bOK)
 	{
 		return InitFail("Game not correctly installed", FALSE);
@@ -762,6 +764,8 @@ static BOOL DoInit(HINSTANCE hInstance, LPSTR lpCmdLine, int nCmdShow)
 	g_pPixmap->SetTrueColor(TRUE);
 	g_pPixmap->SetTrueColorDecor(TRUE);
 
+	ZeroMemory(&g_pSound, sizeof(644));
+
 	g_pSound = new CSound;
 	if (g_pSound == NULL) return InitFail("New sound", TRUE);
 
@@ -769,15 +773,21 @@ static BOOL DoInit(HINSTANCE hInstance, LPSTR lpCmdLine, int nCmdShow)
 	g_pSound->CacheAll();
 	g_pSound->SetState(TRUE);
 
+	ZeroMemory(&g_pMovie, sizeof(164));
+
 	g_pMovie = new CMovie;
 	if (g_pMovie == NULL) return InitFail("New movie", FALSE);
 
 	g_pMovie->Create();
 
+	ZeroMemory(&g_pDecor, sizeof(156448));
+
 	g_pDecor = new CDecor;
 	if (g_pDecor == NULL) return InitFail("New decor", FALSE);
 
 	g_pDecor->Create(g_hWnd, g_pSound, g_pPixmap, g_pNetwork);
+
+	ZeroMemory(&g_pEvent, sizeof(39904));
 
 	g_pEvent = new CEvent;
 	if (g_pEvent == NULL) return InitFail("New event", FALSE);
@@ -786,6 +796,8 @@ static BOOL DoInit(HINSTANCE hInstance, LPSTR lpCmdLine, int nCmdShow)
 	g_pEvent->SetFullScreen(g_bFullScreen);
 	g_pEvent->SetMouseType(g_mouseType);
 	g_pEvent->ChangePhase(WM_PHASE_INIT);
+
+	ZeroMemory(&g_pNetwork, sizeof(20));
 
 	g_pNetwork = new CNetwork;
 	if (g_pNetwork == NULL) return InitFail("New network", FALSE);

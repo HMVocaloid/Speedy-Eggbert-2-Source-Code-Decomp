@@ -13,15 +13,15 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Data">
+      <UniqueIdentifier>{0ff9ef1b-78f1-41d7-9a2b-813cedd6907d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="action.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="button.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ddraw.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ddutil.h">
@@ -85,6 +85,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="resource1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DDRAW.H">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -182,6 +185,9 @@
     </None>
     <None Include="IDC_WAIT.cur">
       <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Debug\DATA\config.def">
+      <Filter>Data</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

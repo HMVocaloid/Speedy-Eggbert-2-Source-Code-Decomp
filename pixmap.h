@@ -9,7 +9,7 @@ using namespace std;
 /////////////////////////////////////////////////////////////
 
 #define MAXIMAGE    100
-
+#define DIRECTDRAW_VERSION 0x0300
 
 class CPixmap
 {
@@ -51,6 +51,7 @@ public:
 	BOOL	DrawIconPart(int chDst, int channel, int rank, POINT pos, int startY, int endY, int mode=0, BOOL bMask=FALSE);
 	BOOL	DrawPart(int chDst, int channel, POINT dest, RECT rect, int mode=0, BOOL bMask=FALSE);
 	BOOL	DrawImage(int chDst, int channel, RECT rect, int mode=0);
+    BOOL    DrawMap(int channel, RECT src, RECT dest);
 
 	BOOL	BuildIconMask(int channelMask, int rankMask,
 						  int channel, int rankSrc, int rankDst);
@@ -113,7 +114,7 @@ protected:
     LPDIRECTDRAWSURFACE    m_lpDDSPrimary;
     LPDIRECTDRAWSURFACE    m_lpDDSBack;
     LPDIRECTDRAWSURFACE    m_lpDDSMouse;
-    LPDIRECTDRAWPALETTE    m_lpDDPal;
+    IDirectDrawPalette*    m_lpDDPal;
     LPDIRECTDRAWSURFACE    m_lpDDSurface[MAXIMAGE];
     LPDIRECTDRAWCLIPPER    m_lpClipper;
     PALETTEENTRY           m_pal[256];

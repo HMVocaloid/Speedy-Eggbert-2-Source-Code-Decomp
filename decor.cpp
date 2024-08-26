@@ -22,6 +22,7 @@
 #include "network.h"
 
 #pragma warning (disable: 4996)
+#define DIRECTDRAW_VERSION 0x0300
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -122,7 +123,6 @@ void CDecor::InitGamer()
 	return;
 }
 
-// The only seemingly sane function.
 
 void CDecor::InitDecor()
 {
@@ -369,7 +369,7 @@ void CDecor::PlayPrepare(BOOL bTest)
     m_blupiFifoNb = 0;
     m_blupiTimeFire = 0;
 	NotifFlush();
-	// NetDataFlush();
+	NetDataFlush();
     m_voyageIcon = -1;
     m_jauges[0].SetHide(TRUE);
     m_jauges[1].SetHide(TRUE);
@@ -402,7 +402,7 @@ void CDecor::BuildPrepare()
 	m_posCelHili.x = -1;
 	m_2ndPositionCalculationSlot = -1;
     m_bPause = FALSE;
-	// NetDataFlush();
+	NetDataFlush();
 	return;
 }
 
@@ -842,23 +842,30 @@ void CDecor::AdaptMotorVehicleSound()
     return;
 }
 
-/*
+
 POINT CDecor::ScreenPosToCelPos(POINT* pos, POINT cel)
 {
 	POINT res;
+	UINT num;
+	LONG thing;
+	POINT pos2;
 
 	if (cel.x < 0 || cel.x >= LXIMAGE || cel.y < 0 || cel.y >= LYIMAGE)
 	{
-		pos->x = 0xFFFFFFFF;
-		pos->y = 0xFFFFFFFF;
-		res.x = (LONG)pos;
+		res.x = m_posDecor.x + m_dimCelHili.x * -32 + 32 + cel.x;
+		res.y = m_posDecor.y + m_dimCelHili.y * -32 + 32 + cel.y;
+		num = res.y >> 31;
+		pos->x = (res.x + (res.x >> 31 & 63)) >> 6;
+		pos->y = (res.y + (num & 63)) >> 6;
+		return *(POINT*)(num, pos);
 	}
-	else
-	{
-
-	}
+	pos->x = -1;
+	pos->y = -1;
+	pos2.x = pos->x;
+	pos2.y = thing;
+	return pos2;
 }
-*/
+
 
 void CDecor::DeleteCel(int celX, int celY)
 {
@@ -1008,12 +1015,10 @@ void CDecor::SearchLinkCaisse(int rank, BOOL bPop)
 						src2.right = src2.left + 64 + 1;
 						src2.bottom = src2.top + 64 + 1;
 						tagRECT tinyRect;
-						/*
-						if (IntersectRect(tinyRect, src2, src) && AddLinkCaisse(num2))
+						if (IntersectRect(&tinyRect, &src2, &src) && AddLinkCaisse(num2))
 						{
 							flag = TRUE;
 						}
-						*/
 					}
 				}
 			}
@@ -1050,7 +1055,7 @@ BOOL CDecor::LoadBackgroundImages()
     iconDim.x = DIMCELX * 2;
     iconDim.y = DIMCELY * 2;
     sprintf(filename, "image\\decor%.3d.blp", m_region);
-    if (!m_pPixmap->Cache(CHFLOOR, filename, totalDim, iconDim, FALSE))
+    if (!m_pPixmap->BackgroundCache(CHFLOOR, filename, totalDim, iconDim, FALSE))
         return FALSE;
 
     return TRUE;
@@ -5656,13 +5661,13 @@ BOOL CDecor::DecorDetect(RECT rect, BOOL bCaisse)
 						tinyRect.right = 0;
 						tinyRect.top = 0;
 						tinyRect.bottom = 0;
-						/*
-                        if (IntersectRect(tinyRect, src, rect))
+						
+                        if (IntersectRect(&tinyRect, &src, &rect))
                         {
                             m_detectIcon = icon;
                             return TRUE;
                         }
-						*/
+						
                     }
 
                 }
@@ -5685,13 +5690,12 @@ BOOL CDecor::DecorDetect(RECT rect, BOOL bCaisse)
 		tinyRect.right = 0;
 		tinyRect.top = 0;
 		tinyRect.bottom = 0;
-		/*
-        if (IntersectRect(tinyRect, src, rect))
+        if (IntersectRect(&tinyRect, &src, &rect))
         {
             m_detectIcon = m_moveObject[num8]->icon;
             return TRUE;
         }
-		*/
+		
     }
     return FALSE;
 }
@@ -6708,6 +6712,38 @@ void CDecor::NetPlayerCollide(POINT pos, int* out)
 
 }
 
+void CDecor::NetDataFlush()
+{
+	int i;
+	LONG* net;
+	int* playerPackets;
+
+	playerPackets = m_netPlayerPacketsRecieved;
+	net = (LONG*)m_netVitesses[0].y;
+
+	i = 4;
+
+	while (i != 0)
+	{
+		m_netPacketIcon.icon = 65535;
+		m_netPacketIcon.type = 65535;
+		playerPackets = 0;
+		playerPackets[4] = 0;
+		m_netVitesses->x = 0;
+		((POINT*)(net + -1))->x = 0;
+		playerPackets++;
+		net++;
+		i++;
+	}
+	m_netPacketsSent = 0;
+	m_netPacketsSent2 = 0;
+	m_netPacketsRecieved = 0;
+	m_netPacketsRecieved2 = 0;
+	m_netPacketIcon.icon = 65535;
+	m_netPacketIcon.type = 65535;
+	NetMessageIndexFlush();
+}
+
 void CDecor::NetPlaySound(short channel, POINT pos)
 {
 	NetMessage event;
@@ -6800,7 +6836,7 @@ void CDecor::MoveObjectStepLine(int i)
 		tinyRect.top = m_moveObject[i]->posCurrent.y;
 		tinyRect.bottom = m_moveObject[i]->posCurrent.y + 16;
 		RECT tinyRect2;
-		//flag = IntersectRect(tinyRect2, tinyRect, src);
+		flag = IntersectRect(&tinyRect2, &tinyRect, &src);
 		tinyPoint = m_moveObject[i]->posCurrent;
 	}
 	POINT posCurrent;
@@ -7866,8 +7902,8 @@ void CDecor::DynamiteStart(int i, int dx, int dy)
 			src2.top = m_moveObject[i]->posCurrent.y;
 			src2.bottom = m_moveObject[i]->posCurrent.y + 20;
 			RECT tinyRect;
-			/*
-			if (IntersectRect(tinyRect, src2, src))
+			
+			if (IntersectRect(&tinyRect, &src2, &src))
 			{
 				if (m_moveObject[i]->type == 12)
 				{
@@ -7882,7 +7918,6 @@ void CDecor::DynamiteStart(int i, int dx, int dy)
 						{
 							num = -num;
 						}
-						// ByeByeAdd(channel, icon2, posCurrent, num, 1.0);
 						m_moveObject[m_linkCaisse[l]]->type = 0;
 					}
 					ObjectDelete(m_moveObject[i]->posCurrent, m_moveObject[i]->type, 0);
@@ -7893,7 +7928,7 @@ void CDecor::DynamiteStart(int i, int dx, int dy)
 					ObjectDelete(m_moveObject[i]->posCurrent, m_moveObject[i]->type, 0);
 				}
 			}
-			*/
+			
 		}
 	}
 	if (m_blupiFocus && !m_blupiShield && !m_blupiHide && !m_bSuperBlupi && m_blupiPos.x > posStart.x - 30 && m_blupiPos.x < posStart.x + 30 + 64 && m_blupiPos.y > posStart.y - 30 && m_blupiPos.y < posStart.y + 30 + 64)

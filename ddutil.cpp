@@ -10,6 +10,7 @@
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include <windowsx.h>
+#include <wingdi.h>
 #include <ddraw.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -17,6 +18,8 @@
 #include "misc.h"
 
 #pragma warning (disable :4996)
+#pragma comment(lib, "ddraw.lib")
+#define DIRECTDRAW_VERSION 0x0300
 
 
 // Le message :
@@ -36,7 +39,7 @@ void DDSetDebug(BOOL bDebug)
  *  create a DirectDrawSurface from a bitmap resource.
  *
  */
-extern IDirectDrawSurface * DDConnectBitmap(IDirectDraw *pdd, HBITMAP hbm)
+extern "C" IDirectDrawSurface* DDConnectBitmap(IDirectDraw* pdd, HBITMAP hbm)
 {
     BITMAP              bm;
     DDSURFACEDESC       ddsd;
@@ -77,7 +80,7 @@ extern IDirectDrawSurface * DDConnectBitmap(IDirectDraw *pdd, HBITMAP hbm)
  *  create a DirectDrawSurface from a bitmap resource.
  *
  */
-extern IDirectDrawSurface * DDLoadBitmap(IDirectDraw *pdd, LPCSTR szBitmap, int dx, int dy)
+extern "C" IDirectDrawSurface* DDLoadBitmap(IDirectDraw* pdd, LPCSTR szBitmap, int dx, int dy)
 {
     HBITMAP             hbm;
     BITMAP              bm;
@@ -175,7 +178,7 @@ HRESULT DDReLoadBitmap(IDirectDrawSurface *pdds, LPCSTR szBitmap)
  *  draw a bitmap into a DirectDrawSurface
  *
  */
-extern HRESULT DDCopyBitmap(IDirectDrawSurface *pdds, HBITMAP hbm, int x, int y, int dx, int dy)
+extern "C" HRESULT DDCopyBitmap(IDirectDrawSurface* pdds, HBITMAP hbm, int x, int y, int dx, int dy)
 {
     HDC                 hdcImage;
     HDC                 hdc;
@@ -242,9 +245,9 @@ extern HRESULT DDCopyBitmap(IDirectDrawSurface *pdds, HBITMAP hbm, int x, int y,
 //  if the resource does not exist or NULL is passed create a
 //  default 332 palette.
 //
-extern IDirectDrawPalette * DDLoadPalette(IDirectDraw *pdd, LPCSTR szBitmap)
+extern "C" IDirectDrawPalette* DDLoadPalette(IDirectDraw* pdd, LPCSTR szBitmap)
 {
-    IDirectDrawPalette* ddpal;
+    LPDIRECTDRAWPALETTE ddpal;
     int                 i;
     int                 n;
     int                 fh;
@@ -261,7 +264,7 @@ extern IDirectDrawPalette * DDLoadPalette(IDirectDraw *pdd, LPCSTR szBitmap)
         ape[i].peRed   = (BYTE)(((i >> 5) & 0x07) * 255 / 7);
         ape[i].peGreen = (BYTE)(((i >> 2) & 0x07) * 255 / 7);
         ape[i].peBlue  = (BYTE)(((i >> 0) & 0x03) * 255 / 3);
-        ape[i].peFlags = (BYTE)0;
+        ape[i].peFlags = PC_EXPLICIT;
     }
 
     //
@@ -346,7 +349,7 @@ extern IDirectDrawPalette * DDLoadPalette(IDirectDraw *pdd, LPCSTR szBitmap)
  * we do this by leting GDI SetPixel() do the color matching
  * then we lock the memory and see what it got mapped to.
  */
-extern DWORD DDColorMatch(IDirectDrawSurface *pdds, COLORREF rgb)
+extern "C" DWORD DDColorMatch(IDirectDrawSurface* pdds, COLORREF rgb)
 {
     COLORREF rgbT;
     HDC hdc;
@@ -397,7 +400,7 @@ extern DWORD DDColorMatch(IDirectDrawSurface *pdds, COLORREF rgb)
  * if you pass CLR_INVALID as the color key, the pixel
  * in the upper-left corner will be used.
  */
-extern HRESULT DDSetColorKey(IDirectDrawSurface *pdds, COLORREF rgb)
+extern "C" HRESULT DDSetColorKey(IDirectDrawSurface* pdds, COLORREF rgb)
 {
     DDCOLORKEY          ddck;
 
@@ -406,7 +409,7 @@ extern HRESULT DDSetColorKey(IDirectDrawSurface *pdds, COLORREF rgb)
     return pdds->SetColorKey(DDCKEY_SRCBLT, &ddck);
 }
 
-extern HRESULT DDSetColorKey2(IDirectDrawSurface *pdds, COLORREF rgb1,
+extern "C" HRESULT DDSetColorKey2(IDirectDrawSurface* pdds, COLORREF rgb1,
 															COLORREF rgb2)
 {
     DDCOLORKEY          ddck;

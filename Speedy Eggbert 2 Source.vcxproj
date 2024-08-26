@@ -132,7 +132,7 @@
   <ItemGroup>
     <ClInclude Include="action.h" />
     <ClInclude Include="button.h" />
-    <ClInclude Include="ddraw.h" />
+    <ClInclude Include="DDRAW.H" />
     <ClInclude Include="ddutil.h" />
     <ClInclude Include="decor.h" />
     <ClInclude Include="dectables.h" />
@@ -176,6 +176,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="cursor1.cur" />
+    <None Include="Debug\DATA\config.def" />
     <None Include="IDC_ARROW.cur" />
     <None Include="IDC_ARROWD.cur" />
     <None Include="IDC_ARROWDL.cur" />

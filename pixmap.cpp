@@ -14,6 +14,7 @@
 #include "blupi.cpp"
 
 #pragma comment(lib, "ddraw.lib")
+#define DIRECTDRAW_VERSION 0x0300
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -126,8 +127,29 @@ BOOL CPixmap::Create(HWND hwnd, POINT dim,
 					 BOOL bFullScreen, int mouseType, BOOL bTrueColorDecor, BOOL bTrueColor)
 {
 	DDSURFACEDESC		ddsd;
+	int					devcap;
 	HRESULT				ddrval;
 	POINT				pos;
+	HDC					hdc;
+	DWORD				colorMode;
+
+	hdc = CreateCompatibleDC(NULL);
+
+	if (hdc == NULL)
+	{
+		bTrueColor = 0;
+		bTrueColorDecor = 0;
+	}
+	else
+	{
+		devcap = GetDeviceCaps(hdc, SIZEPALETTE);
+		if ((devcap != NULL) && (devcap < 257))
+		{
+			bTrueColor = 0;
+			bTrueColorDecor = 0;
+		}
+		DeleteDC(hdc);
+	}
 
 	m_hWnd        = hwnd;
 	m_bFullScreen = bFullScreen;
@@ -177,7 +199,12 @@ BOOL CPixmap::Create(HWND hwnd, POINT dim,
     // Set the video mode to 640x480x8.
 	if ( m_bFullScreen )
 	{
-		ddrval = m_lpDD->SetDisplayMode(dim.x, dim.y, 8);
+		if ((bTrueColor != 0) || (colorMode = 8, bTrueColorDecor != FALSE))
+		{
+			colorMode = 16;
+		}
+
+		ddrval = m_lpDD->SetDisplayMode(dim.x, dim.y, colorMode);
 		if ( ddrval != DD_OK )
 		{
 			OutputDebug("Fatal error: SetDisplayMode\n");
@@ -613,6 +640,23 @@ HRESULT CPixmap::BltFast(LPDIRECTDRAWSURFACE lpDD,
 	return ddrval;
 }
 
+BOOL CPixmap::DrawMap(int channel, RECT src, RECT dest)
+{
+	HRESULT hErr;
+
+	if ((channel < 0) || (channel > MAXIMAGE))
+	{
+		return FALSE;
+	}
+
+	while (hErr == DDERR_WASSTILLDRAWING)
+	{
+		hErr = m_lpDDSurface[channel]->Blt(&dest, m_lpDDSBack, &src, DDBLT_WAIT, NULL);
+		if (hErr == DD_OK) break;
+		if (hErr == DDERR_SURFACELOST) hErr = RestoreAll(); if (hErr != DD_OK) break;;
+	}
+	return (hErr == DD_OK);
+}
 
 // Sauve toute la palette de couleurs.
 
@@ -718,6 +762,7 @@ int CPixmap::SearchColor(int red, int green, int blue)
 
 // Cache une image contenant des ic�nes.
 
+/*
 BOOL CPixmap::Cache(int channel, char *pFilename, POINT totalDim, POINT iconDim,
 					BOOL bUsePalette)
 {
@@ -775,6 +820,7 @@ BOOL CPixmap::Cache(int channel, char *pFilename, POINT totalDim, POINT iconDim,
 
 	return TRUE;
 }
+*/
 
 // Cache une image globale.
 
@@ -782,14 +828,16 @@ BOOL CPixmap::Cache2(int channel, const char *pFilename, POINT totalDim, POINT i
 {
 	IDirectDrawPalette* dDP;
 	LPDIRECTDRAWSURFACE dDS;
+	DDSURFACEDESC		ddsd;
+	DDSCAPS				ddscaps;
 	HRESULT		hErr;
 
-	if ((channel < 0) || (channel > 99))
+	if ((channel < 0) || (channel >= MAXIMAGE))
 	{
 		return FALSE;
 	}
 
-	if (m_lpDDSurface[channel] != (LPDIRECTDRAWSURFACE)0)
+	if (m_lpDDSurface[channel] != NULL)
 	{
 		Flush(channel);
 	}
@@ -800,45 +848,43 @@ BOOL CPixmap::Cache2(int channel, const char *pFilename, POINT totalDim, POINT i
 		{
 		OutputDebug("Use palette");
 		}
-		if (m_lpDDPal != (LPDIRECTDRAWPALETTE)0)
+		if (m_lpDDPal != NULL)
 		{
 			if (m_bDebug != FALSE)
 			{
 				OutputDebug("Release palette");
 			}
 			m_lpDDPal->Release();
-			m_lpDDPal = (LPDIRECTDRAWPALETTE)0;
+			m_lpDDPal = NULL;
 		}
 	}
-	dDP = DDLoadPalette(m_lpDD, pFilename);
-	m_lpDDPal = (LPDIRECTDRAWPALETTE)0;
+	m_lpDDPal = DDLoadPalette(m_lpDD, pFilename);
 	
-	if (dDP != (IDirectDrawPalette*)0)
+	if ( m_lpDDPal )
 	{
 		if (m_bDebug != FALSE)
 		{
-			OutputDebug("Set palette");
+			OutputDebug("Set palette\n");
 		}
-		m_lpDDSPrimary->SetPalette((LPDIRECTDRAWPALETTE)0);
+		m_lpDDSPrimary->SetPalette(NULL);
 		hErr = (m_lpDDSPrimary->SetPalette(m_lpDDPal));
-		if (hErr != 0)
+		if (hErr != DD_OK)
 		{
 			TraceErrorDD(hErr, pFilename, 1);
 		}
 	}
-	dDS = (LPDIRECTDRAWSURFACE)DDLoadBitmap(m_lpDD, pFilename, 0, 0);
-	m_lpDDSurface[channel] = dDS;
-	if (dDS == (LPDIRECTDRAWSURFACE)0)
+	m_lpDDSurface[channel] = DDLoadBitmap(m_lpDD, pFilename, 0, 0);
+	if (m_lpDDSurface[channel] == NULL)
 	{
-		OutputDebug("Fatal error: DDLoadBitmap");
+		OutputDebug("Fatal error: DDLoadBitmap\n");
 		return FALSE;
 	}
 	if (m_bDebug != FALSE)
 	{
-		OutputDebug("DDSetColorKey");
+		OutputDebug("DDSetColorKey\n");
 	}
-	DDSetColorKey(m_lpDDSurface[channel], RGB(0, 0, 255));
-	strcpy((char*)(m_filename + channel), pFilename);
+	DDSetColorKey(m_lpDDSurface[channel], RGB(255, 255, 255));
+	strcpy(m_filename[channel], pFilename);
 	m_totalDim[channel] = totalDim;
 	m_iconDim[channel] = iconDim;
 	return TRUE;
@@ -849,6 +895,7 @@ BOOL CPixmap::Cache2(int channel, const char *pFilename, POINT totalDim, POINT i
 // Probably not needed?
 
 
+/*
 BOOL CPixmap::Cache(int channel, HBITMAP hbm, POINT totalDim)
 {
 	if ( channel < 0 || channel >= MAXIMAGE )  return FALSE;
@@ -875,6 +922,7 @@ BOOL CPixmap::Cache(int channel, HBITMAP hbm, POINT totalDim)
 
 	return TRUE;
 }
+*/
 
 BOOL CPixmap::BackgroundCache(int channel, const char* pFilename, POINT totalDim, POINT iconDim, BOOL bUsePalette)
 {	
@@ -885,7 +933,7 @@ BOOL CPixmap::BackgroundCache(int channel, const char* pFilename, POINT totalDim
 		strstr(pFilename, "element") != pFilename &&
 		strstr(pFilename, "explo") != pFilename &&
 		strstr(pFilename, "object") != pFilename;
-	if (bUsePalette)
+	if (bUsePalette != FALSE)
 	{
 		goto LABEL1;
 	}
@@ -899,7 +947,7 @@ BOOL CPixmap::BackgroundCache(int channel, const char* pFilename, POINT totalDim
 	}
 	strcpy(file, "image16\\");
 	strcat(file, pFilename);
-	if (Cache2(channel, file, totalDim, iconDim, FALSE))
+	if (Cache2(channel, file, totalDim, iconDim, FALSE) != FALSE)
 	{
 		return TRUE;
 	}

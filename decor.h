@@ -785,6 +785,7 @@ protected:
     POINT       m_cameraPos;
 	int			m_moveTraj[1300];
 	POINT		m_dimDecor;
+	POINT		m_dimCelHili;
 	BOOL		m_blupiRestart;
     POINT       m_worldDims;
     POINT       m_selectedCelPos;
