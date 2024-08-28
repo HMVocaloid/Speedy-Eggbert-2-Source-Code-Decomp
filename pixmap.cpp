@@ -197,11 +197,11 @@ BOOL CPixmap::Create(HWND hwnd, POINT dim,
     }
 
     // Set the video mode to 640x480x8.
-	if ( m_bFullScreen )
+	if ( m_bFullScreen != FALSE)
 	{
 		if ((bTrueColor != 0) || (colorMode = 8, bTrueColorDecor != FALSE))
 		{
-			colorMode = 16;
+			colorMode = 8;
 		}
 
 		ddrval = m_lpDD->SetDisplayMode(dim.x, dim.y, colorMode);
@@ -824,12 +824,8 @@ BOOL CPixmap::Cache(int channel, char *pFilename, POINT totalDim, POINT iconDim,
 
 // Cache une image globale.
 
-BOOL CPixmap::Cache2(int channel, const char *pFilename, POINT totalDim, POINT iconDim, BOOL bUsePalette)
+BOOL CPixmap::Cache2(int channel, LPCSTR pFilename, POINT totalDim, POINT iconDim, BOOL bUsePalette)
 {
-	IDirectDrawPalette* dDP;
-	LPDIRECTDRAWSURFACE dDS;
-	DDSURFACEDESC		ddsd;
-	DDSCAPS				ddscaps;
 	HRESULT		hErr;
 
 	if ((channel < 0) || (channel >= MAXIMAGE))
@@ -842,18 +838,12 @@ BOOL CPixmap::Cache2(int channel, const char *pFilename, POINT totalDim, POINT i
 		Flush(channel);
 	}
 
-	if (bUsePalette != FALSE)
+	if ( bUsePalette )
 	{
-		if (m_bDebug != FALSE)
-		{
-		OutputDebug("Use palette");
-		}
+		if ( m_bDebug ) OutputDebug("Use Palette\n");
 		if (m_lpDDPal != NULL)
 		{
-			if (m_bDebug != FALSE)
-			{
-				OutputDebug("Release palette");
-			}
+			if ( m_bDebug ) OutputDebug("Release palette");
 			m_lpDDPal->Release();
 			m_lpDDPal = NULL;
 		}
@@ -862,10 +852,7 @@ BOOL CPixmap::Cache2(int channel, const char *pFilename, POINT totalDim, POINT i
 	
 	if ( m_lpDDPal )
 	{
-		if (m_bDebug != FALSE)
-		{
-			OutputDebug("Set palette\n");
-		}
+		if ( m_bDebug ) OutputDebug("Set palette\n");
 		m_lpDDSPrimary->SetPalette(NULL);
 		hErr = (m_lpDDSPrimary->SetPalette(m_lpDDPal));
 		if (hErr != DD_OK)
@@ -879,14 +866,14 @@ BOOL CPixmap::Cache2(int channel, const char *pFilename, POINT totalDim, POINT i
 		OutputDebug("Fatal error: DDLoadBitmap\n");
 		return FALSE;
 	}
-	if (m_bDebug != FALSE)
-	{
-		OutputDebug("DDSetColorKey\n");
-	}
+	if ( m_bDebug ) OutputDebug("DDSetColorKey\n");
 	DDSetColorKey(m_lpDDSurface[channel], RGB(255, 255, 255));
+
 	strcpy(m_filename[channel], pFilename);
+
 	m_totalDim[channel] = totalDim;
 	m_iconDim[channel] = iconDim;
+
 	return TRUE;
 }
 
@@ -933,7 +920,7 @@ BOOL CPixmap::BackgroundCache(int channel, const char* pFilename, POINT totalDim
 		strstr(pFilename, "element") != pFilename &&
 		strstr(pFilename, "explo") != pFilename &&
 		strstr(pFilename, "object") != pFilename;
-	if (bUsePalette != FALSE)
+	if ( bUsePalette )
 	{
 		goto LABEL1;
 	}
@@ -1019,9 +1006,13 @@ BOOL CPixmap::CacheAll(BOOL cache, HWND hWnd, BOOL bFullScreen, BOOL bTrueColor,
 		DrawImage(0, 0, rect, 1);
 		Display();
 	}
-	if (BackgroundCache(CHOBJECT, "object.blp", totalDim, iconDim, FALSE) == FALSE)
+	totalDim.x = 1024;
+	totalDim.y = 1280;
+	iconDim.x = 64;
+	iconDim.y = 64;
+	if (!BackgroundCache(CHOBJECT, "object.blp", totalDim, iconDim, FALSE) )
 	{
-		return FALSE;
+		return InitFail("Cache object.blp", TRUE);
 	}
 	SetTransparent(CHOBJECT, RGB(0, 0, 255));
 	if (BackgroundCache(CHBLUPI, "blupi000.blp", totalDim, iconDim, FALSE) == FALSE)

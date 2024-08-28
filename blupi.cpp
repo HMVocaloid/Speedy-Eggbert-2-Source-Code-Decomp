@@ -744,7 +744,7 @@ static BOOL DoInit(HINSTANCE hInstance, LPSTR lpCmdLine, int nCmdShow)
 
 	totalDim.x = LXIMAGE;
 	totalDim.y = LYIMAGE;
-	if (!g_pPixmap->Create(g_hWnd, totalDim, g_bFullScreen, g_mouseType, g_bTrueColorBack, g_bTrueColorDecor))
+	if (!g_pPixmap->Create(g_hWnd, totalDim, g_bFullScreen, g_mouseType, g_bTrueColor, g_bTrueColorDecor))
 		return InitFail("Create pixmap", TRUE);
 
 	g_pPixmap->SetBenchmarkSuccess(g_bBenchmarkSuccess);
@@ -755,7 +755,7 @@ static BOOL DoInit(HINSTANCE hInstance, LPSTR lpCmdLine, int nCmdShow)
 	iconDim.y = 0;
 
 	if (!g_pPixmap->CacheAll(TRUE, g_hWnd, g_bFullScreen, g_bTrueColor, g_bTrueColorDecor, g_mouseType, "init.blp", 0))
-		return FALSE;
+		return InitFail("CacheAll", TRUE);
 
 	OutputDebug("SavePalette\n");
 	g_pPixmap->SavePalette();
