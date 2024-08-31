@@ -29,26 +29,26 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v140_xp</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v140_xp</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v140_xp</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v140_xp</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -81,7 +81,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalOptions>/FORCE:MULTIPLE  /DYNAMICBASE "legacy_stdio_definitions.lib" %(AdditionalOptions) /VERBOSE</AdditionalOptions>
-      <AdditionalLibraryDirectories>C:\DIRECTX3\DIRECTX3\SDK\LIB;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>dxsdk3\sdk\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <TreatLinkerWarningAsErrors>false</TreatLinkerWarningAsErrors>
     </Link>
   </ItemDefinitionGroup>
@@ -99,6 +99,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>dxsdk3\sdk\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -111,6 +112,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>dxsdk3\sdk\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -127,73 +129,71 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>dxsdk3\sdk\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="action.h" />
-    <ClInclude Include="button.h" />
-    <ClInclude Include="DDRAW.H" />
-    <ClInclude Include="ddutil.h" />
-    <ClInclude Include="decor.h" />
-    <ClInclude Include="dectables.h" />
-    <ClInclude Include="def.h" />
-    <ClInclude Include="dplay.h" />
-    <ClInclude Include="dsound.h" />
-    <ClInclude Include="event.h" />
-    <ClInclude Include="fifo.h" />
-    <ClInclude Include="decmove.h" />
-    <ClInclude Include="jauge.h" />
-    <ClInclude Include="menu.h" />
-    <ClInclude Include="misc.h" />
-    <ClInclude Include="movie.h" />
-    <ClInclude Include="network.h" />
-    <ClInclude Include="pixmap.h" />
-    <ClInclude Include="resource.h" />
-    <ClInclude Include="resource1.h" />
-    <ClInclude Include="sound.h" />
-    <ClInclude Include="text.h" />
-    <ClInclude Include="texttables.h" />
-    <ClInclude Include="wave.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="blupi.cpp" />
-    <ClCompile Include="button.cpp" />
-    <ClCompile Include="ddutil.cpp" />
-    <ClCompile Include="decor.cpp" />
-    <ClCompile Include="event.cpp" />
-    <ClCompile Include="jauge.cpp" />
-    <ClCompile Include="menu.cpp" />
-    <ClCompile Include="misc.cpp" />
-    <ClCompile Include="movie.cpp" />
-    <ClCompile Include="network.cpp" />
-    <ClCompile Include="pixmap.cpp" />
-    <ClCompile Include="sound.cpp" />
-    <ClCompile Include="text.cpp" />
-    <ClCompile Include="wave.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="Eggbert2.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="cursor1.cur" />
     <None Include="Debug\DATA\config.def" />
-    <None Include="IDC_ARROW.cur" />
-    <None Include="IDC_ARROWD.cur" />
-    <None Include="IDC_ARROWDL.cur" />
-    <None Include="IDC_ARROWDR.cur" />
-    <None Include="IDC_ARROWL.cur" />
-    <None Include="IDC_ARROWR.cur" />
-    <None Include="IDC_ARROWU.cur" />
-    <None Include="IDC_ARROWUL.cur" />
-    <None Include="IDC_ARROWUR.cur" />
-    <None Include="IDC_EMPTY.cur" />
-    <None Include="IDC_FILL.cur" />
-    <None Include="IDC_MAP.cur" />
-    <None Include="IDC_POINTER.cur" />
-    <None Include="IDC_WAIT.cur" />
+    <None Include="resource\IDC_ARROW.cur" />
+    <None Include="resource\IDC_ARROWD.cur" />
+    <None Include="resource\IDC_ARROWDL.cur" />
+    <None Include="resource\IDC_ARROWDR.cur" />
+    <None Include="resource\IDC_ARROWL.cur" />
+    <None Include="resource\IDC_ARROWR.cur" />
+    <None Include="resource\IDC_ARROWU.cur" />
+    <None Include="resource\IDC_ARROWUL.cur" />
+    <None Include="resource\IDC_ARROWUR.cur" />
+    <None Include="resource\IDC_EMPTY.cur" />
+    <None Include="resource\IDC_FILL.cur" />
+    <None Include="resource\IDC_MAP.cur" />
+    <None Include="resource\IDC_POINTER.cur" />
+    <None Include="resource\IDC_WAIT.cur" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="IDR_MAINFRAME.ico" />
+    <ClCompile Include="src\blupi.cpp" />
+    <ClCompile Include="src\button.cpp" />
+    <ClCompile Include="src\ddutil.cpp" />
+    <ClCompile Include="src\decblupi.cpp" />
+    <ClCompile Include="src\decor.cpp" />
+    <ClCompile Include="src\dectables.cpp" />
+    <ClCompile Include="src\event.cpp" />
+    <ClCompile Include="src\jauge.cpp" />
+    <ClCompile Include="src\menu.cpp" />
+    <ClCompile Include="src\misc.cpp" />
+    <ClCompile Include="src\movie.cpp" />
+    <ClCompile Include="src\network.cpp" />
+    <ClCompile Include="src\pixmap.cpp" />
+    <ClCompile Include="src\sound.cpp" />
+    <ClCompile Include="src\text.cpp" />
+    <ClCompile Include="src\wave.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\action.h" />
+    <ClInclude Include="src\actions.h" />
+    <ClInclude Include="src\button.h" />
+    <ClInclude Include="src\ddutil.h" />
+    <ClInclude Include="src\decmove.h" />
+    <ClInclude Include="src\decor.h" />
+    <ClInclude Include="src\dectables.h" />
+    <ClInclude Include="src\def.h" />
+    <ClInclude Include="src\event.h" />
+    <ClInclude Include="src\fifo.h" />
+    <ClInclude Include="src\jauge.h" />
+    <ClInclude Include="src\menu.h" />
+    <ClInclude Include="src\misc.h" />
+    <ClInclude Include="src\movie.h" />
+    <ClInclude Include="src\network.h" />
+    <ClInclude Include="src\pixmap.h" />
+    <ClInclude Include="src\sound.h" />
+    <ClInclude Include="src\text.h" />
+    <ClInclude Include="src\texttables.h" />
+    <ClInclude Include="src\wave.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="resource\IDR_MAINFRAME.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="resource\Eggbert2.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
