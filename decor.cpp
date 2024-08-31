@@ -183,7 +183,7 @@ void CDecor::InitDecor()
     m_moveObject[1]->icon = 29;
     pos = m_blupiStartPos[0].x = 66;
     pos2 = m_blupiStartPos[0].y = 192 + BLUPIOFFY;
-    m_blupiStartDir = 2;
+    m_blupiStartDir[4] = 2;
     m_blupiAction = 1;
     m_blupiPhase = 0;
     m_blupiIcon.icon = 0;
@@ -9069,319 +9069,301 @@ BOOL CDecor::CurrentRead(int gamer, int mission, BOOL bUser)
 {
 	char		filename[MAX_PATH];
 	FILE*		file = NULL;
-	DescFile*	pBuffer = NULL;
+	int*		pBuffer = NULL;
 	int			nb, i, num;
 	int*		num2;
 	POINT*		num3;
 
 	InitDecor();
 	GetMissionPath(filename, gamer, mission, bUser);
-
-	file = fopen(filename, "wb");
-	if (file == NULL) goto error;
-
-	pBuffer = (DescFile*)malloc(sizeof(DescFile));
-	if (pBuffer == NULL) goto error;
-	memset(pBuffer, 0, sizeof(DescFile));
-
-	pBuffer->posDecor = m_posDecor;
-	pBuffer->dimDecor = m_dimDecor;
-	pBuffer->music = m_music;
-	pBuffer->region = m_region;
-
-	strcpy((char*)pBuffer->name, (const char*)m_missionTitle);
-
-	num = m_blupiStartDir;
-	num2 = pBuffer->blupiDir;
-	num3 = m_blupiStartPos;
-
-error:
-	if (pBuffer != NULL) free(pBuffer);
-	if (file != NULL)	 fclose(file);
-	return FALSE;
-}
-
-BOOL CDecor::MissionStart(int gamer, int rank, BOOL bUser)
-{
-	char filename[MAX_PATH];
-	DescFile* pBuffer;
-	FILE* stream;
-	int	  num;
-	Cellule(*pDecor)[100];
-
-	pBuffer = 0;
-	sprintf(filename, "data\\s%.3d-%.3d.blp", gamer, rank);
-	AddUserPath(filename);
-	stream = fopen(filename, "wb");
-	
-	if (!stream)
-	{
-	LABEL_7:
-		if (pBuffer)
-		{
-			free(pBuffer);
-			goto LABEL_9;
-		}
-	}
-	pBuffer = (DescFile*)malloc(57008);
-
-	if (pBuffer)
-	{
-		memset(pBuffer, 0, 57008);
-		pBuffer[1] = 1;
-		pBuffer[2] = 4;
-		pBuffer[3] = 0;
-		memcpy(pBuffer + 54, (void*)num + 4, *(int*)pDecor);
-	}
-}
-
-BOOL CDecor::Read(int gamer, int rank, BOOL* pbMission, BOOL* pbPrivate)
-{
-	char		filename[MAX_PATH];
-	FILE* file = NULL;
-	DescFile* pBuffer = NULL;
-	int			majRev, minRev;
-	int			nb, i, x, y;
-	int			ptr;
-
-	ptr = 0;
-
-	sprintf(filename, "data\\s%.3d-%.3d.blp", gamer, rank);
-	AddUserPath(filename);
 	file = fopen(filename, "rb");
 
 	if (!file)
 	{
-		goto LABEL_5;
-	}
-	if (!(int*)malloc(57008))
-	{
-	LABEL_7:
-		if (file)
-		{
-			fclose(file);
-			return 0;
-		}
-		if ((int)fread(((int*)malloc(57008)), 57008, 1, file) < 1 || ptr != 57008)
-		{
-		LABEL_5:
-			if (ptr)
-			{
-				free(ptr);
-			}
-			goto LABEL_7;
-		}
+		pBuffer = (int*)malloc(868);
+		if (pBuffer != NULL) if (file != NULL) fclose(file);
+
 	}
 
-	file = fopen(filename, "rb");
-	if (file == NULL)  goto error;
+}
+*/
 
-	pBuffer = (DescFile*)malloc(sizeof(DescFile));
-	if (pBuffer == NULL)  goto error;
+/*
+BOOL CDecor::MissionStart(int gamer, int rank, BOOL bUser)
+{
+	char filename[MAX_PATH];
+	int* pBuffer;
+	FILE* stream;
+	int	  num;
+	Cellule(*pDecor)[100];
 
-	nb = fread(pBuffer, sizeof(DescFile), 1, file);
-	if (nb < 1)  goto error;
+	pBuffer = NULL;
+	sprintf(filename, "data\\s%.3d-%.3d.blp", gamer, rank);
+	AddUserPath(filename);
+	stream = fopen(filename, "wb");
 
-	majRev = pBuffer->majRev;
-	minRev = pBuffer->minRev;
-
-	if (majRev == 1 && minRev == 0)  goto error;
-
-	if (majRev == 1 && minRev == 3)
+	if (!stream)
 	{
-		if (pBuffer->nbDecor != MAXCELX * MAXCELY ||
-			pBuffer->lgDecor != sizeof(Cellule) ||
-			pBuffer->nbBlupi != MAXBLUPI ||
-			pBuffer->lgBlupi != sizeof(OldBlupi) ||
-			pBuffer->nbMove != MAXMOVE ||
-			pBuffer->lgMove != sizeof(Move))  goto error;
+		pBuffer = (int*)malloc(57008);
+		if (pBuffer == NULL) if (stream != NULL) fclose(stream);
+	}
+
+	if (pBuffer)
+	{
+		memset(pBuffer, 0, 57008);
+		*pBuffer = 57008;
+		pBuffer[1] = 1;
+		pBuffer[2] = 4;
+		pBuffer[3] = 0;
+		memcpy(pBuffer + 53, m_decor, 20000);
+		memcpy(pBuffer + 5053, m_bigDecor, 20000);
+		memcpy(pBuffer + 10053, m_balleTraj, 1300);
+		memcpy(pBuffer + 10378, m_moveTraj, 1300);
+		memcpy(pBuffer + 10703, m_moveObject, 9600);
+		pBuffer[13153] = m_posDecor.x;
+		pBuffer[13154] = m_posDecor.y;
+		pBuffer[13155] = m_dimDecor.x;
+		pBuffer[13156] = m_dimDecor.y;
+		pBuffer[13157] = m_phase;
+		pBuffer[13158] = m_term;
+		pBuffer[13159] = m_music;
+		pBuffer[13160] = m_region;
+		pBuffer[13161] = m_time;
+		memcpy(pBuffer + 13162, m_missionTitle, 100);
+		pBuffer[13237] = m_nbRankCaisse;
+		memcpy(pBuffer + 13238, m_rankCaisse, 804);
+		pBuffer[13438] = m_nbLinkCaisse;
+		memcpy(pBuffer + 13439, m_linkCaisse, 800);
+	}
+
+}
+*/
+
+BOOL CDecor::Read(int gamer, int rank, BOOL* pbMission, BOOL* pbPrivate)
+{
+	int* ptr;
+	int  i;
+	int  num;
+	FILE* stream;
+	char pBuffer[260];
+
+	ptr = NULL;
+	sprintf(pBuffer, "data\\s%.3d-%.3d.blp", gamer, rank);
+	stream = fopen(pBuffer, "rb");
+
+	if (stream != NULL)
+	{
+		ptr = (int*)malloc(57008);
+		if (ptr == NULL) if (stream != NULL) fclose(stream);
+	}
+	if (fread(ptr, 57008, 1, stream) < 1 || *ptr != 57008)
+	{
+		memcpy(m_decor, ptr + 53, 20000);
+		memcpy(m_bigDecor, ptr + 5053, 20000);
+	}
+	if (ptr[2] < 3)
+	{
+		FlushBalleTraj();
 	}
 	else
 	{
-		if (pBuffer->nbDecor != MAXCELX * MAXCELY ||
-			pBuffer->lgDecor != sizeof(Cellule) ||
-			pBuffer->nbBlupi != MAXBLUPI ||
-			pBuffer->lgBlupi != sizeof(Blupi) ||
-			pBuffer->nbMove != MAXMOVE ||
-			pBuffer->lgMove != sizeof(Move))  goto error;
+		memcpy(m_balleTraj, ptr + 10053, 1300);
 	}
-
-	SetCoin(pBuffer->celCoin);
-	if (bUser)
+	if (ptr[2] < 4)
 	{
-		world = pBuffer->world;
-		time = pBuffer->time;
-		total = pBuffer->totalTime;
-	}
-	m_celHome = pBuffer->celCoin;
-	m_term = pBuffer->term;
-	m_music = pBuffer->music;
-	m_region = pBuffer->region;
-
-	if (bUser)
-	{
-		m_skill = pBuffer->skill;
-	}
-
-	for (i = 0; i < MAXBUTTON; i++)
-	{
-		m_buttonExist[i] = pBuffer->buttonExist[i];
-	}
-
-	for (i = 0; i < 4; i++)
-	{
-		m_memoPos[i] = pBuffer->memoPos[i];
-	}
-
-	nb = fread(m_decor, sizeof(Cellule), MAXCELX * MAXCELY / 4, file);
-	if (nb < MAXCELX * MAXCELY / 4)  goto error;
-	if (majRev == 1 && minRev < 5)
-	{
-		for (x = 0; x < MAXCELX / 2; x++)
-		{
-			for (y = 0; y < MAXCELY / 2; y++)
-			{
-				if (m_decor[x][y].objectIcon >= 128 &&
-					m_decor[x][y].objectIcon <= 130)
-				{
-					m_decor[x][y].objectIcon -= 128 - 17;
-				}
-			}
-		}
-	}
-
-	if (majRev == 1 && minRev == 3)
-	{
-		memset(m_blupi, 0, sizeof(Blupi) * MAXBLUPI);
-		for (i = 0; i < MAXBLUPI; i++)
-		{
-			nb = fread(&oldBlupi, sizeof(OldBlupi), 1, file);
-			if (nb != 1)  goto error;
-			memcpy(m_blupi + i, &oldBlupi, sizeof(OldBlupi));
-			ListFlush(i);
-		}
+		FlushMoveTraj();
 	}
 	else
 	{
-		nb = fread(m_blupi, sizeof(Blupi), MAXBLUPI, file);
-		if (nb < MAXBLUPI)  goto error;
+		memcpy(m_moveTraj, ptr + 10378, 1300);
+		memcpy(m_moveObject, ptr + 10703, 9600);
 	}
+	m_posDecor.x = ptr[13153];
+	m_posDecor.y = ptr[13154];
+	m_dimDecor.x = ptr[13155];
+	m_dimDecor.y = ptr[13156];
+	m_phase = (WMessage)ptr[13157];
+	m_term = ptr[13158];
+	m_music = ptr[13159];
+	m_region = ptr[13160];
+	m_time = ptr[13161];
+	memcpy(m_missionTitle, ptr + 13162, 100);
+	m_nbRankCaisse = ptr[13237];
+	memcpy((int*)m_nbRankCaisse, ptr + 13238, 804);
+	memcpy((int*)m_nbLinkCaisse, ptr + 13438, 800);
+	m_blupiPos.x = ptr[13689];
+	m_blupiPos.y = ptr[13690];
+	m_blupiValidPos.x = ptr[13691];
+	m_blupiValidPos.y = ptr[13692];
+	m_blupiAction = ptr[13693];
+	m_blupiDir = ptr[13694];
+	m_blupiPhase = ptr[13695];
+	m_blupiIcon = *(Icon4*)(ptr + 13698);
+	m_blupiSec = ptr[13699];
+	m_blupiChannel.blupiChannel = *(short*)(ptr + 13700);
+	m_blupiVector.x = ptr[13701];
+	m_blupiVector.y = ptr[13702];
+	m_blupiTransport = ptr[13703];
+	m_blupiFocus = ptr[13704];
+	m_blupiAir = ptr[13705];
+	m_blupiHelico = ptr[13706];
+	m_blupiOver = ptr[13756];
+	m_blupiJeep = ptr[13707];
+	m_blupiTank = ptr[13708];
+	m_blupiSkate = ptr[13709];
+	m_blupiNage = ptr[13710];
+	m_blupiSurf = ptr[13711];
+	m_blupiVent = ptr[13712];
+	m_blupiSuspend = ptr[13713];
+	m_blupiJumpAie = ptr[13714];
+	m_blupiShield = ptr[13715];
+	m_blupiPower = ptr[13716];
+	m_blupiCloud = ptr[13717];
+	m_blupiHide = ptr[13718];
+	m_blupiInvert = ptr[13754];
+	m_blupiBalloon = ptr[13755];
+	m_blupiEcrase = ptr[13757];
+	m_blupiPosHelico.x = ptr[13719];
+	m_blupiPosHelico.y = ptr[13720];
+	m_blupiPosMagic.x = ptr[13721];
+	m_blupiPosMagic.y = ptr[13722];
+	m_blupiRestart = ptr[13723];
+	m_blupiFront = ptr[13724];
+	m_blupiBullet = ptr[13725];
+	m_blupiCle = ptr[13726];
+	m_blupiPerso = ptr[13727];
+	m_blupiDynamite = ptr[13759];
+	m_blupiNoBarre = ptr[13728];
+	m_blupiTimeShield = ptr[13729];
+	m_blupiTimeFire = ptr[13730];
+	m_blupiTimeNoAsc = ptr[13758];
+	m_blupiTimeOuf = ptr[13731];
+	m_blupiActionOuf = ptr[13732];
+	m_blupiFifoNb = ptr[13733];
+	memcpy(m_blupiFifoPos, ptr + 13734, 80);
+	memcpy(m_blupiStartPos, ptr + 13801, 32);
+	m_blupiStartDir[0] = ptr[13809];
+	m_blupiStartDir[1] = ptr[13810];
+	m_blupiStartDir[2] = ptr[13811];
+	m_blupiStartDir[3] = ptr[13812];
 
-	nb = fread(m_move, sizeof(Move), MAXMOVE, file);
-	if (nb < MAXMOVE)  goto error;
-
-	nb = fread(m_lastDrapeau, sizeof(POINT), MAXLASTDRAPEAU, file);
-	if (nb < MAXLASTDRAPEAU)
+	i = 2;
+	num = (int)ptr + 13865;
+	while (i != 0)
 	{
-		InitDrapeau();
+		int jauges = (int)m_jauges;
+		num++;
+		jauges++;
+		i--;
 	}
-
-	BlupiDeselect();  
-
-	free(pBuffer);
-	fclose(file);
-	return TRUE;
-
-error:
-	if (pBuffer != NULL)  free(pBuffer);
-	if (file != NULL)  fclose(file);
-
-	Flush();  
+	m_blupiLevel = ptr[13869];
+	m_energyUnused = ptr[13870];
+	m_bHelicopterFlying = ptr[13921];
+	m_bHelicopterStationary = ptr[13922];
+	m_bJeepMarch = ptr[13923];
+	m_bJeepStop = ptr[13924];
+	m_bFoundCle = ptr[13975];
+	m_bPrivate = ptr[13976];
+	m_bCheatDoors = ptr[13977];
+	m_bSuperBlupi = ptr[13978];
+	m_bShowSecret = ptr[13979];
+	m_bJoystick = ptr[13980];
+	m_mission = ptr[13982];
+	memcpy(m_doors, ptr + 13983, 216);
+	m_lives = ptr[14033];
+	m_nbTresor = ptr[14034];
+	m_totalTresor = ptr[14034];
+	m_goalPhase = ptr[14036];
+	m_scrollPoint.x = ptr[14088];
+	m_scrollPoint.y = ptr[14089];
+	m_scrollAdd.x = ptr[14090];
+	m_scrollAdd.y = ptr[14091];
+	m_voyageIcon = ptr[14142];
+	m_voyageChannel = ptr[14143];
+	m_voyagePhase = ptr[14144];
+	m_voyageTotal = ptr[14145];
+	m_voyageStart.x = ptr[14146];
+	m_voyageStart.y = ptr[14147];
+	m_voyageEnd.x = ptr[14148];
+	m_voyageEnd.y = ptr[14149];
+	m_decorAction = ptr[14200];
+	m_decorPhase = ptr[14201];
+	*pbPrivate = m_bPrivate;
+	*pbMission = m_mission;
+	free(ptr);
+	fclose(stream);
 	return FALSE;
 }
 
-BOOL CDecor::Write(int gamer, int mission, char* rank)
+/*
+BOOL CDecor::Write(int gamer, int mission, char* pFilename)
 {
+	int* ptr;
+	int  i = 0;
+	int  num = 0;
+	int string1, string2, string3;
 	FILE* stream;
-	int*  ptr;
-	char  format[100];
-	char  buffer[MAX_PATH];
-	int	  num, num2;
+	char format[100];
+	char buffer[260];
 
 	ptr = 0;
 	sprintf(buffer, "data\\s%.3d-%.3d.blp", gamer, mission);
 	AddUserPath(buffer);
+	stream = fopen(buffer, "rb");
 
-	if (!fopen(buffer, "rb"))
+	if (stream != 0)
 	{
-		goto LABEL_5;
+		ptr = (int*)malloc(57008);
+		if (ptr == NULL) if (stream != NULL) fclose(stream);
 	}
-	num = malloc(57008);
-}
-
-// Indique si un fichier existe sur disque.
-
-BOOL CDecor::FileExist(int rank, BOOL bUser, int& world, int& time, int& total)
-{
-	char		filename[MAX_PATH];
-	FILE* file = NULL;
-	DescFile* pBuffer = NULL;
-	int			majRev, minRev;
-	int			nb;
-
-	if (bUser)
+	if (fread(ptr, 57008, 1, stream) && (*ptr == 57008))
 	{
-		sprintf(filename, "data\\user%.3d.blp", rank);
-		AddUserPath(filename);
-	}
-	else
-	{
-		sprintf(filename, "data\\world%.3d.blp", rank);
-		if (rank < 200)
+		while (i < 200)
 		{
-			AddCDPath(filename);  
+			i++;
+			if ((i + 55932 + ptr) == '\0')
+			{
+				num++;
+			}
 		}
+		if (ptr[13976] == 0)
+		{
+			i = ptr[13982];
+			if (i == 99)
+			{
+				LoadString(TX_GAMEWRITE, format, 100);
+				sprintf(pFilename, format, num, ptr[14033], ptr[14034], ptr[14035]);
+			}
+			else
+			{
+				if (i < 99)
+				{
+					LoadString(i / 10 + TX_GAMEFINAL, format, 100);
+					i = ptr[14035];
+					string1 = ptr[14034];
+					string2 = ptr[14033];
+					string3 = ptr[13982] % 10;
+				}
+				else
+				{
+					LoadString(TX_GAMEMISS, format, 100);
+					i = ptr[14035];
+					string1 = ptr[14034];
+					string2 = ptr[14033];
+					string3 = ptr[13982];
+				}
+				sprintf(pFilename, format, string3, num, string2, string1, i);
+			}
+		}
+		else
+		{
+			LoadString(TX_GAMEDES, format, 100);
+			sprintf(pFilename, format, ptr[13982], ptr[14034], ptr[14035]);
+		}
+		free(ptr);
+		fclose(stream);
+		return TRUE;
 	}
-
-	file = fopen(filename, "rb");
-	if (file == NULL)  goto error;
-
-	pBuffer = (DescFile*)malloc(sizeof(DescFile));
-	if (pBuffer == NULL)  goto error;
-
-	nb = fread(pBuffer, sizeof(DescFile), 1, file);
-	if (nb < 1)  goto error;
-
-	majRev = pBuffer->majRev;
-	minRev = pBuffer->minRev;
-
-	if (majRev == 1 && minRev == 0)  goto error;
-
-	if (majRev == 1 && minRev == 3)
-	{
-		if (pBuffer->nbDecor != MAXCELX * MAXCELY ||
-			pBuffer->lgDecor != sizeof(Cellule) ||
-			pBuffer->nbBlupi != MAXBLUPI ||
-			pBuffer->lgBlupi != sizeof(OldBlupi) ||
-			pBuffer->nbMove != MAXMOVE ||
-			pBuffer->lgMove != sizeof(Move))  goto error;
-	}
-	else
-	{
-		if (pBuffer->nbDecor != MAXCELX * MAXCELY ||
-			pBuffer->lgDecor != sizeof(Cellule) ||
-			pBuffer->nbBlupi != MAXBLUPI ||
-			pBuffer->lgBlupi != sizeof(Blupi) ||
-			pBuffer->nbMove != MAXMOVE ||
-			pBuffer->lgMove != sizeof(Move))  goto error;
-	}
-
-	world = pBuffer->world;
-	time = pBuffer->time;
-	total = pBuffer->totalTime;
-
-	free(pBuffer);
-	fclose(file);
-	return TRUE;
-
-error:
-	if (pBuffer != NULL)  free(pBuffer);
-	if (file != NULL)  fclose(file);
 	return FALSE;
-}
-
-void CJaugeConstructor(void* jauge, int num1, int num2, void(__thiscall* cjauge))
-{
-
 }
 */

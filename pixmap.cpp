@@ -14,7 +14,7 @@
 #include "blupi.cpp"
 
 #pragma comment(lib, "ddraw.lib")
-#define DIRECTDRAW_VERSION 0x0300
+#define DIRECTDRAW_VERSION 0x0500
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -201,7 +201,7 @@ BOOL CPixmap::Create(HWND hwnd, POINT dim,
 	{
 		if ((bTrueColor != 0) || (colorMode = 8, bTrueColorDecor != FALSE))
 		{
-			colorMode = 8;
+			colorMode = 16;
 		}
 
 		ddrval = m_lpDD->SetDisplayMode(dim.x, dim.y, colorMode);
@@ -828,6 +828,7 @@ BOOL CPixmap::Cache2(int channel, LPCSTR pFilename, POINT totalDim, POINT iconDi
 {
 	HRESULT		hErr;
 
+
 	if ((channel < 0) || (channel >= MAXIMAGE))
 	{
 		return FALSE;
@@ -1012,68 +1013,119 @@ BOOL CPixmap::CacheAll(BOOL cache, HWND hWnd, BOOL bFullScreen, BOOL bTrueColor,
 	iconDim.y = 64;
 	if (!BackgroundCache(CHOBJECT, "object.blp", totalDim, iconDim, FALSE) )
 	{
-		return InitFail("Cache object.blp", TRUE);
+		return FALSE;
 	}
 	SetTransparent(CHOBJECT, RGB(0, 0, 255));
+	totalDim.x = 960;
+	totalDim.y = 1200;
+	iconDim.x = 60;
+	iconDim.y = 60;
 	if (BackgroundCache(CHBLUPI, "blupi000.blp", totalDim, iconDim, FALSE) == FALSE)
 	{
 		return FALSE;
 	}
 	SetTransparent(CHBLUPI, RGB(0, 0, 255));
+	totalDim.x = 960;
+	totalDim.y = 1200;
+	iconDim.x = 60;
+	iconDim.y = 60;
 	if (BackgroundCache(CHBLUPI1, "blupi001.blp", totalDim, iconDim, FALSE) == FALSE)
 	{
 		return FALSE;
 	}
 	SetTransparent(CHBLUPI1, RGB(0, 0, 255));
+	totalDim.x = 960;
+	totalDim.y = 1200;
+	iconDim.x = 60;
+	iconDim.y = 60;
 	if (BackgroundCache(CHBLUPI2, "blupi002.blp", totalDim, iconDim, FALSE) == FALSE)
 	{
 		return FALSE;
 	}
 	SetTransparent(CHBLUPI2, RGB(0, 0, 255));
+	totalDim.x = 960;
+	totalDim.y = 1200;
+	iconDim.x = 60;
+	iconDim.y = 60;
 	if (BackgroundCache(CHBLUPI3, "blupi003.blp", totalDim, iconDim, FALSE) == FALSE)
 	{
 		return FALSE;
 	}
 	SetTransparent(CHBLUPI3, RGB(0, 0, 255));
+	totalDim.x = 64;
+	totalDim.y = 64;
+	iconDim.x = 64;
+	iconDim.y = 64;
 	if (BackgroundCache(CHTEMP, "temp.blp", totalDim, iconDim, FALSE) == FALSE)
 	{
 		return FALSE;
 	}
 	SetTransparent(CHTEMP, RGB(0, 0, 255));
+	totalDim.x = 208;
+	totalDim.y = 160;
+	iconDim.x = 208;
+	iconDim.y = 160;
 	if (BackgroundCache(CHMAP, "map.blp", totalDim, iconDim, FALSE) == FALSE)
 	{
 		return FALSE;
 	}
 	SetTransparent(CHMAP, RGB(0, 0, 255));
+	totalDim.x = 960;
+	totalDim.y = 1200;
+	iconDim.x = 60;
+	iconDim.y = 60;
 	if (BackgroundCache(CHELEMENT, "element.blp", totalDim, iconDim, FALSE) == FALSE)
 	{
 		return FALSE;
 	}
 	SetTransparent(CHELEMENT, RGB(0, 0, 255));
+	totalDim.x = 2048;
+	totalDim.y = 640;
+	iconDim.x = 128;
+	iconDim.y = 128;
 	if (BackgroundCache(CHEXPLO, "explo.blp", totalDim, iconDim, FALSE) == FALSE)
 	{
 		return FALSE;
 	}
 	SetTransparent(CHEXPLO, RGB(0, 0, 255));
 	sprintf(filename, "decor%.3d.blp", region);
+	totalDim.x = LXIMAGE;
+	totalDim.y = LYIMAGE;
+	iconDim.x = 0;
+	iconDim.y = 0;
 	if (BackgroundCache(CHDECOR, filename, totalDim, iconDim, FALSE) == FALSE)
 	{
 		return FALSE;
 	}
+	totalDim.x = 240;
+	totalDim.y = 1040;
+	iconDim.x = 40;
+	iconDim.y = 40;
 	if (BackgroundCache(CHBUTTON, "button00.blp", totalDim, iconDim, FALSE) == FALSE)
 	{
 		return FALSE;
 	}
 	SetTransparent(CHBUTTON, RGB(0, 0, 255));
+	totalDim.x = 124;
+	totalDim.y = 88;
+	iconDim.x = 124;
+	iconDim.y = 22;
 	if (BackgroundCache(CHJAUGE, "jauge.blp", totalDim, iconDim, FALSE) == FALSE)
 	{
 		return FALSE;
 	}
 	SetTransparent(CHJAUGE, RGB(0, 0, 255));
+	totalDim.x = 256;
+	totalDim.y = 384;
+	iconDim.x = 16;
+	iconDim.y = 16;
 	if (BackgroundCache(CHTEXT, "text.blp", totalDim, iconDim, FALSE) != FALSE)
 	{
-		return FALSE;
 		SetTransparent(CHTEXT, RGB(0, 0, 255));
+		totalDim.x = 256;
+		totalDim.y = 96;
+		iconDim.x = 16;
+		iconDim.y = 12;
 		if (BackgroundCache(CHLITTLE, "little.blp", totalDim, iconDim, FALSE) != FALSE)
 		{
 			SetTransparent(CHLITTLE, RGB(0, 0, 255));
@@ -1087,65 +1139,48 @@ BOOL CPixmap::CacheAll(BOOL cache, HWND hWnd, BOOL bFullScreen, BOOL bTrueColor,
 
 int CPixmap::Benchmark()
 {
-	timeb time[2];
-	RECT  rect;
-	FILE* file;
-	UINT  crap;
-	int   num;
-	int	  num2;
-	int   num3;
-	UINT  num4;
-	int	  num5;
-	int	  num6;
-	int	  i;
-	POINT pos;
-	POINT dest;
-	char  buffer[100];
+	struct _timeb tstruct;
+	int        i, j, t1, t2, time;
+	RECT    rect;
+	POINT    dest;
 
-	ftime(time);
-	num = (int)time;
-	num2 = 29;
-	num3 = 10;
+	_ftime(&tstruct);
+	t1 = tstruct.millitm;
 
-	rect.top = num;
-	rect.left = 29;
-	rect.right = 669;
-	rect.bottom = 509;
-	num5 = 120;
-	dest.x = 0;
-	dest.y = 0;
-	DrawPart(-1, -3, dest, rect, 1, FALSE);
-	do
+	for (j = 0; j < 10; j++)
 	{
-		pos.x = 13;
-		pos.y = 13;
-		QuickIcon(1, 1, pos);
-		num5++;
-	} while (num5);
-	ftime(time);
-	i = (int)time;
+		dest.x = POSDRAWX;
+		dest.y = POSDRAWY;
+		rect.left = 29;
+		rect.right = 29 + LXIMAGE;
+		rect.top = 29;
+		rect.bottom = 29 + LYIMAGE;
+		DrawPart(-1, CHDECOR, dest, rect, 1);
 
-	crap = 0;
-
-	num4 = crap & 0xFFFF;
-
-	if (num4 < num)
-	{
-		i = num4 + 100;
+		dest.x = 13;  // position quelconque non-multiple de 16
+		dest.y = 13;
+		for (i = 0; i < 120; i++)
+		{
+			QuickIcon(CHOBJECT, 1, dest);
+		}
 	}
-	num6 = i - num;
-	sprintf(buffer, "Benchmark = %d\r\n", i - num);
 
+	_ftime(&tstruct);
+	t2 = tstruct.millitm;
+
+	if (t1 > t2)  t2 += 1000;
+	time = t2 - t1;
+
+	FILE* file = NULL;
+	char        string[100];
+	sprintf(string, "Benchmark = %d\r\n", time);
 	file = fopen("data\\bench.blp", "wb");
+	if (file == NULL)  return time;
+	fwrite(string, strlen(string), 1, file);
+	fclose(file);
 
-	if (fopen("data\\bench.blp", "wb"))
-	{
-		fwrite(buffer, strlen(buffer), 1, file);
-		fclose(file);
-	}
-	return num6;
+	return time;
 }
-
 
 
 // Purge une image.

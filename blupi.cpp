@@ -38,7 +38,8 @@ using namespace std;
 
 #define NAME        "Blupi"
 #define TITLE       "Eggbert"
-
+#define MMTIMER     TRUE
+#define THREAD		FALSE
 
 // Variables Globals
 
@@ -63,6 +64,12 @@ MMRESULT    g_updateTimer;			// timer g�n�ral
 BOOL		g_bActive = TRUE;		// is application active ?
 BOOL		g_bTermInit = FALSE;	// initialisation en cours
 int			g_bTimer;
+int			g_nbTimer;
+HANDLE		g_hScreenMutex;
+HANDLE		g_hRunMutex;
+HANDLE		g_threadNr;
+HANDLE		g_hThread;
+LPDWORD* 	g_threadID;
 int			g_objectMax;
 int			g_elementMax;
 int			g_blupiMax;
@@ -609,51 +616,39 @@ BOOL InitFail(const char *msg, BOOL bDirectX)
 
 int Benchmark()
 {
-	timeb time[6];
-	int num0;
-	int num;
-	int num2;
-	int num3;
-	int i;
-	short crap[6];
-	FILE* open;
-	int frame;
-	_MEMORYSTATUS buffer;
-	char file[100];
+	struct _timeb tstruct;
+	int        i, j, t1, t2, time;
+	RECT    rect;
+	POINT    dest;
+	_MEMORYSTATUS mem;
 
-	ftime(time);
+	_ftime(&tstruct);
+	t1 = tstruct.millitm;
 
-	num = (int)time;
-	frame = 10;
-
-	do
+	for (j = 0; j < 10; j++)
 	{
 		UpdateFrame();
 		SetDecor();
 		g_pPixmap->Display();
-		frame++;
-	} while (frame);
-
-	ftime(time);
-	i = (int)time;
-
-	num0 = HIWORD(crap) & 0xFFFF;
-
-	if (num0 < num)
-	{
-		num0 = num0 + 1000;
 	}
-	num3 = i - num0;
-	buffer.dwLength = 32;
-	GlobalMemoryStatus(&buffer);
-	sprintf(file, "CheckTime = %d\r\nMemory = %d", num3, buffer.dwTotalPhys);
 
-	if (fopen("data\\time.blp", "wb"))
-	{
-		fwrite(file, strlen(file), 1, fopen("data\\time.blp", "wb"));
-		fclose(fopen("data\\time.blp", "wb"));
-	}
-	return num3;
+	_ftime(&tstruct);
+	t2 = tstruct.millitm;
+
+	if (t1 > t2)  t2 += 1000;
+	time = t2 - t1;
+
+	mem.dwLength = 32;
+	GlobalMemoryStatus(&mem);
+	FILE* file = NULL;
+	char        string[100];
+	sprintf(string, "CheckTime = %d Memory = %d\r\n", time, mem.dwTotalPhys);
+	file = fopen("data\\time.blp", "wb");
+	if (file == NULL)  return time;
+	fwrite(string, strlen(string), 1, file);
+	fclose(file);
+
+	return time;
 }
 
 static BOOL DoInit(HINSTANCE hInstance, LPSTR lpCmdLine, int nCmdShow)
@@ -792,7 +787,7 @@ static BOOL DoInit(HINSTANCE hInstance, LPSTR lpCmdLine, int nCmdShow)
 	g_pEvent = new CEvent;
 	if (g_pEvent == NULL) return InitFail("New event", FALSE);
 
-	g_pEvent->Create(g_hWnd, g_pPixmap, g_pDecor, g_pSound, g_pMovie, g_pNetwork);
+	g_pEvent->Create(hInstance, g_hWnd, g_pPixmap, g_pDecor, g_pSound, g_pMovie, g_pNetwork);
 	g_pEvent->SetFullScreen(g_bFullScreen);
 	g_pEvent->SetMouseType(g_mouseType);
 	g_pEvent->ChangePhase(WM_PHASE_INIT);
@@ -807,6 +802,17 @@ static BOOL DoInit(HINSTANCE hInstance, LPSTR lpCmdLine, int nCmdShow)
 	return TRUE;
 }
 
+#if MMTIMER
+void CALLBACK UpdateTimer_Proc(UINT uIDm, UINT uMsg, DWORD dwUser, DWORD dw1, DWORD dw2)
+{
+	if (g_bActive && g_nbTimer == 0)
+	{
+		g_nbTimer++;
+		PostMessageA(g_hWnd, WM_UPDATE, NULL, NULL);
+	}
+}
+#endif
+
 int WINAPI WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance,
 					LPSTR lpCmdLine, int nCmdShow)
 {
@@ -819,7 +825,23 @@ int WINAPI WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	}
 
 	Benchmark();
-	g_hWnd = (HWND)timeSetEvent(g_timerInterval, (g_timerInterval + (g_timerInterval >> 31 & 3U)) >> 2, TimerStep(), 0, 1);
+	
+#if MMTIMER
+	g_updateTimer = timeSetEvent(g_timerInterval, g_timerInterval / 4, UpdateTimer_Proc, NULL, TIME_PERIODIC);
+
+
+#else
+	SetTimer(g_hWnd, 1, g_timerInterval, NULL);
+#endif
+
+#if THREAD
+	g_hScreenMutex = CreateMutex(NULL, FALSE, NULL);
+	g_hRunMutex = CreateMutex(NULL, TRUE, NULL);
+	g_threadNr = 0;
+
+	g_hThread = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)ThreadDisplay, 0, DETACHED_PROCESS, &g_threadID);
+
+#endif
 
 	while ( TRUE )
 	{
@@ -840,3 +862,30 @@ int WINAPI WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 	return msg.wParam;
 }
+
+#if THREAD
+// Thread d'affichage.
+
+static void ThreadDisplay(char* MyID)
+{
+	UINT    phase;
+
+	do
+	{
+		phase = g_pEvent->GetPhase();
+		if (phase == WM_PHASE_PLAY)
+		{
+			// Wait for display to be available, then lock it.
+			WaitForSingleObject(g_hScreenMutex, INFINITE);
+
+			SetDecor();
+			g_pPixmap->Display();
+
+			// Clear screen lock.
+			ReleaseMutex(g_hScreenMutex);
+		}
+	}
+	// Repeat while RunMutex is still taken.
+	while (WaitForSingleObject(g_hRunMutex, 10L) == WAIT_TIMEOUT);
+}
+#endif

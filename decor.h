@@ -822,7 +822,7 @@ protected:
     POINT       m_velocity;
     Icon4       m_blupiIcon;
 	POINT		m_blupiStartPos[4];
-	int			m_blupiStartDir;
+	int			m_blupiStartDir[4];
 	int			m_blupiAction;
 	BOOL		m_bCheatDoors;
 	int			m_blupiPhase;
@@ -851,6 +851,8 @@ protected:
     BOOL        m_blupiHelico;
     BOOL        m_blupiOver;
     BOOL        m_blupiJeep;
+	BOOL		m_bJeepMarch;
+	BOOL		m_bJeepStop;
     BOOL        m_blupiTank;
     BOOL        m_blupiSkate;
     BOOL        m_blupiNage;

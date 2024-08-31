@@ -108,7 +108,7 @@ public:
 
 	void	OutputNetDebug(const char* str);
 	POINT	GetMousePos();
-	void	Create(HWND hWnd, CPixmap *pPixmap, CDecor *pDecor, CSound *pSound, CMovie *pMovie, CNetwork *pNetwork);
+	void	Create(HINSTANCE hInstance, HWND hWnd, CPixmap *pPixmap, CDecor *pDecor, CSound *pSound, CMovie *pMovie, CNetwork *pNetwork);
 	void	SetFullScreen(BOOL bFullScreen);
 	void	SetMouseType(int mouseType);
 	int		GetWorld();
@@ -210,7 +210,8 @@ protected:
 	void	PrivateLibelle();
 	BOOL	ReadLibelle(int world, BOOL bSchool, BOOL bHelp);
 	BOOL	WriteInfo(int gamer, char* playername);
-	BOOL	ReadInfo(int gamer);	
+	BOOL	ReadInfo(int gamer);
+	BOOL	LoadState(BOOL save);
 	void	TryPhase();
 	void	UnTryPhase();
 	int		GetTryPhase();
@@ -248,6 +249,7 @@ protected:
 	void*		m_somethingJoystick;
 	int			m_menuIndex;
 	int			m_fileIndex;
+	int			m_saveIndex;
 	int			m_menuDecor[10];
 	BOOL		m_bMouseRelease;
     int         m_private;

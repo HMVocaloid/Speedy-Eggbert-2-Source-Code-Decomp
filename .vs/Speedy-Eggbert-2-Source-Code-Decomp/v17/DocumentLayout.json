@@ -330,6 +330,10 @@
               "WhenOpened": "2024-06-03T14:55:43.15Z"
             },
             {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
               "$type": "Document",
               "DocumentIndex": 14,
               "Title": "README.md",

@@ -12,6 +12,7 @@ using namespace std;
 
 typedef enum
 {
+    SOUND_3_JUMPEND,
     SOUND_10_BOUM,
     SOUND_11_TRESOR,
     SOUND_13_ENDKO,
@@ -23,6 +24,7 @@ typedef enum
     SOUND_29_JEEPHIGH,
     SOUND_31_JEEPLOW,
     SOUND_33_DOOR,
+    SOUND_41_RESSORT,
     SOUND_42_STARTSHIELD,
     SOUND_50_SUCETTE,
     SOUND_51_GLU,
@@ -52,7 +54,6 @@ public:
     CSound();
     ~CSound();
 
-    BOOL ErrorSomething();
     BOOL Create(HWND hWnd);
     void SetState(BOOL bState);
     BOOL GetEnable();

@@ -1,4 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <DebuggerFlavor>WindowsRemoteDebugger</DebuggerFlavor>
+    <RemoteDebuggerServerName>KAYLABARKS-PC:4027</RemoteDebuggerServerName>
+    <RemoteDebuggerDebuggerType>NativeOnly</RemoteDebuggerDebuggerType>
+    <DeploymentDirectory>C:\BlupiDebug\Debug</DeploymentDirectory>
+    <RemoteDebuggerDeployCppRuntime>true</RemoteDebuggerDeployCppRuntime>
+    <RemoteDebuggerCommand>C:\BlupiDebug\Debug\Speedy Eggbert 2 Source.exe</RemoteDebuggerCommand>
+    <RemoteDebuggerWorkingDirectory>C:\BlupiDebug\Debug</RemoteDebuggerWorkingDirectory>
+  </PropertyGroup>
 </Project>

@@ -9,7 +9,7 @@ using namespace std;
 /////////////////////////////////////////////////////////////
 
 #define MAXIMAGE    100
-#define DIRECTDRAW_VERSION 0x0300
+#define DIRECTDRAW_VERSION 0x0500
 
 class CPixmap
 {

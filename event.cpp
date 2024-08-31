@@ -30,6 +30,7 @@ using namespace std;
 #define DEF_TIME_HELP  10000
 #define DEF_TIME_DEMO  1000
 #define MAXDEMO        2000
+#define MAXINDEX	   20
 
 
 typedef struct
@@ -1236,6 +1237,7 @@ static Phase table[] =
 CEvent::CEvent()
 {
     int     i;
+	int* menuIndex;
 
 
 	CMenu(m_menu);
@@ -1243,6 +1245,7 @@ CEvent::CEvent()
 	m_somethingJoystick = 0;
     m_bFullScreen   = TRUE;
 	m_mouseType     = MOUSETYPEGRA;
+	m_saveIndex		= -1;
 	m_index         = -1;
 	m_exercice      = 0;
 	m_mission       = 1;
@@ -1286,10 +1289,9 @@ CEvent::CEvent()
 	m_bCtrlDown     = FALSE;
 	m_input			= 0;
 
-	for (i != 0; i = 20; i++)
+	for (i = 0; i < MAXINDEX; i++)
 	{
 		m_menuIndex = 0;
-		m_menuIndex++;
 	}
 
 	m_menuDecor[10] = 1;
@@ -1301,7 +1303,7 @@ CEvent::CEvent()
 
 CEvent::~CEvent()
 {
-	char* filename;
+	char filename[260];
 
     WriteInfo(m_gamer, filename); // Read the file "info.blp"
 	OutputDebug(filename);
@@ -1309,10 +1311,9 @@ CEvent::~CEvent()
 	return;
 }
 
-void CEvent::Create(HWND hWnd, CPixmap *pPixmap, CDecor *pDecor,
+void CEvent::Create(HINSTANCE hInstance, HWND hWnd, CPixmap *pPixmap, CDecor *pDecor,
                     CSound *pSound, CMovie *pMovie, CNetwork *pNetwork)
 {
-	HINSTANCE hInstance;
     POINT   pos;
 
 	m_hInstance = hInstance;
@@ -1416,14 +1417,26 @@ void CEvent::SetEnable(WMessage button, int bEnable)
     m_buttons[index].SetEnable(bEnable);
 }
 
-void CEvent::SetSomething(int button, int bSomething)
+/*
+BOOL CEvent::GetHide(int button)
+{
+	int		index;
+
+	index = GetButtonIndex(button);
+	if (index < 0)  return 0;
+
+	return m_buttons[index].GetHide();
+}
+*/
+
+void CEvent::SetHide(int button, BOOL bHide)
 {
 	int index;
 
 	index = GetButtonIndex(button);
 	if (index < 0) return;
 
-	m_buttons[index].SetSomething(bSomething);
+	m_buttons[index].SetHide(bHide);
 }
 
 int CEvent::GetMenu(int button)
@@ -1452,7 +1465,7 @@ void CEvent::RestoreGame()
 {
     int     i;
 
-	if (m_phase == WM_PHASE_PLAY && m_phase == WM_PHASE_PLAYTEST)
+	if (m_phase == WM_PHASE_PLAY || m_phase == WM_PHASE_PLAYTEST)
 	{
 		HideMouse(FALSE);
 		WaitMouse(TRUE);
@@ -1475,31 +1488,36 @@ void CEvent::FlushInput()
 
 BOOL CEvent::CreateButtons()
 {
-	int		i = 0, message;
-	POINT	pos;
+	int		i = 0, message, num, size, iconMenu;
+	int		num3 = 0;
+	POINT	pos, toolTips;
 	BOOL	bMinimizeRedraw = FALSE;
+	CButton* button;
 
-	if (m_phase == WM_PHASE_PLAY)
+	size = m_phase * sizeof(Phase);
+	button = m_buttons;
+	if (table[m_index].buttons[i].message != 0)
 	{
-		bMinimizeRedraw = TRUE;
-	}
-	while (table[m_index].buttons[i].message != 0)
-	{
-		pos.x = table[m_index].buttons[i].x;
-		pos.y = table[m_index].buttons[i].y;
-		message = table[m_index].buttons[i].message;
-
-		if (m_bPrivate)
+		while (table[m_index].buttons[i].iconMenu + num != 0)
 		{
-			if (message == WM_PHASE_SKILL1)
+			message = *(UINT*)(int)table[i].buttons[i].iconMenu + m_index * sizeof(Phase) + -8;
+			toolTips = *(POINT*)((int)table[i].buttons[i].toolTips + size + -8);
+			iconMenu = *(int*)((int)table[i].buttons[i].iconMenu + size + -4);
+			m_buttons->Create(m_hWnd, m_pPixmap, m_pSound, toolTips, iconMenu, FALSE, 0 ,message);
+			if ((m_bAccessBuild == FALSE) && (m_phase == WM_PHASE_BUILD) && (message == 1054))
 			{
-				pos.x = 117;
-				pos.y = 115;
+				size++;
 			}
-			if (message == WM_PHASE_SKILL2)
-			{
-
-			}
+			int* iconMenu2 = (int*)((int)table[m_index].buttons[i].iconMenu + num3 + 4);
+			int iconMenu3 = *(int*)((int)table[m_index].buttons[i].iconMenu + num3);
+			m_buttons->SetSomethingMenu(iconMenu2, iconMenu3);
+			int* toolTips2 = (int*)((int)table[m_index].buttons[i].toolTips + num3 + 4);
+			int  toolTips3 = *(int*)((int)table[m_index].buttons[i].toolTips + num3);
+			m_buttons->MenuToolTips(toolTips2, toolTips3);
+			button++;
+			size = num3 + sizeof(Button) + m_index * sizeof(Phase);
+			int num2 = num3 + -8;
+			num3 = 0 + sizeof(button);
 		}
 	}
 	return TRUE;
@@ -1525,7 +1543,7 @@ void CEvent::ReadInput()
 		//m_pDecor->TreatNetData();
 	}
 	
-	if ((m_somethingJoystick == (void*)0) || (m_bDemoPlay != FALSE)) 
+	if ((m_somethingJoystick == NULL) || (m_bDemoPlay != FALSE)) 
 	{
 		m_pDecor->SetJoystickEnable(FALSE);
 	}
@@ -1932,6 +1950,8 @@ BOOL CEvent::DrawButtons()
 		rect.left = 2;
 		rect.top = 2;
 		rect.bottom = 14;
+		pos.x = 2;
+		pos.y = 2;
 		m_pPixmap->DrawPart(-1, 0, pos, rect, 1, FALSE);
 	}
 	DrawTextLeft(m_pPixmap, pos, textLeft, 10);
@@ -2299,7 +2319,97 @@ BOOL CEvent::TreatEventBase(UINT message, WPARAM wParam, LPARAM lParam)
 
 				}
 			}
+
+			if (m_phase != WM_PHASE_PLAY)
+			{
+				ChangePhase(m_phase);
+			}
+			if (bEnable)
+			{
+				pos.x = 320;
+				pos.y = LYIMAGE / 2;
+				m_pSound->PlayImage(SOUND_3_JUMPEND, pos, -1);
+			}
+			else
+			{
+				pos.x = 320;
+				pos.y = LYIMAGE / 2;
+				m_pSound->PlayImage(SOUND_41_RESSORT, pos, -1);
+			}
+			m_rankCheat = -1;
+			m_posCheat = 1;
 		}
+		return TRUE;
+
+		if (m_phase == WM_PHASE_INIT)
+		{
+			ChangePhase(WM_PHASE_INIT);
+			return TRUE;
+		}
+
+		if (m_phase == WM_PHASE_BYE)
+		{
+			PostMessageA(m_hWnd, WM_CLOSE, 0, 0);
+		}
+
+		switch (wParam)
+		{
+			case VK_END:
+				DemoRecStop();
+				return TRUE;
+			case VK_ESCAPE:
+				if (m_bRunMovie)
+				{
+					StopMovie();
+					m_pSound->SetSuspendSkip(1);
+					return TRUE;
+				}
+				if (m_phase != WM_PHASE_PLAYTEST)
+				{
+					if (m_phase != WM_PHASE_SETUP)
+					{
+						if (m_phase != WM_PHASE_NAMEg)
+						{
+							if (m_phase == WM_PHASE_NAMEd)
+							{
+								m_pDecor->SetGamerName(m_textInput);
+								ChangePhase(WM_PHASE_INFO);
+								return TRUE;
+							}
+							if ((m_phase == WM_PHASE_INIT) || (m_phase == WM_PHASE_WINm)) ChangePhase(WM_PHASE_GAMER); return TRUE;
+							if ((m_phase == WM_PHASE_BUILD) || ((m_phase == WM_PHASE_LOSTd || m_phase == WM_PHASE_LOST))) ChangePhase(WM_PHASE_INFO); return TRUE;
+							if (((m_phase != WM_PHASE_INFO) && (m_phase != WM_PHASE_STOP)) && (m_phase != WM_PHASE_HELP))
+							{
+								if (m_phase == WM_PHASE_SERVICE)
+								{
+									ChangePhase(WM_PHASE_DPLAY_DO_SERVICE);
+									return TRUE;
+								}
+								if (m_phase == WM_PHASE_CREATE)
+								{
+									ChangePhase(WM_PHASE_DPLAY_CREATE);
+									return TRUE;
+								}
+								if (m_phase == WM_PHASE_MULTI)
+								{
+									ChatSend();
+									return TRUE;
+								}
+								if (((m_phase != WM_PHASE_GREAD) && (m_phase != WM_PHASE_GREADp)) || ((m_fileIndex < 0 || LoadState(m_fileIndex) == FALSE)))
+								{
+									if (m_phase != WM_PHASE_GWRITE) return TRUE;
+						
+									if (m_fileIndex < 0) return TRUE;
+			
+									if (SaveState(m_fileIndex) == FALSE) return TRUE;
+								}
+							}
+						}
+					}
+					strcpy(m_gamerName, m_textInput);
+				}
+		}
+
 	}
 
 	if (m_phase != WM_PHASE_PLAY && m_phase != WM_PHASE_PLAYTEST)
@@ -2324,9 +2434,26 @@ BOOL CEvent::TreatEventBase(UINT message, WPARAM wParam, LPARAM lParam)
 		}
 		break;
 	}
+
+	return FALSE;
 }
 
+BOOL CEvent::LoadState(BOOL save)
+{
+	BOOL saveNum;
+	CEvent* pEvent;
 
+	saveNum = save;
+
+	if (m_pDecor->Read(m_gamer, save, (BOOL*)&pEvent, &save) == FALSE)
+	{
+		return FALSE;
+	}
+	m_bPrivate = save;
+	SetMission((int)pEvent);
+	m_saveIndex = saveNum;
+	return TRUE;
+}
 
 int CEvent::MousePosToSprite(POINT pos)
 {
@@ -2484,14 +2611,6 @@ BOOL CEvent::EventButtons(UINT message, WPARAM wParam, LPARAM lParam)
 	return FALSE;
 }
 
-/*
-void CEvent::SomethingDecor()
-{
-	m_input = 0;
-	m_pDecor->TreatEvent();
-}
-*/
-
 BOOL CEvent::MouseOnButton(POINT pos)
 {
 	int 	i;
@@ -2605,13 +2724,13 @@ void CEvent::ReadAll()
 		
 		if (mission != FALSE)
 		{
-			//read = m_pDecor->Read(m_gamer, m_fileIndex, &bMission, &bPrivate);
+			read = m_pDecor->Read(m_gamer, m_fileIndex, &bMission, &bPrivate);
 			
 			if (read != FALSE)
 			{
 				//m_pDecor->DrawMap(FALSE, -1);
 			}
-			//m_pDecor->Read(m_gamer, 999, &bMission, &bPrivate);
+			m_pDecor->Read(m_gamer, 999, &bMission, &bPrivate);
 		}
 	}
 	return;
@@ -2666,6 +2785,8 @@ BOOL CEvent::ChangePhase(UINT phase)
 	Term* pTerm;
 	char* playerName;
 
+	sprintf(filename, "CEvent::ChangePhase [Begin] --- % ", phase);
+	OutputNetDebug(filename);
 	if (phase == WM_PHASE_634)
 	{
 	    PostMessageA(m_hWnd, 16, 0, 0);
@@ -2701,31 +2822,30 @@ BOOL CEvent::ChangePhase(UINT phase)
 	m_bPause = FALSE;
 	m_bCtrlDown = FALSE;
 	m_bMouseDown = FALSE;
-	m_debugPos.x = 0;
-	m_debugPos.y = 0;
+	m_bInfoHelp = FALSE;
+
 
 	if (phase == WM_PHASE_INIT)
 	{
 		m_demoTime = 0;
 	}
-	if (phase == WM_PHASE_PLAY &&
-		!m_bDemoPlay &&
-		GetPhysicalWorld() >= 299 &&
-		GetPhysicalWorld() < 320)
+	if (phase == WM_PHASE_PLAY)
 	{
+		if (((m_bDemoPlay == FALSE) && (mission = GetWorld(), 299 < mission)) && (mission = GetWorld(), mission < LXIMAGE / 2))
+		{
 		DemoRecStart();
+		}
 	}
-	if (phase != WM_PHASE_PLAY)
+	else
 	{
 		DemoRecStop();
 	}
-
-	m_mission = mission;
 
 	if (phase == WM_PHASE_DOQUIT)
 	{
 		if (m_bPrivate == FALSE)
 		{
+			mission = m_mission;
 			if (mission != 1)
 			{
 				if (mission == 99 || mission % 10 == 0)
