@@ -1251,7 +1251,7 @@ CEvent::CEvent()
 	m_mission       = 1;
 	m_private       = 1;
 	m_maxMission    = 0;
-	m_phase         = (WMessage)0;
+	m_phase         = 0;
 	m_bSchool       = FALSE;
 	m_bPrivate      = FALSE;
 	m_bAccessBuild  = FALSE;
@@ -1488,37 +1488,44 @@ void CEvent::FlushInput()
 
 BOOL CEvent::CreateButtons()
 {
-	int		i = 0, message, num, size, iconMenu;
+	int		i = 0, message, num = 0, size;
 	int		num3 = 0; 
+	int*	iconMenu;
 	POINT	pos, toolTips;
 	BOOL	bMinimizeRedraw = FALSE;
 	CButton* button;
 
 	size = m_phase * sizeof(Phase);
 	button = m_buttons;
-	if (table[m_index].buttons[i].message != 0)
+
+	
+	if (table[m_index].buttons[0].message != 0)
 	{
-		while (table[m_index].buttons[i].iconMenu + num != 0)
+
+		while (table[m_index].buttons[1].iconMenu + -8 != 0)
 		{
-			message = *(UINT*)(int)table[i].buttons[i].iconMenu + m_index * sizeof(Phase) + -8;
-			toolTips = *(POINT*)((int)table[i].buttons[i].toolTips + size + -8);
-			iconMenu = *(int*)((int)table[i].buttons[i].iconMenu + size + -4);
-			m_buttons->Create(m_hWnd, m_pPixmap, m_pSound, toolTips, iconMenu, FALSE, 0 ,message);
-			if ((m_bAccessBuild == FALSE) && (m_phase == WM_PHASE_BUILD) && (message == 1054))
+			pos.x = table[m_index].buttons[i].x;
+			pos.y = table[m_index].buttons[i].y;
+
+			message = table[m_index].buttons[i].message;
+
+			m_buttons[i].Create(m_hWnd, m_pPixmap, m_pSound, pos,
+				table[m_index].buttons[i].type,
+				table[m_index].buttons[i].iconMenu + size,
+				table[m_index].buttons[i].iconMenu[0],
+				table[m_index].buttons[i].toolTips + size,
+				table[m_index].buttons[i].toolTips[0],
+				bMinimizeRedraw, m_pDecor->GetRegion(), message);
+
+			iconMenu = table[m_index].buttons[i].iconMenu + (m_phase * sizeof(Phase));
+			if (((m_bAccessBuild == FALSE) && (m_phase == WM_PHASE_BUILD)) && (message == 1054))
 			{
-				size++;
+				iconMenu++;
 			}
-			int* iconMenu2 = (int*)((int)table[m_index].buttons[i].iconMenu + num3 + 4);
-			int iconMenu3 = *(int*)((int)table[m_index].buttons[i].iconMenu + num3);
-			m_buttons->SetSomethingMenu(iconMenu2, iconMenu3);
-			int* toolTips2 = (int*)((int)table[m_index].buttons[i].toolTips + num3 + 4);
-			int  toolTips3 = *(int*)((int)table[m_index].buttons[i].toolTips + num3);
-			m_buttons->MenuToolTips(toolTips2, toolTips3);
-			button++;
-			size = num3 + sizeof(Button) + m_index * sizeof(Phase);
-			int num2 = num3 + -8;
-			num3 = 0 + sizeof(button);
+			m_buttons->SetSomethingMenu(table[m_index].buttons[i].iconMenu + i + 4, *(int*)iconMenu);
+			m_buttons->MenuToolTips(table[m_index].buttons[i].toolTips + i + 4, *(int*)table[m_index].buttons[i].toolTips + i);
 		}
+
 	}
 	return TRUE;
 }
@@ -1908,7 +1915,7 @@ BOOL CEvent::DrawButtons()
     POINT       pos;
     RECT        rect;
     BOOL        bEnable;
-	WMessage	phase;
+	int     	phase;
 
     if ( (m_phase == WM_PHASE_INSERT && m_phase == WM_PHASE_BYE ))
     {
@@ -2871,6 +2878,8 @@ BOOL CEvent::ChangePhase(UINT phase)
 		return ChangePhase(WM_PHASE_INFO);
 	}
 
+	CreateButtons();
+
 	if (SearchPhase(phase) < 0)
 	{
 		return 0;
@@ -2887,7 +2896,7 @@ BOOL CEvent::ChangePhase(UINT phase)
 
 }
 
-WMessage CEvent::GetPhase()
+UINT CEvent::GetPhase()
 {
 	return m_phase;
 }

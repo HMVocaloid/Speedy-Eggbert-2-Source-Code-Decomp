@@ -15,7 +15,7 @@ public:
 	~CButton();
 
 	BOOL	Create(HWND hWnd, CPixmap *pPixmap, CSound *pSound,
-				   POINT pos, int type, BOOL bMinimizeRedraw, int region, UINT message);
+				   POINT pos, int type, int* pMenu, int nbMenu, int* pToolTips, int nbToolTips, BOOL bMinimizeRedraw, int region, UINT message);
 	void	SetSomethingMenu(int* icon, int somethingMenu);
 	void	MenuToolTips(int* menu, int menuTooltips);
 	void	Draw();

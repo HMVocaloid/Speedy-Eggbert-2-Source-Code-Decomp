@@ -46,7 +46,7 @@ CButton::~CButton()
 // Create a new Button
 
 BOOL CButton::Create(HWND hWnd, CPixmap *pPixmap, CSound *pSound,
-                     POINT pos, int type, BOOL bMinimizeRedraw, int region, UINT message)
+                     POINT pos, int type, int* pMenu, int nbMenu, int *pToolTips, int nbToolTips, BOOL bMinimizeRedraw, int region, UINT message)
 {
     POINT iconDim;
     int i, icon;
@@ -74,8 +74,8 @@ BOOL CButton::Create(HWND hWnd, CPixmap *pPixmap, CSound *pSound,
 	m_pos.y 			= pos.y;
 	m_dim.x				= iconDim.x;
 	m_dim.y 			= iconDim.y;
-	m_nbMenu			= 0;
-	m_nbToolTips		= 0;
+	m_nbMenu			= nbMenu;
+	m_nbToolTips		= nbToolTips;
 	m_selMenu			= 0;
 	m_state				= 0;
 	m_mouseState		= 0;
@@ -136,14 +136,11 @@ void CButton::SetSomethingMenu(int* icon, int somethingMenu)
 
 	if (somethingMenu > 0)
 	{
-		iconMenu = m_iconMenu;
-		i = somethingMenu;
-		do
+		for (i = 0; i < somethingMenu; i++)
 		{
-			menu = *icon++;
-			*iconMenu++ = menu;
-			--i;
-		} while (i);
+			icon++;
+			m_iconMenu[i] = (int)icon;
+		}
 	}
 	m_nbMenu = somethingMenu;
 }

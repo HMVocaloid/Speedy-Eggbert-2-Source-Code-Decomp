@@ -118,7 +118,7 @@ public:
 	int		GetImageWorld();
 	BOOL	IsHelpHide();
 	BOOL	ChangePhase(UINT phase);
-	WMessage GetPhase();
+	UINT    GetPhase();
 	void	MovieToStart();
 	BOOL	NetworkNuggets(int fuck);
 	void	HandleInputs();
@@ -254,7 +254,7 @@ protected:
 	BOOL		m_bMouseRelease;
     int         m_private;
     int         m_maxMission;
-    WMessage    m_phase;
+    int         m_phase;
     int         m_index;
 	int			m_playerIndex;
     BOOL        m_bSchool;
