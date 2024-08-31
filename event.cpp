@@ -1489,7 +1489,7 @@ void CEvent::FlushInput()
 BOOL CEvent::CreateButtons()
 {
 	int		i = 0, message, num, size, iconMenu;
-	int		num3 = 0;
+	int		num3 = 0; 
 	POINT	pos, toolTips;
 	BOOL	bMinimizeRedraw = FALSE;
 	CButton* button;
@@ -2180,6 +2180,8 @@ BOOL CEvent::DrawButtons()
 		pos.x = 250 - lg / 2;
 		DrawTextLeft(m_pPixmap, pos, res, 0);
 	}
+	
+	return TRUE;
 }
 
 void CEvent::PutTextInputBox(POINT pos)

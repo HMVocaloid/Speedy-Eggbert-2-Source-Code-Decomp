@@ -1,80 +1,97 @@
-﻿  pixmap.cpp
+﻿  event.cpp
 C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\def.h(241,1): warning C4005: 'MAXMOVEOBJECT': macro redefinition
-  (compiling source file 'pixmap.cpp')
+  (compiling source file 'event.cpp')
   C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\def.h(83,1):
   see previous definition of 'MAXMOVEOBJECT'
   
 C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\def.h(480,1): warning C4005: 'WM_PHASE_PRIVATE': macro redefinition
-  (compiling source file 'pixmap.cpp')
+  (compiling source file 'event.cpp')
   C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\def.h(452,1):
   see previous definition of 'WM_PHASE_PRIVATE'
   
-C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\pixmap.h(12,1): warning C4005: 'DIRECTDRAW_VERSION': macro redefinition
-  (compiling source file 'pixmap.cpp')
-  C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\um\ddraw.h(32,1):
-  see previous definition of 'DIRECTDRAW_VERSION'
-  
 C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\resource.h(106,1): warning C4005: 'TX_SHOWNEXT': macro redefinition
-  (compiling source file 'pixmap.cpp')
+  (compiling source file 'event.cpp')
   C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\resource.h(104,1):
   see previous definition of 'TX_SHOWNEXT'
   
+C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\pixmap.h(12,1): warning C4005: 'DIRECTDRAW_VERSION': macro redefinition
+  (compiling source file 'event.cpp')
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\um\ddraw.h(32,1):
+  see previous definition of 'DIRECTDRAW_VERSION'
+  
 C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.h(29,1): warning C4005: 'MAXMOVEOBJECT': macro redefinition
-  (compiling source file 'pixmap.cpp')
+  (compiling source file 'event.cpp')
   C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\def.h(241,1):
   see previous definition of 'MAXMOVEOBJECT'
   
 C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.h(100,2): warning C4091: 'typedef ': ignored on left of '<unnamed-enum-KEY_NONE>' when no variable is declared
-  (compiling source file 'pixmap.cpp')
+  (compiling source file 'event.cpp')
   
-C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\blupi.cpp(242,25): warning C4101: 'targetlevel': unreferenced local variable
-  (compiling source file 'pixmap.cpp')
+C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(1240,7): warning C4101: 'menuIndex': unreferenced local variable
+C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(1317,13): warning C4101: 'pos': unreferenced local variable
+C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(1466,13): warning C4101: 'i': unreferenced local variable
+C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(1493,8): warning C4101: 'pos': unreferenced local variable
+C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(1562,10): warning C4552: '!=': result of expression not used
+C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(1767,9): warning C4101: 'data': unreferenced local variable
+C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(1854,8): warning C4101: 'element': unreferenced local variable
+C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(1852,8): warning C4101: 'stream': unreferenced local variable
+C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(1901,57): warning C4101: 'icon': unreferenced local variable
+C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(1901,17): warning C4101: 'world': unreferenced local variable
+C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(1899,17): warning C4101: 'levels': unreferenced local variable
+C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(1901,42): warning C4101: 'volume': unreferenced local variable
+C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(1901,24): warning C4101: 'time': unreferenced local variable
+C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(1900,17): warning C4101: 'types': unreferenced local variable
+C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(1898,17): warning C4101: 'i': unreferenced local variable
+C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(1910,17): warning C4101: 'bEnable': unreferenced local variable
+C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(1901,50): warning C4101: 'pente': unreferenced local variable
+C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(1901,34): warning C4101: 'button': unreferenced local variable
+C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(2289,10): warning C4101: 'sound': unreferenced local variable
+C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(2549,21): warning C4101: 'sound': unreferenced local variable
+C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(2719,7): warning C4101: 'bUser': unreferenced local variable
+C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(2744,7): warning C4101: 'bUser': unreferenced local variable
+C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(2790,20): warning C4778: 'sprintf' : unterminated format string '% '
+C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(2790,58): warning C4474: 'sprintf' : too many arguments passed for format string
+  C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(2790,58):
+  placeholders and their parameters expect 0 variadic arguments, but 1 were provided
   
-C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\blupi.cpp(238,24): warning C4101: 'rcRect': unreferenced local variable
-  (compiling source file 'pixmap.cpp')
-  
-C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\blupi.cpp(238,18): warning C4101: 'clip': unreferenced local variable
-  (compiling source file 'pixmap.cpp')
-  
-C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\blupi.cpp(242,9): warning C4101: 'i': unreferenced local variable
-  (compiling source file 'pixmap.cpp')
-  
-C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\blupi.cpp(241,10): warning C4101: 'posMouse': unreferenced local variable
-  (compiling source file 'pixmap.cpp')
-  
-C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\blupi.cpp(354,28): warning C4293: '<<': shift count negative or too big, undefined behavior
-  (compiling source file 'pixmap.cpp')
-  
-C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\blupi.cpp(363,28): warning C4293: '<<': shift count negative or too big, undefined behavior
-  (compiling source file 'pixmap.cpp')
-  
-C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\blupi.cpp(345,8): warning C4101: 'posMouse': unreferenced local variable
-  (compiling source file 'pixmap.cpp')
-  
-C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\blupi.cpp(615,6): warning C4101: 'num2': unreferenced local variable
-  (compiling source file 'pixmap.cpp')
-  
-C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\blupi.cpp(619,8): warning C4101: 'open': unreferenced local variable
-  (compiling source file 'pixmap.cpp')
-  
-C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\blupi.cpp(663,11): warning C4101: 'rcRect': unreferenced local variable
-  (compiling source file 'pixmap.cpp')
-  
-C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\blupi.cpp(814,17): warning C4101: 'timeStep': unreferenced local variable
-  (compiling source file 'pixmap.cpp')
-  
-C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\pixmap.cpp(1001,29): warning C4293: '<<': shift count negative or too big, undefined behavior
-C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\pixmap.cpp(1132,11): warning C4018: '<': signed/unsigned mismatch
-C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\pixmap.cpp(652): warning C4700: uninitialized local variable 'hErr' used
+C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(2782,15): warning C4101: 'world': unreferenced local variable
+C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(2782,28): warning C4101: 'total': unreferenced local variable
+C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(2787,8): warning C4101: 'pTerm': unreferenced local variable
+C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(2782,45): warning C4101: 'max': unreferenced local variable
+C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(2782,35): warning C4101: 'music': unreferenced local variable
+C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(2783,18): warning C4101: 'iconDim': unreferenced local variable
+C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(2783,8): warning C4101: 'totalDim': unreferenced local variable
+C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(2782,22): warning C4101: 'time': unreferenced local variable
+C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(2782,8): warning C4101: 'index': unreferenced local variable
+C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(2785,8): warning C4101: 'pButtonExist': unreferenced local variable
+C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(2782,42): warning C4101: 'i': unreferenced local variable
+C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(2786,8): warning C4101: 'bEnable': unreferenced local variable
+C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(2786,17): warning C4101: 'bHide': unreferenced local variable
+C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(2919,23): warning C4101: 'icon': unreferenced local variable
+C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(2919,14): warning C4101: 'channel': unreferenced local variable
+C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(2918,8): warning C4101: 'cel': unreferenced local variable
+C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3077,8): warning C4101: 'pDest': unreferenced local variable
+C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3078,8): warning C4101: 'indic': unreferenced local variable
+C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3076,8): warning C4101: 'pText': unreferenced local variable
+C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3079,12): warning C4101: 'h1': unreferenced local variable
+C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3079,16): warning C4101: 'h2': unreferenced local variable
+C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3079,8): warning C4101: 'nb': unreferenced local variable
+C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3188,12): warning C4101: 'world': unreferenced local variable
+C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3188,25): warning C4101: 'total': unreferenced local variable
+C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3188,32): warning C4101: 'mission': unreferenced local variable
+C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3188,19): warning C4101: 'time': unreferenced local variable
+C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3326,8): warning C4101: 'doors': unreferenced local variable
+C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(2888): warning C4715: 'CEvent::ChangePhase': not all control paths return a value
+C:\Users\BrenJon\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(2934): warning C4715: 'CEvent::BuildDown': not all control paths return a value
 LINK : warning LNK4075: ignoring '/INCREMENTAL' due to '/FORCE' specification
   Starting pass 1
   Processed /DEFAULTLIB:winmm.lib
   Processed /DEFAULTLIB:uuid.lib
   Processed /DEFAULTLIB:MSVCRTD
   Processed /DEFAULTLIB:OLDNAMES
-  Processed /DEFAULTLIB:ddraw.lib
   Processed /DEFAULTLIB:dplayx.lib
   Processed /DEFAULTLIB:dxguid.lib
+  Processed /DEFAULTLIB:ddraw.lib
 pixmap.obj : warning LNK4006: "int __cdecl Benchmark(void)" (?Benchmark@@YAHXZ) already defined in blupi.obj; second definition ignored
 pixmap.obj : warning LNK4006: "int __cdecl FlushGame(void)" (?FlushGame@@YAHXZ) already defined in blupi.obj; second definition ignored
 pixmap.obj : warning LNK4006: "int __cdecl GetNum(char *)" (?GetNum@@YAHPAD@Z) already defined in blupi.obj; second definition ignored
@@ -84,6 +101,7 @@ pixmap.obj : warning LNK4006: "int __cdecl RestoreGame(void)" (?RestoreGame@@YAH
 pixmap.obj : warning LNK4006: "void __cdecl SetDecor(void)" (?SetDecor@@YAXXZ) already defined in blupi.obj; second definition ignored
 pixmap.obj : warning LNK4006: "void (__stdcall*__cdecl TimerStep(void))(unsigned int,unsigned int,unsigned long,unsigned long,unsigned long)" (?TimerStep@@YAP6GXIIKKK@ZXZ) already defined in blupi.obj; second definition ignored
 pixmap.obj : warning LNK4006: "void __cdecl UpdateFrame(void)" (?UpdateFrame@@YAXXZ) already defined in blupi.obj; second definition ignored
+pixmap.obj : warning LNK4006: "void __stdcall UpdateTimer_Proc(unsigned int,unsigned int,unsigned long,unsigned long,unsigned long)" (?UpdateTimer_Proc@@YGXIIKKK@Z) already defined in blupi.obj; second definition ignored
 pixmap.obj : warning LNK4006: "long __stdcall WindowProc(struct HWND__ *,unsigned int,unsigned int,long)" (?WindowProc@@YGJPAUHWND__@@IIJ@Z) already defined in blupi.obj; second definition ignored
 pixmap.obj : warning LNK4006: _WinMain@16 already defined in blupi.obj; second definition ignored
 pixmap.obj : warning LNK4006: "struct HWND__ * g_hWnd" (?g_hWnd@@3PAUHWND__@@A) already defined in blupi.obj; second definition ignored
@@ -107,6 +125,12 @@ pixmap.obj : warning LNK4006: "unsigned int g_updateTimer" (?g_updateTimer@@3IA)
 pixmap.obj : warning LNK4006: "int g_bActive" (?g_bActive@@3HA) already defined in blupi.obj; second definition ignored
 pixmap.obj : warning LNK4006: "int g_bTermInit" (?g_bTermInit@@3HA) already defined in blupi.obj; second definition ignored
 pixmap.obj : warning LNK4006: "int g_bTimer" (?g_bTimer@@3HA) already defined in blupi.obj; second definition ignored
+pixmap.obj : warning LNK4006: "int g_nbTimer" (?g_nbTimer@@3HA) already defined in blupi.obj; second definition ignored
+pixmap.obj : warning LNK4006: "void * g_hScreenMutex" (?g_hScreenMutex@@3PAXA) already defined in blupi.obj; second definition ignored
+pixmap.obj : warning LNK4006: "void * g_hRunMutex" (?g_hRunMutex@@3PAXA) already defined in blupi.obj; second definition ignored
+pixmap.obj : warning LNK4006: "void * g_threadNr" (?g_threadNr@@3PAXA) already defined in blupi.obj; second definition ignored
+pixmap.obj : warning LNK4006: "void * g_hThread" (?g_hThread@@3PAXA) already defined in blupi.obj; second definition ignored
+pixmap.obj : warning LNK4006: "unsigned long * * g_threadID" (?g_threadID@@3PAPAKA) already defined in blupi.obj; second definition ignored
 pixmap.obj : warning LNK4006: "int g_objectMax" (?g_objectMax@@3HA) already defined in blupi.obj; second definition ignored
 pixmap.obj : warning LNK4006: "int g_elementMax" (?g_elementMax@@3HA) already defined in blupi.obj; second definition ignored
 pixmap.obj : warning LNK4006: "int g_blupiMax" (?g_blupiMax@@3HA) already defined in blupi.obj; second definition ignored
@@ -122,6 +146,11 @@ pixmap.obj : warning LNK4006: "unsigned int g_lastPhase" (?g_lastPhase@@3IA) alr
         Found __imp__GlobalMemoryStatus@4
           Referenced in blupi.obj
           Referenced in pixmap.obj
+          Loaded kernel32.lib(KERNEL32.dll)
+        Found __imp__OutputDebugStringA@4
+          Referenced in ddutil.obj
+          Referenced in misc.obj
+          Referenced in wave.obj
           Loaded kernel32.lib(KERNEL32.dll)
         Found __imp__GetModuleHandleW@4
           Referenced in ddutil.obj
@@ -152,10 +181,6 @@ pixmap.obj : warning LNK4006: "unsigned int g_lastPhase" (?g_lastPhase@@3IA) alr
           Loaded kernel32.lib(KERNEL32.dll)
         Found __imp__CreateDirectoryA@8
           Referenced in misc.obj
-          Loaded kernel32.lib(KERNEL32.dll)
-        Found __imp__OutputDebugStringA@4
-          Referenced in misc.obj
-          Referenced in wave.obj
           Loaded kernel32.lib(KERNEL32.dll)
         Found __imp__FreeResource@4
           Referenced in wave.obj
@@ -199,6 +224,11 @@ pixmap.obj : warning LNK4006: "unsigned int g_lastPhase" (?g_lastPhase@@3IA) alr
           Loaded user32.lib(USER32.dll)
         Found __imp__PeekMessageA@20
           Referenced in blupi.obj
+          Referenced in pixmap.obj
+          Loaded user32.lib(USER32.dll)
+        Found __imp__PostMessageA@16
+          Referenced in blupi.obj
+          Referenced in event.obj
           Referenced in pixmap.obj
           Loaded user32.lib(USER32.dll)
         Found __imp__PostThreadMessageA@16
@@ -295,9 +325,6 @@ pixmap.obj : warning LNK4006: "unsigned int g_lastPhase" (?g_lastPhase@@3IA) alr
         Found __imp__IntersectRect@12
           Referenced in decor.obj
           Referenced in pixmap.obj
-          Loaded user32.lib(USER32.dll)
-        Found __imp__PostMessageA@16
-          Referenced in event.obj
           Loaded user32.lib(USER32.dll)
         Found __imp__ShowCursor@4
           Referenced in event.obj
@@ -710,17 +737,6 @@ pixmap.obj : warning LNK4006: "unsigned int g_lastPhase" (?g_lastPhase@@3IA) alr
         Found __imp__mkdir
           Referenced in event.obj
           Loaded OLDNAMES.lib(mkdir.obi)
-      Searching C:\DIRECTX3\DIRECTX3\SDK\LIB\ddraw.lib:
-        Found _DirectDrawCreate@12
-          Referenced in pixmap.obj
-          Loaded ddraw.lib(DDRAW.dll)
-  module 'ddraw.lib(DDRAW.dll)' unsafe for SAFESEH image.
-        Found __IMPORT_DESCRIPTOR_DDRAW
-          Referenced in ddraw.lib(DDRAW.dll)
-          Loaded ddraw.lib(DDRAW.dll)
-        Found DDRAW_NULL_THUNK_DATA
-          Referenced in ddraw.lib(DDRAW.dll)
-          Loaded ddraw.lib(DDRAW.dll)
       Searching C:\DIRECTX3\DIRECTX3\SDK\LIB\dplayx.lib:
         Found _DirectPlayEnumerateW@8
           Referenced in network.obj
@@ -741,6 +757,17 @@ pixmap.obj : warning LNK4006: "unsigned int g_lastPhase" (?g_lastPhase@@3IA) alr
         Found _IID_IDirectPlay2A
           Referenced in network.obj
           Loaded dxguid.lib(dxguid_guid79.obj)
+      Searching C:\DIRECTX3\DIRECTX3\SDK\LIB\ddraw.lib:
+        Found _DirectDrawCreate@12
+          Referenced in pixmap.obj
+          Loaded ddraw.lib(DDRAW.dll)
+  module 'ddraw.lib(DDRAW.dll)' unsafe for SAFESEH image.
+        Found __IMPORT_DESCRIPTOR_DDRAW
+          Referenced in ddraw.lib(DDRAW.dll)
+          Loaded ddraw.lib(DDRAW.dll)
+        Found DDRAW_NULL_THUNK_DATA
+          Referenced in ddraw.lib(DDRAW.dll)
+          Loaded ddraw.lib(DDRAW.dll)
       Searching C:\DIRECTX3\DIRECTX3\SDK\LIB\dsound.lib:
         Found _DirectSoundCreate@12
           Referenced in sound.obj
@@ -866,24 +893,27 @@ pixmap.obj : warning LNK4006: "unsigned int g_lastPhase" (?g_lastPhase@@3IA) alr
           Referenced in misc.obj
           Loaded ucrtd.lib(ucrtbased.dll)
         Found __imp__fclose
+          Referenced in pixmap.obj
           Referenced in sound.obj
           Referenced in blupi.obj
+          Referenced in decor.obj
           Referenced in event.obj
           Referenced in movie.obj
-          Referenced in pixmap.obj
           Loaded ucrtd.lib(ucrtbased.dll)
         Found __imp__fopen
+          Referenced in pixmap.obj
           Referenced in sound.obj
           Referenced in blupi.obj
+          Referenced in decor.obj
           Referenced in event.obj
           Referenced in movie.obj
-          Referenced in pixmap.obj
           Loaded ucrtd.lib(ucrtbased.dll)
         Found __imp__fread
+          Referenced in sound.obj
           Referenced in blupi.obj
+          Referenced in decor.obj
           Referenced in event.obj
           Referenced in pixmap.obj
-          Referenced in sound.obj
           Loaded ucrtd.lib(ucrtbased.dll)
         Found __imp__fwrite
           Referenced in blupi.obj
@@ -891,15 +921,14 @@ pixmap.obj : warning LNK4006: "unsigned int g_lastPhase" (?g_lastPhase@@3IA) alr
           Referenced in pixmap.obj
           Loaded ucrtd.lib(ucrtbased.dll)
         Found __imp____stdio_common_vsprintf
-          Referenced in text.obj
-          Referenced in misc.obj
           Referenced in network.obj
           Referenced in pixmap.obj
           Referenced in sound.obj
+          Referenced in text.obj
           Referenced in blupi.obj
-          Referenced in ddutil.obj
           Referenced in decor.obj
           Referenced in event.obj
+          Referenced in misc.obj
           Loaded ucrtd.lib(ucrtbased.dll)
         Found __imp___ftime64
           Referenced in blupi.obj
@@ -908,6 +937,18 @@ pixmap.obj : warning LNK4006: "unsigned int g_lastPhase" (?g_lastPhase@@3IA) alr
         Found __imp__strncpy
           Referenced in decor.obj
           Referenced in misc.obj
+          Loaded ucrtd.lib(ucrtbased.dll)
+        Found __imp__free
+          Referenced in decor.obj
+          Referenced in event.obj
+          Referenced in network.obj
+          Referenced in wave.obj
+          Loaded ucrtd.lib(ucrtbased.dll)
+        Found __imp__malloc
+          Referenced in decor.obj
+          Referenced in event.obj
+          Referenced in network.obj
+          Referenced in wave.obj
           Loaded ucrtd.lib(ucrtbased.dll)
         Found _abs
           Referenced in decor.obj
@@ -927,16 +968,6 @@ pixmap.obj : warning LNK4006: "unsigned int g_lastPhase" (?g_lastPhase@@3IA) alr
         Found __imp__tolower
           Referenced in event.obj
           Referenced in misc.obj
-          Loaded ucrtd.lib(ucrtbased.dll)
-        Found __imp__free
-          Referenced in event.obj
-          Referenced in network.obj
-          Referenced in wave.obj
-          Loaded ucrtd.lib(ucrtbased.dll)
-        Found __imp__malloc
-          Referenced in event.obj
-          Referenced in network.obj
-          Referenced in wave.obj
           Loaded ucrtd.lib(ucrtbased.dll)
         Found _strcmp
           Referenced in misc.obj
@@ -1213,9 +1244,9 @@ pixmap.obj : warning LNK4006: "unsigned int g_lastPhase" (?g_lastPhase@@3IA) alr
       Searching C:\Program Files (x86)\Windows Kits\10\lib\10.0.22621.0\um\x86\winmm.lib:
       Searching C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.38.33130\lib\x86\MSVCRTD.lib:
       Searching C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.38.33130\lib\x86\OLDNAMES.lib:
-      Searching C:\DIRECTX3\DIRECTX3\SDK\LIB\ddraw.lib:
       Searching C:\DIRECTX3\DIRECTX3\SDK\LIB\dplayx.lib:
       Searching C:\DIRECTX3\DIRECTX3\SDK\LIB\dxguid.lib:
+      Searching C:\DIRECTX3\DIRECTX3\SDK\LIB\ddraw.lib:
       Searching C:\DIRECTX3\DIRECTX3\SDK\LIB\dsound.lib:
       Searching C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.38.33130\lib\x86\vcruntimed.lib:
       Searching C:\Program Files (x86)\Windows Kits\10\lib\10.0.22621.0\ucrt\x86\ucrtd.lib:
@@ -1241,9 +1272,9 @@ pixmap.obj : warning LNK4006: "unsigned int g_lastPhase" (?g_lastPhase@@3IA) alr
         Found ___scrt_stub_for_acrt_initialize
           Loaded MSVCRTD.lib(ucrt_stubs.obj)
       Searching C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.38.33130\lib\x86\OLDNAMES.lib:
-      Searching C:\DIRECTX3\DIRECTX3\SDK\LIB\ddraw.lib:
       Searching C:\DIRECTX3\DIRECTX3\SDK\LIB\dplayx.lib:
       Searching C:\DIRECTX3\DIRECTX3\SDK\LIB\dxguid.lib:
+      Searching C:\DIRECTX3\DIRECTX3\SDK\LIB\ddraw.lib:
       Searching C:\DIRECTX3\DIRECTX3\SDK\LIB\dsound.lib:
       Searching C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.38.33130\lib\x86\vcruntimed.lib:
       Searching C:\Program Files (x86)\Windows Kits\10\lib\10.0.22621.0\ucrt\x86\ucrtd.lib:
@@ -1265,9 +1296,9 @@ pixmap.obj : warning LNK4006: "unsigned int g_lastPhase" (?g_lastPhase@@3IA) alr
       Searching C:\Program Files (x86)\Windows Kits\10\lib\10.0.22621.0\um\x86\winmm.lib:
       Searching C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.38.33130\lib\x86\MSVCRTD.lib:
       Searching C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.38.33130\lib\x86\OLDNAMES.lib:
-      Searching C:\DIRECTX3\DIRECTX3\SDK\LIB\ddraw.lib:
       Searching C:\DIRECTX3\DIRECTX3\SDK\LIB\dplayx.lib:
       Searching C:\DIRECTX3\DIRECTX3\SDK\LIB\dxguid.lib:
+      Searching C:\DIRECTX3\DIRECTX3\SDK\LIB\ddraw.lib:
       Searching C:\DIRECTX3\DIRECTX3\SDK\LIB\dsound.lib:
       Searching C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.38.33130\lib\x86\vcruntimed.lib:
       Searching C:\Program Files (x86)\Windows Kits\10\lib\10.0.22621.0\ucrt\x86\ucrtd.lib:
@@ -1289,9 +1320,9 @@ pixmap.obj : warning LNK4006: "unsigned int g_lastPhase" (?g_lastPhase@@3IA) alr
       Searching C:\Program Files (x86)\Windows Kits\10\lib\10.0.22621.0\um\x86\winmm.lib:
       Searching C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.38.33130\lib\x86\MSVCRTD.lib:
       Searching C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.38.33130\lib\x86\OLDNAMES.lib:
-      Searching C:\DIRECTX3\DIRECTX3\SDK\LIB\ddraw.lib:
       Searching C:\DIRECTX3\DIRECTX3\SDK\LIB\dplayx.lib:
       Searching C:\DIRECTX3\DIRECTX3\SDK\LIB\dxguid.lib:
+      Searching C:\DIRECTX3\DIRECTX3\SDK\LIB\ddraw.lib:
       Searching C:\DIRECTX3\DIRECTX3\SDK\LIB\dsound.lib:
       Searching C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.38.33130\lib\x86\vcruntimed.lib:
       Searching C:\Program Files (x86)\Windows Kits\10\lib\10.0.22621.0\ucrt\x86\ucrtd.lib:
@@ -1321,26 +1352,26 @@ pixmap.obj : warning LNK4006: "unsigned int g_lastPhase" (?g_lastPhase@@3IA) alr
    /v
    /x
    /fo
-   "C:\Users\BrenJon\AppData\Local\Temp\lnk{5B516485-7098-4C0F-AD59-EC632EDB65DD}.tmp"
-   "C:\Users\BrenJon\AppData\Local\Temp\lnk{F48310F4-2094-42E3-B64C-36A822159F8F}.tmp"
+   "C:\Users\BrenJon\AppData\Local\Temp\lnk{A563B7D2-1114-49FD-ACC4-94C2582FCA6C}.tmp"
+   "C:\Users\BrenJon\AppData\Local\Temp\lnk{7EB3DBA2-F6DA-4C3F-BA25-9D1BCBC691DF}.tmp"
   Microsoft (R) Windows (R) Resource Compiler Version 10.0.10011.16384
   
   Copyright (C) Microsoft Corporation.  All rights reserved.
   
   
   Using codepage 1252 as default
-  Creating C:\Users\BrenJon\AppData\Local\Temp\lnk{5B516485-7098-4C0F-AD59-EC632EDB65DD}.tmp
+  Creating C:\Users\BrenJon\AppData\Local\Temp\lnk{A563B7D2-1114-49FD-ACC4-94C2582FCA6C}.tmp
   
   
-  C:\Users\BrenJon\AppData\Local\Temp\lnk{F48310F4-2094-42E3-B64C-36A822159F8F}.tmp.
+  C:\Users\BrenJon\AppData\Local\Temp\lnk{7EB3DBA2-F6DA-4C3F-BA25-9D1BCBC691DF}.tmp.
   Writing 24:1,	lang:0x409,	size 381
   Invoking cvtres.exe:
    /machine:x86
    /verbose
-   /out:"C:\Users\BrenJon\AppData\Local\Temp\lnk{0D3C37C9-93E4-4C48-9F91-FB2D8259DAAB}.tmp"
+   /out:"C:\Users\BrenJon\AppData\Local\Temp\lnk{6C8D5EDA-FB66-4BC2-9058-2D51DADDCC78}.tmp"
    /readonly
    "Debug\Eggbert2.res"
-   "C:\Users\BrenJon\AppData\Local\Temp\lnk{5B516485-7098-4C0F-AD59-EC632EDB65DD}.tmp"
+   "C:\Users\BrenJon\AppData\Local\Temp\lnk{A563B7D2-1114-49FD-ACC4-94C2582FCA6C}.tmp"
   Microsoft (R) Windows Resource To Object Converter Version 14.38.33133.0
   Copyright (C) Microsoft Corporation.  All rights reserved.
   
@@ -1569,14 +1600,14 @@ C:\Users\BrenJon\Source\Repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\Deb
        MSVCRTD.lib(x86_exception_filter.obj)
        MSVCRTD.lib(chandler4_noexcept.obj)
        OLDNAMES.lib(mkdir.obi)
-       ddraw.lib(DDRAW.dll)
-       ddraw.lib(DDRAW.dll)
-       ddraw.lib(DDRAW.dll)
        dplayx.lib(DPLAYX.dll)
        dplayx.lib(DPLAYX.dll)
        dplayx.lib(DPLAYX.dll)
        dplayx.lib(DPLAYX.dll)
        dxguid.lib(dxguid_guid79.obj)
+       ddraw.lib(DDRAW.dll)
+       ddraw.lib(DDRAW.dll)
+       ddraw.lib(DDRAW.dll)
        dsound.lib(DSOUND.dll)
        dsound.lib(DSOUND.dll)
        dsound.lib(DSOUND.dll)

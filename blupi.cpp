@@ -358,21 +358,19 @@ void SetDecor()
 
 	if (phase == WM_PHASE_PLAY || phase == WM_PHASE_PLAYTEST || phase == WM_PHASE_BUILD)
 	{
-		*(char*)test = (LXIMAGE) << 64;
+		rect.top = 0;
+		rect.left = 0;
 		rect.bottom = LYIMAGE;
-		rect.left = LOWORD(test);
-		rect.top = HIWORD(test);
-		rect.right = HIWORD(test);
+		rect.right = LXIMAGE;
 		g_pDecor->Build(rect);
 	}
 	else
 	{
-		*(char*)test = (LXIMAGE) << 64;
+		rect.top = 0;
+		rect.left = 0;
 		rect.bottom = LYIMAGE;
-		rect.left = LOWORD(test);
-		rect.top = HIWORD(test);
-		rect.right = HIWORD(test);
-		g_pPixmap->DrawImage(-1, 0, rect, 1);
+		rect.right = LXIMAGE;
+		g_pPixmap->DrawImage(-1, CHBACK, rect, 1);
 	}
 	g_pEvent->DrawButtons();
 	g_lastPhase = phase;
