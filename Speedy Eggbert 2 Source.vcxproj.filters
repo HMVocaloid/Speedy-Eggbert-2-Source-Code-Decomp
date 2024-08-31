@@ -175,6 +175,12 @@
     <ClInclude Include="src\actions.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\resource.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\resource1.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="resource\IDR_MAINFRAME.ico">
