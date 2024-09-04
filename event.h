@@ -215,7 +215,7 @@ protected:
 	void	TryPhase();
 	void	UnTryPhase();
 	int		GetTryPhase();
-	BOOL	ReadPlayer();
+	BOOL	ReadPlayer(int gamer);
 	void	PutTextInputBox(POINT pos);
 	
 

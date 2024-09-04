@@ -1162,6 +1162,7 @@ void CDecor::AdaptDoors(BOOL bPrivate, int mission)
 	POINT  pos;
 	POINT  pos2;
 	int	   i;
+	int	   p;
 
 	m_bPrivate = bPrivate;
 	m_mission = mission;
@@ -1170,12 +1171,13 @@ void CDecor::AdaptDoors(BOOL bPrivate, int mission)
 	pos.y = 0;
 	pos2.x = 0;
 	pos2.y = 0;
+	p = bPrivate;
 
 	if (bPrivate == FALSE)
 	{
 		if (mission == 1)
 		{
-			do
+			for (p = 0; p < 20; p++)
 			{
 				if ((SearchDoor(bPrivate, pos2, pos) != FALSE) && ((*(char*)((int)m_lastDecorIcon + bPrivate + 0xFFFFFF) == '\0' ||
 					(m_bCheatDoors != FALSE))))
@@ -1199,7 +1201,7 @@ void CDecor::AdaptDoors(BOOL bPrivate, int mission)
 					PlaySoundB(SOUND_33_DOOR, m_moveObject[i]->posStart, 0);
 				}
 				bPrivate = bPrivate + TRUE;
-			} while ((int)bPrivate < 20);
+			}
 		}
 	}
 }
@@ -6610,7 +6612,7 @@ void CDecor::NotifPop()
 
 	notifText = m_notifText;
 	i = 3;
-	do
+	for (i = 0; i < 3; i++)
 	{
 		string = strlen((const char*)(i + 100)) + 1;
 		num = (int)notifText + 100 + string++;
@@ -6619,7 +6621,7 @@ void CDecor::NotifPop()
 		string += 100;
 		memcpy(num3, num2, string - 1);
 		--i;
-	} while (i);
+	}
 	if (i == 0)
 	{
 		m_notifText[3][0] = '\0';
@@ -6721,9 +6723,7 @@ void CDecor::NetDataFlush()
 	playerPackets = m_netPlayerPacketsRecieved;
 	net = (LONG*)m_netVitesses[0].y;
 
-	i = 4;
-
-	while (i != 0)
+	for (i = 0; i < 4; i++)
 	{
 		m_netPacketIcon.icon = 65535;
 		m_netPacketIcon.type = 65535;
@@ -9091,50 +9091,12 @@ BOOL CDecor::CurrentRead(int gamer, int mission, BOOL bUser)
 /*
 BOOL CDecor::MissionStart(int gamer, int rank, BOOL bUser)
 {
-	char filename[MAX_PATH];
-	int* pBuffer;
-	FILE* stream;
-	int	  num;
-	Cellule(*pDecor)[100];
+	char		filename[MAX_PATH];
+	FILE*		file = NULL;
+	DescFile* pBuffer = NULL;
+	int		  majRev, minRev;
+	int		  nb, i, x, y;
 
-	pBuffer = NULL;
-	sprintf(filename, "data\\s%.3d-%.3d.blp", gamer, rank);
-	AddUserPath(filename);
-	stream = fopen(filename, "wb");
-
-	if (!stream)
-	{
-		pBuffer = (int*)malloc(57008);
-		if (pBuffer == NULL) if (stream != NULL) fclose(stream);
-	}
-
-	if (pBuffer)
-	{
-		memset(pBuffer, 0, 57008);
-		*pBuffer = 57008;
-		pBuffer[1] = 1;
-		pBuffer[2] = 4;
-		pBuffer[3] = 0;
-		memcpy(pBuffer + 53, m_decor, 20000);
-		memcpy(pBuffer + 5053, m_bigDecor, 20000);
-		memcpy(pBuffer + 10053, m_balleTraj, 1300);
-		memcpy(pBuffer + 10378, m_moveTraj, 1300);
-		memcpy(pBuffer + 10703, m_moveObject, 9600);
-		pBuffer[13153] = m_posDecor.x;
-		pBuffer[13154] = m_posDecor.y;
-		pBuffer[13155] = m_dimDecor.x;
-		pBuffer[13156] = m_dimDecor.y;
-		pBuffer[13157] = m_phase;
-		pBuffer[13158] = m_term;
-		pBuffer[13159] = m_music;
-		pBuffer[13160] = m_region;
-		pBuffer[13161] = m_time;
-		memcpy(pBuffer + 13162, m_missionTitle, 100);
-		pBuffer[13237] = m_nbRankCaisse;
-		memcpy(pBuffer + 13238, m_rankCaisse, 804);
-		pBuffer[13438] = m_nbLinkCaisse;
-		memcpy(pBuffer + 13439, m_linkCaisse, 800);
-	}
 
 }
 */
@@ -9182,7 +9144,7 @@ BOOL CDecor::Read(int gamer, int rank, BOOL* pbMission, BOOL* pbPrivate)
 	m_posDecor.y = ptr[13154];
 	m_dimDecor.x = ptr[13155];
 	m_dimDecor.y = ptr[13156];
-	m_phase = (WMessage)ptr[13157];
+	m_phase = ptr[13157];
 	m_term = ptr[13158];
 	m_music = ptr[13159];
 	m_region = ptr[13160];

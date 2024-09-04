@@ -73,7 +73,7 @@ LPDWORD* 	g_threadID;
 int			g_objectMax;
 int			g_elementMax;
 int			g_blupiMax;
-int			g_exploMax;
+int			g_exploMax[100];
 short		g_object[6];
 short		g_element[6];
 short		g_blupiCh[6];
@@ -375,7 +375,6 @@ void SetDecor()
 	g_pEvent->DrawButtons();
 	g_lastPhase = phase;
 	g_pPixmap->MouseBackDraw();
-	return;
 }
 
 BOOL RestoreGame()
@@ -724,7 +723,7 @@ static BOOL DoInit(HINSTANCE hInstance, LPSTR lpCmdLine, int nCmdShow)
 
 	ChangeSprite(SPRITE_WAIT);
 
-	ZeroMemory(&g_pPixmap, sizeof(7068));
+	//ZeroMemory(&g_pPixmap, sizeof(7068));
 
 	if (!bOK)
 	{
@@ -757,7 +756,7 @@ static BOOL DoInit(HINSTANCE hInstance, LPSTR lpCmdLine, int nCmdShow)
 	g_pPixmap->SetTrueColor(TRUE);
 	g_pPixmap->SetTrueColorDecor(TRUE);
 
-	ZeroMemory(&g_pSound, sizeof(644));
+	//ZeroMemory(&g_pSound, sizeof(644));
 
 	g_pSound = new CSound;
 	if (g_pSound == NULL) return InitFail("New sound", TRUE);
@@ -766,21 +765,21 @@ static BOOL DoInit(HINSTANCE hInstance, LPSTR lpCmdLine, int nCmdShow)
 	g_pSound->CacheAll();
 	g_pSound->SetState(TRUE);
 
-	ZeroMemory(&g_pMovie, sizeof(164));
+	//ZeroMemory(&g_pMovie, sizeof(164));
 
 	g_pMovie = new CMovie;
 	if (g_pMovie == NULL) return InitFail("New movie", FALSE);
 
 	g_pMovie->Create();
 
-	ZeroMemory(&g_pDecor, sizeof(156448));
+	//ZeroMemory(&g_pDecor, sizeof(156448));
 
 	g_pDecor = new CDecor;
 	if (g_pDecor == NULL) return InitFail("New decor", FALSE);
 
 	g_pDecor->Create(g_hWnd, g_pSound, g_pPixmap, g_pNetwork);
 
-	ZeroMemory(&g_pEvent, sizeof(39904));
+	//ZeroMemory(&g_pEvent, sizeof(39904));
 
 	g_pEvent = new CEvent;
 	if (g_pEvent == NULL) return InitFail("New event", FALSE);
@@ -790,7 +789,7 @@ static BOOL DoInit(HINSTANCE hInstance, LPSTR lpCmdLine, int nCmdShow)
 	g_pEvent->SetMouseType(g_mouseType);
 	g_pEvent->ChangePhase(WM_PHASE_INIT);
 
-	ZeroMemory(&g_pNetwork, sizeof(20));
+	//ZeroMemory(&g_pNetwork, sizeof(20));
 
 	g_pNetwork = new CNetwork;
 	if (g_pNetwork == NULL) return InitFail("New network", FALSE);

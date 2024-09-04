@@ -308,6 +308,7 @@ BOOL CPixmap::Restore()
 	return TRUE;
 }
 
+
 void CPixmap::QuickIcon(int channel, int rank, POINT pos)
 {
 	int num;
@@ -376,7 +377,7 @@ void CPixmap::QuickIcon(int channel, int rank, POINT pos)
 			rect.bottom = rect.top + rect.bottom;
 			goto LABEL_1;
 		}
-		if (g_exploMax <= rank)
+		if ((int)g_exploMax <= rank)
 		{
 			return;
 		}
@@ -430,6 +431,7 @@ LABEL_1:
 	}
 	return;
 }
+
 
 
 // Initialise la palette syst�me.
@@ -999,11 +1001,11 @@ BOOL CPixmap::CacheAll(BOOL cache, HWND hWnd, BOOL bFullScreen, BOOL bTrueColor,
 	}
 	else
 	{
-		*(char*)image = (LXIMAGE) << 64;
+		
+		rect.right = LXIMAGE;
 		rect.bottom = LYIMAGE;
-		rect.left = LOWORD(image);
-		rect.top = HIWORD(image);
-		rect.right = HIWORD(image);
+		rect.left = 0;
+		rect.top = 0;
 		DrawImage(0, 0, rect, 1);
 		Display();
 	}
@@ -1250,6 +1252,8 @@ BOOL CPixmap::DrawIcon(int chDst, int channel, int rank, POINT pos,
 					   int mode, BOOL bMask)
 {
 	int			nbx, nby;
+	short		rank1, rank2, rank3, rank4;
+	LONG		lRank5;
 	RECT		rect;
 	HRESULT		ddrval;
 	COLORREF	oldColor1, oldColor2;
@@ -1260,13 +1264,25 @@ BOOL CPixmap::DrawIcon(int chDst, int channel, int rank, POINT pos,
 		{
 			return FALSE;
 		}
-
+		rank1 = g_object[rank * 6];
+		rank2 = g_object[rank * 6 + 1];
+		rank3 = g_object[rank * 6 + 3];
+		rank4 = g_object[rank * 6 + 4] + rank1;
+		lRank5 = g_object[rank * 6 + 5] + rank2;
+		pos.x = pos.x + g_object[rank * +2];
 	}
 	else if (channel == CHELEMENT)
 	{
 		if (g_elementMax <= rank) {
 			return FALSE;
 		}
+		rank1 = g_element[rank * 6];
+		rank2 = g_element[rank * 6 + 1];
+		rank3 = g_element[rank * 6 + 3];
+		rank4 = g_element[rank * 6 + 4] + rank1;
+		lRank5 = g_element[rank * 6 + 5] + rank2;
+		pos.x = pos.x + g_element[rank * 6 + 2];
+
 	}
 	else if (channel == CHBLUPI ||
 		channel == CHBLUPI1 ||
@@ -1277,38 +1293,46 @@ BOOL CPixmap::DrawIcon(int chDst, int channel, int rank, POINT pos,
 		{
 			return FALSE;
 		}
+		rank1 = g_blupiCh[rank * 6];
+		rank2 = g_blupiCh[rank * 6 + 1];
+		rank3 = g_blupiCh[rank * 6 + 4] + rank1;
+		rank4 = g_blupiCh[rank * 6 + 5] + rank2;
+		lRank5 = g_blupiCh[rank * 6 + 2];
+		pos.x = pos.x + g_blupiCh[rank * 6 + 2];
 	}
 	else
 	{
 		if (channel != CHEXPLO)
 		{
-			nbx = m_totalDim[channel].x / m_iconDim[channel].x;
-			nby = m_totalDim[channel].y / m_iconDim[channel].y;
 
 			if (channel < 0 || channel >= MAXIMAGE) return FALSE;
 			if (m_lpDDSurface[channel] == NULL) return FALSE;
 			if (m_iconDim[channel].x == 0 ||
 				m_iconDim[channel].y == 0) return FALSE;
+			nbx = m_totalDim[channel].x / m_iconDim[channel].x;
+			nby = m_totalDim[channel].y / m_iconDim[channel].y;
 			if (rank < 0 || rank >= nbx * nby) return FALSE;
+
 		}
+
+		if ((int)g_exploMax <= rank) return FALSE;
+
+		rank1 = g_explo[rank * 6];
+		rank2 = g_explo[rank * 6 + 1];
+		rank3 = g_explo[rank * 6 + 4] + rank1;
+		rank4 = g_explo[rank * 6 + 4] + rank2;
+		lRank5 = g_explo[rank * 6 + 2];
+		pos.x = pos.x + g_explo[rank * 6 + 2];
 	}
-	if (g_exploMax <= rank) return FALSE;
-
-	if ( channel < 0 || channel >= MAXIMAGE )  return FALSE;
-	if (  m_lpDDSurface[channel] == NULL )     return FALSE;
-
-	if ( m_iconDim[channel].x == 0 ||
-		 m_iconDim[channel].y == 0 )  return FALSE;
+	pos.y = pos.y + rank3;
 
 	nbx = m_totalDim[channel].x / m_iconDim[channel].x;
 	nby = m_totalDim[channel].y / m_iconDim[channel].y;
 
-	if ( rank < 0 || rank >= nbx*nby )  return FALSE;
-
-	rect.left   = (rank%nbx)*m_iconDim[channel].x;
-	rect.top    = (rank/nbx)*m_iconDim[channel].y;
-	rect.right  = rect.left + m_iconDim[channel].x;
-	rect.bottom = rect.top  + m_iconDim[channel].y;
+	rect.left = (rank % nbx) * m_iconDim[channel].x;
+	rect.top = (rank / nbx) * m_iconDim[channel].y;
+	rect.right = rect.left + m_iconDim[channel].x;
+	rect.bottom = rect.top + m_iconDim[channel].y;
 
 	oldColor1 = m_colorSurface[2*channel+0];
 	oldColor2 = m_colorSurface[2*channel+1];
