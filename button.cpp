@@ -46,7 +46,7 @@ CButton::~CButton()
 // Create a new Button
 
 BOOL CButton::Create(HWND hWnd, CPixmap *pPixmap, CSound *pSound,
-                     POINT pos, int type, int* pMenu, int nbMenu, int *pToolTips, int nbToolTips, BOOL bMinimizeRedraw, int region, UINT message)
+                     POINT pos, int type, BOOL bMinimizeRedraw, UINT message)
 {
     POINT iconDim;
     int i, icon;
@@ -57,110 +57,66 @@ BOOL CButton::Create(HWND hWnd, CPixmap *pPixmap, CSound *pSound,
     };
 
     if ( type < 0 || type > 0 ) return FALSE;
+	
 
-    iconDim.x   = ttypes[type*2+0];
-    iconDim.y   = ttypes[type*2+1];
+		iconDim.x = ttypes[type * 2 + 0];
+		iconDim.y = ttypes[type * 2 + 1];
 
-    m_hWnd              = hWnd;
-    m_pPixmap           = pPixmap;
-    m_pSound            = pSound;
-    m_type              = type;
-	m_bMinimizeRedraw	= bMinimizeRedraw;
-	m_bEnable			= TRUE;
-	m_bHide				= FALSE;
-	m_bSomething 		= FALSE;
-	m_message			= message;
-	m_pos.x				= pos.x;
-	m_pos.y 			= pos.y;
-	m_dim.x				= iconDim.x;
-	m_dim.y 			= iconDim.y;
-	m_nbMenu			= nbMenu;
-	m_nbToolTips		= nbToolTips;
-	m_selMenu			= 0;
-	m_state				= 0;
-	m_mouseState		= 0;
-	m_bMouseDown		= FALSE;
-	m_bRedraw			= TRUE;
-
-/* Do we need this yet?
-///////////////////////////////////////////////////
-	for ( i=0 ; i<nbMenu ; i++ )
-	{
-		icon = pMenu[i];
-
-		if ( region == 1 )  // palmiers ?
-		{
-			if ( icon ==  0 )  icon = 90;  // sol normal
-			if ( icon ==  1 )  icon = 91;  // sol inflammable
-			if ( icon ==  2 )  icon = 92;  // sol inculte
-			if ( icon ==  7 )  icon =  9;  // plante
-			if ( icon ==  8 )  icon = 10;  // arbre
-		}
-
-		if ( region == 2 )  // hiver ?
-		{
-			if ( icon ==  0 )  icon = 96;  // sol normal
-			if ( icon ==  1 )  icon = 97;  // sol inflammable
-			if ( icon ==  2 )  icon = 98;  // sol inculte
-			if ( icon ==  8 )  icon = 99;  // arbre
-		}
-
-		if ( region == 3 )  // sapin ?
-		{
-			if ( icon ==  0 )  icon = 102;  // sol normal
-			if ( icon ==  1 )  icon = 103;  // sol inflammable
-			if ( icon ==  2 )  icon = 104;  // sol inculte
-			if ( icon ==  8 )  icon = 105;  // arbre
-		}
-
-		m_iconMenu[i] = icon;
-	}
-
-	for ( i=0 ; i<nbToolTips ; i++ )
-	{
-		m_toolTips[i] = pToolTips[i];
-	}
-
-	return TRUE;
-/////////////////////////////////////////////////////
-*/
+		m_hWnd = hWnd;
+		m_pPixmap = pPixmap;
+		m_pSound = pSound;
+		m_type = type;
+		m_bMinimizeRedraw = bMinimizeRedraw;
+		m_bEnable = TRUE;
+		m_bHide = FALSE;
+		m_bSomething = FALSE;
+		m_message = message;
+		m_pos.x = pos.x;
+		m_pos.y = pos.y;
+		m_dim.x = iconDim.x;
+		m_dim.y = iconDim.y;
+		m_nbMenu = 0;
+		m_nbToolTips = 0;
+		m_selMenu = 0;
+		m_state = 0;
+		m_mouseState = 0;
+		m_bMouseDown = FALSE;
+		m_bRedraw = TRUE;
+		return TRUE;
 }
 
-// Space for unknown menu function.
-
-void CButton::SetSomethingMenu(int* icon, int somethingMenu)
+void CButton::SetIconMenu(int* icon, int iconMenu)
 {
-	int i = somethingMenu;
-	int* iconMenu;
-	int  menu;
+	int i = iconMenu;
+	int* iconMenu2;
 
-	if (somethingMenu > 0)
+	if (0 < iconMenu)
 	{
-		for (i = 0; i < somethingMenu; i++)
+		iconMenu2 = m_iconMenu;
+		for (i = 0; i < iconMenu; i++)
 		{
 			icon++;
-			m_iconMenu[i] = (int)icon;
+			m_iconMenu[i] = icon[i];
 		}
 	}
-	m_nbMenu = somethingMenu;
+	m_nbMenu = iconMenu;
 }
 
-void CButton::MenuToolTips(int* menu, int menuTooltips)
+void CButton::SetToolTips(int* menu, int menuTooltips)
 {
 	int toolTips;
 	int* menuTool;
 	int i;
 
-	if (menuTooltips > 0)
+	if (0 < menuTooltips)
 	{
 		menuTool = m_toolTips;
 		i = menuTooltips;
-		do
+		for (i = 0; i < menuTooltips; i++)
 		{
-			toolTips = *menu++;
-			*menuTool++ = toolTips;
-			--i;
-		} while (i);
+			menu++;
+			m_toolTips[i] = menu[i];
+		}
 	}
 	m_nbToolTips = menuTooltips;
 }

@@ -297,16 +297,17 @@ typedef struct
 {
 	short	majRev;
 	short	minRev;
-	short	reserve1[100];
+	BOOL	bDemo;
+	short	reserve1[98];
 	POINT   posDecor;
-	POINT   dimDecor;
-	short   world;
+	POINT	dimDecor;
+	short	world;
 	short	music;
 	short	region;
-	short	reserve2[51];
-	POINT	blupiPos[4];
-	int		blupiDir[4];
-	char	name[100];
+	short	reserve2[50];
+	POINT	blupiPos[100];
+	int		blupiDir[100];
+	char	libelle[100];
 	short	reserve3[196];
 }
 DescFile;
@@ -789,7 +790,7 @@ protected:
 	BOOL		m_blupiRestart;
     POINT       m_worldDims;
     POINT       m_selectedCelPos;
-    WMessage    m_phase;
+    int         m_phase;
 	int			m_voyagePhase;
 	POINT		m_sucettePos;
 	int			m_sucetteType;
