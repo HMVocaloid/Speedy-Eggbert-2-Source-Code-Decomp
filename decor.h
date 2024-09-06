@@ -631,6 +631,7 @@ public:
 	void	SetNetPacked(BOOL net);
 	void	SetNetMovePredict(BOOL netmove);
 	BOOL	GetNetDebug();
+	void	SetCelPosFromScreenPos(POINT cel);
 	void	SetMulti(int multi);
 	void	SetTeam(int team);
 	void	MoveObjectSort();
@@ -739,6 +740,7 @@ public:
 	void	SetGamerName(const char* playerName);
 	BOOL	SomethingMissionPath(int user, int mission, BOOL bUser);
 	void	MoveObjectPriority(int i);
+	void	FindAndSetMenus(int menuIndex, int menuType);
 
 
 

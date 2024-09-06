@@ -79,6 +79,9 @@
 #define TX_BUTTON_SETUP7				156
 #define TX_BUTTON_SETUP8				157
 #define TX_READINFO						167
+#define TX_PLAYERFREE					168
+#define TX_NUMDOOROPEN					169
+#define TX_NUMDOORSOPEN					170
 #define TX_WRITENAME					172
 #define TX_CONFIRM						174
 #define TX_CANCEL						175

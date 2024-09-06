@@ -8401,6 +8401,7 @@ int CDecor::SortGetType(int type)
 	return 3;
 }
 
+
 void CDecor::MoveObjectSort()
 {
 	int num = 0;
@@ -8454,6 +8455,7 @@ void CDecor::MoveObjectPriority(int i)
 
 	}
 }
+
 
 int CDecor::MoveObjectSearch(POINT pos)
 {
@@ -8949,6 +8951,27 @@ BOOL CDecor::SearchGold(int n, POINT cel)
     return FALSE;
 }
 
+void CDecor::FindAndSetMenus(int menuIndex, int menuType)
+{
+	m_dimCelHili.x = 1;
+	m_dimCelHili.y = 1;
+	if ((((menuIndex == 2) && (menuType != 3)) && (menuType != 9)) && (menuType != 10))
+	{
+		m_dimCelHili.x = 2;
+		m_dimCelHili.y = 2;
+	}
+	if (menuIndex == 3)
+	{
+		m_menuType = menuType;
+	}
+	if (menuIndex == 4)
+	{
+		m_menuType = menuType + 40;
+	}
+	m_2ndPositionCalculationSlot = -1;
+	return;
+}
+
 void CDecor::OpenDoorsTresor()
 {
     for (int i = 0; i < 100; i++)
@@ -9064,12 +9087,12 @@ void CDecor::GetMissionPath(char* str, int user, int mission, BOOL bUser)
 	return;
 }
 
-/*
+
 BOOL CDecor::CurrentRead(int gamer, int mission, BOOL bUser)
 {
 	char		filename[MAX_PATH];
 	FILE*		file = NULL;
-	int*		pBuffer = NULL;
+	DescFile*	pBuffer = NULL;
 	int			nb, i, num;
 	int*		num2;
 	POINT*		num3;
@@ -9080,13 +9103,38 @@ BOOL CDecor::CurrentRead(int gamer, int mission, BOOL bUser)
 
 	if (!file)
 	{
-		pBuffer = (int*)malloc(868);
+		pBuffer = (DescFile*)malloc(868);
 		if (pBuffer != NULL) if (file != NULL) fclose(file);
+		if (fread(pBuffer, 868, 1, file) >= 1)
+		{
+			m_posDecor.x = pBuffer->posDecor.x;
+			m_posDecor.y = pBuffer->posDecor.y;
+			m_dimDecor.x = pBuffer->dimDecor.x; 
+			m_dimDecor.y = pBuffer->dimDecor.y;
+			m_music = pBuffer->music;
+			m_region = pBuffer->region;
 
+			if ((0 < pBuffer->majRev) && (pBuffer->minRev > 2))
+			{
+				strcpy(m_missionTitle, pBuffer->libelle);
+			}
+			int* pos1 = pBuffer->blupiDir;
+			int* dir = m_blupiStartDir;
+			POINT* start = m_blupiStartPos;
+			for (i = 0; i < 4; i++)
+			{
+				m_blupiStartPos->x = pBuffer->blupiPos->x;
+				m_blupiStartPos->y = pBuffer->blupiPos->y;
+				dir = pos1;
+				start++;
+				pos1++;
+				dir++;
+			}
+		}
 	}
-
+	return FALSE;
 }
-*/
+
 
 /*
 BOOL CDecor::MissionStart(int gamer, int rank, BOOL bUser)

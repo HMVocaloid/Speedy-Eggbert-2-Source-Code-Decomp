@@ -28,6 +28,7 @@ typedef struct
 	UINT	phase;
 	char	backName[36];
 	BOOL	bCDrom;
+	BOOL	bUnk;
 	Button	buttons[MAXBUTTON];
 }
 Phase;
@@ -133,8 +134,8 @@ public:
 	int		GetState(int button);
 	void	SetState(int button, int state);
 	BOOL	GetEnable(int button);
-	void	SetEnable(WMessage button, int bEnable);
-	void	SetSomething(int button, int bSomething);
+	void	SetEnable(int button, int bEnable);
+	void	SetIconMenu(int button, int* icon, int iconMenu);
 	BOOL	GetHide(int button);
 	void	SetHide(int button, BOOL bHide);
 	int		GetMenu(int button);
@@ -184,7 +185,10 @@ public:
 
 	void	ReadAll();
 	BOOL	SaveState(int rank);
+	BOOL	LoadDecorRegion();
+	BOOL	CreateCelPosForMenu(UINT celX, UINT celY, WPARAM wParam);
 	void	SomethingUserMissions(char* lpFilename, LPCSTR fileSomething);
+
 
 	
 
@@ -205,7 +209,8 @@ protected:
 	void	BuildWater(POINT cel, int insIcon);
 	BOOL	BuildDown(POINT pos, int fwKeys, BOOL bMix=TRUE);
 	BOOL	BuildMove(POINT pos, int fwKeys);
-	BOOL	BuildUp(POINT pos, int fwKeys);
+	BOOL	BuildUp();
+	BOOL	PlaceMenu(int celX, int celY, int WPARAM, int* object);
 
 	void	PrivateLibelle();
 	BOOL	ReadLibelle(int world, BOOL bSchool, BOOL bHelp);
@@ -217,6 +222,7 @@ protected:
 	int		GetTryPhase();
 	BOOL	ReadPlayer(int gamer);
 	void	PutTextInputBox(POINT pos);
+	void	ChatLength();
 	
 
 	void	DemoRecStart();
@@ -262,6 +268,7 @@ protected:
 	BOOL 		m_bMulti;
     BOOL        m_bAccessBuild;
     BOOL        m_bFullScreen;
+	BOOL		m_bDrawMap;
     int         m_mouseType;
     HWND        m_hWnd;
     CPixmap*    m_pPixmap;

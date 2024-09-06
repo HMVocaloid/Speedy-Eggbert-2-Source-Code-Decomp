@@ -12,6 +12,7 @@ using namespace std;
 
 typedef enum
 {
+    SOUND_1_CLICK,
     SOUND_3_JUMPEND,
     SOUND_10_BOUM,
     SOUND_11_TRESOR,

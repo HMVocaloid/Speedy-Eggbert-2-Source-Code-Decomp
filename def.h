@@ -252,10 +252,13 @@
 #define WM_DECOR3				(WM_USER+22)
 #define WM_DECOR4				(WM_USER+23)
 #define WM_DECOR5				(WM_USER+24)
+#define WM_DECOR6				1049
+#define WM_DECOR7				1050
+#define WM_DECOR8				1051
+#define WM_DECOR9				1052
+#define WM_DECOR10				1053
 #define WM_DECOR11				1054
 
-
-#define WM_ACTION_GO			(WM_USER+30)
 #define WM_ACTION_ABAT1			(WM_USER+31)
 #define WM_ACTION_ABAT2			(WM_USER+32)
 #define WM_ACTION_ABAT3			(WM_USER+33)

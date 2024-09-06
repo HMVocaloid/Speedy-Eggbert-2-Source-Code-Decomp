@@ -1,2 +1,334 @@
-﻿  network.cpp
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\um\winnt.h(169,1): error C1189: #error:  "No Target Architecture"
+﻿  blupi.cpp
+  button.cpp
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\def.h(241,9): warning C4005: 'MAXMOVEOBJECT': macro redefinition
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\def.h(484,9): warning C4005: 'WM_PHASE_PRIVATE': macro redefinition
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\resource.h(107,9): warning C4005: 'TX_SHOWNEXT': macro redefinition
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.h(29,9): warning C4005: 'MAXMOVEOBJECT': macro redefinition
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.h(90,1): warning C4091: 'typedef ': ignored on left of '<unnamed-enum-KEY_NONE>' when no variable is declared
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\blupi.cpp(108,15): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\blupi.cpp(249,25): warning C4101: 'targetlevel': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\blupi.cpp(245,24): warning C4101: 'rcRect': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\blupi.cpp(245,18): warning C4101: 'clip': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\blupi.cpp(249,9): warning C4101: 'i': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\blupi.cpp(248,10): warning C4101: 'posMouse': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\blupi.cpp(353,8): warning C4101: 'test': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\blupi.cpp(352,8): warning C4101: 'posMouse': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\blupi.cpp(553,18): warning C4477: 'sprintf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'WPARAM'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\blupi.cpp(594,3): warning C4311: 'type cast': pointer truncation from 'HWND' to 'DWORD'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\blupi.cpp(594,3): warning C4302: 'type cast': truncation from 'HWND' to 'DWORD'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\blupi.cpp(642,18): warning C4477: 'sprintf' : format string '%d' requires an argument of type 'int', but variadic argument 2 has type 'SIZE_T'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\blupi.cpp(619,11): warning C4101: 'dest': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\blupi.cpp(617,13): warning C4101: 'i': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\blupi.cpp(618,10): warning C4101: 'rect': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\blupi.cpp(655,11): warning C4101: 'rcRect': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\blupi.cpp(827,18): error C2664: 'MMRESULT timeSetEvent(UINT,UINT,LPTIMECALLBACK,DWORD_PTR,UINT)': cannot convert argument 3 from 'void (__cdecl *)(UINT,UINT,DWORD,DWORD,DWORD)' to 'LPTIMECALLBACK'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\blupi.cpp(849,15): warning C4244: 'return': conversion from 'WPARAM' to 'int', possible loss of data
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\blupi.cpp(860,12): warning C4244: 'return': conversion from 'WPARAM' to 'int', possible loss of data
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\def.h(241,9): warning C4005: 'MAXMOVEOBJECT': macro redefinition
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\def.h(484,9): warning C4005: 'WM_PHASE_PRIVATE': macro redefinition
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\pixmap.h(12,9): warning C4005: 'DIRECTDRAW_VERSION': macro redefinition
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.h(29,9): warning C4005: 'MAXMOVEOBJECT': macro redefinition
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\button.cpp(52,12): warning C4101: 'icon': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\button.cpp(52,9): warning C4101: 'i': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\button.cpp(107,6): warning C4101: 'toolTips': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\button.cpp(130,8): warning C4101: 'rect': unreferenced local variable
+  ddutil.cpp
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\ddutil.h(10,9): warning C4005: 'DIRECTDRAW_VERSION': macro redefinition
+  decor.cpp
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\def.h(241,9): warning C4005: 'MAXMOVEOBJECT': macro redefinition
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\def.h(484,9): warning C4005: 'WM_PHASE_PRIVATE': macro redefinition
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\resource.h(107,9): warning C4005: 'TX_SHOWNEXT': macro redefinition
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\pixmap.h(12,9): warning C4005: 'DIRECTDRAW_VERSION': macro redefinition
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.h(29,9): warning C4005: 'MAXMOVEOBJECT': macro redefinition
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.h(90,1): warning C4091: 'typedef ': ignored on left of '<unnamed-enum-KEY_NONE>' when no variable is declared
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(25,9): warning C4005: 'DIRECTDRAW_VERSION': macro redefinition
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(119,8): warning C4101: 'door': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(118,8): warning C4101: 'i': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(129,9): warning C4101: 'i': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(264,14): warning C4311: 'type cast': pointer truncation from 'int *' to 'int'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(264,14): warning C4302: 'type cast': truncation from 'int *' to 'int'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(264,7): warning C4312: 'type cast': conversion from 'int' to 'int *' of greater size
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(266,27): warning C4311: 'type cast': pointer truncation from 'LONG *' to 'int'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(266,27): warning C4302: 'type cast': truncation from 'LONG *' to 'int'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(266,19): warning C4312: 'type cast': conversion from 'int' to 'LONG *' of greater size
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(267,27): warning C4311: 'type cast': pointer truncation from 'LONG *' to 'int'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(267,27): warning C4302: 'type cast': truncation from 'LONG *' to 'int'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(267,19): warning C4312: 'type cast': conversion from 'int' to 'LONG *' of greater size
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(268,24): warning C4311: 'type cast': pointer truncation from 'LONG *' to 'int'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(268,24): warning C4302: 'type cast': truncation from 'LONG *' to 'int'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(268,17): warning C4312: 'type cast': conversion from 'int' to 'int *' of greater size
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(273,24): warning C4311: 'type cast': pointer truncation from 'int *' to 'int'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(273,24): warning C4302: 'type cast': truncation from 'int *' to 'int'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(273,17): warning C4312: 'type cast': conversion from 'int' to 'int *' of greater size
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(274,27): warning C4311: 'type cast': pointer truncation from 'LONG *' to 'int'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(274,27): warning C4302: 'type cast': truncation from 'LONG *' to 'int'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(274,19): warning C4312: 'type cast': conversion from 'int' to 'LONG *' of greater size
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(275,27): warning C4311: 'type cast': pointer truncation from 'LONG *' to 'int'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(275,27): warning C4302: 'type cast': truncation from 'LONG *' to 'int'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(275,19): warning C4312: 'type cast': conversion from 'int' to 'LONG *' of greater size
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(276,24): warning C4311: 'type cast': pointer truncation from 'int *' to 'int'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(276,24): warning C4302: 'type cast': truncation from 'int *' to 'int'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(276,55): warning C4311: 'type cast': pointer truncation from 'int *' to 'int'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(276,55): warning C4302: 'type cast': truncation from 'int *' to 'int'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(276,48): warning C4312: 'type cast': conversion from 'int' to 'int *' of greater size
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(276,17): warning C4312: 'type cast': conversion from 'int' to 'int *' of greater size
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(519,16): warning C4312: 'type cast': conversion from 'LONG' to 'int *' of greater size
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(540,16): warning C4554: '&': check operator precedence for possible error; use parentheses to clarify precedence
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(549,25): warning C4311: 'type cast': pointer truncation from 'int *' to 'int'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(549,25): warning C4302: 'type cast': truncation from 'int *' to 'int'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(565,10): warning C4101: 'text': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(898,30): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(1051,18): warning C4553: '==': result of expression not used; did you intend '='?
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(1082,15): warning C4311: 'type cast': pointer truncation from 'int *' to 'int'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(1082,15): warning C4302: 'type cast': truncation from 'int *' to 'int'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(1082,8): warning C4312: 'type cast': conversion from 'int' to 'int *' of greater size
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(1083,22): warning C4311: 'type cast': pointer truncation from 'int *' to 'int'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(1083,22): warning C4302: 'type cast': truncation from 'int *' to 'int'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(1083,15): warning C4312: 'type cast': conversion from 'int' to 'int *' of greater size
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(1182,66): warning C4311: 'type cast': pointer truncation from 'int *' to 'int'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(1182,66): warning C4302: 'type cast': truncation from 'int *' to 'int'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(1182,58): warning C4312: 'type cast': conversion from 'int' to 'char *' of greater size
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(1286,39): warning C4553: '==': result of expression not used; did you intend '='?
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(1539,9): warning C4553: '==': result of expression not used; did you intend '='?
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(6540,8): warning C4101: 'type2': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(6573,94): warning C4244: '=': conversion from 'LONG' to 'short', possible loss of data
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(6596,6): warning C4101: 'players': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(6617,19): warning C4312: 'type cast': conversion from 'int' to 'const char *' of greater size
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(6617,43): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(6618,9): warning C4311: 'type cast': pointer truncation from 'char (*)[100]' to 'int'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(6618,9): warning C4302: 'type cast': truncation from 'char (*)[100]' to 'int'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(6619,10): warning C4312: 'type cast': conversion from 'int' to 'const void *' of greater size
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(6711,7): warning C4101: 'rect2': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(6710,10): warning C4101: 'rect1': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(6712,7): warning C4101: 'rect3': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(6724,8): warning C4312: 'type cast': conversion from 'LONG' to 'LONG *' of greater size
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(6728,26): warning C4309: '=': truncation of constant value
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(6729,26): warning C4309: '=': truncation of constant value
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(6742,25): warning C4309: '=': truncation of constant value
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(6743,25): warning C4309: '=': truncation of constant value
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(6823,13): warning C4101: 'moveObject': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(7199,33): warning C4311: 'type cast': pointer truncation from 'int *' to 'int'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(7199,33): warning C4302: 'type cast': truncation from 'int *' to 'int'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(8145,9): warning C4101: 'tinyRect': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(8200,7): warning C4101: 'tinyRect': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(8222,9): warning C4101: 'tinyRect': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(8258,9): warning C4101: 'src3': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(8288,9): warning C4101: 'tinyRect': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(8316,9): warning C4101: 'tinyRect': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(8344,9): warning C4101: 'tinyRect': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(8825,9): warning C4553: '==': result of expression not used; did you intend '='?
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(9079,16): warning C4129: '%': unrecognized character escape sequence
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(9083,15): warning C4129: 'w': unrecognized character escape sequence
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(9095,8): warning C4101: 'num2': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(9096,10): warning C4101: 'num3': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(9094,15): warning C4101: 'num': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(9094,8): warning C4101: 'nb': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(9200,9): warning C4312: 'type cast': conversion from 'int' to 'int *' of greater size
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(9201,9): warning C4312: 'type cast': conversion from 'int' to 'int *' of greater size
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(9259,8): warning C4311: 'type cast': pointer truncation from 'int *' to 'int'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(9259,8): warning C4302: 'type cast': truncation from 'int *' to 'int'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(9262,16): warning C4311: 'type cast': pointer truncation from 'CJauge *' to 'int'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(9262,16): warning C4302: 'type cast': truncation from 'CJauge *' to 'int'
+  event.cpp
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\def.h(241,9): warning C4005: 'MAXMOVEOBJECT': macro redefinition
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\def.h(484,9): warning C4005: 'WM_PHASE_PRIVATE': macro redefinition
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\resource.h(107,9): warning C4005: 'TX_SHOWNEXT': macro redefinition
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\pixmap.h(12,9): warning C4005: 'DIRECTDRAW_VERSION': macro redefinition
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.h(29,9): warning C4005: 'MAXMOVEOBJECT': macro redefinition
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.h(90,1): warning C4091: 'typedef ': ignored on left of '<unnamed-enum-KEY_NONE>' when no variable is declared
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(1240,7): warning C4101: 'menuIndex': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(1319,13): warning C4101: 'pos': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(1468,13): warning C4101: 'i': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(1561,10): warning C4552: '!=': result of expression not used
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(1684,15): warning C4312: 'type cast': conversion from 'DPID' to 'BYTE *' of greater size
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(1719,83): warning C4311: 'type cast': pointer truncation from 'int *' to 'DPID'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(1719,83): warning C4302: 'type cast': truncation from 'int *' to 'DPID'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(1787,22): warning C4267: '=': conversion from 'size_t' to 'LONG', possible loss of data
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(1766,9): warning C4101: 'data': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(1839,48): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(1855,12): warning C4312: 'type cast': conversion from 'BOOL' to 'FILE *' of greater size
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(1862,14): warning C4312: 'type cast': conversion from 'int' to 'FILE *' of greater size
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(1853,8): warning C4101: 'element': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(1851,8): warning C4101: 'stream': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(1875,15): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(1905,14): warning C4554: '&': check operator precedence for possible error; use parentheses to clarify precedence
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(2012,40): warning C4311: 'type cast': pointer truncation from 'char (*)[256]' to 'int'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(2012,40): warning C4302: 'type cast': truncation from 'char (*)[256]' to 'int'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(1923,8): warning C4101: 'textLeft': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(1919,57): warning C4101: 'icon': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(1919,17): warning C4101: 'world': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(1917,17): warning C4101: 'levels': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(1929,11): warning C4101: 'phase': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(1919,42): warning C4101: 'volume': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(1919,24): warning C4101: 'time': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(1918,17): warning C4101: 'types': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(1928,17): warning C4101: 'bEnable': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(1919,50): warning C4101: 'pente': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(1919,34): warning C4101: 'button': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(2398,11): warning C4244: '=': conversion from 'WPARAM' to 'int', possible loss of data
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(2553,12): warning C4552: '|': result of expression not used
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(2555,12): warning C4552: '|': result of expression not used
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(2558,12): warning C4552: '|': result of expression not used
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(2561,12): warning C4552: '|': result of expression not used
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(2564,12): warning C4552: '|': result of expression not used
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(2580,12): warning C4552: '|': result of expression not used
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(2626,61): warning C4244: 'argument': conversion from 'WPARAM' to 'int', possible loss of data
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(2748,45): warning C4806: '&': unsafe operation: no value of type 'bool' promoted to type 'int' can equal the given constant
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(2748,48): warning C4552: '+': result of expression not used
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(2392,10): warning C4101: 'sound': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(2831,13): warning C4311: 'type cast': pointer truncation from 'CEvent *' to 'int'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(2831,13): warning C4302: 'type cast': truncation from 'CEvent *' to 'int'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(2925,21): warning C4101: 'sound': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3050,8): warning C4101: 'pTerm': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3046,29): warning C4101: 'max': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3046,14): warning C4101: 'state': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3046,21): warning C4101: 'volume': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3048,8): warning C4101: 'pButtonExist': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3046,6): warning C4101: 'button': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3150,37): warning C4311: 'type cast': pointer truncation from 'char (*)[256]' to 'int'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3150,37): warning C4302: 'type cast': truncation from 'char (*)[256]' to 'int'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3150,30): warning C4312: 'type cast': conversion from 'int' to 'int *' of greater size
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3146,7): warning C4101: 'bUser': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3171,7): warning C4101: 'bUser': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3214,8): warning C4101: 'pTerm': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3209,15): warning C4101: 'music': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3218,8): warning C4101: 'res': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3210,18): warning C4101: 'iconDim': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3210,8): warning C4101: 'totalDim': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3211,8): warning C4101: 'filename': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3216,8): warning C4101: 'doors': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3212,8): warning C4101: 'pButtonExist': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3209,25): warning C4101: 'j': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3209,22): warning C4101: 'i': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3213,8): warning C4101: 'bEnable': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3217,8): warning C4101: 'text': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3213,17): warning C4101: 'bHide': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3209,28): warning C4101: 'nb': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3446,23): warning C4101: 'icon': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3446,14): warning C4101: 'channel': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3445,8): warning C4101: 'cel': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3577,8): warning C4101: 'pDest': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3578,8): warning C4101: 'indic': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3576,8): warning C4101: 'pText': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3579,12): warning C4101: 'h1': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3579,16): warning C4101: 'h2': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3579,8): warning C4101: 'nb': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3703,12): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3713,19): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3688,12): warning C4101: 'world': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3688,25): warning C4101: 'total': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3688,32): warning C4101: 'mission': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3688,19): warning C4101: 'time': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3854,13): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3826,8): warning C4101: 'doors': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3890,12): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+  jauge.cpp
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\def.h(241,9): warning C4005: 'MAXMOVEOBJECT': macro redefinition
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\def.h(484,9): warning C4005: 'WM_PHASE_PRIVATE': macro redefinition
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\pixmap.h(12,9): warning C4005: 'DIRECTDRAW_VERSION': macro redefinition
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.h(29,9): warning C4005: 'MAXMOVEOBJECT': macro redefinition
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\jauge.cpp(78,26): warning C4293: '<<': shift count negative or too big, undefined behavior
+  menu.cpp
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\def.h(241,9): warning C4005: 'MAXMOVEOBJECT': macro redefinition
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\def.h(484,9): warning C4005: 'WM_PHASE_PRIVATE': macro redefinition
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\resource.h(107,9): warning C4005: 'TX_SHOWNEXT': macro redefinition
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\pixmap.h(12,9): warning C4005: 'DIRECTDRAW_VERSION': macro redefinition
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.h(29,9): warning C4005: 'MAXMOVEOBJECT': macro redefinition
+  misc.cpp
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\def.h(241,9): warning C4005: 'MAXMOVEOBJECT': macro redefinition
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\def.h(484,9): warning C4005: 'WM_PHASE_PRIVATE': macro redefinition
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\misc.cpp(115,13): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\misc.cpp(160,13): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\misc.cpp(212,39): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+  movie.cpp
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\def.h(241,9): warning C4005: 'MAXMOVEOBJECT': macro redefinition
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\def.h(484,9): warning C4005: 'WM_PHASE_PRIVATE': macro redefinition
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\movie.cpp(50,28): warning C4311: 'type cast': pointer truncation from 'LPMCI_DGV_OPEN_PARMS' to 'DWORD'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\movie.cpp(50,28): warning C4302: 'type cast': truncation from 'LPMCI_DGV_OPEN_PARMS' to 'DWORD'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\movie.cpp(64,20): warning C4311: 'type cast': pointer truncation from 'LPMCI_GENERIC_PARMS' to 'DWORD'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\movie.cpp(64,20): warning C4302: 'type cast': truncation from 'LPMCI_GENERIC_PARMS' to 'DWORD'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\movie.cpp(87,8): warning C4311: 'type cast': pointer truncation from 'LPMCI_GENERIC_PARMS' to 'DWORD'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\movie.cpp(87,8): warning C4302: 'type cast': truncation from 'LPMCI_GENERIC_PARMS' to 'DWORD'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\movie.cpp(137,5): warning C4311: 'type cast': pointer truncation from 'LPMCI_DGV_OPEN_PARMS' to 'DWORD'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\movie.cpp(137,5): warning C4302: 'type cast': truncation from 'LPMCI_DGV_OPEN_PARMS' to 'DWORD'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\movie.cpp(156,9): warning C4311: 'type cast': pointer truncation from 'LPMCI_STATUS_PARMS' to 'DWORD'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\movie.cpp(156,9): warning C4302: 'type cast': truncation from 'LPMCI_STATUS_PARMS' to 'DWORD'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\movie.cpp(202,18): warning C4311: 'type cast': pointer truncation from 'LPMCI_DGV_PLAY_PARMS' to 'DWORD'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\movie.cpp(202,18): warning C4302: 'type cast': truncation from 'LPMCI_DGV_PLAY_PARMS' to 'DWORD'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\movie.cpp(210,23): warning C4311: 'type cast': pointer truncation from 'LPMCI_DGV_PAUSE_PARMS' to 'DWORD'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\movie.cpp(210,23): warning C4302: 'type cast': truncation from 'LPMCI_DGV_PAUSE_PARMS' to 'DWORD'
+  network.cpp
+  pixmap.cpp
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\def.h(241,9): warning C4005: 'MAXMOVEOBJECT': macro redefinition
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\def.h(484,9): warning C4005: 'WM_PHASE_PRIVATE': macro redefinition
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\pixmap.h(12,9): warning C4005: 'DIRECTDRAW_VERSION': macro redefinition
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\resource.h(107,9): warning C4005: 'TX_SHOWNEXT': macro redefinition
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.h(29,9): warning C4005: 'MAXMOVEOBJECT': macro redefinition
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.h(90,1): warning C4091: 'typedef ': ignored on left of '<unnamed-enum-KEY_NONE>' when no variable is declared
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\blupi.cpp(108,15): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\blupi.cpp(249,25): warning C4101: 'targetlevel': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\blupi.cpp(245,24): warning C4101: 'rcRect': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\blupi.cpp(245,18): warning C4101: 'clip': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\blupi.cpp(249,9): warning C4101: 'i': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\blupi.cpp(248,10): warning C4101: 'posMouse': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\blupi.cpp(353,8): warning C4101: 'test': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\blupi.cpp(352,8): warning C4101: 'posMouse': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\blupi.cpp(553,18): warning C4477: 'sprintf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type 'WPARAM'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\blupi.cpp(594,3): warning C4311: 'type cast': pointer truncation from 'HWND' to 'DWORD'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\blupi.cpp(594,3): warning C4302: 'type cast': truncation from 'HWND' to 'DWORD'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\blupi.cpp(642,18): warning C4477: 'sprintf' : format string '%d' requires an argument of type 'int', but variadic argument 2 has type 'SIZE_T'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\blupi.cpp(619,11): warning C4101: 'dest': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\blupi.cpp(617,13): warning C4101: 'i': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\blupi.cpp(618,10): warning C4101: 'rect': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\blupi.cpp(655,11): warning C4101: 'rcRect': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\blupi.cpp(827,18): error C2664: 'MMRESULT timeSetEvent(UINT,UINT,LPTIMECALLBACK,DWORD_PTR,UINT)': cannot convert argument 3 from 'void (__cdecl *)(UINT,UINT,DWORD,DWORD,DWORD)' to 'LPTIMECALLBACK'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\blupi.cpp(849,15): warning C4244: 'return': conversion from 'WPARAM' to 'int', possible loss of data
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\blupi.cpp(860,12): warning C4244: 'return': conversion from 'WPARAM' to 'int', possible loss of data
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\pixmap.cpp(380,7): warning C4311: 'type cast': pointer truncation from 'int *' to 'int'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\pixmap.cpp(380,7): warning C4302: 'type cast': truncation from 'int *' to 'int'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\pixmap.cpp(1318,7): warning C4311: 'type cast': pointer truncation from 'int *' to 'int'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\pixmap.cpp(1318,7): warning C4302: 'type cast': truncation from 'int *' to 'int'
+  sound.cpp
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\def.h(241,9): warning C4005: 'MAXMOVEOBJECT': macro redefinition
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\def.h(484,9): warning C4005: 'WM_PHASE_PRIVATE': macro redefinition
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\resource.h(107,9): warning C4005: 'TX_SHOWNEXT': macro redefinition
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\sound.cpp(69,5): warning C4002: too many arguments for function-like macro invocation 'TRY_DS'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\sound.cpp(259,3): warning C4838: conversion from 'unsigned int' to 'int' requires a narrowing conversion
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\sound.cpp(260,3): warning C4838: conversion from 'unsigned int' to 'int' requires a narrowing conversion
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\sound.cpp(261,3): warning C4838: conversion from 'unsigned int' to 'int' requires a narrowing conversion
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\sound.cpp(262,3): warning C4838: conversion from 'unsigned int' to 'int' requires a narrowing conversion
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\sound.cpp(263,3): warning C4838: conversion from 'unsigned int' to 'int' requires a narrowing conversion
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\sound.cpp(264,3): warning C4838: conversion from 'unsigned int' to 'int' requires a narrowing conversion
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\sound.cpp(265,3): warning C4838: conversion from 'unsigned int' to 'int' requires a narrowing conversion
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\sound.cpp(266,3): warning C4838: conversion from 'unsigned int' to 'int' requires a narrowing conversion
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\sound.cpp(267,3): warning C4838: conversion from 'unsigned int' to 'int' requires a narrowing conversion
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\sound.cpp(268,3): warning C4838: conversion from 'unsigned int' to 'int' requires a narrowing conversion
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\sound.cpp(269,3): warning C4838: conversion from 'unsigned int' to 'int' requires a narrowing conversion
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\sound.cpp(270,3): warning C4838: conversion from 'unsigned int' to 'int' requires a narrowing conversion
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\sound.cpp(271,3): warning C4838: conversion from 'unsigned int' to 'int' requires a narrowing conversion
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\sound.cpp(493,11): warning C4311: 'type cast': pointer truncation from 'LPDIRECTSOUNDBUFFER' to 'BOOL'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\sound.cpp(493,11): warning C4302: 'type cast': truncation from 'LPDIRECTSOUNDBUFFER' to 'BOOL'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\sound.cpp(588,10): warning C4311: 'type cast': pointer truncation from 'LPVOID' to 'DWORD'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\sound.cpp(588,10): warning C4302: 'type cast': truncation from 'LPVOID' to 'DWORD'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\sound.cpp(602,28): warning C4311: 'type cast': pointer truncation from 'HWND' to 'DWORD'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\sound.cpp(602,28): warning C4302: 'type cast': truncation from 'HWND' to 'DWORD'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\sound.cpp(606,10): warning C4311: 'type cast': pointer truncation from 'LPVOID' to 'DWORD'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\sound.cpp(606,10): warning C4302: 'type cast': truncation from 'LPVOID' to 'DWORD'
+  text.cpp
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\def.h(241,9): warning C4005: 'MAXMOVEOBJECT': macro redefinition
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\def.h(484,9): warning C4005: 'WM_PHASE_PRIVATE': macro redefinition
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\pixmap.h(12,9): warning C4005: 'DIRECTDRAW_VERSION': macro redefinition
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\text.cpp(120,6): warning C4101: 'width': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\text.cpp(119,8): warning C4101: 'pos1': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\text.cpp(131,34): warning C4311: 'type cast': pointer truncation from 'char *' to 'int'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\text.cpp(131,34): warning C4302: 'type cast': truncation from 'char *' to 'int'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\text.cpp(134,31): warning C4311: 'type cast': pointer truncation from 'char *' to 'int'
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\text.cpp(134,31): warning C4302: 'type cast': truncation from 'char *' to 'int'
+  Generating Code...
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(1912,1): warning C4715: 'CEvent::PlaceMenu': not all control paths return a value
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3461,1): warning C4715: 'CEvent::BuildDown': not all control paths return a value
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(865,1): error C4700: uninitialized local variable 'thing' used
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(5315,1): warning C4715: 'CDecor::BlupiIsGround': not all control paths return a value
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(7888,1): error C4700: uninitialized local variable 'tinyPoint' used
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(8266,1): warning C4715: 'CDecor::MoveObjectDetect': not all control paths return a value
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(8411,1): error C4700: uninitialized local variable 'moveObject' used

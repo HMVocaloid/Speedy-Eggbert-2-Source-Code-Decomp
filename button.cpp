@@ -357,6 +357,7 @@ BOOL CButton::MouseDown(POINT pos)
 	m_bRedraw	 = TRUE;
 	PostMessage(m_hWnd, WM_UPDATE, 0, 0);
 
+	m_pSound->PlayImage(SOUND_1_CLICK, pos);
 	return TRUE;
 }
 

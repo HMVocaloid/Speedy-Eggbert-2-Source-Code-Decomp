@@ -104,6 +104,7 @@ static Phase table[] =
 		WM_PHASE_TESTCD,
 		"init.blp",
 		FALSE,
+		FALSE,
 		{
 			{
 				0
@@ -114,6 +115,7 @@ static Phase table[] =
 	{
 		WM_PHASE_INIT,
 		"init.blp",
+		FALSE,
 		FALSE,
 		{
 			{
@@ -144,6 +146,7 @@ static Phase table[] =
 	{
 		WM_PHASE_GAMER,
 		"gamer.blp",
+		FALSE,
 		FALSE,
 		{
 			{
@@ -252,6 +255,7 @@ static Phase table[] =
 		WM_PHASE_NAMEg,
 		"name.blp",
 		FALSE,
+		FALSE,
 		{
 			{
 				WM_PHASE_CONFIRM,
@@ -275,6 +279,7 @@ static Phase table[] =
 		WM_PHASE_CLEARg,
 		"clear.blp",
 		FALSE,
+		FALSE,
 		{
 			{
 				WM_PHASE_YES,
@@ -297,6 +302,7 @@ static Phase table[] =
 	{
 		WM_PHASE_SERVICE,
 		"service.blp",
+		FALSE,
 		FALSE,
 		{
 			{
@@ -368,6 +374,7 @@ static Phase table[] =
 	{
 		WM_PHASE_SESSION,
 		"session.blp",
+		FALSE,
 		FALSE,
 		{
 			{
@@ -452,6 +459,7 @@ static Phase table[] =
 		WM_PHASE_SETUPp,
 		"setup.blp",
 		FALSE,
+		FALSE,
 		{
 			{
 				WM_BUTTON1,
@@ -518,6 +526,7 @@ static Phase table[] =
 	{
 		WM_PHASE_READ,
 		"read.blp",
+		FALSE,
 		FALSE,
 		{
 			{
@@ -596,6 +605,7 @@ static Phase table[] =
 		WM_PHASE_WRITE,
 		"write.blp",
 		FALSE,
+		FALSE,
 		{
 			{
 				WM_WRITE0,
@@ -672,6 +682,7 @@ static Phase table[] =
 	{
 		WM_PHASE_WRITEp,
 		"write.blp",
+		FALSE,
 		FALSE,
 		{
 			{
@@ -750,6 +761,7 @@ static Phase table[] =
 		WM_PHASE_LOST,
 		"lost.blp",
 		TRUE,
+		TRUE,
 		{
 			{
 				WM_PHASE_INFO,
@@ -765,7 +777,8 @@ static Phase table[] =
 
 	{
 		WM_PHASE_WIN,
-		"image16\\win.blp",
+		"win.blp",
+		TRUE,
 		TRUE,
 		{
 			{
@@ -782,7 +795,8 @@ static Phase table[] =
 
 	{
 		WM_PHASE_LASTWIN,
-		"image\\last%.3d.blp",
+		"last%.3d.blp",
+		TRUE,
 		TRUE,
 		{
 			{
@@ -799,7 +813,8 @@ static Phase table[] =
 	
 	{
 		WM_PHASE_BUILD,
-		"image\\build.blp",
+		"build.blp",
+		TRUE,
 		TRUE,
 		{
 			{
@@ -861,6 +876,7 @@ static Phase table[] =
 	{
 		WM_PHASE_BUTTON,
 		"button00.blp",
+		TRUE,
 		TRUE,
 		{
 			{
@@ -1087,7 +1103,8 @@ static Phase table[] =
 
 	{
 		WM_PHASE_TERM,
-		"image\\term.blp",
+		"term.blp",
+		TRUE,
 		TRUE,
 		{
 			{
@@ -1104,7 +1121,8 @@ static Phase table[] =
 
 	{
 		WM_PHASE_MUSIC,
-		"image16\\music.blp",
+		"music.blp",
+		TRUE,
 		TRUE,
 		{
 			
@@ -1122,7 +1140,8 @@ static Phase table[] =
 
 	{
 		WM_PHASE_REGION,
-		"image16\\region.blp",
+		"region.blp",
+		TRUE,
 		TRUE,
 		{
 			
@@ -1140,7 +1159,8 @@ static Phase table[] =
 
 	{
 		WM_PHASE_PLAYMOVIE,
-		"image\\movie.blp",
+		"movie.blp",
+		FALSE,
 		FALSE,
 		{
 			{
@@ -1151,7 +1171,8 @@ static Phase table[] =
 
 	{
 		WM_PHASE_WINMOVIE,
-		"image\\movie.blp",
+		"movie.blp",
+		FALSE,
 		FALSE,
 		{
 			{
@@ -1164,6 +1185,7 @@ static Phase table[] =
 		WM_PHASE_H0MOVIE,
 		"image\\movie.blp",
 		FALSE,
+		FALSE,
 		{
 			{
 				0
@@ -1174,6 +1196,7 @@ static Phase table[] =
 	{
 		WM_PHASE_H1MOVIE,
 		"image\\movie.blp",
+		FALSE,
 		FALSE,
 		{
 			{
@@ -1186,6 +1209,7 @@ static Phase table[] =
 		WM_PHASE_H2MOVIE,
 		"image\\movie.blp",
 		FALSE,
+		FALSE,
 		{
 			{
 				0
@@ -1197,6 +1221,7 @@ static Phase table[] =
 		WM_PHASE_BYE,
 		"image16\\bye.blp",
 		FALSE,
+		FALSE,
 		{
 			{
 				0
@@ -1207,6 +1232,7 @@ static Phase table[] =
 	{
 		WM_PHASE_INSERT,
 		"insert.blp",
+		FALSE,
 		FALSE,
 		{
 //?			{
@@ -1409,7 +1435,7 @@ BOOL CEvent::GetEnable(int button)
     return FALSE;
 }
 
-void CEvent::SetEnable(WMessage button, int bEnable)
+void CEvent::SetEnable(int button, int bEnable)
 {
     int      index;
 
@@ -1417,6 +1443,16 @@ void CEvent::SetEnable(WMessage button, int bEnable)
     if ( index < 0 ) return;
 
     m_buttons[index].SetEnable(bEnable);
+}
+
+void CEvent::SetIconMenu(int button, int* icon, int iconMenu)
+{
+	int index;
+
+	index = GetButtonIndex(button);
+	if (index < 0) return;
+		m_buttons[index].SetIconMenu(icon, iconMenu);
+	
 }
 
 /*
@@ -1798,7 +1834,7 @@ void CEvent::ChatMessageSound(char* data)
 {
 	int num;
 	int i = 0;
-	char (*chatZone);
+	char* chatZone;
 	char(*chat)[5];
 	POINT pos;
 
@@ -1892,6 +1928,25 @@ void CEvent::DrawTextCenter(int res, int x, int y, int font)
     ::DrawTextCenter(m_pPixmap, pos, text, font);
 }
 
+BOOL CEvent::PlaceMenu(int celX, int celY, int wParam, int* object)
+{
+	POINT cel;
+	POINT pos;
+
+	cel.x = celX;
+	cel.y = celY;
+
+	if ((((-1 < celX) && (celX < 641)) && (-1 < celY)) && (celY < 481))
+	{
+		if (wParam & 2U != 0)
+		{
+			pos = m_pDecor->ScreenPosToCelPos((POINT*)&celX, cel);
+			m_pDecor->DeleteCel(pos.x, (pos.y));
+			return TRUE;
+		}
+	}
+}
+
 BOOL CEvent::DrawButtons()
 {
     int         i;
@@ -1959,7 +2014,7 @@ BOOL CEvent::DrawButtons()
 
 	if (m_phase == WM_PHASE_INIT)
 	{
-		pos.x = 158;
+		pos.x = 508;
 		pos.y = 446;
 		DrawTextB(m_pPixmap, pos, (char*)"Version 2.0", FONTLITTLE);
 	}
@@ -1990,7 +2045,7 @@ BOOL CEvent::DrawButtons()
 			*(char*)pText += 100;
 			lg++;
 		} while (lg != 0);
-		SetEnable((WMessage)WM_PHASE_CLEARg, (int)(m_filenameBuffer + -1) + m_gamer * 4 + 212);
+		SetEnable(WM_PHASE_CLEARg, (int)(m_filenameBuffer + -1) + m_gamer * 4 + 212);
 	}
 
 	if (m_phase == WM_PHASE_PLAY && m_phase == WM_PHASE_PLAYTEST && m_phase == WM_PHASE_BUILD)
@@ -2324,6 +2379,22 @@ BOOL CEvent::TextSomething()
 }
 */
 
+BOOL CEvent::LoadDecorRegion()
+{
+	int index;
+	char buffer[100];
+
+	index = m_index;
+
+	strcpy(buffer, table[index].backName);
+
+	if (buffer[0] && table[index].bCDrom != FALSE)
+	{
+		AddCDPath(buffer);
+	}
+	return m_pPixmap->CacheAll(FALSE, m_hWnd, TRUE, TRUE, TRUE, 1, buffer, m_pDecor->GetRegion());
+}
+
 POINT CEvent::GetLastMousePos()
 {
 	return m_oldMousePos;
@@ -2355,11 +2426,14 @@ BOOL CEvent::TreatEventBase(UINT message, WPARAM wParam, LPARAM lParam)
 	POINT	pos;
 	int		fwKeys;
 	int		i, sound;
+	int		celX, celY;
 	char	c;
 	BOOL	bEnable;
 
 	pos = ConvLongToPos(lParam);
 	fwKeys = wParam;
+	celX = pos.x;
+	celY = pos.y;
 
 	switch (message)
 	{
@@ -2383,12 +2457,16 @@ BOOL CEvent::TreatEventBase(UINT message, WPARAM wParam, LPARAM lParam)
 			{
 				c = cheat_code[m_rankCheat][m_posCheat];
 				if (m_posCheat != 0 && m_rankCheat == 0) c++;
+				bEnable = TRUE;
 				if ((char)wParam == c)
 				{
 					m_posCheat++;
-
-				}
-			}
+					if (m_rankCheat == 0)
+					{
+						m_bAccessBuild = !m_bAccessBuild;
+						bEnable = m_bAccessBuild;
+						m_pDecor->SetAccessBuild(bEnable);
+						bEnable = m_bAccessBuild;
 
 			if (m_phase != WM_PHASE_PLAY)
 			{
@@ -2408,8 +2486,13 @@ BOOL CEvent::TreatEventBase(UINT message, WPARAM wParam, LPARAM lParam)
 			}
 			m_rankCheat = -1;
 			m_posCheat = 1;
+					}
+					return TRUE;
+				}
+			}
 		}
-		return TRUE;
+		m_rankCheat = -1;
+		m_posCheat = 0;
 
 		if (m_phase == WM_PHASE_INIT)
 		{
@@ -2582,10 +2665,22 @@ BOOL CEvent::TreatEventBase(UINT message, WPARAM wParam, LPARAM lParam)
 		break;
 	case WM_LBUTTONDOWN:
 	case WM_RBUTTONDOWN:
-		m_bMousePress = TRUE;
+		m_bMouseDown = TRUE;
 		MouseSprite(pos);
-		if (EventButtons(message, wParam, lParam)) return TRUE;
-		break;
+		if (EventButtons(message, wParam, lParam) ) return TRUE;
+		if ((m_phase == WM_PHASE_BUILD) && (PlaceMenu(celX, celY, wParam, (int*)1)) )
+		{
+			return TRUE;
+		}
+		if ((m_phase != WM_PHASE_PLAY) && (m_phase != WM_PHASE_PLAYTEST))
+		{
+			return FALSE;
+		}
+		if (BuildUp() != FALSE)
+		{
+			return TRUE;
+		}
+		return FALSE;
 	case WM_MOUSEMOVE:
 		if (m_mouseType == MOUSETYPEGRA)
 		{
@@ -2623,8 +2718,16 @@ BOOL CEvent::TreatEventBase(UINT message, WPARAM wParam, LPARAM lParam)
 		break;
 	case WM_RBUTTONUP:
 		m_bMousePress = FALSE;
+		MouseSprite(pos);
 		if (EventButtons(message, wParam, lParam)) return TRUE;
-		break;
+		if ((m_phase == WM_PHASE_BUILD) && (BuildUp() != FALSE)) return TRUE;
+		if (((m_phase == WM_PHASE_PLAY) || (m_phase == WM_PHASE_PLAYTEST)) && (BuildUp() != FALSE)) return TRUE;
+		if (m_phase == WM_PHASE_BYE)
+		{
+			PostMessageA(m_hWnd, WM_CLOSE, 0, 0);
+			return FALSE;
+		}
+		return FALSE;
 	case WM_PHASE_INIT:
 	case WM_PHASE_PLAY:
 	case WM_PHASE_BUILD:
@@ -2684,7 +2787,77 @@ BOOL CEvent::TreatEventBase(UINT message, WPARAM wParam, LPARAM lParam)
 		DemoPlayStart();
 		return FALSE;
 
+	case WM_PREV:
+		if (m_phase == WM_PHASE_MULTI)
+		{
+			m_multi - (((m_input & KEY_JUMP) != 0) & 9) + 1;
+			if (m_multi < 1)
+			{
+				m_multi = 1;
+			}
+			// m_pDecor->CurrentRead(m_gamer, m_multi + 200, FALSE);
+			if (m_bDrawMap != FALSE)
+			{
+
+			}
+			NetSendLobby();
+			//NetAdjustLobbyButtons()
+			return TRUE;
+		}
+		if (m_bPrivate == FALSE)
+		{
+			m_mission--;
+			if (m_mission < 1) m_mission = 1;
+			else
+			{
+				m_private--;
+				if (m_private < 1)
+				{
+					if (ChangePhase(WM_PHASE_INFO) != FALSE) return TRUE;
+				}
+				return FALSE;
+			}
+		}
+		if (ChangePhase(WM_PHASE_INFO) != FALSE)
+		{
+			return TRUE;
+		}
+		return FALSE;
+
+	case WM_DECOR2:
+		SetState(WM_DECOR1, 0);
+		SetState(WM_DECOR2, 1);
+		SetState(WM_DECOR3, 0);
+		SetState(WM_DECOR4, 0);
+		SetState(WM_DECOR5, 0);
+		SetState(WM_DECOR6, 0);
+		SetState(WM_DECOR7, 0);
+		SetState(WM_DECOR8, 0);
+		SetState(WM_DECOR9, 0);
+		SetState(WM_DECOR10, 0);
+		SetState(WM_DECOR11, 0);
+		m_pDecor->FindAndSetMenus(2, GetMenu(WM_DECOR2));
+		m_menuIndex = 1;
+		m_menuDecor[1] = GetMenu(WM_DECOR2);
+		return FALSE;
+	case WM_DECOR3:
+		SetState(WM_DECOR1, 0);
+		SetState(WM_DECOR2, 0);
+		SetState(WM_DECOR3, 1);
+		SetState(WM_DECOR4, 0);
+		SetState(WM_DECOR5, 0);
+		SetState(WM_DECOR6, 0);
+		SetState(WM_DECOR7, 0);
+		SetState(WM_DECOR8, 0);
+		SetState(WM_DECOR9, 0);
+		SetState(WM_DECOR10, 0);
+		SetState(WM_DECOR11, 0);
+		m_pDecor->FindAndSetMenus(3, GetMenu(WM_DECOR3));
+		m_menuIndex = 2;
+		m_menuDecor[2] = GetMenu(WM_DECOR3);
+		return FALSE;
 	}
+
 	return FALSE;
 }
 
@@ -3088,6 +3261,7 @@ BOOL CEvent::ChangePhase(UINT phase)
 	char  doors[200];
 	char  text[100];
 	char  res[100];
+	BYTE  door[200];
 
 
 //	sprintf(filename, "CEvent::ChangePhase [Begin] --- % ", phase - WM_USER);
@@ -3100,8 +3274,8 @@ BOOL CEvent::ChangePhase(UINT phase)
 	m_pDecor->SetSpeedY(m_bDemoPlay);
 	if (m_mouseType == MOUSETYPEGRA && m_bFullScreen)
 	{
-		ShowCursor(TRUE);
-		m_bShowMouse = TRUE;
+		ShowCursor(FALSE);
+		m_bShowMouse = FALSE;
 	}
 	if (phase == WM_PHASE_608)
 	{
@@ -3222,6 +3396,56 @@ BOOL CEvent::ChangePhase(UINT phase)
 		//m_pDecor->CurrentWrite(m_gamer, GetWorld(), (m_bAccessBuild == FALSE));
 	}
 
+	if (m_phase == WM_PHASE_GAMER)
+	{
+		char* playername;
+		WriteInfo(m_gamer, playername);
+		char buff[100];
+		char buffer[100];
+		char gamer[100];
+		int i;
+		for (i = 0; i < 8; i++)
+		{
+			int f, n;
+			n = 0;
+			f = (n + 1225);
+			if (ReadInfo(f + 1) == FALSE)
+			{
+				LoadString(TX_PLAYERFREE, buff, 100);
+			}
+			else
+			{
+				strcpy((char*)m_gamerNameList, m_gamerName);
+				for (i = 0; i < 200; i++)
+				{
+					int num = 0;
+					if (door[i] == 0)
+					{
+						num++;
+					}
+				}
+				m_pDecor->InitalizeDoors(door);
+				if (door == (BYTE*)1)
+				{
+					LoadString(TX_NUMDOOROPEN, buffer, 100);
+					sprintf(buffer, gamer, 1);
+					strcat((char*)m_gamerNameList, buffer);
+				}
+				if ((BYTE*)1 < door)
+				{
+					LoadString(TX_NUMDOORSOPEN, buffer, 100);
+					sprintf(buffer, gamer, door);
+					strcat((char*)m_gamerNameList, buffer);
+				}
+				SetState(f, (m_gamer + -1 == n));
+				f++;
+				n++;
+
+			}
+		}
+		ReadInfo(m_gamer);
+	}
+
 	CreateButtons();
 	m_bMenu = FALSE;
 	m_menu.Delete();
@@ -3255,6 +3479,37 @@ void CEvent::MovieToStart()
 		m_movieToStart[0] = 0;
 	}
 }
+
+BOOL CEvent::CreateCelPosForMenu(UINT celX, UINT celY, WPARAM wParam)
+{
+	POINT cel;
+
+	if ((wParam & 3) != 0)
+	{
+		/// Menu function
+	}
+	cel.x = celX;
+	cel.y = celY;
+	//m_pDecor->SetCelPosFromScreenPos(cel);
+	return TRUE;
+}
+
+/*
+void CEvent::ChatLength()
+{
+	int i;
+	char (*text)[5];
+
+	text = m_chatZone;
+
+	for (i = 0; i < 5; i--)
+	{
+		const char* n;
+		text += 100;
+		memcpy(m_chatZone, text, strlen(text + 100) + 1)
+	}
+}
+*/
 
 BOOL CEvent::BuildDown(POINT pos, int fwKeys, BOOL bMix)
 {
@@ -3320,7 +3575,7 @@ BOOL CEvent::NetEnumSessions()
 	return enumSess;
 }
 
-BOOL CEvent::BuildUp(POINT pos, int fwKeys)
+BOOL CEvent::BuildUp()
 {
 	return TRUE;
 }
@@ -3687,7 +3942,7 @@ BOOL CEvent::ReadInfo(int gamer)
 	BYTE	 doors[200];
 	char	 buffer[100];
 
-
+	m_playerIndex = 1;
 	m_pDecor->InitGamer();
 	m_lives = 3;
 	m_mission = 1;
@@ -3721,7 +3976,7 @@ BOOL CEvent::ReadInfo(int gamer)
 	info.bHiliInfoButton = m_bHiliInfoButton;
 	info.bAccessBuild = m_bAccessBuild;
 
-	m_pDecor->SetAccessBuild(info.skill);
+	m_pDecor->SetAccessBuild(info.bAccessBuild);
 
 	m_pSound->SetAudioVolume(info.audioVolume);
 	m_pSound->SetMidiVolume(info.midiVolume);
