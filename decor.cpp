@@ -842,6 +842,35 @@ void CDecor::AdaptMotorVehicleSound()
     return;
 }
 
+void CDecor::ChangePhase(UINT phase)
+{
+	int channel;
+	POINT pos;
+
+	pos.x = LXIMAGE / 2;
+	pos.y = LYIMAGE / 2;
+
+	m_phase = phase;
+	if ((phase == WM_PHASE_PLAY) || (phase == WM_PHASE_PLAYTEST))
+	{
+		channel = -1;
+		if (m_bHelicopterFlying != FALSE) channel = 16;
+		if (m_bHelicopterStationary != FALSE) channel = 18;
+		if (m_bJeepMarch != FALSE) channel = 29;
+		if (m_bJeepStop != FALSE) channel = 31;
+		if (channel != -1)
+			m_pSound->PlayImage(channel, pos, -1);
+	}
+	else
+	{
+		if (m_bHelicopterFlying != FALSE) m_pSound->StopSound(SOUND_16_HELICOHIGH);
+		if (m_bHelicopterStationary != FALSE) m_pSound->StopSound(SOUND_18_HELICOLOW);
+		if (m_bJeepMarch != FALSE) m_pSound->StopSound(SOUND_29_JEEPHIGH);
+		if (m_bJeepStop != FALSE) m_pSound->StopSound(SOUND_31_JEEPLOW);
+		return;
+	}
+	return;
+}
 
 POINT CDecor::ScreenPosToCelPos(POINT* pos, POINT cel)
 {

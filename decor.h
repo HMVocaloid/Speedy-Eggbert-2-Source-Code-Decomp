@@ -741,7 +741,7 @@ public:
 	BOOL	SomethingMissionPath(int user, int mission, BOOL bUser);
 	void	MoveObjectPriority(int i);
 	void	FindAndSetMenus(int menuIndex, int menuType);
-
+	void	ChangePhase(UINT phase);
 
 
 	// Network Related Functions

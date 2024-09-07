@@ -1,4 +1,164 @@
-﻿LINK : warning LNK4075: ignoring '/INCREMENTAL' due to '/FORCE' specification
+﻿  blupi.cpp
+  button.cpp
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\def.h(241,9): warning C4005: 'MAXMOVEOBJECT': macro redefinition
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\def.h(484,9): warning C4005: 'WM_PHASE_PRIVATE': macro redefinition
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\resource.h(110,9): warning C4005: 'TX_SHOWNEXT': macro redefinition
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.h(29,9): warning C4005: 'MAXMOVEOBJECT': macro redefinition
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.h(91,1): warning C4091: 'typedef ': ignored on left of '<unnamed-enum-KEY_NONE>' when no variable is declared
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\blupi.cpp(249,25): warning C4101: 'targetlevel': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\blupi.cpp(245,24): warning C4101: 'rcRect': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\blupi.cpp(245,18): warning C4101: 'clip': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\blupi.cpp(249,9): warning C4101: 'i': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\blupi.cpp(248,10): warning C4101: 'posMouse': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\blupi.cpp(353,8): warning C4101: 'test': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\blupi.cpp(352,8): warning C4101: 'posMouse': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\blupi.cpp(619,11): warning C4101: 'dest': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\blupi.cpp(617,13): warning C4101: 'i': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\blupi.cpp(618,10): warning C4101: 'rect': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\blupi.cpp(655,11): warning C4101: 'rcRect': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\blupi.cpp(817,17): warning C4101: 'timeStep': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\def.h(241,9): warning C4005: 'MAXMOVEOBJECT': macro redefinition
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\def.h(484,9): warning C4005: 'WM_PHASE_PRIVATE': macro redefinition
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\pixmap.h(12,9): warning C4005: 'DIRECTDRAW_VERSION': macro redefinition
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.h(29,9): warning C4005: 'MAXMOVEOBJECT': macro redefinition
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\button.cpp(52,12): warning C4101: 'icon': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\button.cpp(52,9): warning C4101: 'i': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\button.cpp(107,6): warning C4101: 'toolTips': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\button.cpp(130,8): warning C4101: 'rect': unreferenced local variable
+  decor.cpp
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\def.h(241,9): warning C4005: 'MAXMOVEOBJECT': macro redefinition
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\def.h(484,9): warning C4005: 'WM_PHASE_PRIVATE': macro redefinition
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\resource.h(110,9): warning C4005: 'TX_SHOWNEXT': macro redefinition
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\pixmap.h(12,9): warning C4005: 'DIRECTDRAW_VERSION': macro redefinition
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.h(29,9): warning C4005: 'MAXMOVEOBJECT': macro redefinition
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.h(91,1): warning C4091: 'typedef ': ignored on left of '<unnamed-enum-KEY_NONE>' when no variable is declared
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(25,9): warning C4005: 'DIRECTDRAW_VERSION': macro redefinition
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(119,8): warning C4101: 'door': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(118,8): warning C4101: 'i': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(129,9): warning C4101: 'i': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(540,16): warning C4554: '&': check operator precedence for possible error; use parentheses to clarify precedence
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(565,10): warning C4101: 'text': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(1080,18): warning C4553: '==': result of expression not used; did you intend '='?
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(1315,39): warning C4553: '==': result of expression not used; did you intend '='?
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(1568,9): warning C4553: '==': result of expression not used; did you intend '='?
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(6569,8): warning C4101: 'type2': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(6602,94): warning C4244: '=': conversion from 'LONG' to 'short', possible loss of data
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(6625,6): warning C4101: 'players': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(6740,7): warning C4101: 'rect2': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(6739,10): warning C4101: 'rect1': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(6741,7): warning C4101: 'rect3': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(6757,26): warning C4309: '=': truncation of constant value
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(6758,26): warning C4309: '=': truncation of constant value
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(6771,25): warning C4309: '=': truncation of constant value
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(6772,25): warning C4309: '=': truncation of constant value
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(6852,13): warning C4101: 'moveObject': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(8174,9): warning C4101: 'tinyRect': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(8229,7): warning C4101: 'tinyRect': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(8251,9): warning C4101: 'tinyRect': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(8287,9): warning C4101: 'src3': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(8317,9): warning C4101: 'tinyRect': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(8345,9): warning C4101: 'tinyRect': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(8373,9): warning C4101: 'tinyRect': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(8856,9): warning C4553: '==': result of expression not used; did you intend '='?
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(9110,16): warning C4129: '%': unrecognized character escape sequence
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(9114,15): warning C4129: 'w': unrecognized character escape sequence
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(9126,8): warning C4101: 'num2': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(9127,10): warning C4101: 'num3': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(9125,15): warning C4101: 'num': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(9125,8): warning C4101: 'nb': unreferenced local variable
+  event.cpp
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\def.h(241,9): warning C4005: 'MAXMOVEOBJECT': macro redefinition
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\def.h(484,9): warning C4005: 'WM_PHASE_PRIVATE': macro redefinition
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\resource.h(110,9): warning C4005: 'TX_SHOWNEXT': macro redefinition
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\pixmap.h(12,9): warning C4005: 'DIRECTDRAW_VERSION': macro redefinition
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.h(29,9): warning C4005: 'MAXMOVEOBJECT': macro redefinition
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.h(91,1): warning C4091: 'typedef ': ignored on left of '<unnamed-enum-KEY_NONE>' when no variable is declared
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(1266,7): warning C4101: 'menuIndex': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(1345,13): warning C4101: 'pos': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(1504,13): warning C4101: 'i': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(1597,10): warning C4552: '!=': result of expression not used
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(1802,9): warning C4101: 'data': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(1889,8): warning C4101: 'element': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(1887,8): warning C4101: 'stream': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(1941,14): warning C4554: '&': check operator precedence for possible error; use parentheses to clarify precedence
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(1959,8): warning C4101: 'textLeft': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(1955,57): warning C4101: 'icon': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(1955,17): warning C4101: 'world': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(1953,17): warning C4101: 'levels': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(1965,11): warning C4101: 'phase': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(1955,42): warning C4101: 'volume': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(1955,24): warning C4101: 'time': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(1954,17): warning C4101: 'types': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(1964,17): warning C4101: 'bEnable': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(1955,50): warning C4101: 'pente': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(1955,34): warning C4101: 'button': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(2598,12): warning C4552: '|': result of expression not used
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(2600,12): warning C4552: '|': result of expression not used
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(2603,12): warning C4552: '|': result of expression not used
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(2606,12): warning C4552: '|': result of expression not used
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(2609,12): warning C4552: '|': result of expression not used
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(2625,12): warning C4552: '|': result of expression not used
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(2793,45): warning C4806: '&': unsafe operation: no value of type 'bool' promoted to type 'int' can equal the given constant
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(2793,48): warning C4552: '+': result of expression not used
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(2428,10): warning C4101: 'sound': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(2970,21): warning C4101: 'sound': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3095,8): warning C4101: 'pTerm': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3091,29): warning C4101: 'max': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3091,14): warning C4101: 'state': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3091,21): warning C4101: 'volume': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3093,8): warning C4101: 'pButtonExist': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3091,6): warning C4101: 'button': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3191,7): warning C4101: 'bUser': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3216,7): warning C4101: 'bUser': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3259,8): warning C4101: 'pTerm': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3254,15): warning C4101: 'music': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3263,8): warning C4101: 'res': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3255,18): warning C4101: 'iconDim': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3255,8): warning C4101: 'totalDim': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3256,8): warning C4101: 'filename': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3261,8): warning C4101: 'doors': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3257,8): warning C4101: 'pButtonExist': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3254,25): warning C4101: 'j': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3254,22): warning C4101: 'i': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3258,8): warning C4101: 'bEnable': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3262,8): warning C4101: 'text': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3258,17): warning C4101: 'bHide': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3254,28): warning C4101: 'nb': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3523,23): warning C4101: 'icon': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3523,14): warning C4101: 'channel': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3522,8): warning C4101: 'cel': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3654,8): warning C4101: 'pDest': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3655,8): warning C4101: 'indic': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3653,8): warning C4101: 'pText': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3656,12): warning C4101: 'h1': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3656,16): warning C4101: 'h2': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3656,8): warning C4101: 'nb': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3765,12): warning C4101: 'world': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3765,25): warning C4101: 'total': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3765,32): warning C4101: 'mission': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3765,19): warning C4101: 'time': unreferenced local variable
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3903,8): warning C4101: 'doors': unreferenced local variable
+  jauge.cpp
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\def.h(241,9): warning C4005: 'MAXMOVEOBJECT': macro redefinition
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\def.h(484,9): warning C4005: 'WM_PHASE_PRIVATE': macro redefinition
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\pixmap.h(12,9): warning C4005: 'DIRECTDRAW_VERSION': macro redefinition
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.h(29,9): warning C4005: 'MAXMOVEOBJECT': macro redefinition
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\jauge.cpp(78,26): warning C4293: '<<': shift count negative or too big, undefined behavior
+  menu.cpp
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\def.h(241,9): warning C4005: 'MAXMOVEOBJECT': macro redefinition
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\def.h(484,9): warning C4005: 'WM_PHASE_PRIVATE': macro redefinition
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\resource.h(110,9): warning C4005: 'TX_SHOWNEXT': macro redefinition
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\pixmap.h(12,9): warning C4005: 'DIRECTDRAW_VERSION': macro redefinition
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.h(29,9): warning C4005: 'MAXMOVEOBJECT': macro redefinition
+  Generating Code...
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(1948,1): warning C4715: 'CEvent::PlaceMenu': not all control paths return a value
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\event.cpp(3538,1): warning C4715: 'CEvent::BuildDown': not all control paths return a value
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(894,1): warning C4700: uninitialized local variable 'thing' used
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(5344,1): warning C4715: 'CDecor::BlupiIsGround': not all control paths return a value
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(7917,1): warning C4700: uninitialized local variable 'tinyPoint' used
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(8295,1): warning C4715: 'CDecor::MoveObjectDetect': not all control paths return a value
+C:\Users\JonAd\source\repos\HMVocaloid\Speedy-Eggbert-2-Source-Code-Decomp\decor.cpp(8441,1): warning C4700: uninitialized local variable 'moveObject' used
+LINK : warning LNK4075: ignoring '/INCREMENTAL' due to '/FORCE' specification
   Starting pass 1
   Processed /DEFAULTLIB:winmm.lib
   Processed /DEFAULTLIB:uuid.lib
@@ -1266,26 +1426,26 @@ pixmap.obj : warning LNK4006: "unsigned int g_lastPhase" (?g_lastPhase@@3IA) alr
    /v
    /x
    /fo
-   "C:\Users\JonAd\AppData\Local\Temp\lnk{59B8D86E-F3D5-45C5-BB9C-3D309FE8F8BA}.tmp"
-   "C:\Users\JonAd\AppData\Local\Temp\lnk{FEBC0BF5-1EE7-4094-8F2E-5AB465A98650}.tmp"
+   "C:\Users\JonAd\AppData\Local\Temp\lnk{F530357C-F958-4A25-9BF5-5F68DB3AEFAC}.tmp"
+   "C:\Users\JonAd\AppData\Local\Temp\lnk{8199161C-4050-4027-9916-6058EBF5A68C}.tmp"
   Microsoft (R) Windows (R) Resource Compiler Version 10.0.10011.16384
   
   Copyright (C) Microsoft Corporation.  All rights reserved.
   
   
   Using codepage 1252 as default
-  Creating C:\Users\JonAd\AppData\Local\Temp\lnk{59B8D86E-F3D5-45C5-BB9C-3D309FE8F8BA}.tmp
+  Creating C:\Users\JonAd\AppData\Local\Temp\lnk{F530357C-F958-4A25-9BF5-5F68DB3AEFAC}.tmp
   
   
-  C:\Users\JonAd\AppData\Local\Temp\lnk{FEBC0BF5-1EE7-4094-8F2E-5AB465A98650}.tmp.
+  C:\Users\JonAd\AppData\Local\Temp\lnk{8199161C-4050-4027-9916-6058EBF5A68C}.tmp.
   Writing 24:1,	lang:0x409,	size 381
   Invoking cvtres.exe:
    /machine:x86
    /verbose
-   /out:"C:\Users\JonAd\AppData\Local\Temp\lnk{F1E1E521-9AF2-4A2C-B7F5-C488CCDE62D1}.tmp"
+   /out:"C:\Users\JonAd\AppData\Local\Temp\lnk{7FE57D8A-3AF9-402E-81BA-655B99D5438A}.tmp"
    /readonly
    "Speedy E.e424a3cb\Debug\Eggbert2.res"
-   "C:\Users\JonAd\AppData\Local\Temp\lnk{59B8D86E-F3D5-45C5-BB9C-3D309FE8F8BA}.tmp"
+   "C:\Users\JonAd\AppData\Local\Temp\lnk{F530357C-F958-4A25-9BF5-5F68DB3AEFAC}.tmp"
   Microsoft (R) Windows Resource To Object Converter Version 14.40.33811.0
   Copyright (C) Microsoft Corporation.  All rights reserved.
   

@@ -3451,6 +3451,12 @@ BOOL CEvent::ChangePhase(UINT phase)
 	m_menu.Delete();
 
 	WaitMouse(FALSE);
+
+	if ((m_phase == WM_PHASE_PLAY) || (m_phase == WM_PHASE_PLAYTEST))
+	{
+		FillMouse(TRUE);
+	 }
+	m_pDecor->ChangePhase(phase);
 	return TRUE;
 }
 
