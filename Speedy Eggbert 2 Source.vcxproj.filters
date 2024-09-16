@@ -18,73 +18,176 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="action.h">
+    <None Include="Debug\DATA\config.def">
+      <Filter>Data</Filter>
+    </None>
+    <None Include="resource\IDC_FILL.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resource\IDC_MAP.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resource\IDC_POINTER.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resource\IDC_WAIT.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resource\IDC_ARROW.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resource\IDC_ARROWD.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resource\IDC_ARROWDL.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resource\IDC_ARROWDR.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resource\IDC_ARROWL.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resource\IDC_ARROWR.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resource\IDC_ARROWU.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resource\IDC_ARROWUL.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resource\IDC_ARROWUR.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="resource\IDC_EMPTY.cur">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\blupi.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\button.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ddutil.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\decblupi.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\decor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\event.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\jauge.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\menu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\misc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\movie.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\network.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\pixmap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\sound.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\text.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\wave.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\decblock.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\decnet.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\decdesign.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\decio.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\decmove.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\resource.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\dectables.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="button.h">
+    <ClInclude Include="src\decor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="decor.h">
+    <ClInclude Include="src\def.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="def.h">
+    <ClInclude Include="src\event.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="dplay.h">
+    <ClInclude Include="src\jauge.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="dsound.h">
+    <ClInclude Include="src\menu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="event.h">
+    <ClInclude Include="src\misc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="fifo.h">
+    <ClInclude Include="src\movie.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="jauge.h">
+    <ClInclude Include="src\network.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="menu.h">
+    <ClInclude Include="src\obstacle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="misc.h">
+    <ClInclude Include="src\pixmap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="movie.h">
+    <ClInclude Include="src\resource1.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="network.h">
+    <ClInclude Include="src\sound.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="pixmap.h">
+    <ClInclude Include="src\texttables.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="sound.h">
+    <ClInclude Include="src\text.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="text.h">
+    <ClInclude Include="src\wave.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="wave.h">
+    <ClInclude Include="src\button.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="decmove.h">
+    <ClInclude Include="src\ddutil.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="dectables.h">
+    <ClInclude Include="src\pixtables.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="texttables.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DDRAW.H">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ddutil.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="resource1.h">
+    <ClInclude Include="resource2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
@@ -92,107 +195,16 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="blupi.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="button.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="decor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="event.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="jauge.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="menu.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="misc.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="movie.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="network.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="pixmap.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="sound.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="text.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="wave.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ddutil.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="Eggbert2.rc">
-      <Filter>Resource Files</Filter>
-    </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="cursor1.cur">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="IDC_ARROW.cur">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="IDC_ARROWD.cur">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="IDC_ARROWDL.cur">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="IDC_ARROWDR.cur">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="IDC_ARROWL.cur">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="IDC_ARROWR.cur">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="IDC_ARROWU.cur">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="IDC_ARROWUL.cur">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="IDC_ARROWUR.cur">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="IDC_EMPTY.cur">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="IDC_FILL.cur">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="IDC_MAP.cur">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="IDC_POINTER.cur">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="IDC_WAIT.cur">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Debug\DATA\config.def">
-      <Filter>Data</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="IDR_MAINFRAME.ico">
+    <Image Include="resource\IDR_MAINFRAME.ico">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="icon1.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Eggbert 2.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

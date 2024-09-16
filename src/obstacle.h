@@ -1,0 +1,589 @@
+#pragma once
+#define Q_EMPTY \
+	0,0,0,0, \
+	0,0,0,0, \
+	0,0,0,0, \
+	0,0,0,0
+#define Q_FULL \
+	1,1,1,1, \
+	1,1,1,1, \
+	1,1,1,1, \
+	1,1,1,1
+#define Q_TRIANGLE_RIGHT \
+	1,1,1,1, \
+	0,1,1,1, \
+	0,0,0,1, \
+	0,0,0,0
+#define Q_TRIANGLE_LEFT \
+	1,1,1,1, \
+	1,1,1,0, \
+	1,0,0,0, \
+	0,0,0,0
+#define Q_TOP_HALF \
+	1,1,1,1, \
+	1,1,1,1, \
+	0,0,0,0, \
+	0,0,0,0
+#define Q_TOP_QUARTER \
+	1,1,1,1, \
+	0,0,0,0, \
+	0,0,0,0, \
+	0,0,0,0
+#define Q_TOP_3_QUARTERS \
+	1,1,1,1, \
+	1,1,1,1, \
+	1,1,1,1, \
+	0,0,0,0
+#define Q_PILLAR \
+	0,1,1,0, \
+	0,1,1,0, \
+	0,1,1,0, \
+	0,1,1,0
+
+extern short table_decor_quart[]
+{
+	Q_FULL, // 0
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_TRIANGLE_RIGHT,
+
+	Q_TRIANGLE_RIGHT, // 16
+	Q_TRIANGLE_LEFT,
+	Q_TRIANGLE_LEFT,
+
+	1,1,1,1,
+	1,1,1,1,
+	0,0,1,1,
+	0,0,0,0,
+
+	1,1,1,1,
+	1,1,1,1,
+	1,1,0,0,
+	1,1,0,0,
+
+	1,1,1,1,
+	1,1,1,1,
+	1,1,0,0,
+	0,0,0,0,
+
+	Q_EMPTY,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_TOP_HALF,
+	Q_TOP_QUARTER,
+	Q_FULL,
+	Q_FULL,
+
+	Q_FULL, // 32
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_TOP_3_QUARTERS,
+	Q_TOP_HALF,
+	Q_TOP_QUARTER,
+
+	Q_FULL, // 48
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+
+	Q_FULL, // 64
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_TRIANGLE_LEFT,
+	Q_TRIANGLE_RIGHT,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_FULL,
+	Q_FULL,
+
+	Q_FULL, // 80
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_EMPTY,
+	Q_EMPTY,
+
+	1,1,1,1,
+	1,1,1,1,
+	1,1,1,1,
+	1,1,0,0,
+
+	1,1,1,1,
+	1,1,1,1,
+	1,1,0,0,
+	1,1,0,0,
+
+	1,1,1,1,
+	1,1,1,1,
+	1,1,1,1,
+	0,1,1,1,
+
+	1,1,1,1,
+	1,1,1,1,
+	0,0,1,1,
+	0,0,1,1,
+
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+
+	Q_FULL, // 96
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+
+	1,1,1,1,
+	1,1,1,1,
+	1,1,1,0,
+	1,1,1,0,
+
+	1,1,1,1,
+	1,1,1,1,
+	0,1,1,1,
+	0,1,1,1,
+
+	Q_EMPTY,
+	Q_EMPTY,
+
+	Q_EMPTY, // 112
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+
+	0,0,0,1,
+	0,0,0,1,
+	0,0,0,1,
+	0,0,0,1,
+
+	Q_EMPTY,
+
+	Q_EMPTY, // 128
+
+	1,0,0,0,
+	1,0,0,0,
+	1,0,0,0,
+	1,0,0,0,
+
+	Q_EMPTY,
+	Q_EMPTY,
+
+	0,0,0,0,
+	0,0,0,0,
+	0,0,0,0,
+	1,1,1,1,
+
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_TOP_QUARTER,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+
+	Q_FULL, // 144
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_TRIANGLE_LEFT,
+	Q_TRIANGLE_RIGHT,
+	Q_FULL,
+	Q_FULL,
+	Q_EMPTY,
+	Q_EMPTY,
+
+	Q_EMPTY, // 160
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+
+	Q_EMPTY, // 176
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_PILLAR,
+	Q_PILLAR,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+
+	Q_FULL, // 192
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+
+	Q_EMPTY, // 208	
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+
+	Q_FULL, // 224
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+
+	Q_EMPTY, // 240
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_TOP_3_QUARTERS,
+	Q_TOP_3_QUARTERS,
+
+	1,1,1,1,
+	1,1,1,1,
+	1,1,1,0,
+	0,0,0,0,
+
+	Q_FULL,
+	Q_FULL,
+
+	Q_TOP_3_QUARTERS, // 256
+	Q_FULL,
+	Q_FULL,
+	Q_TOP_3_QUARTERS,
+	Q_TOP_3_QUARTERS,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+
+	Q_EMPTY, // 272
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_FULL,
+	Q_FULL,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+
+	Q_EMPTY, // 288
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_FULL,
+	Q_EMPTY,
+	Q_EMPTY,
+
+	Q_FULL, // 304
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_TOP_HALF,
+	Q_TOP_HALF,
+	Q_TOP_HALF,
+	Q_TOP_HALF,
+	Q_TOP_HALF,
+	Q_TOP_HALF,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+
+	Q_EMPTY, // 320
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_TOP_QUARTER,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+
+	1,1,1,1,
+	1,1,1,1,
+	0,1,1,0,
+	0,1,1,0,
+
+	1,1,1,1,
+	1,1,1,1,
+	0,1,1,0,
+	0,1,1,0,
+
+	1,1,1,1,
+	1,1,1,1,
+	0,1,1,0,
+	0,1,1,0,
+
+	1,1,1,1,
+	1,1,1,1,
+	0,1,1,0,
+	0,1,1,0,
+
+	Q_PILLAR,
+	Q_PILLAR,
+
+	Q_PILLAR, // 336
+	Q_EMPTY,
+	Q_FULL,
+	Q_EMPTY,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+
+	Q_FULL, // 352
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_TOP_QUARTER,
+	Q_TOP_QUARTER,
+	Q_TOP_QUARTER,
+	Q_EMPTY,
+
+	Q_EMPTY, // 368
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_FULL,
+	Q_FULL,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+
+	Q_EMPTY, // 384
+	Q_EMPTY,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_FULL,
+	Q_EMPTY,
+	Q_EMPTY,
+
+	Q_EMPTY, // 400
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+
+	Q_EMPTY, // 416
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_EMPTY,
+	Q_PILLAR,
+	Q_PILLAR,
+	Q_PILLAR,
+	Q_PILLAR,
+	Q_PILLAR,
+	Q_PILLAR,
+	Q_PILLAR,
+	Q_PILLAR,
+	Q_PILLAR,
+	Q_PILLAR,
+	Q_PILLAR,
+
+	Q_PILLAR, // 432
+	Q_PILLAR,
+	Q_PILLAR,
+	Q_PILLAR,
+	Q_PILLAR,
+	Q_PILLAR,
+	Q_PILLAR,
+	Q_PILLAR,
+	Q_PILLAR
+};

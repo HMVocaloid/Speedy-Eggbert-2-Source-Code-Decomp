@@ -23,34 +23,34 @@
     <Keyword>Win32Proj</Keyword>
     <ProjectGuid>{e424a3cb-c8b8-447c-be63-41a57e65b449}</ProjectGuid>
     <RootNamespace>SpeedyEggbert2Source</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.22621.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>NotSet</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v140_xp</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>NotSet</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>NotSet</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v140_xp</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>NotSet</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -74,15 +74,22 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>false</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WINVER=0x400;WIN32;_CRT_SECURE_NO_WARNINGS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>dxsdk3\sdk\inc</AdditionalIncludeDirectories>
+      <UndefinePreprocessorDefinitions>UNICODE;_UNICODE;_WIN32_WINNT;NTDDI_VERSION</UndefinePreprocessorDefinitions>
+      <PrecompiledHeaderFile />
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalOptions>/FORCE:MULTIPLE  /DYNAMICBASE "legacy_stdio_definitions.lib" %(AdditionalOptions) /VERBOSE</AdditionalOptions>
-      <AdditionalLibraryDirectories>C:\DIRECTX3\DIRECTX3\SDK\LIB;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>/DYNAMICBASE "legacy_stdio_definitions.lib" %(AdditionalOptions) /VERBOSE</AdditionalOptions>
+      <AdditionalLibraryDirectories>dxsdk3\sdk\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <TreatLinkerWarningAsErrors>false</TreatLinkerWarningAsErrors>
+      <AdditionalDependencies>dxsdk3/sdk/lib/*.lib;winmm.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
+      <OptimizeReferences>true</OptimizeReferences>
+      <ForceFileOutput>MultiplyDefinedSymbolOnly</ForceFileOutput>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -91,26 +98,41 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WINVER=0x400;WIN32;_CRT_SECURE_NO_WARNINGS;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>dxsdk3\sdk\inc</AdditionalIncludeDirectories>
+      <UndefinePreprocessorDefinitions>UNICODE;_UNICODE;_WIN32_WINNT;NTDDI_VERSION</UndefinePreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>dxsdk3\sdk\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <ForceFileOutput>MultiplyDefinedSymbolOnly</ForceFileOutput>
+      <AdditionalOptions>/DYNAMICBASE "legacy_stdio_definitions.lib" %(AdditionalOptions) /VERBOSE</AdditionalOptions>
+      <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
+      <AdditionalDependencies>dxsdk3/sdk/lib/*.lib;winmm.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WINVER=0x400;WIN32;_CRT_SECURE_NO_WARNINGS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>dxsdk3\sdk\inc</AdditionalIncludeDirectories>
+      <UndefinePreprocessorDefinitions>UNICODE;_UNICODE;_WIN32_WINNT;NTDDI_VERSION</UndefinePreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>dxsdk3\sdk\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
+      <OptimizeReferences>true</OptimizeReferences>
+      <ForceFileOutput>MultiplyDefinedSymbolOnly</ForceFileOutput>
+      <AdditionalOptions>/DYNAMICBASE "legacy_stdio_definitions.lib" %(AdditionalOptions) /VERBOSE</AdditionalOptions>
+      <AdditionalDependencies>dxsdk3/sdk/lib/*.lib;winmm.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -119,81 +141,92 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WINVER=0x400;WIN32;_CRT_SECURE_NO_WARNINGS;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>dxsdk3\sdk\inc</AdditionalIncludeDirectories>
+      <UndefinePreprocessorDefinitions>UNICODE;_UNICODE;_WIN32_WINNT;NTDDI_VERSION</UndefinePreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>dxsdk3\sdk\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <ForceFileOutput>MultiplyDefinedSymbolOnly</ForceFileOutput>
+      <AdditionalOptions>/DYNAMICBASE "legacy_stdio_definitions.lib" %(AdditionalOptions) /VERBOSE</AdditionalOptions>
+      <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
+      <AdditionalDependencies>dxsdk3/sdk/lib/*.lib;winmm.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="action.h" />
-    <ClInclude Include="button.h" />
-    <ClInclude Include="DDRAW.H" />
-    <ClInclude Include="ddutil.h" />
-    <ClInclude Include="decor.h" />
-    <ClInclude Include="dectables.h" />
-    <ClInclude Include="def.h" />
-    <ClInclude Include="dplay.h" />
-    <ClInclude Include="dsound.h" />
-    <ClInclude Include="event.h" />
-    <ClInclude Include="fifo.h" />
-    <ClInclude Include="decmove.h" />
-    <ClInclude Include="jauge.h" />
-    <ClInclude Include="menu.h" />
-    <ClInclude Include="misc.h" />
-    <ClInclude Include="movie.h" />
-    <ClInclude Include="network.h" />
-    <ClInclude Include="pixmap.h" />
-    <ClInclude Include="resource.h" />
-    <ClInclude Include="resource1.h" />
-    <ClInclude Include="sound.h" />
-    <ClInclude Include="text.h" />
-    <ClInclude Include="texttables.h" />
-    <ClInclude Include="wave.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="blupi.cpp" />
-    <ClCompile Include="button.cpp" />
-    <ClCompile Include="ddutil.cpp" />
-    <ClCompile Include="decor.cpp" />
-    <ClCompile Include="event.cpp" />
-    <ClCompile Include="jauge.cpp" />
-    <ClCompile Include="menu.cpp" />
-    <ClCompile Include="misc.cpp" />
-    <ClCompile Include="movie.cpp" />
-    <ClCompile Include="network.cpp" />
-    <ClCompile Include="pixmap.cpp" />
-    <ClCompile Include="sound.cpp" />
-    <ClCompile Include="text.cpp" />
-    <ClCompile Include="wave.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="Eggbert2.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="cursor1.cur" />
     <None Include="Debug\DATA\config.def" />
-    <None Include="IDC_ARROW.cur" />
-    <None Include="IDC_ARROWD.cur" />
-    <None Include="IDC_ARROWDL.cur" />
-    <None Include="IDC_ARROWDR.cur" />
-    <None Include="IDC_ARROWL.cur" />
-    <None Include="IDC_ARROWR.cur" />
-    <None Include="IDC_ARROWU.cur" />
-    <None Include="IDC_ARROWUL.cur" />
-    <None Include="IDC_ARROWUR.cur" />
-    <None Include="IDC_EMPTY.cur" />
-    <None Include="IDC_FILL.cur" />
-    <None Include="IDC_MAP.cur" />
-    <None Include="IDC_POINTER.cur" />
-    <None Include="IDC_WAIT.cur" />
+    <None Include="resource\IDC_ARROW.cur" />
+    <None Include="resource\IDC_ARROWD.cur" />
+    <None Include="resource\IDC_ARROWDL.cur" />
+    <None Include="resource\IDC_ARROWDR.cur" />
+    <None Include="resource\IDC_ARROWL.cur" />
+    <None Include="resource\IDC_ARROWR.cur" />
+    <None Include="resource\IDC_ARROWU.cur" />
+    <None Include="resource\IDC_ARROWUL.cur" />
+    <None Include="resource\IDC_ARROWUR.cur" />
+    <None Include="resource\IDC_EMPTY.cur" />
+    <None Include="resource\IDC_FILL.cur" />
+    <None Include="resource\IDC_MAP.cur" />
+    <None Include="resource\IDC_POINTER.cur" />
+    <None Include="resource\IDC_WAIT.cur" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="IDR_MAINFRAME.ico" />
+    <ClCompile Include="src\blupi.cpp" />
+    <ClCompile Include="src\button.cpp" />
+    <ClCompile Include="src\ddutil.cpp" />
+    <ClCompile Include="src\decblock.cpp" />
+    <ClCompile Include="src\decblupi.cpp" />
+    <ClCompile Include="src\decdesign.cpp" />
+    <ClCompile Include="src\decio.cpp" />
+    <ClCompile Include="src\decmove.cpp" />
+    <ClCompile Include="src\decnet.cpp" />
+    <ClCompile Include="src\decor.cpp" />
+    <ClCompile Include="src\event.cpp" />
+    <ClCompile Include="src\jauge.cpp" />
+    <ClCompile Include="src\menu.cpp" />
+    <ClCompile Include="src\misc.cpp" />
+    <ClCompile Include="src\movie.cpp" />
+    <ClCompile Include="src\network.cpp" />
+    <ClCompile Include="src\pixmap.cpp" />
+    <ClCompile Include="src\sound.cpp" />
+    <ClCompile Include="src\text.cpp" />
+    <ClCompile Include="src\wave.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="resource2.h" />
+    <ClInclude Include="src\button.h" />
+    <ClInclude Include="src\ddutil.h" />
+    <ClInclude Include="src\decor.h" />
+    <ClInclude Include="src\dectables.h" />
+    <ClInclude Include="src\def.h" />
+    <ClInclude Include="src\event.h" />
+    <ClInclude Include="src\jauge.h" />
+    <ClInclude Include="src\menu.h" />
+    <ClInclude Include="src\misc.h" />
+    <ClInclude Include="src\movie.h" />
+    <ClInclude Include="src\network.h" />
+    <ClInclude Include="src\obstacle.h" />
+    <ClInclude Include="src\pixmap.h" />
+    <ClInclude Include="src\pixtables.h" />
+    <ClInclude Include="src\resource.h" />
+    <ClInclude Include="src\resource1.h" />
+    <ClInclude Include="src\sound.h" />
+    <ClInclude Include="src\text.h" />
+    <ClInclude Include="src\texttables.h" />
+    <ClInclude Include="src\wave.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="icon1.ico" />
+    <Image Include="resource\IDR_MAINFRAME.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Eggbert 2.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

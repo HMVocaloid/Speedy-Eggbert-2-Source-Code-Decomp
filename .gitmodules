@@ -1,0 +1,3 @@
+[submodule "dxsdk3"]
+	path = dxsdk3
+	url = https://github.com/jummy0/dxsdk3.git
