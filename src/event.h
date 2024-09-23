@@ -53,6 +53,7 @@ typedef struct
 }
 DemoEvent;
 
+
 class CEvent
 {
 public:
@@ -72,16 +73,19 @@ public:
 	int		GetImageWorld();
 	BOOL	IsHelpHide();
 	BOOL	ChangePhase(UINT phase);
+	BOOL	LoadImageFromDisc();
 	UINT    GetPhase();
 	void	MovieToStart();
 	BOOL	NetworkNuggets(int fuck);
 	void	HandleInputs();
 	void	ReadInput();
 	void	TryInsert();
-	void	SomethingUserMissions(LPCSTR lpFileName, LPCSTR thing);
+	//void	SomethingUserMissions(LPCSTR lpFileName, LPCSTR thing);
+	BOOL	OpenMission(char* pMission, char* pFile);
 	void	RestoreGame();
 	int		MissionBack();
 	void	TableSomething();
+	int		PlaceBuildItem(POINT cel, int flags, int currentIcon);
 
 	int		GetButtonIndex(int button);
 	int		GetState(int button);
@@ -185,6 +189,7 @@ protected:
 
 	void	MouseRelease();
 	void	MouseCapture();
+	int		GameSave(int save);
 
 	BOOL	FUN_1fbd0();
 
@@ -192,6 +197,7 @@ protected:
 protected:
     int         m_speed;
     int         m_exercice;
+	int			m_quicksaveIndex;
     int         m_mission;
 	char		m_gamerName[100];
 	char		m_gamerNameList[8][100];
@@ -277,7 +283,6 @@ protected:
 	BOOL		m_bDemoPlay;
 	DemoEvent*	m_pDemoBuffer;
 	int			m_demoTime;
-    int         m_input;
 	int			m_demoIndex;
 	int			m_demoEnd;
 	int			m_demoNumber;
@@ -296,6 +301,7 @@ protected:
 	HINSTANCE	m_hInstance;
 	char		m_chatZone[100][5];
 	char 		m_text[100];
+	int			m_keyPress;
 
 	int			m_choicePageOffset;
 	int			m_nbChoices;
@@ -304,6 +310,8 @@ protected:
 	//BOOL		m_b6D34;
 	int			m_96B4;
 	int			m_nbVies;
+public:
+    int         m_input;
 };
 
 extern

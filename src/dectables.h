@@ -23,6 +23,17 @@ extern int table_vitesse_surf[]
 	0, 2, 5, 8, 3, 0
 };
 
+extern int speed[]
+{
+	-8,
+					-6,
+					-4,
+					0,
+					4,
+					6,
+					8
+};
+
 extern int table_bulldozer_left[8]{ 66, 66, 67, 67, 66, 66, 65, 65 };
 
 extern int table_bulldozer_right[8]{ 58, 58, 57, 57, 58, 58, 59, 59 };

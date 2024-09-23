@@ -438,6 +438,11 @@ BOOL CPixmap::GetTrueColor()
 	return m_bTrueColorBack;
 }
 
+BOOL CPixmap::GetTrueColorDecor()
+{
+	return m_bTrueColorDecor;
+}
+
 void CPixmap::SetBenchmarkSuccess(BOOL bSuccess)
 {
 	m_bBenchmarkSuccess = bSuccess;
@@ -1225,8 +1230,10 @@ BOOL CPixmap::DrawIcon(int chDst, int channel, int rank, POINT pos,
 	RECT		rect;
 	HRESULT		ddrval;
 	COLORREF	oldColor1, oldColor2;
-	if (channel == CHOBJECT)
+
+	switch (channel)
 	{
+	case CHOBJECT:
 		if (table_icon_object[0] <= rank) return FALSE;
 		rect.left = table_icon_object[rank * 6 + 0 + 1];
 		rect.top = table_icon_object[rank * 6 + 1 + 1];
@@ -1234,9 +1241,8 @@ BOOL CPixmap::DrawIcon(int chDst, int channel, int rank, POINT pos,
 		rect.bottom = rect.top + table_icon_object[rank * 6 + 5 + 1];
 		pos.x += table_icon_object[rank * 6 + 2 + 1];
 		pos.y += table_icon_object[rank * 6 + 3 + 1];
-	}
-	else if (channel == CHELEMENT)
-	{
+		break;
+	case CHELEMENT:
 		if (table_icon_element[0] <= rank) return FALSE;
 		rect.left = table_icon_element[rank * 6 + 0 + 1];
 		rect.top = table_icon_element[rank * 6 + 1 + 1];
@@ -1244,8 +1250,19 @@ BOOL CPixmap::DrawIcon(int chDst, int channel, int rank, POINT pos,
 		rect.bottom = rect.top + table_icon_element[rank * 6 + 5 + 1];
 		pos.x += table_icon_element[rank * 6 + 2 + 1];
 		pos.y += table_icon_element[rank * 6 + 3 + 1];
+		break;
+	
+	case CHEXPLO:
+		if (table_icon_explo[0] <= rank) return FALSE;
+		rect.left = table_icon_explo[rank * 6 + 0 + 1];
+		rect.top = table_icon_explo[rank * 6 + 1 + 1];
+		rect.right = rect.left + table_icon_explo[rank * 6 + 4 + 1];
+		rect.bottom = rect.top + table_icon_explo[rank * 6 + 5 + 1];
+		pos.x += table_icon_explo[rank * 6 + 2 + 1];
+		pos.y += table_icon_explo[rank * 6 + 3 + 1];
+		break;
 	}
-	else if (IsBlupiChannel(channel))
+	if (IsBlupiChannel(channel))
 	{
 		if (table_icon_blupi[0] <= rank) return FALSE;
 		rect.left = table_icon_blupi[rank * 6 + 0 + 1];
@@ -1254,16 +1271,6 @@ BOOL CPixmap::DrawIcon(int chDst, int channel, int rank, POINT pos,
 		rect.bottom = rect.top + table_icon_blupi[rank * 6 + 5 + 1];
 		pos.x += table_icon_blupi[rank * 6 + 2 + 1];
 		pos.y += table_icon_blupi[rank * 6 + 3 + 1];
-	}
-	else if (channel == CHEXPLO)
-	{
-		if (table_icon_explo[0] <= rank) return FALSE;
-		rect.left = table_icon_explo[rank * 6 + 0 + 1];
-		rect.top = table_icon_explo[rank * 6 + 1 + 1];
-		rect.right = rect.left + table_icon_explo[rank * 6 + 4 + 1];
-		rect.bottom = rect.top + table_icon_explo[rank * 6 + 5 + 1];
-		pos.x += table_icon_explo[rank * 6 + 2 + 1];
-		pos.y += table_icon_explo[rank * 6 + 3 + 1];
 	}
 	else
 	{

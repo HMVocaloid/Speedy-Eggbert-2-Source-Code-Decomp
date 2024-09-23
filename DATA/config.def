@@ -1,7 +1,9 @@
 FullScreen=0
-TrueColorBack=16
-TrueColorDecor=16
+TrueColor=0
+TrueColorDecor=0
+CDAudio=0
 MouseType=1
 SpeedRate=1
 Timer=50ms
+Language=F
 Benchmark=6666

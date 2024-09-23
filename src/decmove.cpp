@@ -211,10 +211,7 @@ BOOL CDecor::IsBalleTraj(POINT pos)
 
 void CDecor::FlushMoveTraj()
 {
-	for (int i = 0; i < 1300; i++)
-	{
-		m_moveTraj[i] = 0;
-	}
+	memset(m_moveTraj, 0, sizeof(m_moveTraj));
 }
 
 void CDecor::SetMoveTraj(POINT pos)

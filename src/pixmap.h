@@ -67,6 +67,7 @@ public:
     void    SetTrueColor(BOOL bTrueColor);
     void    SetTrueColorDecor(BOOL bTrueColorDecor);
     BOOL    GetTrueColor();
+    BOOL    GetTrueColorDecor();
 
 protected:
 	HRESULT	RestoreAll();

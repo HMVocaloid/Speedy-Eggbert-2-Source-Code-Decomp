@@ -551,7 +551,31 @@ void CDecor::ModifDecor(POINT pos, int icon, BOOL bMulti)
 
 BOOL CDecor::IsRightBorder(POINT pos, POINT offset)
 {
-	return FALSE; // TODO
+	int icon;
+
+	if (pos.x >= 0
+		&& pos.x < (m_dimDecor.x != 0 ? 100 : 10)
+		&& pos.y >= 0
+		&& pos.y < (m_dimDecor.y != 0 ? 100 : 8))
+	{
+		icon = m_decor[offset.x][100 * pos.x + pos.y + offset.y].icon;
+		if (icon >= 386 && icon <= 397 || icon == 400)
+		{
+			int icon2 = m_decor[pos.x][pos.y].icon;
+			return icon2 >= 386 && icon2 <= 397 || icon2 == 400;
+		}
+		if (icon >= 250 && icon <= 260)
+		{
+			int icon3 = m_decor[pos.x][pos.y].icon;
+			return icon3 >= 250 && icon <= 260;
+		}
+		int num = m_decor[pos.x][pos.y].icon;
+
+		switch (num)
+		{
+
+		}
+	}
 }
 
 

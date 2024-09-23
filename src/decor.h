@@ -13,6 +13,7 @@
 #define MAXMOVEOBJECT	200
 #define MAXNOTIF 4
 #define MAXNETPLAYER 4
+#define MAXPLAYER 4
 
 #define MAXQUART		441
 #define SCROLL_SPEED	8
@@ -68,16 +69,17 @@ typedef struct
 {
 	short majRev;
 	short minRev;
-	short reserve1[100];
+	BOOL  bDemo;
+	short reserve1[98];
 	POINT posDecor;
 	POINT dimDecor;
 	short world;
 	short music;
 	short region;
-	short reserve2[51];
-	POINT blupiPos[4];
-	int blupiDir[4];
-	char name[100];
+	short reserve2[50];
+	POINT blupiPos[MAXPLAYER];
+	int	  blupiDir[MAXPLAYER];
+	char  libelle[100];
 	short reserve3[196];
 }
 DescFile;
@@ -282,12 +284,13 @@ public:
 
 	// DecIO.cpp
 	void	GetMissionPath(char *out, int gamer, int mission, BOOL bUser);
-	BOOL	Write(int gamer, int mission, char* pFile);
+	BOOL	Write(int gamer, int mission, BOOL bUser);
 	BOOL	Read(int gamer, int mission, BOOL bUser);
 	BOOL	SomethingMissionPath(int gamer, int mission, BOOL bUser);
 	BOOL	MissionStart(int gamer, int mission, BOOL bUser);
 	BOOL	CurrentRead(int gamer, int mission, BOOL *pbMission, BOOL *pbPrivate);
 	BOOL	CurrentWrite(int gamer, int mission, char* param3);
+	BOOL	DeleteMission(int user, int mission, BOOL bUser);
 
 	BOOL	SearchWorld(int world, POINT *blupi, int *dir);
 	BOOL	SearchDoor(int n, POINT *cel, POINT *blupi);

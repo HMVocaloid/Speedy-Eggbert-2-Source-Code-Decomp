@@ -201,3 +201,4 @@ void CDecor::NotifStep()
 		m_notifTime--;
 	}
 }
+
