@@ -3232,20 +3232,25 @@ BOOL CEvent::TreatEventBase(UINT message, WPARAM wParam, LPARAM lParam)
 
 			}
 		case VK_SHIFT:
-			m_keyPress | KEY_FIRE;
-			break;
+			m_keyPress |= KEY_FIRE;
+			m_pDecor->SetInput(m_keyPress);
+			return TRUE;
 		case VK_LEFT:
-			m_keyPress | KEY_LEFT;
-			break;
+			m_keyPress |= KEY_LEFT;
+			m_pDecor->SetInput(m_keyPress);
+			return TRUE;
 		case VK_UP:
-			m_keyPress | KEY_UP;
-			break;
+			m_keyPress |= KEY_UP;
+			m_pDecor->SetInput(m_keyPress);
+			return TRUE;
 		case VK_RIGHT:
-			m_keyPress | KEY_RIGHT;
-			break;
+			m_keyPress |= KEY_RIGHT;
+			m_pDecor->SetInput(m_keyPress);
+			return TRUE;
 		case VK_DOWN:
-			m_keyPress | KEY_DOWN;
-			break;
+			m_keyPress |= KEY_DOWN;
+			m_pDecor->SetInput(m_keyPress);
+			return TRUE;
 		case VK_HOME:
 			return TRUE;
 		case VK_SPACE:
@@ -3260,8 +3265,9 @@ BOOL CEvent::TreatEventBase(UINT message, WPARAM wParam, LPARAM lParam)
 			NetSetPause((m_pDecor->GetPause()), m_bPause);
 			return TRUE;
 		case VK_CONTROL:
-			m_keyPress | KEY_JUMP;
-			break;
+			m_keyPress |= KEY_JUMP;
+			m_pDecor->SetInput(m_keyPress);
+			return TRUE;
 
 		}
 
@@ -5366,37 +5372,38 @@ void CEvent::ChangeButtons(int message)
 
 BOOL CEvent::OpenMission(char* pMission, char* pFile)
 {	
-	FILE* file;
-	FILE* file2;
-	UINT  nmemb;
-	int   nb;
-	char* pBuffer = NULL;
-	BOOL  bMission = TRUE;
+	FILE* srcFile = NULL;
+	FILE* destFile = NULL;
+	size_t num;
+	BOOL bOK = TRUE;
+	void* buffer = malloc(2560);
 
-	pBuffer = (char*)malloc(sizeof(2560));
-	if (pBuffer == NULL) goto error;
-
-	file = fopen(pMission, "rb");
-	if (file == NULL) goto error;
-
-	file2 = fopen(pFile, "wb");
-	if (file2 == NULL) goto error;
-
-	do
+	if (buffer)
 	{
-		nb = fread(pBuffer, 1, sizeof(2560), file);
-		if (pBuffer[nb] & 32 != 0) break;
-		if (nb <= 0)
-			bMission = FALSE;
-		break;
-		fwrite(pBuffer, 1, nb, file2);
-	} while (pBuffer[nb] & 32 != 0);
-	return bMission;
+		srcFile = fopen(pMission, "rb");
+		if (!srcFile) goto die;
+		destFile = fopen(pFile, "wb");
+		if (destFile)
+		{
+			do
+			{
+				num = fread(buffer, 1, 2560, srcFile);
+				if (ferror(srcFile)) break; // *
+				if (num <= 0)
+				{
+					bOK = FALSE;
+					break;
+				}
+				fwrite(buffer, 1, num, destFile);
+			} while (!ferror(destFile)); // *
+		}
+	}
+	if (srcFile) fclose(srcFile);
+die:
+	if (destFile) fclose(destFile);
+	if (buffer) free(buffer);
+	return bOK;
 
-error:
-	if (file == NULL) free(file);
-	if (file2 == NULL) free(file2);
-	return bMission;
 }
 
 BOOL CEvent::ClearGamer(int gamer)

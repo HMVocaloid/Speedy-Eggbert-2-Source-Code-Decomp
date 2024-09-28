@@ -328,7 +328,7 @@ void UpdateFrame(void)
 
 void SetDecor(void)
 {
-	RECT rect;
+	RECT rect, clip;
 	UINT phase;
 	POINT posMouse;
 	char  test[12];
@@ -342,7 +342,11 @@ void SetDecor(void)
 
 	if (phase == WM_PHASE_PLAY || phase == WM_PHASE_PLAYTEST || phase == WM_PHASE_BUILD)
 	{
-		g_pDecor->Build(rect);
+		clip.left = POSDRAWX;
+		clip.top = POSDRAWY;
+		clip.right = POSDRAWX + DIMDRAWX;
+		clip.bottom = POSDRAWY + DIMDRAWY;
+		g_pDecor->Build(clip, posMouse);
 	}
 	else {
 		g_pPixmap->DrawImage(-1, 0, rect, 1);

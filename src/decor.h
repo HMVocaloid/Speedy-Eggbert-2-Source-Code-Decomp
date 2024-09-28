@@ -105,7 +105,7 @@ public:
 	int		GetBlupiChannelStandard();
 	int		GetBlupiChannelActual();
 	int		GetIconPerso();
-	void	Build(RECT rect);
+	void	Build(RECT clip, POINT posMouse);
 	void	DrawInfo();
 	POINT	DecorNextAction();
 	void	SetInput(int keys);
@@ -311,6 +311,7 @@ protected:
 	CSound*		m_pSound;
 	CPixmap*	m_pPixmap;
 	CNetwork*	m_pNetwork;
+	//CEvent*		m_pEvent;
 	Cellule		m_decor[MAXCELX][MAXCELY];
 	Cellule		m_bigDecor[MAXCELX][MAXCELY];
 	byte		m_balleTraj[MAXCELX * MAXCELY / 8 + 1];

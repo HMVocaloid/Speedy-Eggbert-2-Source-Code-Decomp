@@ -39,6 +39,12 @@
 #define DIMBLUPIX		60		// dimensions de blupi
 #define DIMBLUPIY		60
 
+#define DIMDRAWX		640
+#define DIMDRAWY		480
+
+#define DIMMAPX			208
+#define DIMMAPY			160
+
 #define DIMEXPLOX		128
 #define DIMEXPLOY		128
 
@@ -54,22 +60,28 @@
 #define DIMLITTLEX		16		// dimensions max d'un petit caractère
 #define DIMLITTLEY		12
 
+#define DIMSTATX 60
+#define DIMSTATY 30
+
+#define POSSTATX 12
+#define POSSTATY 220
+
 enum {
 	CHBACK = 0,
-	CHOBJECT,
-	CHBLUPI,
-	CHDECOR,
-	CHBUTTON,
-	CHJAUGE,
-	CHTEXT,
-	CHLITTLE,
-	CHMAP,
-	CHEXPLO,
-	CHELEMENT,
-	CHBLUPI1,
-	CHBLUPI2,
-	CHBLUPI3,
-	CHTEMP
+	CHOBJECT, // 1
+	CHBLUPI, // 2
+	CHDECOR, // 3
+	CHBUTTON, // 4
+	CHJAUGE, // 5
+	CHTEXT, // 6
+	CHLITTLE, // 7
+	CHMAP, // 8
+	CHEXPLO, // 9
+	CHELEMENT, // 10
+	CHBLUPI1, // 11
+	CHBLUPI2, // 12
+	CHBLUPI3, // 13
+	CHTEMP // 14
 };
 
 enum {

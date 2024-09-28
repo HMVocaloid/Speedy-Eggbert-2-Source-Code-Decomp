@@ -397,17 +397,15 @@ void CPixmap::QuickIcon(int channel, int rank, POINT pos)
 	{
 		rect.bottom = num;
 	}
-	if (rect.left < rect.right && rect.top < rect.bottom)
-	{
+	if (rect.left >= rect.right || rect.top >= rect.bottom) return;
+
 		while (TRUE)
 		{
 			num = m_lpDDSBack->BltFast(pos.x, pos.y, m_lpDDSurface[channel], &rect, 1);
-			if (num == DD_OK) return;
-			if (num == DDERR_SURFACELOST && RestoreAll() != DD_OK) return;
-			if (num != DDERR_WASSTILLDRAWING) return;
+			if (num == DD_OK) break;
+			if (num == DDERR_SURFACELOST && RestoreAll() != DD_OK) break;
+			if (num != DDERR_WASSTILLDRAWING) break;
 		}
-	}
-	return;
 }
 
 
