@@ -490,6 +490,7 @@ void CDecor::MoveObjectStepLine(int i)
 		tinyRect.top = m_moveObject[i].posCurrent.y;
 		tinyRect.bottom = m_moveObject[i].posCurrent.y + 16;
 		RECT tinyRect2;
+		tinyRect2 = { 0, 0, 0, 0 };
 		flag = IntersectRect(tinyRect2, tinyRect, src);
 		tinyPoint = m_moveObject[i].posCurrent;
 	}

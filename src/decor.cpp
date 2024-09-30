@@ -496,11 +496,11 @@ void CDecor::Build(RECT clip, POINT posMouse)
 		}
 		dest.y += DIMOBJY;
 	}
-	dest.x = DIMDRAWX - posDecor.x % DIMOBJX;
-	for (x = posDecor.x / DIMOBJX; x < posDecor.x / DIMOBJX + (DIMDRAWX / DIMOBJX) + 3; x++)
+	dest.x = POSDRAWX - (posDecor.x % DIMOBJX);
+	for (x = posDecor.x / DIMOBJX; x < (posDecor.x / DIMOBJX) + (DIMDRAWX / DIMOBJX) + 2; x++)
 	{
-		dest.y = DIMDRAWY - posDecor.y % DIMOBJY;
-		for (y = posDecor.y / DIMOBJY; y < posDecor.y / DIMOBJY + (DIMDRAWY / DIMOBJY) + 2; y++)
+		dest.y = POSDRAWY - (posDecor.y % DIMOBJY);
+		for (y = posDecor.y / DIMOBJY; y < (posDecor.y / DIMOBJY) + (DIMDRAWY / DIMOBJY) + 2; y++)
 		{
 			if (x >= 0 && x < MAXCELX &&
 				y >= 0 && y < MAXCELY &&
@@ -636,8 +636,8 @@ void CDecor::Build(RECT clip, POINT posMouse)
 				m_moveObject[i].type != 47 &&
 				m_moveObject[i].type != 48)
 			{
-				dest.x = DIMDRAWX + m_moveObject[i].posCurrent.x - posDecor.x;
-				dest.y = DIMDRAWY + m_moveObject[i].posCurrent.y - posDecor.y;
+				dest.x = POSDRAWX + m_moveObject[i].posCurrent.x - posDecor.x;
+				dest.y = POSDRAWY + m_moveObject[i].posCurrent.y - posDecor.y;
 				if (m_moveObject[i].type == 4 || m_moveObject[i].type == 32 || m_moveObject[i].type == 33)
 				{
 					dest.x += 2;
@@ -658,11 +658,11 @@ void CDecor::Build(RECT clip, POINT posMouse)
 			}
 
 		}
-		dest.x = DIMDRAWX - posDecor.x % DIMOBJX;
-		for (x = posDecor.x / DIMOBJX; x < posDecor.x / DIMOBJX + DIMDRAWX / DIMOBJX + 2; x++)
+		dest.x = POSDRAWX - (posDecor.x % DIMOBJX);
+		for (x = posDecor.x / DIMOBJX; x < (posDecor.x / DIMOBJX) + (DIMDRAWX / DIMOBJX) + 2; x++)
 		{
-			dest.y = DIMDRAWY - posDecor.y % DIMOBJY;
-			for (y = posDecor.y / DIMOBJY; y < posDecor.y / DIMOBJY + DIMDRAWY / DIMOBJY + 2; y++)
+			dest.y = POSDRAWY - (posDecor.y % DIMOBJY);
+			for (y = posDecor.y / DIMOBJY; y < (posDecor.y / DIMOBJY) + (DIMDRAWY / DIMOBJY) + 2; y++)
 			{
 				if (x >= 0 && x < MAXCELX &&
 					y >= 0 && y < MAXCELY &&
@@ -760,11 +760,11 @@ void CDecor::Build(RECT clip, POINT posMouse)
 			}
 
 		}
-		dest.x = DIMDRAWX - posDecor.x % DIMOBJX;
-		for (x = posDecor.x / DIMOBJX; x < posDecor.x / DIMOBJX + DIMDRAWX / DIMOBJX + 2; x++)
+		dest.x = POSDRAWX - (posDecor.x % DIMOBJX);
+		for (x = posDecor.x / DIMOBJX; x < (posDecor.x / DIMOBJX) + (DIMDRAWX / DIMOBJX) + 2; x++)
 		{
-			dest.y = DIMDRAWY - posDecor.y % DIMOBJY;
-			for (y = posDecor.y / DIMOBJY; y < posDecor.y / DIMOBJY + DIMDRAWY / DIMOBJY + 2; y++)
+			dest.y = POSDRAWY - (posDecor.y % DIMOBJY);
+			for (y = posDecor.y / DIMOBJY; y < (posDecor.y / DIMOBJY) + (DIMDRAWY / DIMOBJY) + 2; y++)
 			{
 				if (x >= 0 && x < MAXCELX &&
 					y >= 0 && y < MAXCELY &&
@@ -774,7 +774,7 @@ void CDecor::Build(RECT clip, POINT posMouse)
 					pos = dest;
 					if (icon == 68)
 					{
-						icon = table_decor_lave[(x * 13 + y * 7 + m_time / 4) % 16];
+						icon = table_decor_lave[(x * 13 + y * 7 + m_time / 4) % 8];
 						m_pPixmap->QuickIcon(CHOBJECT, icon, pos);
 					}
 					if (icon == 373)
@@ -820,14 +820,13 @@ void CDecor::Build(RECT clip, POINT posMouse)
 					}
 					if (icon == 92)
 					{
-						j = 3 + (x * 17 + y * 13) % 3;
-						icon = table_decor_eau1[(x * 13 + y * 7 + m_time / j) % 6];
+						icon = table_decor_eau1[(x * 13 + y * 7 + m_time / 3) % 6];
 						m_pPixmap->QuickIcon(CHOBJECT, icon, pos);
 					}
 					if (icon == 91)
 					{
 						j = 3 + (x * 17 + y * 13) % 3;
-						icon = table_decor_eau2[(x * 11 + y * 7 + m_time / j) % 6];
+						icon = table_decor_eau2[(x * 11 + y * 7 + m_time / 3) % 6];
 						m_pPixmap->QuickIcon(CHOBJECT, icon, pos);
 					}
 					if (icon == 305 && BlitzActif({ x, y }))
