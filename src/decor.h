@@ -84,6 +84,149 @@ typedef struct
 }
 DescFile;
 
+typedef struct
+{
+	int			size;
+	int			majRev;
+	int			minRev;
+	BOOL		bDemo;
+
+	short		reseve1[98];
+
+	Cellule		decor[MAXCELX][MAXCELY];
+	Cellule		bigDecor[MAXCELX][MAXCELY];
+	unsigned char balleTraj[(MAXCELX / 8 + 1) * MAXCELY];
+	unsigned char moveTraj[(MAXCELX / 8 + 1) * MAXCELY];
+	MoveObject	moveObject[MAXMOVEOBJECT];
+
+	short		reseve2[100];
+
+	POINT		posDecor;
+	POINT		dimDecor;
+	int			phase;
+	int			term;
+	int			music;
+	int			region;
+	int			time;
+	char		libelle[100];
+
+	short		reseve3[100];
+
+	int			nbRankCaisse;
+	int			rankCaisse[MAXMOVEOBJECT];
+	int			nbLinkCaisse;
+	int			linkCaisse[MAXMOVEOBJECT];
+
+	short		reseve4[100];
+
+	POINT		blupiPos;
+	POINT		blupiValidPos;
+	int			blupiAction;
+	int			blupiDir;
+	int			blupiPhase;
+	int			blupiVitesseX;
+	int			blupiVitesseY;
+	int			blupiIcon;
+	int			blupiSec;
+	int			blupiChannel;
+	POINT		blupiVector;
+	int			blupiTransport;
+	BOOL		blupiFocus;
+	BOOL		blupiAir;
+	BOOL		blupiHelico;
+	BOOL		blupiJeep;
+	BOOL		blupiTank;
+	BOOL		blupiSkate;
+	BOOL		blupiNage;
+	BOOL		blupiSurf;
+	BOOL		blupiVent;
+	BOOL		blupiSuspend;
+	BOOL		blupiJumpAie;
+	BOOL		blupiShield;
+	BOOL		blupiPower;
+	BOOL		blupiCloud;
+	BOOL		blupiHide;
+	POINT		blupiPosHelico;
+	POINT		blupiPosMagic;
+	BOOL		blupiRestart;
+	BOOL		blupiFront;
+	int			blupiBullet;
+	int			blupiCle;
+	int			blupiPerso;
+	int			blupiNoBarre;
+	int			blupiTimeShield;
+	int			blupiTimeFire;
+	int			blupiTimeOuf;
+	BOOL		blupiActionOuf;
+	int			blupiFifoNb;
+	POINT		blupiFifoPos[10];
+	BOOL		blupiInvert;
+	BOOL		blupiBalloon;
+	BOOL		blupiOver;
+	BOOL		blupiEcrase;
+	int			blupiTimeNoAsc;
+	int			blupiDynamite;
+
+	short		reseve5[82];	// BOOL = -2, int = -2
+
+	POINT		blupiStartPos[MAXPLAYER];
+	int			blupiStartDir[MAXPLAYER];
+
+	short		reseve6[100];
+
+	BOOL		jaugeHide[2];
+	int			jaugeType[2];
+	int			jaugeLevel[2];
+	int			blupiLevel;
+	int			blupiEnergy;
+
+	short		reseve7[100];
+
+	BOOL		playHelicoHigh;
+	BOOL		playHelicoLow;
+	BOOL		playJeepHigh;
+	BOOL		playJeepLow;
+
+	short		reseve8[100];
+
+	BOOL		bFoundCle;
+	BOOL		bPrivate;
+	BOOL		bCheatDoors;
+	BOOL		bSuperBlupi;
+	BOOL		bDrawSecret;
+	BOOL		bJoystick;
+	BOOL		bDemoPlay;
+	int			mission;
+	char		doors[200];
+	int			nbVies;
+	int			nbTresor;
+	int			totalTresor;
+	int			goalPhase;
+
+	short		reseve9[100];
+
+	BOOL		scrollFollow;
+	POINT		scrollPoint;
+	POINT		scrollAdd;
+
+	short		reseve10[100];
+
+	int			voyageIcon;
+	int			voyageChannel;
+	int			voyagePhase;
+	int			voyageTotal;
+	POINT		voyageStart;
+	POINT		voyageEnd;
+
+	short		reseve11[100];
+
+	int			decorAction;
+	int			decorPhase;
+
+	short		reseve12[100];
+}
+DescGameFile;
+
 class CDecor
 {
 public:

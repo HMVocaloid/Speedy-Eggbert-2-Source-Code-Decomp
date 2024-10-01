@@ -161,6 +161,21 @@ BOOL CDecor::Read(int gamer, int mission, BOOL bUser)
 				}
 			}
 
+			nb = fread(m_bigDecor, sizeof(Cellule), MAXCELX * MAXCELY / 4, file);
+			if (nb < MAXCELX * MAXCELY / 4) goto error;
+
+			for (x = 0; x < MAXCELX / 2; x++)
+			{
+				for (y = 0; y < MAXCELY / 2; y++)
+				{
+					if (m_bigDecor[x][y].icon >= 48 &&
+						m_bigDecor[x][y].icon <= 67)
+					{
+						m_bigDecor[x][y].icon -= 128 - 17;
+					}
+				}
+			}
+
 			if (majRev == 1 && minRev <= 1)
 			{
 				memset(m_moveObject, 0, sizeof(MoveObject));
@@ -243,7 +258,7 @@ BOOL CDecor::CurrentRead(int gamer, int mission, BOOL *pbMission, BOOL *pbPrivat
 {
 	char filename[MAX_PATH];
 	FILE* file = NULL;
-	DescFile* pBuffer = NULL;
+	DescGameFile* pBuffer = NULL;
 	int majRev, minRev;
 	int nb, i, x, y;
 
@@ -253,13 +268,22 @@ BOOL CDecor::CurrentRead(int gamer, int mission, BOOL *pbMission, BOOL *pbPrivat
 	file = fopen(filename, "rb");
 	if (file == NULL) goto error;
 
-	pBuffer = (DescFile*)malloc(sizeof(DescFile));
+	pBuffer = (DescGameFile*)malloc(sizeof(DescGameFile));
 	if (pBuffer == NULL) goto error;
 
-	nb = fread(pBuffer, sizeof(DescFile), 1, file);
-	if (nb < 1) goto error;
+	nb = fread(pBuffer, sizeof(DescGameFile), 1, file);
+	if (nb < 1 || pBuffer->size != sizeof(DescGameFile)) goto error;
 
+	minRev = pBuffer->minRev;
 	majRev = pBuffer->majRev;
+	memcpy(m_decor, pBuffer->decor, sizeof(Cellule));
+	memcpy(m_decor, pBuffer->bigDecor, sizeof(Cellule));
+	memcpy(m_moveObject, pBuffer->moveObject, sizeof(MoveObject));
+	m_posDecor = pBuffer->posDecor;
+	m_dimDecor = pBuffer->dimDecor;
+	m_phase = pBuffer->phase;
+	m_term = pBuffer->term;
+	m_music = pBuffer->music;
 
 	return TRUE;
 

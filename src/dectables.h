@@ -3421,7 +3421,7 @@ extern int table_decor_venth[4]{118, 119, 120, 121 };
 
 extern int table_decor_ventb[4]{122, 123, 124, 125 };
 
-extern int table_marine[]
+extern int table_marine[11]
 {
 	203, 204, 205, 206,
 	207, 208, 207, 206,

@@ -418,12 +418,6 @@ int CDecor::GetIconPerso()
 	}
 }
 
-#include "decor.h"
-#include "pixmap.h"
-#include <windows.h>
-#include <stdlib.h>
-#include <stdio.h>
-
 void CDecor::Build(RECT clip, POINT posMouse)
 {
 	RECT oldClip, rect;
@@ -772,13 +766,13 @@ void CDecor::Build(RECT clip, POINT posMouse)
 				{
 					icon = m_decor[x][y].icon;
 					pos = dest;
-					if (icon == 68)
+					switch (icon)
 					{
-						icon = table_decor_lave[(x * 13 + y * 7 + m_time / 4) % 8];
+					case 68:
+						icon = table_decor_lave[(x * 13 + y * 7 + m_time / 2) % 8];
 						m_pPixmap->QuickIcon(CHOBJECT, icon, pos);
-					}
-					if (icon == 373)
-					{
+						break;
+					case 373:
 						if (m_blupiFocus)
 						{
 							icon = table_decor_piege1[(x * 13 + y * 7 + m_time / 4) % 16];
@@ -788,10 +782,9 @@ void CDecor::Build(RECT clip, POINT posMouse)
 							icon = table_decor_piege2[(x * 13 + y * 7 + m_time / 2) % 4];
 						}
 						m_pPixmap->QuickIcon(CHOBJECT, icon, pos);
-					}
-					if (icon == 404 || icon == 410)
-					{
-						icon == table_decor_goutte[(x * 13 + y * 7 + m_time / 2) % 48];
+						break;
+					case 404 || 410:
+						icon = table_decor_goutte[(x * 13 + y * 7 + m_time / 2) % 48];
 						pos.y -= 9;
 						m_pPixmap->QuickIcon(CHOBJECT, icon, pos);
 						if (icon >= 404 && icon <= 407)
@@ -802,77 +795,43 @@ void CDecor::Build(RECT clip, POINT posMouse)
 						{
 							m_decor[x][y].icon = 410;
 						}
-					}
-					if (icon == 317)
-					{
+						break;
+					case 317:
 						icon = table_decor_ecraseur[m_time / 3 % 10];
 						m_pPixmap->QuickIcon(CHOBJECT, icon, pos);
-					}
-					if (icon == 378)
-					{
+						break;
+					case 378:
 						icon = table_decor_scie[(x * 13 + y * 7 + m_time / 1) % 6];
 						m_pPixmap->QuickIcon(CHOBJECT, icon, pos);
-					}
-					if (icon == 324)
-					{
+						break;
+					case 324:
 						icon = table_decor_temp[m_time / 4 % 20];
 						m_pPixmap->QuickIcon(CHOBJECT, icon, pos);
-					}
-					if (icon == 92)
-					{
-						icon = table_decor_eau1[(x * 13 + y * 7 + m_time / 3) % 6];
+						break;
+					case 92:
+						icon = table_decor_eau1[(x * 13 + y * 7 + m_time / 3) % 4];
 						m_pPixmap->QuickIcon(CHOBJECT, icon, pos);
-					}
-					if (icon == 91)
-					{
-						j = 3 + (x * 17 + y * 13) % 3;
-						icon = table_decor_eau2[(x * 11 + y * 7 + m_time / 3) % 6];
+						break;
+					case 91:
+						//j = 3 + (x * 17 + y * 13) % 3;
+						icon = table_decor_eau2[(x * 11 + y * 7 + m_time / 3) % 4];
 						m_pPixmap->QuickIcon(CHOBJECT, icon, pos);
-					}
-					if (icon == 305 && BlitzActif({ x, y }))
-					{
-						icon = Random(305, 308);
-						m_pPixmap->QuickIcon(CHOBJECT, icon, pos);
-					}
-					if (icon == 110)
-					{
+						break;
+					case 305:
+						if (BlitzActif({ x, y }))
+						{
+							icon = Random(305, 308);
+							m_pPixmap->QuickIcon(CHOBJECT, icon, pos);
+						}
+						break;
+					case 110:
 						icon = table_decor_ventg[m_time / 1 % 4];
 						m_pPixmap->QuickIcon(CHOBJECT, icon, pos);
-					}
-					if (icon == 114)
-					{
+						break;
+					case 114:
 						icon = table_decor_ventd[m_time / 1 % 4];
 						m_pPixmap->QuickIcon(CHOBJECT, icon, pos);
-					}
-					if (icon == 118)
-					{
-						icon = table_decor_venth[m_time / 1 % 4];
-						m_pPixmap->QuickIcon(CHOBJECT, icon, pos);
-					}
-					if (icon == 122)
-					{
-						icon = table_decor_ventb[m_time / 1 % 4];
-						m_pPixmap->QuickIcon(CHOBJECT, icon, pos);
-					}
-					if (icon == 126)
-					{
-						icon = table_decor_ventillog[m_time / 2 % 3];
-						m_pPixmap->QuickIcon(CHOBJECT, icon, pos);
-					}
-					if (icon == 129)
-					{
-						icon = table_decor_ventillod[m_time / 2 % 3];
-						m_pPixmap->QuickIcon(CHOBJECT, icon, pos);
-					}
-					if (icon == 132)
-					{
-						icon = table_decor_ventilloh[m_time / 2 % 3];
-						m_pPixmap->QuickIcon(CHOBJECT, icon, pos);
-					}
-					if (icon == 135)
-					{
-						icon = table_decor_ventillob[m_time / 2 % 3];
-						m_pPixmap->QuickIcon(CHOBJECT, icon, pos);
+						break;
 					}
 				}
 				dest.y += DIMOBJY;
