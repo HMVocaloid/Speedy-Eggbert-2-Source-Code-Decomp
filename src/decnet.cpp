@@ -106,10 +106,15 @@ void CDecor::FUN_15da0(int index, short step)
 
 void CDecor::NetPlayerCollide(POINT pos, int* out)
 {
+	int i;
 	tagRECT rect1;
 	RECT	rect2;
 	RECT	rect3;
-	//TODO
+	
+	rect2.right = pos.x + 44;
+	rect2.left = pos.x + 16;
+	rect2.top = pos.y + 11;
+	rect2.bottom = pos.y + 58;
 
 }
 

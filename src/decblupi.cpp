@@ -903,7 +903,7 @@ void CDecor::BlupiStep()
 					num4 *= 3;
 					num4 /= 2;
 				}
-				//tinyPoint3.x += Misc.Speed(m_blupiSpeedX, num4);
+				tinyPoint3.x += Speed(m_blupiSpeedX, num4);
 			}
 		}
 		if (m_blupiDir == 2 && m_blupiAction == 29)

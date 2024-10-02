@@ -2807,10 +2807,10 @@ BOOL CEvent::DrawButtons()
 		{
 			LoadString(TX_NONAME, res, 100);
 		}
-		lg = GetTextWidth(res, 0);
+		lg = GetTextWidth(text, 0);
 		pos.y = 269;
 		pos.x = 250 - lg / 2;
-		DrawTextLeft(m_pPixmap, pos, res, 0);
+		DrawTextLeft(m_pPixmap, pos, text, 0);
 	}
 
 	if (m_phase == WM_PHASE_HELP)

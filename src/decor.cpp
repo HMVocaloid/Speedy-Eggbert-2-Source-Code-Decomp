@@ -49,6 +49,14 @@ CDecor::CDecor()
 	m_bMulti = FALSE;
 	m_mission = NULL;
 	m_blupiLevel = NULL;
+	m_blupiNoBarre = NULL;
+	m_blupiTimeShield = NULL;
+	m_blupiTimeFire = NULL;
+	m_blupiTimeOuf = NULL;
+	m_blupiFifoNb = NULL;
+	m_netPacketIcon = NULL;
+	m_bFoundCle = NULL;
+	m_voyageStart = { 0, 0 };
 	m_bPrivate = NULL;
 	m_team = 0;
 	m_netPacketsSent = 0;
@@ -127,7 +135,7 @@ void CDecor::InitDecor()
 	m_decor[3][4].icon = 40;
 	m_decor[4][4].icon = 38;
 	m_decor[5][4].icon = 39;
-	for (int k = MAXMOVEOBJECT; k != 0; k--)
+	for (int k = MAXMOVEOBJECT- 1; k != 0; k--)
 	{
 		m_moveObject[k].type = 0;
 	}
@@ -151,7 +159,7 @@ void CDecor::InitDecor()
 	m_moveObject[1].stepAdvance = 1;
 	m_moveObject[1].timeStopStart = 0;
 	m_moveObject[1].timeStopEnd = 0;
-	m_moveObject[1].posStart = { 450, 196 };
+	m_moveObject[1].posStart = { 322, 196 };
 	m_moveObject[1].posEnd = m_moveObject[1].posStart;
 	m_moveObject[1].posCurrent = m_moveObject[1].posStart;
 	m_moveObject[1].phase = 0;
@@ -272,7 +280,7 @@ void CDecor::PlayPrepare(BOOL bTest)
 	m_blupiDynamite = 0;
 	m_nbTresor = 0;
 	m_totalTresor = 0;
-	for (int i = MAXMOVEOBJECT; i != 0; i--)
+	for (int i = MAXMOVEOBJECT - 1; i != 0; i--)
 	{
 		if (m_moveObject[i].type == TYPE_TRESOR)
 		{
@@ -366,6 +374,7 @@ int CDecor::IsTerminated()
 
 void CDecor::MoveStep()
 {
+	int max;
 	MoveObjectStep();
 
 	if (m_phase == WM_PHASE_PLAY || m_phase == WM_PHASE_PLAYTEST) {
@@ -375,7 +384,7 @@ void CDecor::MoveStep()
 	}
 
 	if (m_phase == WM_PHASE_BUILD) {
-		if ((m_keyPress & KEY_RIGHT) != 0) {
+		if (m_keyPress &= KEY_RIGHT) {
 			m_posDecor.x += 50;
 			int max = (m_dimDecor.x != 0) ? (MAXCELX * DIMOBJX - LXIMAGE) : 0;
 			if (m_posDecor.x > max) {
@@ -383,14 +392,14 @@ void CDecor::MoveStep()
 			}
 			m_posCelHili.x = -1;
 		}
-		if (m_keyPress & KEY_LEFT) {
+		if (m_keyPress &= KEY_LEFT) {
 			m_posDecor.x -= 50;
 			if (m_posDecor.x < 0) {
 				m_posDecor.x = 0;
 			}
 			m_posCelHili.x = -1;
 		}
-		if (m_keyPress & KEY_DOWN) {
+		else if (m_keyPress &= KEY_DOWN) {
 			m_posDecor.y += 50;
 			int max = (m_dimDecor.y > 0) ? (m_dimDecor.y - LYIMAGE) : 0;
 			if (m_posDecor.y > max) {
@@ -398,7 +407,7 @@ void CDecor::MoveStep()
 			}
 			m_posCelHili.x = -1;
 		}
-		if (m_keyPress & KEY_UP) {
+		else if (m_keyPress &= KEY_UP) {
 			m_posDecor.x -= 50;
 			if (m_posDecor.x < 0) {
 				m_posDecor.x = 0;
@@ -830,6 +839,30 @@ void CDecor::Build(RECT clip, POINT posMouse)
 						break;
 					case 114:
 						icon = table_decor_ventd[m_time / 1 % 4];
+						m_pPixmap->QuickIcon(CHOBJECT, icon, pos);
+						break;
+					case 118:
+						icon = table_decor_venth[m_time / 1 % 4];
+						m_pPixmap->QuickIcon(CHOBJECT, icon, pos);
+						break;
+					case 122:
+						icon = table_decor_ventb[m_time / 1 % 4];
+						m_pPixmap->QuickIcon(CHOBJECT, icon, pos);
+						break;
+					case 126:
+						icon = table_decor_ventillog[m_time / 2 % 3];
+						m_pPixmap->QuickIcon(CHOBJECT, icon, pos);
+						break;
+					case 129:
+						icon = table_decor_ventillod[m_time / 2 % 3];
+						m_pPixmap->QuickIcon(CHOBJECT, icon, pos);
+						break;
+					case 132:
+						icon = table_decor_ventilloh[m_time / 2 % 3];
+						m_pPixmap->QuickIcon(CHOBJECT, icon, pos);
+						break;
+					case 135:
+						icon = table_decor_ventillob[m_time / 2 % 3];
 						m_pPixmap->QuickIcon(CHOBJECT, icon, pos);
 						break;
 					}

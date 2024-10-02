@@ -99,6 +99,58 @@ BOOL CDecor::TestPath(RECT rect, POINT start, POINT end)
 
 void CDecor::MoveObjectPollution()
 {
+	POINT blupiPos = m_blupiPos;
+	POINT pos;
+	BOOL bPollution;
+	pos = { 0, 0 };
+	int num = 20;
+
+	bPollution = FALSE;
+
+	if (m_blupiAction == 3)
+	{
+		return;
+	}
+	if (m_blupiHelico)
+	{
+		if (m_blupiVitesse.y < -5.0)
+		{
+			if (m_time % 20 != 0 &&
+				m_time % 20 != 2 &&
+				m_time % 20 != 5 &&
+				m_time % 20 != 8 &&
+				m_time % 20 != 10 &&
+				m_time % 20 != 11 &&
+				m_time % 20 != 16 &&
+				m_time % 20 != 18)
+			{
+				return;
+			}
+		}
+		else if (m_blupiVitesse.x == 0.0)
+		{
+			if (m_time % 50 != 0 &&
+				m_time % 50 != 12 &&
+				m_time % 50 != 30)
+			{
+				return;
+			}
+		}
+		else if (m_time % 20 != 0 &&
+			m_time % 20 != 3 &&
+			m_time % 20 != 5 &&
+			m_time % 20 != 11 &&
+			m_time % 20 != 15)
+		{
+			return;
+		}
+		pos.x = 22;
+		bPollution = TRUE;
+	}
+	if (m_blupiOver)
+	{
+		
+	}
 }
 
 void CDecor::MoveObjectPlouf(POINT pos)
@@ -180,7 +232,7 @@ void CDecor::MoveObjectBlup(POINT pos)
 
 void CDecor::FlushBalleTraj()
 {
-	for (int i = 0; i < 1300; i++)
+	for (int i = 0; i < 1250; i++)
 	{
 		m_balleTraj[i] = 0;
 	}
@@ -1551,6 +1603,7 @@ void CDecor::DynamiteStart(int i, int dx, int dy)
 			src2.top = m_moveObject[i].posCurrent.y;
 			src2.bottom = m_moveObject[i].posCurrent.y + 20;
 			RECT tinyRect;
+			tinyRect = { 0, 0, 0, 0 };
 			if (IntersectRect(tinyRect, src2, src))
 			{
 				if (m_moveObject[i].type == 12)
@@ -1615,6 +1668,7 @@ int CDecor::AscenseurDetect(RECT rect, POINT oldpos, POINT newpos)
 			if (num < 30)
 			{
 				RECT tinyRect;
+				tinyRect = { 0, 0, 0, 0 };
 				if (IntersectRect(tinyRect, src, rect))
 				{
 					return i;
@@ -1628,6 +1682,7 @@ int CDecor::AscenseurDetect(RECT rect, POINT oldpos, POINT newpos)
 				for (int j = 0; j <= num / 30; j++)
 				{
 					RECT tinyRect;
+					tinyRect = { 0, 0, 0, 0 };
 					if (IntersectRect(tinyRect, src, src2))
 					{
 						return i;
@@ -1731,8 +1786,35 @@ BOOL CDecor::TestPushCaisse(int i, POINT pos, BOOL bPop)
 
 BOOL CDecor::TestPushOneCaisse(int i, POINT move, int b)
 {
-	// TODO
-	return FALSE;
+	int num;
+	RECT rect;
+
+	num = m_moveObject[i].posCurrent.x + move.x;
+	rect.left = num;
+	rect.right = num + 64;
+	rect.top = m_moveObject[i].posCurrent.y;
+	rect.bottom = m_moveObject[i].posCurrent.y + 64;
+	if (DecorDetect(rect, FALSE))
+	{
+		return FALSE;
+	}
+	if (m_moveObject[i].posCurrent.y != b)
+	{
+		return TRUE;
+	}
+	rect.left = num;
+	rect.right = num + 20;
+	rect.top = m_moveObject[i].posCurrent.y + 64;
+	rect.bottom = m_moveObject[i].posCurrent.y + 64 + 2;
+	if (!DecorDetect(rect))
+	{
+		return FALSE;
+	}
+	rect.left = num + 64 - 20;
+	rect.right = num + 64;
+	rect.top = m_moveObject[i].posCurrent.y + 64;
+	rect.bottom = m_moveObject[i].posCurrent.y + 64 + 2;
+	return DecorDetect(rect);
 }
 
 void CDecor::SearchLinkCaisse(int rank, BOOL bPop)
@@ -1893,6 +1975,7 @@ int CDecor::MockeryDetect(POINT pos)
 			src2.top = m_moveObject[i].posCurrent.y + 36;
 			src2.bottom = m_moveObject[i].posCurrent.y + 60;
 			RECT tinyRect;
+			tinyRect = { 0, 0, 0, 0 };
 			if (IntersectRect(tinyRect, src2, src))
 			{
 				if (m_moveObject[i].type == 54)
@@ -1946,6 +2029,7 @@ BOOL CDecor::BlupiElectro(POINT pos)
 	src2.top = m_blupiPos.y + 11 - 40;
 	src2.bottom = m_blupiPos.y + 60 - 2 + 40;
 	RECT tinyRect;
+	tinyRect = { 0, 0, 0, 0 };
 	return IntersectRect(tinyRect, src, src2);
 }
 
@@ -1968,6 +2052,7 @@ void CDecor::MoveObjectFollow(POINT pos)
 			src2.top = m_moveObject[i].posCurrent.y - 100;
 			src2.bottom = m_moveObject[i].posCurrent.y + 60 + 100;
 			RECT tinyRect;
+			tinyRect = { 0, 0, 0, 0 };
 			if (IntersectRect(tinyRect, src2, src))
 			{
 				m_moveObject[i].type = 97;
@@ -2002,9 +2087,64 @@ int CDecor::MoveObjectDetect(POINT pos, BOOL* pbNear)
 			m_moveObject[i].type != 12)
 		{
 			RECT src3;
-			// TODO
+			src3.left = m_moveObject[i].posCurrent.x + 16;
+			src3.right = m_moveObject[i].posCurrent.x + 60 - 16;
+			src3.top = m_moveObject[i].posCurrent.y + 36;
+			src3.bottom = m_moveObject[i].posCurrent.y + 60;
+			if (m_moveObject[i].type == 3)
+			{
+				if (m_blupiAction == 6)
+				{
+					//goto IL_427;
+				}
+				src3.top = m_moveObject[i].posCurrent.y;
+				src3.bottom = m_moveObject[i].posCurrent.y + 69 - 36;
+			}
+			if (m_moveObject[i].type == 12)
+			{
+				src3.left = m_moveObject[i].posCurrent.x - 16;
+				src3.right = m_moveObject[i].posCurrent.x + 64 + 16;
+				src3.top = m_moveObject[i].posCurrent.y;
+				src3.bottom = m_moveObject[i].posCurrent.y + 64;
+				if (m_blupiDir == 1)
+				{
+					src3.left += 20;
+				}
+				else
+				{
+					src3.right -= 20;
+				}
+			}
+			if (m_moveObject[i].type == 17 ||
+				m_moveObject[i].type == 20 ||
+				m_moveObject[i].type == 44 ||
+				m_moveObject[i].type == 54)
+			{
+				src3.top = m_moveObject[i].posCurrent.y + 16;
+				src3.bottom = m_moveObject[i].posCurrent.y + 60 - 16;
+			}
+			if (m_moveObject[i].type == 23)
+			{
+				src3.left = m_moveObject[i].posCurrent.x + 24;
+				src3.right = m_moveObject[i].posCurrent.x + 64 - 24;
+				src3.top = m_moveObject[i].posCurrent.y + 10;
+				src3.bottom = m_moveObject[i].posCurrent.y + 60 - 32;
+			}
+			RECT rect;
+			rect = { 0, 0, 0, 0 };
+			if (IntersectRect(rect, src3, src))
+			{
+				*pbNear = TRUE;
+				return i;
+			}
+			if (m_moveObject[i].type == 2 && IntersectRect(rect, src3, src2))
+			{
+				*pbNear = FALSE;
+				return i;
+			}
 		}
 	}
+	*pbNear = FALSE;
 	return -1;
 }
 
@@ -2029,6 +2169,7 @@ int CDecor::MoveAscenseurDetect(POINT pos, int height)
 			src2.top = m_moveObject[i].posCurrent.y;
 			src2.bottom = m_moveObject[i].posCurrent.y + 16;
 			RECT tinyRect;
+			tinyRect = { 0, 0, 0, 0 };
 			if (IntersectRect(tinyRect, src2, src))
 			{
 				return i;
@@ -2055,6 +2196,7 @@ int CDecor::MoveChargeDetect(POINT pos)
 			src2.top = m_moveObject[i].posCurrent.y + 36;
 			src2.bottom = m_moveObject[i].posCurrent.y + 60;
 			RECT tinyRect;
+			tinyRect = { 0, 0, 0, 0 };
 			if (IntersectRect(tinyRect, src2, src))
 			{
 				return i;
@@ -2081,6 +2223,7 @@ int CDecor::MovePersoDetect(POINT pos)
 			src2.top = m_moveObject[i].posCurrent.y + 36;
 			src2.bottom = m_moveObject[i].posCurrent.y + 60;
 			RECT tinyRect;
+			tinyRect = { 0, 0, 0, 0 };
 			if (IntersectRect(tinyRect, src2, src))
 			{
 				return i;
@@ -2092,8 +2235,38 @@ int CDecor::MovePersoDetect(POINT pos)
 
 int CDecor::MoveBalleDetect(POINT pos)
 {
-	// TODO
-	return -1;
+	RECT rcSrc1, rcSrc2;
+	tagRECT rcDst;
+	int i;
+
+	if (m_phase == WM_PHASE_BUILD)
+		return -1;
+	rcSrc2.right = pos.x + 44;
+	rcSrc2.left = pos.x + 20;
+	rcSrc2.top = pos.y + 10;
+	rcSrc2.bottom = pos.y + 28;
+
+	for (i = 0; i < MAXMOVEOBJECT - 1; i++)
+	{
+		if (m_moveObject->type == TYPE_BULLDOZER ||
+			m_moveObject->type == TYPE_POISSON ||
+			m_moveObject->type == TYPE_OISEAU ||
+			m_moveObject->type == TYPE_GUEPE ||
+			m_moveObject->type == TYPE_BLUPIHELICO ||
+			m_moveObject->type == TYPE_BLUPITANK)
+		{
+			rcSrc1.right = m_moveObject->posCurrent.x + 44;
+			rcSrc1.left = m_moveObject->posCurrent.x + 16;
+			rcSrc1.bottom = m_moveObject->posCurrent.y + 50;
+			rcSrc1.top = m_moveObject->posCurrent.y + 16;
+			rcDst = { 0, 0, 0, 0 };
+			if (IntersectRect(&rcDst, &rcSrc1, &rcSrc2))
+				break;
+		}
+		if (i >= 200)
+			return -1;
+	}
+	return i;
 }
 
 int CDecor::MoveObjectDelete(POINT cel)
@@ -2120,7 +2293,7 @@ int CDecor::MoveObjectDelete(POINT cel)
 
 int CDecor::MoveObjectFree()
 {
-	for (int i = 0; i < MAXMOVEOBJECT; i++)
+	for (int i = 0; i < MAXMOVEOBJECT - 1; i++)
 	{
 		if (m_moveObject[i].type == 0)
 		{
@@ -2137,25 +2310,24 @@ int CDecor::SortGetType(int type)
 	{
 		return 1;
 	}
-	if (type == 12)
-	{
-		return 2;
-	}
-	return 3;
+	else
+		return (type != 12) + 2;
 }
 
 void CDecor::MoveObjectSort()
 {
 	MoveObject src;
 	int num = 0;
-	for (int i = 0; i < MAXMOVEOBJECT; i++)
+	int i;
+
+	for (i = 0; i < MAXMOVEOBJECT; i++)
 	{
 		if (m_moveObject[i].type != 0)
 		{
 			MoveObjectCopy(m_moveObject[num++], m_moveObject[i]);
 		}
 	}
-	for (int i = num; i < MAXMOVEOBJECT; i++)
+	for (i = num; i < MAXMOVEOBJECT; i++)
 	{
 		m_moveObject[i].type = 0;
 	}
@@ -2164,11 +2336,13 @@ void CDecor::MoveObjectSort()
 		return;
 	}
 	BOOL flag;
+	/*
 	do
 	{
 		flag = FALSE;
-		for (int i = 0; i < num - 1; i++)
+		for (i = 0; i < num - 1; i++)
 		{
+			src = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 			if (SortGetType(m_moveObject[i].type) > SortGetType(m_moveObject[i + 1].type))
 			{
 				MoveObjectCopy(src, m_moveObject[i]);
@@ -2178,13 +2352,47 @@ void CDecor::MoveObjectSort()
 			}
 		}
 	} while (flag);
+	*/
 	UpdateCaisse();
 	m_nbLinkCaisse = 0;
 }
 
 void CDecor::MoveObjectPriority(int i)
 {
+	MoveObject src;
+	int j;
 
+	if (i == 0)
+	{
+		return;
+	}
+	if (m_moveObject[i].type != 23)
+	{
+		return;
+	}
+	j = 0;
+	while (j < MAXMOVEOBJECT)
+	{
+		if (m_moveObject[j].type != 23)
+		{
+			if (j > i)
+			{
+				return;
+			}
+			MoveObjectCopy(src, m_moveObject[i]);
+			MoveObjectCopy(m_moveObject[i], m_moveObject[j]);
+			MoveObjectCopy(m_moveObject[j], src);
+			if (m_moveObject[i].type == 12 || m_moveObject[i].type == 12)
+			{
+				UpdateCaisse();
+			}
+			return;
+		}
+		else
+		{
+			j++;
+		}
+	}
 }
 
 int CDecor::MoveObjectSearch(POINT pos, int type)

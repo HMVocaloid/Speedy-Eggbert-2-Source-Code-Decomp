@@ -30,16 +30,12 @@ BOOL CDecor::DeleteMission(int user, int mission, BOOL bUser)
 BOOL CDecor::Write(int gamer, int mission, BOOL bUser)
 {
 	char filename[FILENAME_MAX];
-	DescFile* pBuffer;
+	DescFile* pBuffer = NULL;
 	FILE* file;
-	int* blupiDir;
-	POINT* blupiPos;
 	int nb;
 	int i;
 
-
 	GetMissionPath(filename, gamer, mission, bUser);
-
 	
 	file = fopen(filename, "wb");
 	if (file == NULL) goto error;
@@ -48,7 +44,6 @@ BOOL CDecor::Write(int gamer, int mission, BOOL bUser)
 	if (pBuffer == NULL) goto error;
 	memset(pBuffer, 0, sizeof(DescFile));
 
-	i = 4;
 	pBuffer->majRev = 1;
 	pBuffer->minRev = 3;
 	*pBuffer->reserve1 = 0;
@@ -56,28 +51,22 @@ BOOL CDecor::Write(int gamer, int mission, BOOL bUser)
 	pBuffer->dimDecor = m_dimDecor;
 	pBuffer->music = m_music;
 	pBuffer->region = m_region;
-	blupiDir = m_blupiStartDir;
 	strcpy(pBuffer->libelle, m_missionTitle);
-	blupiPos = m_blupiStartPos;
 
-	for (i = 0; i < 4; i++)
+	for (i = 0; i < MAXPLAYER; i++)
 	{
 		pBuffer->blupiPos[i] = m_blupiStartPos[i];
-	}
-
-	for (i = 0; i < 4; i++)
-	{
 		pBuffer->blupiDir[i] = m_blupiStartDir[i];
 	}
 
 	nb = fwrite(pBuffer, sizeof(DescFile), 1, file);
 	if (nb < 1) goto error;
 
-	nb = fwrite(m_decor, sizeof(Cellule), MAXCELX * MAXCELY / 4, file);
-	if (nb < MAXCELX * MAXCELY / 4) goto error;
+	nb = fwrite(m_decor, sizeof(Cellule), MAXCELX * MAXCELY, file);
+	if (nb < MAXCELX * MAXCELY) goto error;
 
-	nb = fwrite(m_bigDecor, sizeof(Cellule), MAXCELX * MAXCELY / 4, file);
-	if (nb < MAXCELX * MAXCELY / 4) goto error;
+	nb = fwrite(m_bigDecor, sizeof(Cellule), MAXCELX * MAXCELY, file);
+	if (nb < MAXCELX * MAXCELY) goto error;
 
 	nb = fwrite(m_moveObject, sizeof(MoveObject), MAXMOVEOBJECT, file);
 	if (nb < MAXMOVEOBJECT) goto error;
@@ -96,19 +85,11 @@ BOOL CDecor::Read(int gamer, int mission, BOOL bUser)
 {
 	char filename[FILENAME_MAX];
 	FILE* file;
-	DescFile* pBuffer;
-	short majRev, minRev;
-	short obj;
-	Cellule(*objects)[100];
-	POINT* startPos;
-	POINT* blupiPos;
-	int nb;
-	int i = 4;
-	int x, y;
-	int* startDir;
-	int* blupiDir;
+	DescFile* pBuffer = NULL;
+	int nb, i, x, y;
+	int minRev = 1;
+	int majRev = 3;
 
-	pBuffer = 0;
 	InitDecor();
 	GetMissionPath(filename, gamer, mission, bUser);
 	
@@ -127,58 +108,41 @@ BOOL CDecor::Read(int gamer, int mission, BOOL bUser)
 			m_dimDecor = pBuffer->dimDecor;
 			m_music = pBuffer->music;
 			m_region = pBuffer->region;
-			if (0 < majRev && minRev > 2)
+			if (majRev >= 1 && minRev >= 3)
 			{
 				strcpy(m_missionTitle,pBuffer->libelle);
 			}
-			startDir = m_blupiStartDir;
-			blupiDir = pBuffer->blupiDir;
-			startPos = m_blupiStartPos;
-			blupiPos = pBuffer->blupiPos;
-
-			for (i = 0; i < 4; i++)
+		
+			for (i = 0; i < MAXPLAYER; i++)
 			{
 				m_blupiStartPos[i] = pBuffer->blupiPos[i];
-			}
-
-			for (i = 0; i < 4; i++)
-			{
 				m_blupiStartDir[i] = pBuffer->blupiDir[i];
 			}
 
-			nb = fread(m_decor, sizeof(Cellule), MAXCELX * MAXCELY / 4, file);
-			if (nb < MAXCELX * MAXCELY / 4) goto error;
+			nb = fread(m_decor, sizeof(Cellule), MAXCELX * MAXCELY, file);
+			if (nb < MAXCELX * MAXCELY) goto error;
 			
-			for (x = 0; x < MAXCELX / 2; x++)
+			for (x = 0; x < MAXCELX; x++)
 			{
-				for (y = 0; y < MAXCELY / 2; y++)
+				for (y = 0; y < MAXCELY; y++)
 				{
 					if (m_decor[x][y].icon >= 48 &&
 						m_decor[x][y].icon <= 67)
 					{
-						m_decor[x][y].icon -= 128 - 17;
+						m_decor[x][y].icon = 215;
 					}
 				}
 			}
 
-			nb = fread(m_bigDecor, sizeof(Cellule), MAXCELX * MAXCELY / 4, file);
-			if (nb < MAXCELX * MAXCELY / 4) goto error;
-
-			for (x = 0; x < MAXCELX / 2; x++)
+			if (majRev != 1 || minRev != 0)
 			{
-				for (y = 0; y < MAXCELY / 2; y++)
-				{
-					if (m_bigDecor[x][y].icon >= 48 &&
-						m_bigDecor[x][y].icon <= 67)
-					{
-						m_bigDecor[x][y].icon -= 128 - 17;
-					}
-				}
+				nb = fread(m_bigDecor, sizeof(Cellule), MAXCELX * MAXCELY, file);
+				if (nb < MAXCELX * MAXCELY) goto error;
 			}
 
 			if (majRev == 1 && minRev <= 1)
 			{
-				memset(m_moveObject, 0, sizeof(MoveObject));
+				memset(m_moveObject, 0, sizeof(MoveObject)*MAXMOVEOBJECT);
 				nb = fread(m_moveObject, sizeof(MoveObject), MAXMOVEOBJECT / 2, file);
 				if (nb < MAXMOVEOBJECT / 2) goto error;
 			}
@@ -209,9 +173,8 @@ BOOL CDecor::MissionStart(int gamer, int mission, BOOL bUser)
 {
 	char filename[MAX_PATH];
 	FILE* file = NULL;
-	DescFile* pBuffer = NULL;
+	DescGameFile* pBuffer = NULL;
 	int nb, i, x, y;
-	int majRev, minRev;
 
 	sprintf(filename, "data\\s%.3d-%.3d.blp", gamer, mission);
 	AddUserPath(filename);
@@ -219,28 +182,27 @@ BOOL CDecor::MissionStart(int gamer, int mission, BOOL bUser)
 	file = fopen(filename, "wb");
 	if (file == NULL) goto error;
 
-	pBuffer = (DescFile*)malloc(sizeof(DescFile));
+	pBuffer = (DescGameFile*)malloc(sizeof(DescGameFile));
 	if (pBuffer == NULL) goto error;
-	memset(pBuffer, 0, sizeof(DescFile));
-	
+	memset(pBuffer, 0, sizeof(DescGameFile));
+
+	pBuffer->size = sizeof(DescGameFile);
 	pBuffer->majRev = 1;
 	pBuffer->minRev = 4;
-	memcpy(pBuffer->reserve1, m_decor, sizeof(Cellule));
-	memcpy(pBuffer->reserve1, m_bigDecor, sizeof(m_bigDecor));
-	memcpy(pBuffer->reserve1, m_balleTraj, sizeof(m_balleTraj));
-	memcpy(pBuffer->reserve1, m_moveTraj, sizeof(m_moveTraj));
-	memcpy(pBuffer->reserve1, m_moveObject, sizeof(m_moveObject));
-	pBuffer->posDecor = m_posDecor;
-	pBuffer->dimDecor = m_dimDecor;
-	pBuffer->world = m_mission;
-	pBuffer->music = m_music;
-	pBuffer->region = m_region;
-	pBuffer->blupiPos[2] = m_blupiPos;
-	pBuffer->blupiPos[3] = m_blupiValidPos;
-	pBuffer->blupiDir[3] = m_blupiStartDir[3];
-	pBuffer->libelle[99] = m_missionTitle[99];
 
-	if (fwrite(pBuffer, sizeof(DescFile), 1, file) >= 1)
+#if _DEMO
+	pBuffer->bDemo = TRUE;
+#else 
+	pBuffer->bDemo = FALSE;
+#endif
+
+	memcpy(pBuffer->decor, m_decor, MAXCELX * MAXCELY * sizeof(Cellule));
+	memcpy(pBuffer->bigDecor, m_bigDecor, MAXCELX * MAXCELY * sizeof(Cellule));
+	memcpy(pBuffer->balleTraj, m_balleTraj, (MAXCELX / 8 + 1) * MAXCELY * sizeof(unsigned char));
+	memcpy(pBuffer->moveTraj, m_moveTraj, (MAXCELX / 8 + 1) * MAXCELY * sizeof(unsigned char));
+	memcpy(pBuffer->moveObject, m_moveObject, MAXMOVEOBJECT * sizeof(MoveObject));
+
+	if (fwrite(pBuffer, sizeof(DescGameFile), 1, file) >= 1)
 	{
 		free(pBuffer);
 		fclose(file);
@@ -297,17 +259,36 @@ BOOL CDecor::CurrentWrite(int gamer, int mission, char* param3)
 {
 	char filename[MAX_PATH];
 	FILE* file = NULL;
-	DescFile* pBuffer = NULL;
-	int majRev, minRev;
-	int nb, i, x, y;
+	DescGameFile* pBuffer = NULL;
+	int nb, i;
 
 	sprintf(filename, "data\\s%.3d-%.3d.blp", gamer, mission);
 	AddUserPath(filename);
+
 	file = fopen(filename, "wb");
 	if (file == NULL) goto error;
 
-	pBuffer = (DescFile*)malloc(sizeof(DescFile));
+	pBuffer = (DescGameFile*)malloc(sizeof(DescGameFile));
 	if (pBuffer == NULL) goto error;
+	memset(pBuffer, 0, sizeof(DescGameFile));
+
+	pBuffer->size = sizeof(DescGameFile);
+	pBuffer->majRev = 1;
+	pBuffer->minRev = 4;
+
+#if _DEMO
+	pBuffer->bDemo = TRUE;
+#else 
+	pBuffer->bDemo = FALSE;
+#endif
+
+	memcpy(pBuffer->decor, m_decor, MAXCELX * MAXCELY * sizeof(Cellule));
+	memcpy(pBuffer->bigDecor, m_bigDecor, MAXCELX * MAXCELY * sizeof(Cellule));
+	memcpy(pBuffer->balleTraj, m_balleTraj, (MAXCELX / 8 + 1) * MAXCELY * sizeof(unsigned char));
+	memcpy(pBuffer->moveTraj, m_moveTraj, (MAXCELX / 8 + 1) * MAXCELY * sizeof(unsigned char));
+	memcpy(pBuffer->moveObject, m_moveObject, MAXMOVEOBJECT * sizeof(MoveObject));
+
+
 
 	return TRUE;
 
