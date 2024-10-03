@@ -2444,27 +2444,27 @@ BOOL CEvent::DrawButtons()
         text[0] = 0;
 		if (m_bBuildOfficialMissions)
 		{
-			AddCheatCode(text, cheat_code[0]);
+			AddCheatCode(text, cheat_code[0]); // xmission
 		}
 		if (m_bAllMissions)
 		{
-			AddCheatCode(text, cheat_code[1]);
+			AddCheatCode(text, cheat_code[1]); // opendoors
 		}
         if ( m_pDecor->GetSuperBlupi() )
         {
-            AddCheatCode(text, cheat_code[3]);
+            AddCheatCode(text, cheat_code[3]); // megablupi
         }
 		if ( m_pDecor->GetDrawSecret() )
 		{
-			AddCheatCode(text, cheat_code[11]);
+			AddCheatCode(text, cheat_code[11]); // showsecret
 		}
 		if ( m_pDecor->GetNetPacked() )
 		{
-			AddCheatCode(text, cheat_code[19]);
+			AddCheatCode(text, cheat_code[19]); // netpacked
 		}
 		if (!m_pDecor->GetNetMovePredict())
 		{
-			AddCheatCode(text, cheat_code[21]);
+			AddCheatCode(text, cheat_code[21]); // ynosmooth
 		}
     }
 	m_pDecor->OutputNetDebug(text);
@@ -2516,7 +2516,23 @@ BOOL CEvent::DrawButtons()
 		SetEnable(WM_PHASE_CLEARGAMER, (int)(m_filenameBuffer - 1) + m_gamer * 4 + 212);
 	}
 
-
+	if (m_phase == WM_PHASE_CREATE)
+	{
+		LoadString(TX_MULTI_CREATE, res, 100);
+		lg = GetTextWidth(res, 0);
+		pos.x = 320 - lg / 2;
+		pos.y = 103;
+		DrawTextLeft(m_pPixmap, pos, res, 1);
+		LoadString(TX_MULTI_GNAME, res, 100);
+		lg = GetTextWidth(res, 0);
+		pos.x = 320 - lg / 2;
+		pos.y = 190;
+		DrawTextLeft(m_pPixmap, pos, res, 0);
+		pos.x = 320;
+		pos.y = 232;
+		PutTextInputBox(pos);
+		SetEnable(WM_PHASE_DPLAY_CREATE, m_textInput[0] != 0);
+	}
 
 	if (m_phase == WM_PHASE_NAMEGAMER)
 	{
@@ -2554,18 +2570,7 @@ BOOL CEvent::DrawButtons()
 
 	if (m_phase == WM_PHASE_PLAY && m_phase == WM_PHASE_PLAYTEST && m_phase == WM_PHASE_BUILD)
 		m_pPixmap->DrawPart(-1, 0, pos, rect, 1, 0);
-	if (m_phase == WM_PHASE_CREATE)
-	{
-		LoadString(TX_MULTI_CREATE, res, 50);
-		lg=GetTextWidth(res);
-		pos.x = (320 - lg) / 2;
-		pos.y = 103;
-		DrawTextLeft(m_pPixmap, pos, res, FONTSLIM);
-		LoadString(TX_MULTI_GNAME, res, 100);
-		pos.x = (320 - lg) / 2;
-		pos.y = 190;
-		DrawTextLeft(m_pPixmap, pos, res, FONTSLIM);
-	}
+
 	if (m_phase == WM_PHASE_SETUP || m_phase == WM_PHASE_SETUPp)
 	{
 		sound = m_pSound->GetAudioVolume();

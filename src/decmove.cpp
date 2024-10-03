@@ -422,7 +422,7 @@ BOOL CDecor::ObjectStart(POINT pos, int type, int speed, BOOL bMulti)
 		}
 		else
 		{
-			m_moveObject[num].posEnd = tinyPoint;
+			m_moveObject[num - 1].posEnd = tinyPoint;
 			m_moveObject[num].timeStopStart = 0;
 			m_moveObject[num].stepAdvance = abs(num2 * num3 / 64);
 			m_moveObject[num].step = STEP_ADVANCE;
@@ -2014,6 +2014,8 @@ int CDecor::MockeryDetect(POINT pos)
 
 BOOL CDecor::BlupiElectro(POINT pos)
 {
+	if (m_phase == WM_PHASE_BUILD)
+		return FALSE;
 	if (m_blupiCloud)
 	{
 		return FALSE;
@@ -2209,6 +2211,10 @@ int CDecor::MoveChargeDetect(POINT pos)
 int CDecor::MovePersoDetect(POINT pos)
 {
 	RECT src;
+
+	if (m_phase == WM_PHASE_BUILD)
+		return -1;
+
 	src.left = pos.x + 16;
 	src.right = pos.x + 60 - 16;
 	src.top = pos.y + 11;
@@ -2306,12 +2312,18 @@ int CDecor::MoveObjectFree()
 
 int CDecor::SortGetType(int type)
 {
-	if (type == 2 || type == 3 || type == 96 || type == 97)
+	if (type == TYPE_BOMBEDOWN ||
+		type == TYPE_BOMBEUP ||
+		type == TYPE_BOMBEFOLLOW1 ||
+		type == TYPE_BOMBEFOLLOW2)
 	{
 		return 1;
 	}
-	else
-		return (type != 12) + 2;
+	if (type == TYPE_CAISSE)
+	{
+		return 2;
+	}
+	return 3;
 }
 
 void CDecor::MoveObjectSort()
@@ -2336,7 +2348,6 @@ void CDecor::MoveObjectSort()
 		return;
 	}
 	BOOL flag;
-	/*
 	do
 	{
 		flag = FALSE;
@@ -2352,7 +2363,6 @@ void CDecor::MoveObjectSort()
 			}
 		}
 	} while (flag);
-	*/
 	UpdateCaisse();
 	m_nbLinkCaisse = 0;
 }
@@ -2382,7 +2392,7 @@ void CDecor::MoveObjectPriority(int i)
 			MoveObjectCopy(src, m_moveObject[i]);
 			MoveObjectCopy(m_moveObject[i], m_moveObject[j]);
 			MoveObjectCopy(m_moveObject[j], src);
-			if (m_moveObject[i].type == 12 || m_moveObject[i].type == 12)
+			if (m_moveObject[i].type == 12 || m_moveObject[j].type == 12)
 			{
 				UpdateCaisse();
 			}

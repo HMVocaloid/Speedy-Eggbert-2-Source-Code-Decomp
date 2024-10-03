@@ -392,22 +392,22 @@ void CDecor::MoveStep()
 			}
 			m_posCelHili.x = -1;
 		}
-		if (m_keyPress &= KEY_LEFT) {
+		if (m_keyPress&KEY_LEFT) {
 			m_posDecor.x -= 50;
 			if (m_posDecor.x < 0) {
 				m_posDecor.x = 0;
 			}
 			m_posCelHili.x = -1;
 		}
-		else if (m_keyPress &= KEY_DOWN) {
+		else if (m_keyPress&KEY_DOWN) {
 			m_posDecor.y += 50;
-			int max = (m_dimDecor.y > 0) ? (m_dimDecor.y - LYIMAGE) : 0;
+			int max = (MAXCELY * DIMOBJY)-DIMDRAWY;
 			if (m_posDecor.y > max) {
 				m_posDecor.y = max;
 			}
 			m_posCelHili.x = -1;
 		}
-		else if (m_keyPress &= KEY_UP) {
+		else if (m_keyPress&KEY_UP) {
 			m_posDecor.x -= 50;
 			if (m_posDecor.x < 0) {
 				m_posDecor.x = 0;

@@ -154,7 +154,7 @@
 #define TX_DEMOPLAY						214
 #define TX_SHOWNEXT						241
 #define TX_SHOWCONNECTION				242
-//#define TX_SHOWNEXT						245
+#define TX_SHOWNEXT						245
 #define TX_SHOWPREV						246
 #define TX_GAMEJOIN						247
 #define TX_CREATE_MULTIGAME				248
